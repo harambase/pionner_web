@@ -1,8 +1,9 @@
 {
-  "name": "vue-test",
+  "name": "pioneer-web",
   "version": "1.0.0",
-  "description": "A Vue.js project",
-  "author": "fly",
+  "description": "Pionner Vue.js project",
+  "author": "Shilei",
+  "acknowledage": "fly",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
