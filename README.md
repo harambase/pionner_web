@@ -1,4 +1,8 @@
-# core-ui
+# the project is leading by s1lin
+
+> http://s1lin.github.io
+
+# the template was adopted from core-ui
 
 > Open Source Admin Template
 
