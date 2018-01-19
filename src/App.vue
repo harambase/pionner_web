@@ -1,31 +1,26 @@
 <template>
-  <div id="app">
-    <leftSlider></leftSlider>
-    <div id="rightConetnt">
-      <topUser></topUser>
-      <router-view></router-view>
-    </div>
-
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>
-  import leftSlider from './components/leftSlider.vue'
-  import topUser from './components/topUser.vue'
-  export default {
-    name: 'app',
-    components: {
-      leftSlider,
-      topUser
-    }
-  }
+export default {
+  name: 'app'
+}
 </script>
 
 <style>
-#rightConetnt{
-  flex: 1;
-  height: 100%;
-  background-color: #f4f7f9;
-  overflow-y: auto;
-}
+  /* Import Font Awesome Icons Set */
+  @import '~flag-icon-css/css/flag-icon.min.css';
+  /* Import Font Awesome Icons Set */
+  $fa-font-path: '~font-awesome/fonts/';
+  @import '~font-awesome/css/font-awesome.min.css';
+  /* Import Simple Line Icons Set */
+  $simple-line-font-path: '~simple-line-icons/fonts/';
+  @import '~simple-line-icons/css/simple-line-icons.css';
+  /* Import Bootstrap Vue Styles */
+  @import '~bootstrap-vue/dist/bootstrap-vue.css';
+</style>
+<style lang="scss">
+  // Import Main styles for this application
+  @import './scss/style';
 </style>
