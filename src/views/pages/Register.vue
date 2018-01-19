@@ -19,17 +19,28 @@
 
               <b-input-group class="mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="icon-info"></i> 注册时间</span>
+                  <span class="input-group-text">注册时间</span>
                 </div>
-                <b-form-select id="year1" style="width: 9%"
+                <b-form-select id="year1" style="width: 13%"
                                :plain="true"
                                :options="[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]"
-                               value="2011">
+                               v-model="info.year">
                 </b-form-select>
                 <b-form-select id="year1" style="width: 22%"
                                :plain="true"
-                               :options="['春季入学','秋季入学','夏季入学']"
-                               value="春季">
+                               :options="[{ text: '春季入学', value: '01' },{ text: '秋季入学', value: '02' }, { text: '夏季入学', value: '03' }]"
+                               v-model="info.semester">
+                </b-form-select>
+              </b-input-group>
+
+              <b-input-group class="mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-venus-mars"></i></span>
+                </div>
+                <b-form-select id="year1"
+                               :plain="true"
+                               :options="[{text: '男', value: 'male' },{text: '女', value: 'female' }, {text: '未指定', value: 'undetermined' }]"
+                               v-model="regUser.gender">
                 </b-form-select>
               </b-input-group>
 
@@ -75,28 +86,6 @@
                 <input type="password" class="form-control" placeholder="请重复密码">
               </b-input-group>
 
-              <b-form-group
-                label="性别"
-                label-for="basicCustomRadios1"
-                :label-cols="2"
-                :horizontal="true">
-                <b-form-radio-group
-                  id="basicCustomRadios1"
-                  name="customRadioInline1">
-                  <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input"
-                           value="male" v-model="regUser.gender">
-                    <label class="custom-control-label" for="customRadioInline1">男, Male</label>
-                  </div>
-                  <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input"
-                           value="female" v-model="regUser.gender">
-                    <label class="custom-control-label" for="customRadioInline2">女, Female</label>
-                  </div>
-                </b-form-radio-group>
-              </b-form-group>
-
-
               <b-button variant="success" block @click="doReg">提交申请</b-button>
             </b-card-body>
           </b-card>
@@ -127,6 +116,10 @@
           comment: ""
         },
         isReturn: false,
+        info: {
+          year: "2018",
+          semester: "01"
+        }
       }
     },
 
@@ -142,17 +135,22 @@
     },
     methods: {
       doReg: function () {
-        const regUser = this.regUser;
-        regUser.password = hex_md5(this.regUser.password);
-        axios.post("/request/user/register", regUser).then(function (response) {
-//          if (response.data.code === 2001)
-//            Showbo.Msg.alert("成功！请等待管理员审核。", function () {
-//              window.location.href = basePath + "/login";
-//            });
-//          else
-//            Showbo.Msg.alert(data.msg, function () {
-//            });
-        });
+        let regUser = this.regUser;
+        let info = this.info.year + "-" + this.info.semester;
+        regUser.password = md5(this.regUser.password);
+        regUser.info = info;
+
+        console.log(regUser);
+
+//        axios.post("/request/user/register", regUser).then(function (response) {
+////          if (response.data.code === 2001)
+////            Showbo.Msg.alert("成功！请等待管理员审核。", function () {
+////              window.location.href = basePath + "/login";
+////            });
+////          else
+////            Showbo.Msg.alert(data.msg, function () {
+////            });
+//        });
       },
       infoChange: function () {
         this.regUser.info = "2017-02";
