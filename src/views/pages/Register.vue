@@ -137,10 +137,10 @@
       doReg: function () {
         let regUser = this.regUser;
         let info = this.info.year + "-" + this.info.semester;
+
         regUser.password = md5(this.regUser.password);
         regUser.info = info;
 
-        console.log(regUser);
 
 //        axios.post("/request/user/register", regUser).then(function (response) {
 ////          if (response.data.code === 2001)
