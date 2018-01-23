@@ -5,7 +5,7 @@ import BootstrapVue from 'bootstrap-vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
-axios.defaults.baseURL = 'http://192.168.30.60:30000';
+axios.defaults.baseURL = 'http://192.168.30.51:30000';
 
 Vue.use(BootstrapVue)
 

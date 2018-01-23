@@ -91,6 +91,13 @@
           </b-card>
         </b-col>
       </b-row>
+      <b-modal ref="confirm" hide-footer centered title="消息">
+        <div class="d-block text-center">
+          <h3 v-if="succ">{{ msg }} </h3>
+          <h3 v-if="fail">{{ msg }} </h3>
+        </div>
+        <b-btn class="mt-3" variant="danger" block @click="hideConfirm">关闭</b-btn>
+      </b-modal>
     </div>
   </div>
 </template>
@@ -100,7 +107,7 @@
   import md5 from 'js-md5'
 
   export default {
-    name: 'Register',
+    name: '',
     data() {
       return {
         regUser: {
@@ -119,10 +126,12 @@
         info: {
           year: "2018",
           semester: "01"
-        }
+        },
+        succ: false,
+        fail: false,
+        msg: ""
       }
     },
-
     mounted: function () {
       laydate.render({
         elem: '#birthday',
@@ -141,20 +150,23 @@
         regUser.password = md5(this.regUser.password);
         regUser.info = info;
 
-
-//        axios.post("/request/user/register", regUser).then(function (response) {
-////          if (response.data.code === 2001)
-////            Showbo.Msg.alert("成功！请等待管理员审核。", function () {
-////              window.location.href = basePath + "/login";
-////            });
-////          else
-////            Showbo.Msg.alert(data.msg, function () {
-////            });
-//        });
+        axios.post('/request/user/register', regUser).then((response) => {
+          if(response.data.data === 2001){
+            this.msg = '申请成功！请等待管理员审核通过。';
+            this.$refs.confirm.show();
+          }else{
+            console.log(response);
+            this.msg = response.data.msg;
+            this.$refs.confirm.show()
+          }
+        })
       },
       infoChange: function () {
         this.regUser.info = "2017-02";
         this.isReturn = false;
+      },
+      hideConfirm: function(){
+        this.$refs.confirm.hide();
       }
     }
   }
