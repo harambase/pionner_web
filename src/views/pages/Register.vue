@@ -91,12 +91,10 @@
           </b-card>
         </b-col>
       </b-row>
-      <b-modal ref="confirm" hide-footer centered title="消息">
+      <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
         <div class="d-block text-center">
-          <h3 v-if="succ">{{ msg }} </h3>
-          <h3 v-if="fail">{{ msg }} </h3>
+          <h4>{{msg}}</h4>
         </div>
-        <b-btn class="mt-3" variant="danger" block @click="hideConfirm">关闭</b-btn>
       </b-modal>
     </div>
   </div>
@@ -127,9 +125,11 @@
           year: "2018",
           semester: "01"
         },
+        showModal: false,
+        msg: "",
         succ: false,
         fail: false,
-        msg: ""
+        headerBgVariant: '',
       }
     },
     mounted: function () {
@@ -151,22 +151,21 @@
         regUser.info = info;
 
         axios.post('/request/user/register', regUser).then((response) => {
-          if(response.data.data === 2001){
+          if (response.data.data === 2001) {
             this.msg = '申请成功！请等待管理员审核通过。';
-            this.$refs.confirm.show();
-          }else{
+            this.headerBgVariant = 'success';
+            this.showModal = true;
+          } else {
             console.log(response);
             this.msg = response.data.msg;
-            this.$refs.confirm.show()
+            this.headerBgVariant = 'danger';
+            this.showModal = true;
           }
         })
       },
       infoChange: function () {
         this.regUser.info = "2017-02";
         this.isReturn = false;
-      },
-      hideConfirm: function(){
-        this.$refs.confirm.hide();
       }
     }
   }
