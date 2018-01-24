@@ -63,7 +63,8 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">@</span>
                 </div>
-                <input type="email" class="form-control" placeholder="Email" name="email" v-validate="'email'" v-model="regUser.email">
+                <input type="email" class="form-control" placeholder="Email" name="email" v-validate="'email'"
+                       v-model="regUser.email">
                 <div v-show="errors.has('email')" class="invalid-tooltip">{{ errors.first('email') }}</div>
               </b-input-group>
               <b-input-group class="mb-3">
@@ -102,12 +103,12 @@
                   <span class="input-group-text"><i class="icon-lock"></i></span>
                 </div>
                 <input type="password" name="newPwd" class="form-control" placeholder="请再次输入密码"
-                       v-validate="'required|min:6'" v-model="newPwd" v-on:change="notSame = newPwd !== regUser.password"
+                       v-validate="'required|min:6'" v-model="newPwd"
+                       v-on:change="notSame = newPwd !== regUser.password"
                        :class="{'form-control': true, 'is-invalid': errors.has('password') || notSame}">
                 <div v-show="notSame" class="invalid-tooltip">两次密码不一致</div>
                 <div v-show="errors.has('newPwd')" class="invalid-tooltip">{{ errors.first('newPwd') }}</div>
               </b-input-group>
-
               <b-button variant="success" block @click="doReg" :disabled="errors.any() || notSame">提交申请</b-button>
             </b-card-body>
           </b-card>
@@ -147,8 +148,8 @@
           year: '2018',
           semester: '01'
         },
-        newPwd:"",
-        notSame: true,
+        newPwd: '',
+        notSame: false,
         showModal: false,
         msg: '',
         succ: false,
@@ -168,24 +169,28 @@
     },
     methods: {
       doReg: function () {
-        let regUser = this.regUser
-        let info = this.info.year + '-' + this.info.semester
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return
+          let regUser = this.regUser
+          let info = this.info.year + '-' + this.info.semester
 
-        regUser.password = md5(this.regUser.password)
-        regUser.info = info
+          regUser.password = md5(this.regUser.password)
+          regUser.info = info
 
-        axios.post('/request/user/register', regUser).then((response) => {
-          if (response.data.data === 2001) {
-            this.msg = '申请成功！请等待管理员审核通过。'
-            this.headerBgVariant = 'success'
-            this.showModal = true
-          } else {
-            console.log(response)
-            this.msg = response.data.msg
-            this.headerBgVariant = 'danger'
-            this.showModal = true
-          }
-        })
+          axios.post('/request/user/register', regUser).then((response) => {
+            if (response.data.data === 2001) {
+              this.msg = '申请成功！请等待管理员审核通过。'
+              this.headerBgVariant = 'success'
+              this.showModal = true
+            } else {
+              console.log(response)
+              this.msg = response.data.msg
+              this.headerBgVariant = 'danger'
+              this.showModal = true
+            }
+          })
+        });
       },
       infoChange: function () {
         this.regUser.info = '2017-02'
