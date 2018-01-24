@@ -12,21 +12,25 @@
                   <span class="input-group-text"><i class="icon-user"></i></span>
                 </div>
                 <input type="text" class="form-control" style="width: 40%" placeholder="*姓"
-                       v-model="regUser.lastName">
+                       v-model="regUser.lastName" v-validate="'required'" name="name" required
+                       :class="{'form-control': true, 'is-invalid': errors.has('name')}">
                 <input type="text" class="form-control" style="width: 40%" placeholder="*名"
-                       v-model="regUser.firstName">
+                       v-model="regUser.firstName" v-validate="'required'" name="name" required
+                       :class="{'form-control': true, 'is-invalid': errors.has('name')}">
+                <div v-show="errors.has('name')" class="invalid-tooltip">{{ errors.first('name') }}</div>
+
               </b-input-group>
 
               <b-input-group class="mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text">注册时间</span>
+                  <span class="input-group-text"><i class="icon-info"></i></span>
                 </div>
-                <b-form-select id="year1" style="width: 13%"
+                <b-form-select id="year" style="width: 40%"
                                :plain="true"
                                :options="[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]"
                                v-model="info.year">
                 </b-form-select>
-                <b-form-select id="year1" style="width: 22%"
+                <b-form-select id="info" style="width: 40%"
                                :plain="true"
                                :options="[{ text: '春季入学', value: '01' },{ text: '秋季入学', value: '02' }, { text: '夏季入学', value: '03' }]"
                                v-model="info.semester">
@@ -37,56 +41,74 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fa fa-venus-mars"></i></span>
                 </div>
-                <b-form-select id="year1"
-                               :plain="true"
+                <b-form-select id="year1" v-model="regUser.gender"
+                               :plain="true" name="gender" v-validate="'required'"
                                :options="[{text: '男', value: 'male' },{text: '女', value: 'female' }, {text: '未指定', value: 'undetermined' }]"
-                               v-model="regUser.gender">
+                               :class="{'form-control': true, 'is-invalid': errors.has('gender')}">
                 </b-form-select>
+                <div v-show="errors.has('gender')" class="invalid-tooltip">{{ errors.first('gender') }}</div>
               </b-input-group>
 
               <b-input-group class="mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="icon-calendar"></i></span>
                 </div>
-                <input id="birthday" type="text" class="form-control" placeholder="生日"
+                <input id="birthday" type="text" name="birthday" class="form-control" placeholder="*生日"
+                       v-validate="'required'" :class="{'form-control': true, 'is-invalid': errors.has('birthday')}"
                        v-model="regUser.birthday" required>
+                <div v-show="errors.has('birthday')" class="invalid-tooltip">{{ errors.first('birthday') }}</div>
               </b-input-group>
 
               <b-input-group class="mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">@</span>
                 </div>
-                <input type="email" class="form-control" placeholder="Email" v-model="regUser.email">
+                <input type="email" class="form-control" placeholder="Email" name="email" v-validate="'email'" v-model="regUser.email">
+                <div v-show="errors.has('email')" class="invalid-tooltip">{{ errors.first('email') }}</div>
               </b-input-group>
               <b-input-group class="mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fa fa-qq"></i></span>
                 </div>
-                <input type="text" class="form-control" placeholder="QQ" v-model="regUser.qq">
+                <input type="text" class="form-control" placeholder="*QQ" name="qq"
+                       v-validate="{ required: true, numeric: true, min:5, max:11 }"
+                       :class="{'form-control': true, 'is-invalid': errors.has('qq')}"
+                       v-model="regUser.qq" required>
+                <div v-show="errors.has('qq')" class="invalid-tooltip">{{ errors.first('qq') }}</div>
               </b-input-group>
               <b-input-group class="mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="icon icon-phone"></i></span>
                 </div>
-                <input type="text" class="form-control" placeholder="电话号码" v-model="regUser.tel">
+                <input type="text" class="form-control" placeholder="*电话号码" v-model="regUser.tel"
+                       v-validate="'required|numeric|min:8|max:13'" name="tel"
+                       :class="{'form-control': true, 'is-invalid': errors.has('tel')}" required>
+                <div v-show="errors.has('tel')" class="invalid-tooltip">{{ errors.first('tel') }}</div>
               </b-input-group>
 
               <b-input-group class="mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="icon-lock"></i></span>
                 </div>
-                <input type="password" class="form-control" placeholder="密码" minlength="6" maxlength="18"
-                       v-model="regUser.password">
+                <input type="password" class="form-control" placeholder="密码" name="password"
+                       v-validate="'required|min:6|verify_password'"
+                       :class="{'form-control': true, 'is-invalid': errors.has('password')}"
+                       v-model="regUser.password" required>
+                <div v-show="errors.has('password')" class="invalid-tooltip">{{ errors.first('password') }}</div>
               </b-input-group>
 
               <b-input-group class="mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="icon-lock"></i></span>
                 </div>
-                <input type="password" class="form-control" placeholder="请重复密码">
+                <input type="password" name="newPwd" class="form-control" placeholder="请再次输入密码"
+                       v-validate="'required|min:6'" v-model="newPwd" v-on:change="notSame = newPwd !== regUser.password"
+                       :class="{'form-control': true, 'is-invalid': errors.has('password') || notSame}">
+                <div v-show="notSame" class="invalid-tooltip">两次密码不一致</div>
+                <div v-show="errors.has('newPwd')" class="invalid-tooltip">{{ errors.first('newPwd') }}</div>
               </b-input-group>
 
-              <b-button variant="success" block @click="doReg">提交申请</b-button>
+              <b-button variant="success" block @click="doReg" :disabled="errors.any() || notSame">提交申请</b-button>
             </b-card-body>
           </b-card>
         </b-col>
@@ -106,27 +128,29 @@
 
   export default {
     name: '',
-    data() {
+    data () {
       return {
         regUser: {
-          info: "",
-          lastName: "",
-          firstName: "",
-          email: "",
-          password: "",
-          qq: "",
-          tel: "",
-          birthday: "",
-          gender: "",
-          comment: ""
+          info: '',
+          lastName: '',
+          firstName: '',
+          email: '',
+          password: '',
+          qq: '',
+          tel: '',
+          birthday: '',
+          gender: '',
+          comment: ''
         },
         isReturn: false,
         info: {
-          year: "2018",
-          semester: "01"
+          year: '2018',
+          semester: '01'
         },
+        newPwd:"",
+        notSame: true,
         showModal: false,
-        msg: "",
+        msg: '',
         succ: false,
         fail: false,
         headerBgVariant: '',
@@ -140,32 +164,32 @@
         done: (value) => {
           this.regUser.birthday = value
         }
-      });
+      })
     },
     methods: {
       doReg: function () {
-        let regUser = this.regUser;
-        let info = this.info.year + "-" + this.info.semester;
+        let regUser = this.regUser
+        let info = this.info.year + '-' + this.info.semester
 
-        regUser.password = md5(this.regUser.password);
-        regUser.info = info;
+        regUser.password = md5(this.regUser.password)
+        regUser.info = info
 
         axios.post('/request/user/register', regUser).then((response) => {
           if (response.data.data === 2001) {
-            this.msg = '申请成功！请等待管理员审核通过。';
-            this.headerBgVariant = 'success';
-            this.showModal = true;
+            this.msg = '申请成功！请等待管理员审核通过。'
+            this.headerBgVariant = 'success'
+            this.showModal = true
           } else {
-            console.log(response);
-            this.msg = response.data.msg;
-            this.headerBgVariant = 'danger';
-            this.showModal = true;
+            console.log(response)
+            this.msg = response.data.msg
+            this.headerBgVariant = 'danger'
+            this.showModal = true
           }
         })
       },
       infoChange: function () {
-        this.regUser.info = "2017-02";
-        this.isReturn = false;
+        this.regUser.info = '2017-02'
+        this.isReturn = false
       }
     }
   }
