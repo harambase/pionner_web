@@ -10,11 +10,17 @@
                 <p class='text-muted'>Log in via Pioneer Network Account:</p>
                 <b-input-group class='mb-3'>
                   <div class='input-group-prepend'><span class='input-group-text'><i class='icon-user'></i></span></div>
-                  <input type='text' class='form-control' placeholder='用户ID' v-model='user.userId'>
+                  <input type='text' class='form-control' placeholder='用户ID' v-model='user.userId'
+                         v-validate="'required|numeric|min:10|max:10'" name="userId"
+                         :class="{'form-control': true, 'is-invalid': errors.has('userId')}">
+                  <div v-show="errors.has('userId')" class="invalid-tooltip">{{ errors.first('userId') }}</div>
                 </b-input-group>
                 <b-input-group class='mb-4'>
                   <div class='input-group-prepend'><span class='input-group-text'><i class='icon-lock'></i></span></div>
-                  <input type='password' class='form-control' placeholder='密码' v-model='user.password'>
+                  <input type='password' class='form-control' placeholder='密码' v-model='user.password'
+                         v-validate="'required|min:6'" name="password"
+                         :class="{'form-control': true, 'is-invalid': errors.has('password')}">
+                  <div v-show="errors.has('password')" class="invalid-tooltip">{{ errors.first('password') }}</div>
                 </b-input-group>
                 <b-row>
                   <b-col cols='6'>
@@ -58,14 +64,18 @@
     },
     methods: {
       doLogin: function () {
-        const loginUser = this.user
-        loginUser.password = md5(this.user.password)
-        axios.post('/system/login', loginUser).then((response) => {
-          if (response.data.code === 2001){
-            window.localStorage.setItem("token", response.data.data);
-            this.$router.push({path:'/dashboard'})
-          }
-        })
+        this.$validator.validateAll().then((result) => {
+          if(!result)
+            return;
+          const loginUser = this.user
+          loginUser.password = md5(this.user.password)
+          axios.post('/system/login', loginUser).then((response) => {
+            if (response.data.code === 2001) {
+              window.localStorage.setItem("token", response.data.data);
+              this.$router.push({path: '/dashboard'})
+            }
+          })
+        });
       },
       goToReg: function(){
         this.$router.push({path:'/pages/register'})

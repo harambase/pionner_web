@@ -109,7 +109,7 @@
                 <div v-show="notSame" class="invalid-tooltip">两次密码不一致</div>
                 <div v-show="errors.has('newPwd')" class="invalid-tooltip">{{ errors.first('newPwd') }}</div>
               </b-input-group>
-              <b-button variant="success" block @click="doReg" :disabled="errors.any() || notSame">提交申请</b-button>
+              <b-button variant="success" block @click="doReg">提交申请</b-button>
             </b-card-body>
           </b-card>
         </b-col>
@@ -171,7 +171,7 @@
       doReg: function () {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return
+            return;
           let regUser = this.regUser
           let info = this.info.year + '-' + this.info.semester
 
