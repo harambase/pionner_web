@@ -90,7 +90,7 @@
   import axios from 'axios'
 
   export default {
-    name: 'dashboard',
+    name: 'Course',
     data () {
       return {
         courseList: [],

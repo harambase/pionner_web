@@ -1,17 +1,22 @@
 export default {
   items: [
     {
-      name: 'Dashboard',
+      name: '主页',
       url: '/dashboard',
       icon: 'icon-speedometer',
       badge: {
         variant: 'primary',
-        text: 'NEW'
+        // text: 'NEW'
       }
     },
     {
+      name: '消息中心',
+      url: '/charts',
+      icon: 'icon-envelope'
+    },
+    {
       title: true,
-      name: 'Theme',
+      name: '教学系统',
       class: '',
       wrapper: {
         element: '',
@@ -19,22 +24,66 @@ export default {
       }
     },
     {
-      name: 'Colors',
-      url: '/theme/colors',
-      icon: 'icon-drop'
+      name: '所有课程',
+      url: '/course/curriculum',
+      icon: 'icon-list'
     },
     {
-      name: 'Typography',
-      url: '/theme/typography',
-      icon: 'icon-pencil'
+      name: '新课程申请',
+      url: '',
+      icon: 'icon-pencil',
+      children: [
+        {
+          name: '新建申请',
+          url: '/course/request/new',
+          icon: 'icon-plus'
+        },
+        {
+          name: '申请查看',
+          url: '/course/request/manage',
+          icon: 'icon-layers'
+        }
+      ]
+    },
+    {
+      name: '成绩单查看',
+      url: '/course/transcript',
+      icon: 'icon-graduation'
+    },
+    {
+      name: '新学期选课',
+      url: '/course/choose',
+      icon: 'icon-book-open'
     },
     {
       title: true,
-      name: 'Components',
+      name: '教务管理',
       class: '',
       wrapper: {
         element: '',
         attributes: {}
+      }
+    },
+    {
+      title: true,
+      name: '系统管理',
+      class: '',
+      wrapper: {
+        element: '',
+        attributes: {}
+      }
+    },
+    {
+      title: true,
+      name: '后勤管理',
+      class: '',
+      wrapper: {
+        element: '',
+        attributes: {},
+      },
+      badge: {
+        variant: 'primary',
+        text: '即将上线'
       }
     },
     {

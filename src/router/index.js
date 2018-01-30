@@ -9,6 +9,7 @@ import Dashboard from '@/views/Dashboard'
 
 import Colors from '@/views/theme/Colors'
 import Typography from '@/views/theme/Typography'
+import Course from '@/views/course/Course'
 
 import Charts from '@/views/Charts'
 import Widgets from '@/views/Widgets'
@@ -62,7 +63,7 @@ const router = new Router({
   {
     path: '/',
     redirect: '/pages/login',
-    name: 'Home',
+    name: '主页',
     component: Full,
     meta: {
       requiresAuth: true
@@ -70,33 +71,148 @@ const router = new Router({
     children: [
       {
         path: 'dashboard',
-        name: 'Dashboard',
+        name: '主页',
         component: Dashboard
       },
       {
-        path: 'theme',
-        redirect: '/theme/colors',
-        name: 'Theme',
+        path: 'charts',
+        name: '消息中心',
+        component: Charts
+      },
+      {
+        path: 'course',
+        redirect: '/course/curriculum',
+        name: '教学系统',
         component: {
           render (c) { return c('router-view') }
         },
         children: [
           {
-            path: 'colors',
-            name: 'Colors',
-            component: Colors
+            path: 'curriculum',
+            name: '所有课程',
+            component: Course
           },
           {
-            path: 'typography',
-            name: 'Typography',
-            component: Typography
-          }
+            path: 'request',
+            redirect: '/course/request/new',
+            name: '新课程申请',
+            component: {
+              render (c) { return c('router-view') }
+            },
+            children: [
+              {
+                path: 'new',
+                name: '新建申请',
+                component: Colors
+              },
+              {
+                path: 'manage',
+                name: '申请查看',
+                component: Typography
+              }
+            ]
+          },
+          {
+            path: 'transcript',
+            name: '成绩单查看',
+            component: Course
+          },
+          {
+            path: 'choose',
+            name: '新学期选课',
+            component: Course
+          },
         ]
       },
       {
-        path: 'charts',
-        name: 'Charts',
-        component: Charts
+        path: 'teach',
+        redirect: '/teach/curriculum',
+        name: '教务管理',
+        component: {
+          render (c) { return c('router-view') }
+        },
+        children: [
+          {
+            path: 'curriculum',
+            name: '所有课程',
+            component: Course
+          },
+          {
+            path: 'request',
+            redirect: '/course/request/new',
+            name: '新课程申请',
+            component: {
+              render (c) { return c('router-view') }
+            },
+            children: [
+              {
+                path: 'new',
+                name: '新建申请',
+                component: Colors
+              },
+              {
+                path: 'manage',
+                name: '申请查看',
+                component: Typography
+              }
+            ]
+          },
+          {
+            path: 'transcript',
+            name: '成绩单查看',
+            component: Course
+          },
+          {
+            path: 'choose',
+            name: '新学期选课',
+            component: Course
+          },
+        ]
+      },
+      {
+        path: 'course',
+        redirect: '/course/curriculum',
+        name: '教学系统',
+        component: {
+          render (c) { return c('router-view') }
+        },
+        children: [
+          {
+            path: 'curriculum',
+            name: '所有课程',
+            component: Course
+          },
+          {
+            path: 'request',
+            redirect: '/course/request/new',
+            name: '新课程申请',
+            component: {
+              render (c) { return c('router-view') }
+            },
+            children: [
+              {
+                path: 'new',
+                name: '新建申请',
+                component: Colors
+              },
+              {
+                path: 'manage',
+                name: '申请查看',
+                component: Typography
+              }
+            ]
+          },
+          {
+            path: 'transcript',
+            name: '成绩单查看',
+            component: Course
+          },
+          {
+            path: 'choose',
+            name: '新学期选课',
+            component: Course
+          },
+        ]
       },
       {
         path: 'widgets',
