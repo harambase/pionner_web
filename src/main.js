@@ -10,7 +10,7 @@ import VeeValidate from 'vee-validate';
 Vue.use(BootstrapVue)
 Vue.use(VeeValidate);
 
-axios.defaults.baseURL = 'http://192.168.30.47:30000';
+axios.defaults.baseURL = 'http://192.168.30.69:30000';
 
 VeeValidate.Validator.extend('verify_password', {
   getMessage: field => `密码必须包含： 至少一个大写字母，一个小写字母，一个数字，和一个特殊字符 (E.g. , . _ & ? etc)`,

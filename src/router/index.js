@@ -10,6 +10,7 @@ import Dashboard from '@/views/Dashboard'
 import Colors from '@/views/theme/Colors'
 import Typography from '@/views/theme/Typography'
 import Course from '@/views/course/Course'
+import Choose from '@/views/course/Choose'
 
 import Charts from '@/views/Charts'
 import Widgets from '@/views/Widgets'
@@ -120,7 +121,7 @@ const router = new Router({
           {
             path: 'choose',
             name: '新学期选课',
-            component: Course
+            component: Choose
           },
         ]
       },

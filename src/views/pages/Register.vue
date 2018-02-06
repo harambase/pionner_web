@@ -184,7 +184,6 @@
               this.headerBgVariant = 'success'
               this.showModal = true
             } else {
-              console.log(response)
               this.msg = response.data.msg
               this.headerBgVariant = 'danger'
               this.showModal = true
