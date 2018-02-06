@@ -8,36 +8,18 @@
           <!-- User Interface controls -->
           <b-row>
             <b-col md="6" class="my-1">
-              <b-form-group horizontal label="Filter" class="mb-0">
-                <b-input-group>
-                  <b-form-input v-model="filter" placeholder="Type to Search"/>
-                  <b-input-group-button>
-                    <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
-                  </b-input-group-button>
-                </b-input-group>
-              </b-form-group>
-            </b-col>
-            <b-col md="6" class="my-1">
-              <b-form-group horizontal label="Sort" class="mb-0">
-                <b-input-group>
-                  <b-form-select v-model="sortBy" :options="sortOptions">
-                    <option slot="first" :value="null">-- none --</option>
-                  </b-form-select>
-                  <b-input-group-button>
-                    <b-form-select :disabled="!sortBy" v-model="sortDesc">
-                      <option :value="true">Asc</option>
-                      <option :value="false">Desc</option>
-                    </b-form-select>
-                  </b-input-group-button>
-                </b-input-group>
-              </b-form-group>
-            </b-col>
-            <b-col md="6" class="my-1">
-              <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0"/>
-            </b-col>
-            <b-col md="6" class="my-1">
-              <b-form-group horizontal label="Per page" class="mb-0">
+              <b-form-group horizontal label="显示" class="mb-0">
                 <b-form-select :options="pageOptions" v-model="perPage"/>
+              </b-form-group>
+            </b-col>
+            <b-col md="6" class="my-1">
+              <b-form-group horizontal label="搜索" class="mb-0">
+                <b-input-group>
+                  <b-form-input v-model="filter"/>
+                  <b-input-group-button>
+                    <b-btn :disabled="!filter" @click="filter = ''">重置</b-btn>
+                  </b-input-group-button>
+                </b-input-group>
               </b-form-group>
             </b-col>
           </b-row>
@@ -55,12 +37,12 @@
                    :isBusy="false"
                    @filtered="onFiltered"
           >
-            <template slot="name" slot-scope="row">{{row.value.crn}} ({{row.value.level}}-{{row.value.section}})</template>
-            <template slot="status" slot-scope="row">{{row.value ? '1' : '0'}}</template>
+            <template slot="name" slot-scope="row">{{row.value}} ({{row.value.level}}-{{row.value.section}})</template>
+            <template slot="status" slot-scope="row">{{row.value}}</template>
             <template slot="actions" slot-scope="row">
               <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
               <b-button size="sm" @click.stop="row.toggleDetails">
-                {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+                {{ row.detailsShowing ? '隐藏' : '展示' }}详情
               </b-button>
             </template>
             <template slot="row-details" slot-scope="row">
@@ -71,19 +53,23 @@
               </b-card>
             </template>
           </b-table>
+          <b-col md="6" class="my-1">
+            <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0"/>
+          </b-col>
         </b-container>
       </b-card>
     </b-row>
-    <!--<b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">-->
-      <!--<div class="d-block text-center">-->
-        <!--<h4>{{msg}}</h4>-->
-      <!--</div>-->
+    <!--<b-modal v-model="showModal" size="sm" ok-only centered title="消息">-->
+    <!--<div class="d-block text-center">-->
+    <!--<h4>{{msg}}</h4>-->
+    <!--</div>-->
     <!--</b-modal>-->
   </div>
 </template>
 
 <script>
   import axios from 'axios'
+
   const items = []
   export default {
     name: 'Choose',
@@ -107,11 +93,12 @@
           {key: 'date', label: '起止时间', sortable: true},
           {key: 'time', label: '上课时间', sortable: true},
           {key: 'day', label: '星期', sortable: true},
-          {key: 'faculty', label: '授课老师', sortable: true}
+          {key: 'faculty', label: '授课老师', sortable: true},
+          {key: 'actions', label: '查看详情'}
         ],
         currentPage: 1,
         perPage: 5,
-        totalRows: items.length,
+        totalRows: 0,
         pageOptions: [5, 10, 15],
         sortBy: 'crn',
         sortDesc: false,
@@ -133,37 +120,29 @@
 //      this.initCourseTable()
     },
     methods: {
-      onFiltered (filteredItems) {
-        // Trigger pagination to update the number of buttons/pages due to filtering
-        this.totalRows = filteredItems.length
+      onFiltered: function (filteredItems) {
+        this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      courseTable (ctx) {
-        // Here we don't set isBusy prop, so busy state will be handled by table itself
-        this.isBusy = true
-        console.log(ctx);
-        let promise = axios.get('/course?start=' + ctx.currentPage
-          + '&length=' + ctx.perPage //+ '&search=' + ctx.filter
-//          + '&order=' + ctx.sortDesc + '&orderCol=' + ctx.sortBy)
-          + '&order=desc&orderCol=0')
-
-        // Must return a promise that resolves to an array of items
-        return promise.then((data) => {
-          // Pluck the array of items off our axios response
-          console.log(data)
-          let items = data.data.data
-          // Must return an array of items or an empty array if an error occurred
-          return(items || [])
+      courseTable: function (ctx) {
+        this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
+        let url = '/course?start=' + ctx.currentPage + '&length=' + ctx.perPage
+        if (this.isNotEmpty(ctx.filter))
+          url += '&search=' + ctx.filter
+        if (ctx.sortDesc)
+          url += '&order=desc'
+        else
+          url += '&order=asc'
+//          + '&orderCol=' + ctx.sortBy;
+        return axios.get(url).then((response) => {
+          let items = response.data.data
+          this.totalRows = response.data.recordsTotal
+          return (items || [])
         })
+      },
+      isNotEmpty: function (value) {
+        return value !== '' && value !== undefined && value !== null
       }
-
-
-
-
-
-
-
-
 
 //      initPin: function () {
 //        axios.get('/pin/session').then((response) => {
