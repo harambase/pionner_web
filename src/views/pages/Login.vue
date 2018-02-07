@@ -35,7 +35,7 @@
             <b-card no-body class='text-white bg-primary py-5 d-md-down-none' style='width:44%'>
               <b-card-body class='text-center'>
                 <div>
-                  <h2>注册 Sign up</h2>
+                  <h1>注册 Sign up</h1>
                   <p>还没有先锋账号？</p>
                   <b-button variant='primary' class='active mt-3' @click="goToReg">点击注册!</b-button>
                 </div>
@@ -72,6 +72,7 @@
           axios.post('/system/login', loginUser).then((response) => {
             if (response.data.code === 2001) {
               window.localStorage.setItem("token", response.data.data);
+              console.log(response.data.data);
               this.$router.push({path: '/dashboard'})
             }
           })
