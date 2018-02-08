@@ -10,10 +10,10 @@
                 <p class='text-muted'>Log in via Pioneer Network Account:</p>
                 <b-input-group class='mb-3'>
                   <div class='input-group-prepend'><span class='input-group-text'><i class='icon-user'></i></span></div>
-                  <input type='text' class='form-control' placeholder='用户ID' v-model='user.userId'
-                         v-validate="'required|numeric|min:10|max:10'" name="userId"
-                         :class="{'form-control': true, 'is-invalid': errors.has('userId')}">
-                  <div v-show="errors.has('userId')" class="invalid-tooltip">{{ errors.first('userId') }}</div>
+                  <input type='text' class='form-control' placeholder='用户ID' v-model='user.username'
+                         v-validate="'required|numeric|min:10|max:10'" name="username"
+                         :class="{'form-control': true, 'is-invalid': errors.has('username')}">
+                  <div v-show="errors.has('username')" class="invalid-tooltip">{{ errors.first('username') }}</div>
                 </b-input-group>
                 <b-input-group class='mb-4'>
                   <div class='input-group-prepend'><span class='input-group-text'><i class='icon-lock'></i></span></div>
@@ -57,7 +57,7 @@
     data () {
       return {
         user: {
-          userId: '',
+          username: '',
           password: ''
         }
       }
@@ -71,8 +71,10 @@
           loginUser.password = md5(this.user.password)
           axios.post('/system/login', loginUser).then((response) => {
             if (response.data.code === 2001) {
-              window.localStorage.setItem("token", response.data.data);
-              console.log(response.data.data);
+
+              window.localStorage.setItem("access_token", response.data.data.access_token);
+              window.localStorage.setItem("expires_in", response.data.data.expires_in);
+
               this.$router.push({path: '/dashboard'})
             }
           })

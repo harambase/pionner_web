@@ -6,6 +6,7 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import VeeValidate from 'vee-validate';
+import auth from './auth'
 
 Vue.use(BootstrapVue)
 Vue.use(VeeValidate);
