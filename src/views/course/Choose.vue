@@ -94,7 +94,7 @@
                                  :fixed=true
                                  :hover=true
                                  :items="courseTable"
-                                 :fields="fields"
+                                 :field="field"
                                  :current-page="currentPage"
                                  :per-page="perPage"
                                  :filter="filter"
@@ -182,7 +182,7 @@
         crnList: [],
         worksheet: '',
         msg: '',
-        fields: [
+        field: [
           {key: 'crn', label: '编号', sortable: true},
           {key: 'name', label: '课程名', sortable: true, 'class': 'text-center'},
           {key: 'capacity', label: '容量', sortable: true},
@@ -207,8 +207,8 @@
     },
     computed: {
       sortOptions () {
-        // Create an options list from our fields
-        return this.fields
+        // Create an options list from our field
+        return this.field
           .filter(f => f.sortable)
           .map(f => { return {text: f.label, value: f.key} })
       }

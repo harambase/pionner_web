@@ -71,10 +71,8 @@
           loginUser.password = md5(this.user.password)
           axios.post('/system/login', loginUser).then((response) => {
             if (response.data.code === 2001) {
-
               window.localStorage.setItem("access_token", response.data.data.access_token);
               window.localStorage.setItem("expires_in", response.data.data.expires_in);
-
               this.$router.push({path: '/dashboard'})
             }
           })
