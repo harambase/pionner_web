@@ -6,22 +6,51 @@
           header-tag="header"
           footer-tag="footer">
           <div slot="header">
+            <i className="fa fa-align-justify"></i><strong>课程查询</strong>
+          </div>
+          <b-container fluid>
+            <b-row>
+              <b-col md="4" class="my-1">
+                <b-form-group horizontal label="按学期查询：" class="mb-0">
+                  <v-select v-model="info" :filterable="false" :options="infoOptions" @search="infoList"></v-select>
+                </b-form-group>
+              </b-col>
+              <b-col md="4" class="my-1">
+                <b-form-group horizontal label="按授课老师查询：" class="mb-0">
+                  <v-select v-model="faculty" :filterable="false" :options="facultyOptions"
+                            @search="facultyList"></v-select>
+                </b-form-group>
+              </b-col>
+              <b-col md="4" class="my-1">
+                <b-input-group-button>
+                  <b-button size="sm" class="mb-4 btn btn-success" @click="initTable">搜索</b-button>
+                </b-input-group-button>
+              </b-col>
+            </b-row>
+          </b-container>
+        </b-card>
+      </b-col>
+      <b-col cols="12" v-if="search">
+        <b-card
+          header-tag="header"
+          footer-tag="footer">
+          <div slot="header">
             <i className="fa fa-align-justify"></i><strong>课程列表</strong>
           </div>
           <b-container fluid>
             <!-- User Interface controls -->
             <b-row>
-              <b-col md="3" class="my-1">
-                <b-form-group horizontal label="显示" class="mb-0">
+              <b-col md="4" class="my-1">
+                <b-form-group horizontal label="每页显示条数：" class="mb-0">
                   <b-form-select :options="pageOptions" v-model="perPage"/>
                 </b-form-group>
               </b-col>
-              <b-col md="3" class="my-1">
-                <b-form-group horizontal label="搜索" class="mb-0">
+              <b-col md="4" class="my-1">
+                <b-form-group horizontal label="模糊查询：" class="mb-0">
                   <b-input-group>
                     <b-form-input v-model="filter"/>
                     <b-input-group-button>
-                      <b-btn :disabled="!filter" @click="filter = ''">重置</b-btn>
+                      <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
                     </b-input-group-button>
                   </b-input-group>
                 </b-form-group>
@@ -31,11 +60,12 @@
             <!-- Main table element -->
             <b-table show-empty
                      stacked="md"
+                     ref="courseTable"
                      :striped=true
                      :fixed=true
                      :hover=true
                      :items="courseTable"
-                     :field="field"
+                     :fields="field"
                      :current-page="currentPage"
                      :per-page="perPage"
                      :filter="filter"
@@ -70,7 +100,6 @@
           </b-container>
         </b-card>
       </b-col>
-
     </b-row>
   </div>
 </template>
@@ -90,7 +119,7 @@
     {key: 'day', label: '星期', sortable: true},
     {key: 'faculty', label: '授课老师', sortable: true},
     {key: 'actions', label: '查看详情'}
-  ];
+  ]
 
   export default {
     name: 'Course',
@@ -98,15 +127,42 @@
       return {
         field: field,
         currentPage: 1,
-        perPage: 5,
+        perPage: 10,
         totalRows: 0,
         pageOptions: [5, 10, 15],
+        infoOptions: [],
+        facultyOptions: [],
         sortBy: 'crn',
         sortDesc: false,
         filter: null,
         items: items,
-        isBusy: false
+        isBusy: false,
+        search: false,
+        info: '',
+        faculty: '',
       }
+    },
+    mounted: function () {
+      axios.get('/course/info?search=').then((response) => {
+        for (let i = 0; i < response.data.data.length; i++) {
+          let item = {
+            label: response.data.data[i],
+            value: response.data.data[i]
+          }
+          this.infoOptions.push(item)
+        }
+      })
+      axios.get('/user/search?status=1&type=f&search=').then((response) => {
+        for (let i = 0; i < response.data.data.length; i++) {
+          let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
+          let item = {
+            label: name,
+            value: response.data.data[i].userId
+          }
+          this.facultyOptions.push(item)
+        }
+      })
+
     },
     computed: {
       sortOptions () {
@@ -117,23 +173,57 @@
       }
     },
     methods: {
+      infoList (search, loading) {
+        loading(true)
+        this.infoOptions = []
+        axios.get('/course/info?search=' + search).then((response) => {
+          for (let i = 0; i < response.data.data.length; i++) {
+            let item = {
+              label: response.data.data[i],
+              value: response.data.data[i]
+            }
+            this.infoOptions.push(item)
+          }
+        })
+        loading(false)
+      },
+      facultyList (search, loading) {
+        loading(true)
+        this.facultyOptions = []
+        axios.get('/user/search?status=1&type=f&search=' + search).then((response) => {
+          for (let i = 0; i < response.data.data.length; i++) {
+            let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
+            let item = {
+              label: name,
+              value: response.data.data[i].userId
+            }
+            this.facultyOptions.push(item)
+          }
+        })
+        loading(false)
+      },
       onFiltered (filteredItems) {
+        console.log(filteredItems)
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      courseTable(ctx) {
-        console.log(window.localStorage.getItem('access_token'))
+      initTable (){
+        this.search = true;
+        this.$refs.courseTable.refresh();
+      },
+      courseTable (ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
-        let url = '/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
+        let url = '/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy + '&mode=student'
+        if (this.isNotEmpty(this.info))
+          url += '&info=' + this.info.value
+        if (this.isNotEmpty(this.faculty))
+          url += '&facultyId=' + this.faculty.value
         if (this.isNotEmpty(ctx.filter))
           url += '&search=' + ctx.filter
         if (ctx.sortDesc)
           url += '&order=desc'
         else
           url += '&order=asc'
-
-        let tokenStr = window.localStorage.getItem('access_token');
-        // 新创建 axios 实例配置
 
         return axios.get(url).then((response) => {
           let items = response.data.data

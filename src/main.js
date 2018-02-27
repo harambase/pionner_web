@@ -5,18 +5,20 @@ import BootstrapVue from 'bootstrap-vue'
 import App from './App'
 import router from './router'
 import VeeValidate from 'vee-validate'
+import vSelect from 'vue-select'
 import axios from 'axios'
 import auth from './auth'
 
 Vue.use(BootstrapVue)
 Vue.use(VeeValidate, {fieldsBagName: 'formFields'})
+Vue.component('v-select', vSelect)
 
 let token = window.localStorage.getItem('access_token')
-axios.defaults.baseURL = 'http://192.168.30.69:30000'
+axios.defaults.baseURL = 'http://192.168.1.7:30000'
 
 axios.interceptors.request.use(
   config => {
-    if (token !== null && token !== undefined && auth.isTokenExpired()) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+    if (token !== null && token !== undefined ) {  //&& auth.isTokenExpired() 判断是否存在token，如果存在的话，则每个http header都加上token
       config.headers.Authorization = 'Bearer ' + token
     }
     return config

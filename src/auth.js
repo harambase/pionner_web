@@ -18,7 +18,6 @@ const ACCESS_TOKEN_KEY = 'access_token'
 export default ({
   methods: {
     logout () {
-      this.clearIdToken()
       this.clearAccessToken()
     },
     getAccessToken () {
