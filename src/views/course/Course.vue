@@ -162,7 +162,6 @@
           this.facultyOptions.push(item)
         }
       })
-
     },
     computed: {
       sortOptions () {
@@ -203,7 +202,6 @@
         loading(false)
       },
       onFiltered (filteredItems) {
-        console.log(filteredItems)
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },

@@ -116,7 +116,7 @@
       </b-row>
       <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
         <div class="d-block text-center">
-          <h4>{{msg}}</h4>
+          <h3>{{msg}}</h3>
         </div>
       </b-modal>
     </div>

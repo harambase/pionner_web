@@ -1,141 +1,144 @@
 <template>
   <div class="animated fadeIn">
     <b-row>
-      <b-col cols="12" v-show="!showValidate">
-        <b-card
-          header-tag="header"
-          footer-tag="footer">
+      <b-col cols="12" v-show="!showValidate && !pinValidate">
+        <b-card>
           <div slot="header">
             <i className="fa fa-align-justify"></i><strong>选课工作区</strong>
           </div>
-          <h1 class="mt-3">识别码未认证！！
-            <a style="color:blue;" href="#" @click="showValidate=true">点击这里</a>验证识别码。
-          </h1>
+          <h2 class="mt-3">
+            <a style="color:blue;" href="#" @click="showValidate=true">点击这里</a>输入识别码。
+          </h2>
         </b-card>
       </b-col>
-      <b-col cols="12" v-show="pinValidate">
-        <div v-show="pinValidate">
-          <form class="form-horizontal">
-            <div class="col-md-12 col-sm-4">
-              <div class="panel panel-success">
+      <div v-show="pinValidate">
+        <b-row>
+          <b-col cols="3">
+            <b-card>
+              <div slot="header">
+                <i className="fa fa-align-justify"></i><strong>选课工作区</strong>
+              </div>
+              <div class="panel panel-info">
                 <div class="panel-heading">
-                  选课工作区
+                  选课工作表
                 </div>
-                <div class="form-group panel-body">
-                  <div class="col-md-3">
-                    <div class="panel panel-info">
-                      <div class="panel-heading">
-                        选课工作表
-                      </div>
-                      <div class="panel-body">
-                        <div class="form-group">
-                          <div class="col-sm-4">
-                            学分上限: {{tol_credits}}
-                          </div>
-                          <div class="col-sm-4">
-                            已用学分: {{use_credits}}
-                          </div>
-                          <div class="col-sm-4">
-                            可用学分: {{ava_credits}}
-                          </div>
-                        </div>
-                        <hr/>
-                        <div id="worksheet" v-html="worksheet"></div>
-                        <hr/>
-                        <div class="form-group">
-                          <div class="col-sm-6">
-                            <button style="width:150px;" class="btn btn-success"
-                                    id="submit" v-on:click="submit"
-                                    onclick="return false;">
-                              提交
-                            </button>
-                          </div>
-                          <div class="col-sm-6">
-                            <button style="width:150px;" class="btn btn-danger"
-                                    id="reset" v-on:click="reset"
-                                    onclick="return false;">
-                              重置当前
-                            </button>
-                          </div>
-
-                        </div>
-                      </div>
+                <div class="panel-body">
+                  <div class="form-group">
+                    <div class="col-sm-4">
+                      学分上限: {{tol_credits}}
+                    </div>
+                    <div class="col-sm-4">
+                      已用学分: {{use_credits}}
+                    </div>
+                    <div class="col-sm-4">
+                      可用学分: {{ava_credits}}
                     </div>
                   </div>
-                  <div class="col-md-9">
-                    <div class="panel panel-info">
-                      <div class="panel-heading">
-                        新学期课程列表
-                      </div>
-                      <b-container fluid>
-                        <!-- User Interface controls -->
-                        <b-row>
-                          <b-col md="3" class="my-1">
-                            <b-form-group horizontal label="显示" class="mb-0">
-                              <b-form-select :options="pageOptions" v-model="perPage"/>
-                            </b-form-group>
-                          </b-col>
-                          <b-col md="3" class="my-1">
-                            <b-form-group horizontal label="搜索" class="mb-0">
-                              <b-input-group>
-                                <b-form-input v-model="filter"/>
-                                <b-input-group-button>
-                                  <b-btn :disabled="!filter" @click="filter = ''">重置</b-btn>
-                                </b-input-group-button>
-                              </b-input-group>
-                            </b-form-group>
-                          </b-col>
-                        </b-row>
-
-                        <!-- Main table element -->
-                        <b-table show-empty
-                                 stacked="md"
-                                 :striped=true
-                                 :fixed=true
-                                 :hover=true
-                                 :items="courseTable"
-                                 :field="field"
-                                 :current-page="currentPage"
-                                 :per-page="perPage"
-                                 :filter="filter"
-                                 :sort-by.sync="sortBy"
-                                 :sort-desc.sync="sortDesc"
-                                 :isBusy="false"
-                                 @filtered="onFiltered"
-                        >
-                          <template slot="status" slot-scope="row">
-                            <p v-if="row.value === 1" style="color:blue;">未开始</p>
-                            <p v-if="row.value === 0" style="color:green;">进行中</p>
-                            <p v-if="row.value === -1" style="color:red;">已结课</p>
-                          </template>
-                          <template slot="actions" slot-scope="row">
-                            <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
-                            <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
-                              {{ row.detailsShowing ? '隐藏' : '展示' }}详情
-                            </b-button>
-                          </template>
-                          <template slot="row-details" slot-scope="row">
-                            <b-card>
-                              <ul>
-                                <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value}}</li>
-                              </ul>
-                            </b-card>
-                          </template>
-                        </b-table>
-                        <b-col md="6" class="my-1">
-                          <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
-                                        class="my-0"/>
-                        </b-col>
-                      </b-container>
+                  <hr/>
+                  <div id="worksheet" v-html="worksheet"></div>
+                  <hr/>
+                  <div class="form-group">
+                    <div class="col-sm-6">
+                      <button style="width:150px;" class="btn btn-success"
+                              id="submit" v-on:click="submit"
+                              onclick="return false;">
+                        提交
+                      </button>
                     </div>
+                    <div class="col-sm-6">
+                      <button style="width:150px;" class="btn btn-danger"
+                              id="reset" v-on:click="reset"
+                              onclick="return false;">
+                        重置当前
+                      </button>
+                    </div>
+
                   </div>
                 </div>
               </div>
-            </div>
+            </b-card>
+          </b-col>
+          <b-col cols="9">
+            <b-card>
+              <div slot="header">
+                <i className="fa fa-align-justify"></i><strong>选课工作区</strong>
+              </div>
+              <div class="panel panel-info">
+                <div class="panel-heading">
+                  新学期课程列表
+                </div>
+                <b-container fluid>
+                  <!-- User Interface controls -->
+                  <b-row>
+                    <b-col md="4" class="my-1">
+                      <b-form-group horizontal label="每页显示条数：" class="mb-0">
+                        <b-form-select :options="pageOptions" v-model="perPage"/>
+                      </b-form-group>
+                    </b-col>
+                    <b-col md="4" class="my-1">
+                      <b-form-group horizontal label="模糊查询：" class="mb-0">
+                        <b-input-group>
+                          <b-form-input v-model="filter"/>
+                          <b-input-group-button>
+                            <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
+                          </b-input-group-button>
+                        </b-input-group>
+                      </b-form-group>
+                    </b-col>
+                  </b-row>
 
-          </form>
-        </div>
-      </b-col>
+                  <!-- Main table element -->
+                  <b-table show-empty
+                           stacked="md"
+                           ref="courseTable"
+                           :striped=true
+                           :fixed=true
+                           :hover=true
+                           :items="courseTable"
+                           :fields="field"
+                           :current-page="currentPage"
+                           :per-page="perPage"
+                           :filter="filter"
+                           :sort-by.sync="sortBy"
+                           :sort-desc.sync="sortDesc"
+                           :isBusy="false"
+                           @filtered="onFiltered"
+                  >
+                    <template slot="status" slot-scope="row">
+                      <p v-if="row.value === 1" style="color:blue;">未开始</p>
+                      <p v-if="row.value === 0" style="color:green;">进行中</p>
+                      <p v-if="row.value === -1" style="color:red;">已结课</p>
+                    </template>
+                    <template slot="operations" slot-scope="row">
+                      <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
+                      <i style="cursor: pointer; margin-top:5px; color: green;" class="fa fa-plus" title="添入工作表"
+                         @click.stop="addToWorkSheet(row.item.crn, row.item.credits)"></i>
+
+                    </template>
+                    <template slot="actions" slot-scope="row">
+                      <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
+                      <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
+                        {{ row.detailsShowing ? '隐藏' : '展示' }}详情
+                      </b-button>
+                    </template>
+                    <template slot="row-details" slot-scope="row">
+                      <b-card>
+                        <ul>
+                          <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value}}</li>
+                        </ul>
+                      </b-card>
+                    </template>
+                  </b-table>
+                  <b-col md="6" class="my-1">
+                    <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
+                                  class="my-0"/>
+                  </b-col>
+                </b-container>
+              </div>
+            </b-card>
+          </b-col>
+        </b-row>
+      </div>
     </b-row>
 
     <b-modal title="识别码验证" header-bg-variant="info"
@@ -156,22 +159,40 @@
       </b-input-group>
       <b-btn class="mt-3" variant="outline-success" block @click="validate">验证识别码</b-btn>
     </b-modal>
-    <!--<b-modal v-model="showModal" size="sm" ok-only centered title="消息">-->
-    <!--<div class="d-block text-center">-->
-    <!--<h4>{{msg}}</h4>-->
-    <!--</div>-->
-    <!--</b-modal>-->
+
+    <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
+      <div class="d-block text-center">
+        <h3>{{msg}}</h3>
+      </div>
+    </b-modal>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
+  import decode from 'jwt-decode'
+  import auth0 from 'auth0-js'
 
   const items = []
+  const field = [
+    {key: 'operations', label: '操作'},
+    {key: 'crn', label: '编号', sortable: true},
+    {key: 'name', label: '课程名', sortable: true, 'class': 'text-center'},
+    {key: 'capacity', label: '容量', sortable: true},
+    {key: 'remain', label: '剩余', sortable: true},
+    {key: 'status', label: '状态', sortable: true},
+    {key: 'date', label: '起止时间', sortable: true},
+    {key: 'time', label: '上课时间', sortable: true},
+    {key: 'day', label: '星期', sortable: true},
+    {key: 'faculty', label: '授课老师', sortable: true},
+    {key: 'actions', label: '查看详情'}
+  ]
+
   export default {
     name: 'Choose',
     data () {
       return {
+        pinObject: '',
         pin: '',
         pinValidate: false,
         showValidate: true,
@@ -182,18 +203,7 @@
         crnList: [],
         worksheet: '',
         msg: '',
-        field: [
-          {key: 'crn', label: '编号', sortable: true},
-          {key: 'name', label: '课程名', sortable: true, 'class': 'text-center'},
-          {key: 'capacity', label: '容量', sortable: true},
-          {key: 'remain', label: '剩余', sortable: true},
-          {key: 'status', label: '状态', sortable: true},
-          {key: 'date', label: '起止时间', sortable: true},
-          {key: 'time', label: '上课时间', sortable: true},
-          {key: 'day', label: '星期', sortable: true},
-          {key: 'faculty', label: '授课老师', sortable: true},
-          {key: 'actions', label: '查看详情'}
-        ],
+        field: field,
         currentPage: 1,
         perPage: 5,
         totalRows: 0,
@@ -202,7 +212,9 @@
         sortDesc: false,
         filter: null,
         items: items,
-        isBusy: false
+        isBusy: false,
+        showModal: false,
+        headerBgVariant: ''
       }
     },
     computed: {
@@ -214,8 +226,25 @@
       }
     },
     mounted: function () {
-//      this.initPin()
-//      this.initCourseTable()
+      if (this.pinObject === null || this.pinObject === '') {
+        return
+      }
+      this.showValidate = false
+      this.pinValidate = true
+      this.initStudentInfo()
+      if (window.localStorage.getItem('chooseVue') !== undefined
+        && window.localStorage.getItem('chooseVue') !== null
+        && window.localStorage.getItem('chooseVue') !== '') {
+        let data = JSON.parse(window.localStorage.getItem('chooseVue'))
+        this.pin = data.pin
+        this.tol_credits = data.tol_credits
+        this.use_credits = data.use_credits
+        this.ava_credits = data.ava_credits
+        this.counter = data.counter
+        this.crnList = data.crnList
+        this.worksheet = data.worksheet
+        window.localStorage.removeItem('chooseVue')
+      }
     },
     methods: {
       onFiltered (filteredItems) {
@@ -239,128 +268,64 @@
         })
 
       },
-      isNotEmpty (value) {
-        return value !== '' && value !== undefined && value !== null
-      },
-      initPin () {
-        axios.get('/pin/session').then((response) => {
-          if (response.data.code === 2001) {
-            this.initStudentInfo()
-//            //courseTable.draw()
-            this.pinValidate = true
-            if (isNotEmpty(window.localStorage.getItem('chooseVue'))) {
-              let data = JSON.parse(window.localStorage.getItem('chooseVue'))
-              this.pin = data.pin
-              this.tol_credits = data.tol_credits
-              this.use_credits = data.use_credits
-              this.ava_credits = data.ava_credits
-              this.counter = data.counter
-              this.crnList = data.crnList
-              this.worksheet = data.worksheet
-              window.localStorage.clear()
-            }
-          }
-        })
-      },
-      initStudentInfo () {
-        axios.get('/user/current', {
-          headers: { Authorization: "token " + localStorage.getItem("token") }
-        }).then((response) => {
-          initStudent(response.data.data.userId)
-        })
-
-        function initStudent (studentId) {
-          axios.get('/student/' + studentId + '/available/credit').then((response) => {
+      validate () {
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return
+          axios.get('/pin/' + this.pin).then((response) => {
             if (response.data.code === 2001) {
-              this.tol_credits = response.data.data.tol_credits
-              this.use_credits = response.data.data.use_credits
-              this.ava_credits = response.data.data.ava_credits
-            } else {
-              this.msg = response.data.msg
+              this.pinObject = response.data.data
+              this.initStudentInfo()
+              this.pinValidate = true
+              this.showValidate = false
+            }
+            else {
+              this.msg = '识别码验证失败！  '
               this.headerBgVariant = 'danger'
               this.showModal = true
             }
-
-          })
-        }
-      },
-
-      validate () {
-        this.$validator.validateAll().then((result) => {
-          axios.get('/pin/' + this.pin).then(function (response) {
-            if (response.data.code === 2001) {
-              this.initStudentInfo();
-              //courseTable.draw()
-              this.pinValidate = true;
-              this.showValidate = false;
-            }
-//          else
-//            Showbo.Msg.alert('验证失败!', function () {
-//            })
           })
         })
       },
-
-      initPin () {
-        axios.get('/pin/session').then(function (response) {
+      initStudentInfo () {
+        const decoded_token = decode(window.localStorage.getItem('access_token'))
+        const studentId = decoded_token.sub
+        const pin_info = this.pinObject.info
+        axios.get('/student/' + studentId + '/available/credit?info=' + pin_info).then((response) => {
           if (response.data.code === 2001) {
-            initStudentInfo()
-            //courseTable.draw()
-            this.pinValidate = true
-            if (isNotEmpty(window.localStorage.getItem('chooseVue'))) {
-              let data = JSON.parse(window.localStorage.getItem('chooseVue'))
-              this.pin = data.pin
-              this.tol_credits = data.tol_credits
-              this.use_credits = data.use_credits
-              this.ava_credits = data.ava_credits
-              this.counter = data.counter
-              this.crnList = data.crnList
-              this.worksheet = data.worksheet
-              window.localStorage.clear()
-            }
+            this.tol_credits = response.data.data.tol_credits
+            this.use_credits = response.data.data.use_credits
+            this.ava_credits = response.data.data.ava_credits
+          } else {
+            this.msg = response.data.msg
+            this.headerBgVariant = 'danger'
+            this.showModal = true
           }
         })
       },
 
-      initStudentInfo () {
-        axios.get('/user/current').then(function (response) {
-          initStudent(response.data.data.userId)
-        })
+      isAvaCreditsEnough (credits) {
+        return (this.tol_credits - this.use_credits - credits) >= 0
+      },
 
-        function initStudent (studentId) {
-          axios.get('/student/' + studentId + '/available/credit').then(function (response) {
-            if (response.data.code === 2001) {
-              this.tol_credits = response.data.data.tol_credits
-              this.use_credits = response.data.data.use_credits
-              this.ava_credits = response.data.data.ava_credits
-            }
-//            else
-//              Showbo.Msg.alert('获取学生信息失败!', function () {
-//              })
-          })
-        }
+      isSelectAgain (crn) {
+        let newId = 'input_' + crn
+        let input = document.getElementById(newId)
+        return input !== null //true:again, false:not again
       },
 
       addToWorkSheet (crn, credits) {
 
-        function isAvaCreditsEnough (credits) {
-          return (this.tol_credits - this.use_credits - credits) >= 0
-        }
-
-        function isSelectAgain (crn) {
-          let newId = 'input_' + crn
-          let input = document.getElementById(newId)
-          return input !== null //true:again, false:not again
-        }
-
-        if (!isAvaCreditsEnough(credits)) {
-          Showbo.Msg.alert('学分不足!', function () {
-          })
+        if (!this.isAvaCreditsEnough(credits)) {
+          this.msg = '学分不足!'
+          this.headerBgVariant = 'danger'
+          this.showModal = true
           return
         }
-        if (isSelectAgain(crn)) {
-          Showbo.Msg.alert('不可重复选!', function () {
-          })
+        if (this.isSelectAgain(crn)) {
+          this.msg = '不可重复选!'
+          this.headerBgVariant = 'danger'
+          this.showModal = true
           return
         }
         this.counter++
@@ -370,7 +335,7 @@
           '<div id="form_' + crn + '" class="form-group">' +
           '   <div class="col-sm-1">' +
           '       <i id="remove_' + crn + '" class="fa fa-minus-circle fa-2x" style="color: red; cursor: pointer; margin-top: 3px;" ' +
-          '          onclick="removeFromWorkSheet(\'' + crn + '\',\'' + credits + '\')"></i>' +
+          '          @click="removeFromWorkSheet(\'' + crn + '\',\'' + credits + '\')"></i>' +
           '   </div>' +
           '   <div class="col-sm-4">' +
           '       <label for="input_' + crn + '" class="control-label">已选课程:</label>' +
@@ -440,7 +405,10 @@
             this.initStudentInfo()
           }
         })
-      }
+      },
+      isNotEmpty (value) {
+        return value !== '' && value !== undefined && value !== null
+      },
     }
   }
 </script>
