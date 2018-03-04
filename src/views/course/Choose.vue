@@ -61,80 +61,75 @@
           <b-col cols="9">
             <b-card>
               <div slot="header">
-                <i className="fa fa-align-justify"></i><strong>选课工作区</strong>
+                <i className="fa fa-align-justify"></i><strong>新学期课程列表</strong>
               </div>
-              <div class="panel panel-info">
-                <div class="panel-heading">
-                  新学期课程列表
-                </div>
-                <b-container fluid>
-                  <!-- User Interface controls -->
-                  <b-row>
-                    <b-col md="4" class="my-1">
-                      <b-form-group horizontal label="每页显示条数：" class="mb-0">
-                        <b-form-select :options="pageOptions" v-model="perPage"/>
-                      </b-form-group>
-                    </b-col>
-                    <b-col md="4" class="my-1">
-                      <b-form-group horizontal label="模糊查询：" class="mb-0">
-                        <b-input-group>
-                          <b-form-input v-model="filter"/>
-                          <b-input-group-button>
-                            <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
-                          </b-input-group-button>
-                        </b-input-group>
-                      </b-form-group>
-                    </b-col>
-                  </b-row>
-
-                  <!-- Main table element -->
-                  <b-table show-empty
-                           stacked="md"
-                           ref="courseTable"
-                           :striped=true
-                           :fixed=true
-                           :hover=true
-                           :items="courseTable"
-                           :fields="field"
-                           :current-page="currentPage"
-                           :per-page="perPage"
-                           :filter="filter"
-                           :sort-by.sync="sortBy"
-                           :sort-desc.sync="sortDesc"
-                           :isBusy="false"
-                           @filtered="onFiltered"
-                  >
-                    <template slot="status" slot-scope="row">
-                      <p v-if="row.value === 1" style="color:blue;">未开始</p>
-                      <p v-if="row.value === 0" style="color:green;">进行中</p>
-                      <p v-if="row.value === -1" style="color:red;">已结课</p>
-                    </template>
-                    <template slot="operations" slot-scope="row">
-                      <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
-                      <i style="cursor: pointer; margin-top:5px; color: green;" class="fa fa-plus" title="添入工作表"
-                         @click.stop="addToWorkSheet(row.item.crn, row.item.credits)"></i>
-
-                    </template>
-                    <template slot="actions" slot-scope="row">
-                      <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
-                      <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
-                        {{ row.detailsShowing ? '隐藏' : '展示' }}详情
-                      </b-button>
-                    </template>
-                    <template slot="row-details" slot-scope="row">
-                      <b-card>
-                        <ul>
-                          <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value}}</li>
-                        </ul>
-                      </b-card>
-                    </template>
-                  </b-table>
-                  <b-col md="6" class="my-1">
-                    <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
-                                  class="my-0"/>
+              <b-container fluid>
+                <!-- User Interface controls -->
+                <b-row>
+                  <b-col md="4" class="my-1">
+                    <b-form-group horizontal label="每页显示条数：" class="mb-0">
+                      <b-form-select :options="pageOptions" v-model="perPage"/>
+                    </b-form-group>
                   </b-col>
-                </b-container>
-              </div>
+                  <b-col md="4" class="my-1">
+                    <b-form-group horizontal label="模糊查询：" class="mb-0">
+                      <b-input-group>
+                        <b-form-input v-model="filter"/>
+                        <b-input-group-button>
+                          <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
+                        </b-input-group-button>
+                      </b-input-group>
+                    </b-form-group>
+                  </b-col>
+                </b-row>
+
+                <!-- Main table element -->
+                <b-table show-empty
+                         stacked="md"
+                         ref="courseTable"
+                         :striped=true
+                         :fixed=true
+                         :hover=true
+                         :items="courseTable"
+                         :fields="field"
+                         :current-page="currentPage"
+                         :per-page="perPage"
+                         :filter="filter"
+                         :sort-by.sync="sortBy"
+                         :sort-desc.sync="sortDesc"
+                         :isBusy="false"
+                         @filtered="onFiltered"
+                >
+                  <template slot="status" slot-scope="row">
+                    <p v-if="row.value === 1" style="color:blue;">未开始</p>
+                    <p v-if="row.value === 0" style="color:green;">进行中</p>
+                    <p v-if="row.value === -1" style="color:red;">已结课</p>
+                  </template>
+                  <template slot="operations" slot-scope="row">
+                    <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
+                    <i style="cursor: pointer; margin-top:5px; color: green;" class="fa fa-plus" title="添入工作表"
+                       @click.stop="addToWorkSheet(row.item.crn, row.item.credits)"></i>
+
+                  </template>
+                  <template slot="actions" slot-scope="row">
+                    <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
+                    <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
+                      {{ row.detailsShowing ? '隐藏' : '展示' }}详情
+                    </b-button>
+                  </template>
+                  <template slot="row-details" slot-scope="row">
+                    <b-card>
+                      <ul>
+                        <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value}}</li>
+                      </ul>
+                    </b-card>
+                  </template>
+                </b-table>
+                <b-col md="6" class="my-1">
+                  <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
+                                class="my-0"/>
+                </b-col>
+              </b-container>
             </b-card>
           </b-col>
         </b-row>
@@ -335,7 +330,7 @@
           '<div id="form_' + crn + '" class="form-group">' +
           '   <div class="col-sm-1">' +
           '       <i id="remove_' + crn + '" class="fa fa-minus-circle fa-2x" style="color: red; cursor: pointer; margin-top: 3px;" ' +
-          '          @click="removeFromWorkSheet(\'' + crn + '\',\'' + credits + '\')"></i>' +
+          '          onclick="removeFromWorkSheet(\'' + crn + '\',\'' + credits + '\')"></i>' +
           '   </div>' +
           '   <div class="col-sm-4">' +
           '       <label for="input_' + crn + '" class="control-label">已选课程:</label>' +
@@ -411,4 +406,5 @@
       },
     }
   }
+
 </script>
