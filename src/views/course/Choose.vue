@@ -13,52 +13,54 @@
       </b-col>
       <div v-show="pinValidate">
         <b-row>
-          <b-col cols="3">
+          <b-col cols="4">
             <b-card>
               <div slot="header">
                 <i className="fa fa-align-justify"></i><strong>选课工作区</strong>
+                <small>详情</small>
               </div>
-              <div class="panel panel-info">
-                <div class="panel-heading">
-                  选课工作表
-                </div>
-                <div class="panel-body">
-                  <div class="form-group">
-                    <div class="col-sm-4">
-                      学分上限: {{tol_credits}}
-                    </div>
-                    <div class="col-sm-4">
-                      已用学分: {{use_credits}}
-                    </div>
-                    <div class="col-sm-4">
-                      可用学分: {{ava_credits}}
-                    </div>
+              <h3>你的选课学分信息：</h3>
+              <p class="card-text mt-2">
+                学分上限: {{tol_credits}}
+                已用学分: {{use_credits}}<br>
+                <strong>可用学分: {{ava_credits}}</strong>
+              </p>
+              <hr/>
+              <h3>你的已选课程：</h3>
+              <b-list-group>
+                <b-list-group-item href="#" style="cursor: default" class="flex-column align-items-start" v-for="(item, index) in crnList">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{item.name}}</h5>
+                    <small class="text-muted">授课老师：{{item.faculty}}</small>
                   </div>
-                  <hr/>
-                  <div id="worksheet" v-html="worksheet"></div>
-                  <hr/>
-                  <div class="form-group">
-                    <div class="col-sm-6">
-                      <button style="width:150px;" class="btn btn-success"
-                              id="submit" v-on:click="submit"
-                              onclick="return false;">
-                        提交
-                      </button>
-                    </div>
-                    <div class="col-sm-6">
-                      <button style="width:150px;" class="btn btn-danger"
-                              id="reset" v-on:click="reset"
-                              onclick="return false;">
-                        重置当前
-                      </button>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
+                  <p class="mb-1">
+                    课程CRN:{{item.crn}} <br>
+                    课程学分：{{item.credits}}
+                  </p>
+                  <button class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>
+                </b-list-group-item>
+              </b-list-group>
+              <hr/>
+              <b-row>
+                <b-col cols="6" md="6">
+                  <button style="width:150px;" class="btn btn-success"
+                          id="submit" v-on:click="submit"
+                          onclick="return false;">
+                    提交
+                  </button>
+                </b-col>
+                <b-col cols="6" md="6">
+                  <button style="width:150px;" class="btn btn-danger"
+                          id="reset" v-on:click="reset"
+                          onclick="return false;">
+                    重置当前
+                  </button>
+                </b-col>
+              </b-row>
             </b-card>
+
           </b-col>
-          <b-col cols="9">
+          <b-col cols="8">
             <b-card>
               <div slot="header">
                 <i className="fa fa-align-justify"></i><strong>新学期课程列表</strong>
@@ -66,12 +68,12 @@
               <b-container fluid>
                 <!-- User Interface controls -->
                 <b-row>
-                  <b-col md="4" class="my-1">
+                  <b-col md="6" class="my-1">
                     <b-form-group horizontal label="每页显示条数：" class="mb-0">
                       <b-form-select :options="pageOptions" v-model="perPage"/>
                     </b-form-group>
                   </b-col>
-                  <b-col md="4" class="my-1">
+                  <b-col md="6" class="my-1">
                     <b-form-group horizontal label="模糊查询：" class="mb-0">
                       <b-input-group>
                         <b-form-input v-model="filter"/>
@@ -85,10 +87,8 @@
 
                 <!-- Main table element -->
                 <b-table show-empty
-                         stacked="md"
                          ref="courseTable"
-                         :striped=true
-                         :fixed=true
+                         :fixed="true"
                          :hover=true
                          :items="courseTable"
                          :fields="field"
@@ -99,6 +99,7 @@
                          :sort-desc.sync="sortDesc"
                          :isBusy="false"
                          @filtered="onFiltered"
+                         class="width:100%"
                 >
                   <template slot="status" slot-scope="row">
                     <p v-if="row.value === 1" style="color:blue;">未开始</p>
@@ -108,13 +109,12 @@
                   <template slot="operations" slot-scope="row">
                     <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
                     <i style="cursor: pointer; margin-top:5px; color: green;" class="fa fa-plus" title="添入工作表"
-                       @click.stop="addToWorkSheet(row.item.crn, row.item.credits)"></i>
-
+                       @click.stop="addToWorkSheet(row.item.crn, row.item.credits, row.item.name, row.item.faculty)"></i>
                   </template>
                   <template slot="actions" slot-scope="row">
                     <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
                     <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
-                      {{ row.detailsShowing ? '隐藏' : '展示' }}详情
+                      {{row.detailsShowing ? '隐藏' : '展示' }}详情
                     </b-button>
                   </template>
                   <template slot="row-details" slot-scope="row">
@@ -304,13 +304,13 @@
       },
 
       isSelectAgain (crn) {
-        let newId = 'input_' + crn
-        let input = document.getElementById(newId)
-        return input !== null //true:again, false:not again
+        for (let i = 0; i < this.crnList.length; i++) {
+          if (crn === this.crnList[i].crn)
+            return true
+        }
+        return false
       },
-
-      addToWorkSheet (crn, credits) {
-
+      addToWorkSheet (crn, credits, name, faculty) {
         if (!this.isAvaCreditsEnough(credits)) {
           this.msg = '学分不足!'
           this.headerBgVariant = 'danger'
@@ -324,46 +324,31 @@
           return
         }
         this.counter++
-        this.crnList.push(crn)
-
-        this.worksheet = this.worksheet +
-          '<div id="form_' + crn + '" class="form-group">' +
-          '   <div class="col-sm-1">' +
-          '       <i id="remove_' + crn + '" class="fa fa-minus-circle fa-2x" style="color: red; cursor: pointer; margin-top: 3px;" ' +
-          '          onclick="removeFromWorkSheet(\'' + crn + '\',\'' + credits + '\')"></i>' +
-          '   </div>' +
-          '   <div class="col-sm-4">' +
-          '       <label for="input_' + crn + '" class="control-label">已选课程:</label>' +
-          '   </div>' +
-          '   <div class="col-sm-6">' +
-          '        <input name="course_choose" id="input_' + crn + '" class="form-control" value="' + crn + '" disabled/>' +
-          '   </div>' +
-          '</div>'
+        this.crnList.push({
+          crn: crn,
+          credits: credits,
+          name: name,
+          faculty: faculty
+        })
 
         this.use_credits += parseInt(credits)
         this.ava_credits = this.tol_credits - this.use_credits
       },
-
-      removeFromWorkSheet (crn, credits) {
-        let input = document.getElementById('form_' + crn)
-        input.parentNode.removeChild(input)
-        this.crnList.splice($.inArray(crn, this.crnList), 1)
-        this.worksheet = document.getElementById('worksheet').innerHTML
+      removeFromWorkSheet (index) {
+        const credits = this.crnList[index].credits
         this.use_credits -= parseInt(credits)
         this.ava_credits = this.tol_credits - this.use_credits
+        this.$delete(this.crnList, index)
       },
-
       toCourse (crn) {
         window.localStorage.setItem('chooseVue', JSON.stringify(this))
         window.location.href = '/course/choose/detail?pageMode=view&crn=' + crn
       },
-
       reset: function () {
-        this.worksheet = ''
+        this.crnList = []
         this.initStudentInfo()
       },
       submit: function () {
-
         let choiceList = []
         if (this.crnList.length === 0) {
           this.msg = '没有选择任何课程!'
@@ -372,13 +357,8 @@
           return
         }
         for (let i = 0; i < this.crnList.length; i++) {
-          let newId = 'input_' + this.crnList[i]
-          let input = document.getElementById(newId)
-          if (input !== null) {
-            choiceList.push(this.crnList[i])
-          }
+            choiceList.push(this.crnList[i].crn)
         }
-
         axios.post('/course/choose', {
           choiceList: choiceList
         }).then((response) => {
@@ -387,7 +367,7 @@
             this.msg = '全部注册成功!'
             this.showModal = true
             this.headerBgVariant = 'danger'
-            this.worksheet = ''
+            this.crnList = []
             this.initStudentInfo()
           } else {
             let html = '<table style="text-align: left">'
@@ -395,7 +375,7 @@
               html += '<tr><td>' + failList[i] + '</td></tr>'
             }
             let input = '<p style="color: red">课程注册失败详情</p>' + html + '</table>'
-            this.worksheet = ''
+            this.crnList = []
             this.msg = input
             this.initStudentInfo()
           }
@@ -406,5 +386,4 @@
       },
     }
   }
-
 </script>

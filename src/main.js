@@ -14,7 +14,7 @@ Vue.use(VeeValidate, {fieldsBagName: 'formFields'})
 Vue.component('v-select', vSelect)
 
 let token = window.localStorage.getItem('access_token')
-axios.defaults.baseURL = 'http://192.168.1.7:30000'
+axios.defaults.baseURL = 'http://192.168.55.103:30000'
 
 axios.interceptors.request.use(
   config => {

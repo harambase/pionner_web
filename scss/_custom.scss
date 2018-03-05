@@ -15,14 +15,18 @@ body {
 //  outline: 0
 //}
 
+legend {
+  font-size: 17px;
+}
+
 article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary {
   display: block
 }
 
-table {
-  border-collapse: collapse;
-  table-layout: fixed
-}
+//table {
+//  border-collapse: collapse;
+//  table-layout: fixed
+//}
 
 li {
   list-style: none
