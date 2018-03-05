@@ -13,7 +13,7 @@
       </b-col>
       <div v-show="pinValidate">
         <b-row>
-          <b-col cols="4">
+          <b-col cols="3">
             <b-card>
               <div slot="header">
                 <i className="fa fa-align-justify"></i><strong>选课工作区</strong>
@@ -60,7 +60,7 @@
             </b-card>
 
           </b-col>
-          <b-col cols="8">
+          <b-col cols="9">
             <b-card>
               <div slot="header">
                 <i className="fa fa-align-justify"></i><strong>新学期课程列表</strong>
@@ -88,7 +88,6 @@
                 <!-- Main table element -->
                 <b-table show-empty
                          ref="courseTable"
-                         :fixed="true"
                          :hover=true
                          :items="courseTable"
                          :fields="field"
@@ -99,7 +98,7 @@
                          :sort-desc.sync="sortDesc"
                          :isBusy="false"
                          @filtered="onFiltered"
-                         class="width:100%"
+                         :fixed="true"
                 >
                   <template slot="status" slot-scope="row">
                     <p v-if="row.value === 1" style="color:blue;">未开始</p>

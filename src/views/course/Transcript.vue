@@ -61,11 +61,11 @@
             <!-- Main table element -->
             <b-table show-empty
                      stacked="md"
-                     ref="courseTable"
+                     ref="transTable"
                      :striped=true
                      :fixed=true
                      :hover=true
-                     :items="courseTable"
+                     :items="transTable"
                      :fields="field"
                      :current-page="currentPage"
                      :per-page="perPage"
@@ -75,23 +75,10 @@
                      :isBusy="false"
                      @filtered="onFiltered"
             >
-              <template slot="status" slot-scope="row">
-                <p v-if="row.value === 1" style="color:blue;">未开始</p>
+              <template slot="complete" slot-scope="row">
+                <p v-if="row.value === 1" style="color:blue;">完成</p>
                 <p v-if="row.value === 0" style="color:green;">进行中</p>
-                <p v-if="row.value === -1" style="color:red;">已结课</p>
-              </template>
-              <template slot="actions" slot-scope="row">
-                <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
-                <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
-                  {{ row.detailsShowing ? '隐藏' : '展示' }}详情
-                </b-button>
-              </template>
-              <template slot="row-details" slot-scope="row">
-                <b-card>
-                  <ul>
-                    <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value}}</li>
-                  </ul>
-                </b-card>
+                <p v-if="row.value === -1" style="color:red;">挂科</p>
               </template>
             </b-table>
             <b-col md="6" class="my-1">
@@ -110,20 +97,18 @@
 
   const items = []
   const field = [
-    {key: 'crn', label: '编号', sortable: true},
-    {key: 'name', label: '课程名', sortable: true, 'class': 'text-center'},
-    {key: 'capacity', label: '容量', sortable: true},
-    {key: 'remain', label: '剩余', sortable: true},
-    {key: 'status', label: '状态', sortable: true},
-    {key: 'date', label: '起止时间', sortable: true},
-    {key: 'time', label: '上课时间', sortable: true},
-    {key: 'day', label: '星期', sortable: true},
-    {key: 'faculty', label: '授课老师', sortable: true},
-    {key: 'actions', label: '查看详情'}
+    {key: 'studentId', label: '学生ID', sortable: true},
+    {key: 'sname', label: '姓名', sortable: true},
+    {key: 'crn', label: '课码', sortable: true},
+    {key: 'cname', label: '课名', sortable: true},
+    {key: 'fname', label: '授课人', sortable: true},
+    {key: 'grade', label: '成绩', sortable: true},
+    {key: 'complete', label: '完成情况', sortable: true},
+    {key: 'assignTime', label: '提交时间', sortable: true},
   ]
 
   export default {
-    name: 'Course',
+    name: 'Transcript',
     data () {
       return {
         field: field,
@@ -131,8 +116,6 @@
         perPage: 10,
         totalRows: 0,
         pageOptions: [5, 10, 15],
-        infoOptions: [],
-        facultyOptions: [],
         sortBy: 'crn',
         sortDesc: false,
         filter: null,
@@ -141,27 +124,6 @@
         info: '',
         faculty: '',
       }
-    },
-    mounted: function () {
-      axios.get('/course/info?search=').then((response) => {
-        for (let i = 0; i < response.data.data.length; i++) {
-          let item = {
-            label: response.data.data[i],
-            value: response.data.data[i]
-          }
-          this.infoOptions.push(item)
-        }
-      })
-      axios.get('/user/search?status=1&type=f&search=').then((response) => {
-        for (let i = 0; i < response.data.data.length; i++) {
-          let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-          let item = {
-            label: name,
-            value: response.data.data[i].userId
-          }
-          this.facultyOptions.push(item)
-        }
-      })
     },
     computed: {
       sortOptions () {
@@ -172,49 +134,13 @@
       }
     },
     methods: {
-      infoList (search, loading) {
-        loading(true)
-        this.infoOptions = []
-        axios.get('/course/info?search=' + search).then((response) => {
-          for (let i = 0; i < response.data.data.length; i++) {
-            let item = {
-              label: response.data.data[i],
-              value: response.data.data[i]
-            }
-            this.infoOptions.push(item)
-          }
-        })
-        loading(false)
-      },
-      facultyList (search, loading) {
-        loading(true)
-        this.facultyOptions = []
-        axios.get('/user/search?status=1&type=f&search=' + search).then((response) => {
-          for (let i = 0; i < response.data.data.length; i++) {
-            let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-            let item = {
-              label: name,
-              value: response.data.data[i].userId
-            }
-            this.facultyOptions.push(item)
-          }
-        })
-        loading(false)
-      },
       onFiltered (filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      initTable () {
-        this.$refs.courseTable.refresh()
-      },
-      courseTable (ctx) {
+      transTable (ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
-        let url = '/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy + '&mode=student'
-        if (this.isNotEmpty(this.info))
-          url += '&info=' + this.info.value
-        if (this.isNotEmpty(this.faculty))
-          url += '&facultyId=' + this.faculty.value
+        let url = '/transcript?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
         if (this.isNotEmpty(ctx.filter))
           url += '&search=' + ctx.filter
         if (ctx.sortDesc)
@@ -232,6 +158,9 @@
       isNotEmpty (value) {
         return value !== '' && value !== undefined && value !== null
       },
+      download () {
+        window.open(basePath + '/transcript/report?studentId=')
+      }
     }
   }
 </script>

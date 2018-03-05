@@ -11,6 +11,7 @@ import Colors from '@/views/theme/Colors'
 import Typography from '@/views/theme/Typography'
 import Course from '@/views/course/Course'
 import Choose from '@/views/course/Choose'
+import Transcript from '@/views/course/Transcript'
 
 import Charts from '@/views/Charts'
 import Widgets from '@/views/Widgets'
@@ -63,7 +64,7 @@ const router = new Router({
   routes: [
   {
     path: '/',
-    redirect: '/pages/login',
+    redirect: '/login',
     name: '主页',
     component: Full,
     meta: {
@@ -160,8 +161,8 @@ const router = new Router({
           },
           {
             path: 'transcript',
-            name: '成绩单查看',
-            component: Course
+            name: '成绩单',
+            component: Transcript
           },
           {
             path: 'choose',
@@ -388,9 +389,9 @@ const router = new Router({
     ]
   },
   {
-    path: '/pages',
-    redirect: '/pages/404',
-    name: 'Pages',
+    path: '/',
+    redirect: '/404',
+    name: '功能',
     component: {
       render (c) { return c('router-view') }
     },

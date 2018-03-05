@@ -7,6 +7,7 @@
             <b-card-body class="p-4">
               <h1>注册 Register</h1>
               <p class="text-muted">注册属于你的先锋账号 Register Your Pioneer Network Account</p>
+              <p class="text-muted" >已有账号？<a href="#" @click="goToReg">前往登录!</a></p>
               <b-input-group class="mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="icon-user"></i></span>
@@ -179,10 +180,11 @@
           regUser.info = info
 
           axios.post('/request/user/register', regUser).then((response) => {
-            if (response.data.data === 2001) {
+            if (response.data.code === 2001) {
               this.msg = '申请成功！请等待管理员审核通过。'
               this.headerBgVariant = 'success'
               this.showModal = true
+
             } else {
               this.msg = response.data.msg
               this.headerBgVariant = 'danger'
@@ -191,9 +193,8 @@
           })
         });
       },
-      infoChange: function () {
-        this.regUser.info = '2017-02'
-        this.isReturn = false
+      goToLogin(){
+        this.$router.push({path:'/'})
       }
     }
   }

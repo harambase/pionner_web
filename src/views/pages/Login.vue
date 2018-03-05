@@ -79,7 +79,7 @@
         });
       },
       goToReg: function(){
-        this.$router.push({path:'/pages/register'})
+        this.$router.push({path:'/register'})
       },
       resetPassword: function(){
 
