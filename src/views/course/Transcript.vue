@@ -6,39 +6,15 @@
           header-tag="header"
           footer-tag="footer">
           <div slot="header">
-            <i className="fa fa-align-justify"></i><strong>课程查询</strong>
+            <i className="fa fa-align-justify"></i><strong>成绩单</strong>
           </div>
           <b-container fluid>
             <b-row>
-              <b-col md="5" class="my-1">
-                <b-form-group horizontal label="按学期查询：" class="mb-0">
-                  <v-select v-model="info" :filterable="false" :options="infoOptions"
-                            @search="infoList"></v-select>
-                </b-form-group>
-              </b-col>
-              <b-col md="5" class="my-1">
-                <b-form-group horizontal label="按授课老师查询：" class="mb-0">
-                  <v-select v-model="faculty" :filterable="false" :options="facultyOptions"
-                            @search="facultyList"></v-select>
-                </b-form-group>
-              </b-col>
-              <b-col md="2" class="my-1">
-                <b-input-group-button>
-                  <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="initTable">详细搜索</b-button>
-                </b-input-group-button>
-              </b-col>
+              <h5 style="float: left">官方个人成绩单报告：</h5>
+              <b-input-group-button>
+                <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="download">下载</b-button>
+              </b-input-group-button>
             </b-row>
-          </b-container>
-        </b-card>
-      </b-col>
-      <b-col cols="12">
-        <b-card
-          header-tag="header"
-          footer-tag="footer">
-          <div slot="header">
-            <i className="fa fa-align-justify"></i><strong>课程列表</strong>
-          </div>
-          <b-container fluid>
             <!-- User Interface controls -->
             <b-row>
               <b-col md="6" class="my-1">
@@ -76,9 +52,9 @@
                      @filtered="onFiltered"
             >
               <template slot="complete" slot-scope="row">
-                <p v-if="row.value === 1" style="color:blue;">完成</p>
-                <p v-if="row.value === 0" style="color:green;">进行中</p>
-                <p v-if="row.value === -1" style="color:red;">挂科</p>
+                <p v-if="row.value === '1'" style="color:blue;">完成</p>
+                <p v-if="row.value === '0'" style="color:green;">进行中</p>
+                <p v-if="row.value === '-1'" style="color:red;">挂科</p>
               </template>
             </b-table>
             <b-col md="6" class="my-1">
@@ -94,6 +70,7 @@
 
 <script>
   import axios from 'axios'
+  import fileDownload from 'js-file-download'
 
   const items = []
   const field = [
@@ -159,7 +136,7 @@
         return value !== '' && value !== undefined && value !== null
       },
       download () {
-        window.open(basePath + '/transcript/report?studentId=')
+        window.open(basePath + '/transcript/report?token=' + window.localStorage.getItem('access_token'))
       }
     }
   }

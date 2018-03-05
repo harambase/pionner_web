@@ -28,6 +28,8 @@
     "vue-router": "3.0.1"
   },
   "devDependencies": {
+    "axios": "^0.18.0",
+    "js-file-download": "0.4.1",
     "autoprefixer": "7.2.4",
     "babel-core": "6.26.0",
     "babel-eslint": "8.2.1",

@@ -28,7 +28,8 @@
               <hr/>
               <h3>你的已选课程：</h3>
               <b-list-group>
-                <b-list-group-item href="#" style="cursor: default" class="flex-column align-items-start" v-for="(item, index) in crnList">
+                <b-list-group-item href="#" style="cursor: default" class="flex-column align-items-start"
+                                   v-for="(item, index) in crnList">
                   <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{item.name}}</h5>
                     <small class="text-muted">授课老师：{{item.faculty}}</small>
@@ -43,18 +44,15 @@
               <hr/>
               <b-row>
                 <b-col cols="6" md="6">
-                  <button style="width:150px;" class="btn btn-success"
-                          id="submit" v-on:click="submit"
-                          onclick="return false;">
+                  <b-button style="width:150px;" class="btn btn-success" @click="turnIn">
                     提交
-                  </button>
+                  </b-button>
                 </b-col>
                 <b-col cols="6" md="6">
-                  <button style="width:150px;" class="btn btn-danger"
-                          id="reset" v-on:click="reset"
-                          onclick="return false;">
+                  <b-button style="width:150px;" class="btn btn-danger"
+                          id="reset" @click="reset">
                     重置当前
-                  </button>
+                  </b-button>
                 </b-col>
               </b-row>
             </b-card>
@@ -142,9 +140,9 @@
              v-model="showValidate">
       <b-input-group class="mb-6">
         <div class="input-group-prepend">
-              <span class="input-group-text">
-                <a href="#" v-b-tooltip title="填写6位数字识别码，识别码请在导师处获取。">*请输入6位识别码:</a>
-              </span>
+          <span class="input-group-text">
+            <a href="#" v-b-tooltip title="填写6位数字识别码，识别码请在导师处获取。">*请输入6位识别码:</a>
+          </span>
         </div>
         <input class="form-control" name="pin" v-model="pin"
                v-validate="'required|numeric|min:6|max:6'"
@@ -157,6 +155,18 @@
     <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
       <div class="d-block text-center">
         <h3>{{msg}}</h3>
+        <b-list-group>
+          <b-list-group-item href="#" style="cursor: default" class="flex-column align-items-start"
+                             v-for="(item, index) in failList">
+            <div class="d-flex w-100 justify-content-between">
+              <small class="text-muted">{{index}}</small>
+              <h5 class="mb-1">课程注册失败详情</h5>
+            </div>
+            <p class="mb-1">
+              {{item}}
+            </p>
+          </b-list-group-item>
+        </b-list-group>
       </div>
     </b-modal>
   </div>
@@ -195,6 +205,7 @@
         ava_credits: 0,
         counter: 0,
         crnList: [],
+        failList:[],
         worksheet: '',
         msg: '',
         field: field,
@@ -260,7 +271,6 @@
           this.totalRows = response.data.recordsTotal
           return (items || [])
         })
-
       },
       validate () {
         this.$validator.validateAll().then((result) => {
@@ -347,7 +357,7 @@
         this.crnList = []
         this.initStudentInfo()
       },
-      submit: function () {
+      turnIn: function () {
         let choiceList = []
         if (this.crnList.length === 0) {
           this.msg = '没有选择任何课程!'
@@ -356,26 +366,22 @@
           return
         }
         for (let i = 0; i < this.crnList.length; i++) {
-            choiceList.push(this.crnList[i].crn)
+          choiceList.push(this.crnList[i].crn)
         }
         axios.post('/course/choose', {
           choiceList: choiceList
         }).then((response) => {
-          let failList = response.data.data.failList
-          if (failList.length === 0) {
+          this.failList = response.data.data.failList
+          this.crnList = []
+          this.showModal = true
+          this.initStudentInfo()
+          if (this.failList.length === 0) {
             this.msg = '全部注册成功!'
-            this.showModal = true
-            this.headerBgVariant = 'danger'
-            this.crnList = []
+            this.headerBgVariant = 'success'
             this.initStudentInfo()
           } else {
-            let html = '<table style="text-align: left">'
-            for (let i = 0; i < failList.length; i++) {
-              html += '<tr><td>' + failList[i] + '</td></tr>'
-            }
-            let input = '<p style="color: red">课程注册失败详情</p>' + html + '</table>'
-            this.crnList = []
-            this.msg = input
+            this.headerBgVariant = 'danger'
+            this.msg = '有课程失败！'
             this.initStudentInfo()
           }
         })

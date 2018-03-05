@@ -13,7 +13,7 @@ Vue.use(BootstrapVue)
 Vue.use(VeeValidate, {fieldsBagName: 'formFields'})
 Vue.component('v-select', vSelect)
 
-let basePath = 'http://192.168.55.103:30000'
+
 let token = window.localStorage.getItem('access_token')
 axios.defaults.baseURL = basePath
 

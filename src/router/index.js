@@ -116,8 +116,8 @@ const router = new Router({
           },
           {
             path: 'transcript',
-            name: '成绩单查看',
-            component: Course
+            name: '个人成绩单',
+            component: Transcript
           },
           {
             path: 'choose',
@@ -161,7 +161,7 @@ const router = new Router({
           },
           {
             path: 'transcript',
-            name: '成绩单',
+            name: '成绩单管理',
             component: Transcript
           },
           {
