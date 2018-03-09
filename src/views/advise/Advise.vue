@@ -20,18 +20,11 @@
                 <small>详情</small>
               </div>
               <h3>你的选课学分信息：</h3>
-              <div class="bd-example ml-2">
-                <dl class="row">
-                  <dt class="col-sm-3">学分上限:</dt>
-                  <dd class="col-sm-9">{{tol_credits}}</dd>
-
-                  <dt class="col-sm-3">已用学分:</dt>
-                  <dd class="col-sm-9">{{use_credits}}</dd>
-
-                  <dt class="col-sm-3">可用学分:</dt>
-                  <dd class="col-sm-9">{{ava_credits}}</dd>
-                </dl>
-              </div>
+              <p class="card-text mt-2">
+                学分上限: {{tol_credits}}
+                已用学分: {{use_credits}}<br>
+                <strong>可用学分: {{ava_credits}}</strong>
+              </p>
               <hr/>
               <h3>你的已选课程：</h3>
               <b-list-group>
@@ -200,7 +193,7 @@
   ]
 
   export default {
-    name: 'Choose',
+    name: 'Advise',
     data () {
       return {
         pinObject: '',

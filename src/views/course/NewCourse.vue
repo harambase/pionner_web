@@ -1,6 +1,6 @@
 <template>
   <div class="animated fadeIn">
-    <b-row>
+    <b-row id="myCoursePage">
       <b-col cols="12">
         <b-card
           header-tag="header"
@@ -123,7 +123,7 @@
   ]
 
   export default {
-    name: 'ViewCourse',
+    name: 'Course',
     data () {
       return {
         field: field,

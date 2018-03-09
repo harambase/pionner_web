@@ -10,7 +10,10 @@
     <link rel="stylesheet" href="/static/laydate/theme/default/laydate.css">
     <script src="static/laydate/laydate.js"></script>
     <script>
-      const basePath = 'http://192.168.55.103:30000'
+      const basePath = 'http://localhost:30000'
+      function isNotEmpty (value) {
+        return value !== '' && value !== undefined && value !== null
+      }
     </script>
   </head>
 

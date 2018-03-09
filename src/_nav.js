@@ -25,24 +25,24 @@ export default {
     },
     {
       name: '所有课程',
-      url: '/course/curriculum',
+      url: '/course/view',
       icon: 'icon-list'
     },
     {
-      name: '新课程申请',
-      url: '/course/request/new',
+      name: '新课程',
+      url: '/course/new/create',
       icon: 'icon-pencil',
       children: [
         {
-          name: '新建申请',
-          url: '/course/request/new',
-          icon: 'icon-plus'
+          name: '新课程申请',
+          url: '/course/new/create?mode=request&id=',
+          icon: 'icon-bell'
         },
         {
-          name: '申请查看',
-          url: '/course/request/manage',
-          icon: 'icon-layers'
-        }
+          name: '你的申请',
+          url: '/course/new/request?mode=faculty',
+          icon: 'icon-bell'
+        },
       ]
     },
     {
@@ -65,6 +65,31 @@ export default {
       }
     },
     {
+      name: '课程管理',
+      url: '/teach/curriculum/manage',
+      icon: 'icon-list'
+    },
+    {
+      name: '课程申请管理',
+      url: '/teach/request/manage',
+      icon: 'icon-pencil',
+    },
+    {
+      name: '成绩单管理',
+      url: '/teach/transcript',
+      icon: 'icon-graduation'
+    },
+    {
+      name: '学分管理',
+      url: '/teach/credit',
+      icon: 'icon-book-open'
+    },
+    {
+      name: '识别码管理',
+      url: '/teach/pin',
+      icon: 'icon-book-open'
+    },
+    {
       title: true,
       name: '系统管理',
       class: '',
@@ -72,6 +97,26 @@ export default {
         element: '',
         attributes: {}
       }
+    },
+    {
+      name: '用户管理',
+      url: '/system/user',
+      icon: 'icon-book-open'
+    },
+    {
+      name: '角色与权限',
+      url: '/system/role',
+      icon: 'icon-book-open'
+    },
+    {
+      name: '用户注册',
+      url: '/system/registration',
+      icon: 'icon-book-open'
+    },
+    {
+      name: '系统监控',
+      url: '/system/monitor',
+      icon: 'icon-book-open'
     },
     {
       title: true,
@@ -259,31 +304,31 @@ export default {
     {
       divider: true
     },
-    {
-      title: true,
-      name: 'Extras'
-    },
-
-    {
-      name: 'Login',
-      url: '/login',
-      icon: 'icon-star'
-    },
-    {
-      name: 'Register',
-      url: '/register',
-      icon: 'icon-star'
-    },
-    {
-      name: 'Error 404',
-      url: '/404',
-      icon: 'icon-star'
-    },
-    {
-      name: 'Error 500',
-      url: '/500',
-      icon: 'icon-star'
-    }
+    // {
+    //   title: true,
+    //   name: 'Extras'
+    // },
+    //
+    // {
+    //   name: 'Login',
+    //   url: '/login',
+    //   icon: 'icon-star'
+    // },
+    // {
+    //   name: 'Register',
+    //   url: '/register',
+    //   icon: 'icon-star'
+    // },
+    // {
+    //   name: 'Error 404',
+    //   url: '/404',
+    //   icon: 'icon-star'
+    // },
+    // {
+    //   name: 'Error 500',
+    //   url: '/500',
+    //   icon: 'icon-star'
+    // }
 
   ]
 }
