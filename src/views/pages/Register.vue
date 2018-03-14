@@ -194,7 +194,7 @@
         });
       },
       goToLogin(){
-        this.$router.push({path:'/'})
+        this.$route.push({path:'/'})
       }
     }
   }

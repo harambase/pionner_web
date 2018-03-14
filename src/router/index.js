@@ -11,9 +11,12 @@ import Colors from '@/views/theme/Colors'
 import Typography from '@/views/theme/Typography'
 
 import ViewCourse from '@/views/course/Course'
-import Course from '@/views/teach/course'
 import Choose from '@/views/course/Choose'
 import Transcript from '@/views/course/Transcript'
+
+import TempCourse from '@/views/teach/TempCourse'
+import Course from '@/views/teach/course'
+
 
 import Advise from '@/views/advise/Advise'
 import Record from '@/views/advise/Record'
@@ -115,7 +118,7 @@ const router = new Router({
                 {
                   path: 'request',
                   name: '你的申请',
-                  component: Colors
+                  component: TempCourse
                 },
               ]
             },
