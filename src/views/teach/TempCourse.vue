@@ -139,6 +139,10 @@
                           <dd class="col-sm-3">{{JSON.parse(row.item.courseJson).startDate}} to {{JSON.parse(row.item.courseJson).endDate}}</dd>
 
                         </dl>
+                        <dl class="row">
+                          <dt class="col-sm-1">备注:</dt>
+                          <dd class="col-sm-5"><p style="color:red">{{JSON.parse(row.item.courseJson).comment}}</p></dd>
+                        </dl>
                       </div>
                       <!--<button class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>-->
                     </b-list-group-item>

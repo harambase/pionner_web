@@ -7,7 +7,7 @@
             <b-card-body class="p-4">
               <h1>注册 Register</h1>
               <p class="text-muted">注册属于你的先锋账号 Register Your Pioneer Network Account</p>
-              <p class="text-muted" >已有账号？<a href="#" @click="goToReg">前往登录!</a></p>
+              <p class="text-muted" >已有账号？<a href="#" @click="goToLogin">前往登录!</a></p>
               <b-input-group class="mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="icon-user"></i></span>
@@ -194,7 +194,7 @@
         });
       },
       goToLogin(){
-        this.$route.push({path:'/'})
+        this.$router.push({path:'/'})
       }
     }
   }
