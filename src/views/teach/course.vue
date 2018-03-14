@@ -57,7 +57,8 @@
                           <input placeholder="可使用Letter Grade或百分制"
                                  id="grade"
                                  name="grade" value=""
-                                 :class="{'form-control': true, 'is-invalid': errors.has('name')}" v-model="transcript.grade"
+                                 :class="{'form-control': true, 'is-invalid': errors.has('name')}"
+                                 v-model="transcript.grade"
                                  minlength="1" required>
                         </div>
 
@@ -401,7 +402,8 @@
                        class="col-sm-12 control-label">*开始时间:</label>
               </b-col>
               <b-col md="3" class="my-1">
-                <input id="starttime" :class="{'form-control': true, 'is-invalid': errors.has('startTime')}" name="startTime"
+                <input id="starttime" :class="{'form-control': true, 'is-invalid': errors.has('startTime')}"
+                       name="startTime"
                        v-model="course.startTime" v-validate="'required'"
                        :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"/>
                 <div v-show="errors.has('startTime')" class="invalid-tooltip">{{ errors.first('startTime') }}</div>
@@ -488,17 +490,24 @@
                          class="col-sm-12 control-label">*分配教师:</label>
                 </b-col>
                 <b-col md="8" class="my-1">
-                  <v-select :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+                  <v-select
+                    name="faculty" v-validate="'required'"
+                    :class="{'form-control': true, 'is-invalid': errors.has('faculty')}"
+                    :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
                   </v-select>
+                  <div v-show="errors.has('faculty')" class="invalid-tooltip">{{ errors.first('faculty') }}</div>
                 </b-col>
               </div>
 
               <b-col md="2" class="my-1">
                 <label class="col-sm-12 control-label">预修课程（可多选，可不选）:</label>
               </b-col>
-              <b-col md="3" class="my-1">
-                <v-select :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+              <b-col md="8" class="my-1">
+                <v-select v-model="preList" :filterable="false" :options="courseOptions"
+                          @search="preCourseList" multiple
+                          :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
                 </v-select>
+                {{preList}}
               </b-col>
             </b-row>
           </b-card>
@@ -538,9 +547,10 @@
                 <label class="col-sm-12 control-label">备注信息:</label>
               </b-col>
               <b-col md="10" class="my-1">
-                 <textarea style="resize: none;" :class="{'form-control': true, 'is-invalid': errors.has('name')}" rows="3" v-model="course.comment"
+                 <textarea style="resize: none;"
+                           :class="{'form-control': true}"
+                           rows="3" v-model="course.comment"
                            :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
-
                  </textarea>
               </b-col>
               <b-col md="2" class="my-1">
@@ -549,9 +559,10 @@
               <b-col md="3" class="my-1">
                 <div class="custom-control custom-radio custom-control-inline">
                   <input type="checkbox" id="yes" class="custom-control-input"
-                         name="confirm" v-model="confirm"
+                         name="confirm" v-model="confirm" v-validate="'required'"
                          :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
                   <label class="custom-control-label" for="yes">确认</label>
+                  <div v-show="errors.has('confirm')" class="invalid-tooltip">{{ errors.first('confirm') }}</div>
                 </div>
               </b-col>
               <div v-if="pageMode === 'create' || pageMode === 'manage'">
@@ -605,7 +616,11 @@
         </b-card>
       </b-col>
     </b-row>
-
+    <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
+      <div class="d-block text-center">
+        <h3>{{msg}}</h3>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -678,7 +693,6 @@
           },
         },
         courseDay: [],
-        preList: [],
         table: true,
         detail: false,
         showDocument: false,
@@ -694,17 +708,23 @@
         pageOptions: [5, 10, 15],
         infoOptions: [],
         facultyOptions: [],
+        courseOptions: [],
         sortBy: 'crn',
         sortDesc: false,
         filter: null,
         items: items,
         isBusy: false,
+        msg: '',
+        showModal: false,
+        headerBgVariant: '',
         info: '',
         faculty: '',
+        preList: '',
       }
     },
     mounted () {
       console.log(this.$route.fullPath)
+      //学期信息
       axios.get('/course/info?search=').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
           let item = {
@@ -714,6 +734,7 @@
           this.infoOptions.push(item)
         }
       })
+      //教师
       axios.get('/user/search?status=1&type=f&search=').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
           let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
@@ -722,6 +743,16 @@
             value: response.data.data[i].userId
           }
           this.facultyOptions.push(item)
+        }
+      })
+      //课程
+      axios.get('/course/search').then((response) => {
+        for (let i = 0; i < response.data.data.length; i++) {
+          let item = {
+            label: response.data.data[i].name,
+            value: response.data.data[i].crn
+          }
+          this.courseOptions.push(item)
         }
       })
 
@@ -863,6 +894,21 @@
         })
         loading(false)
       },
+      preCourseList (search, loading) {
+        loading(true)
+        this.courseOptions = []
+        axios.get('/course/search?search=' + search).then((response) => {
+          for (let i = 0; i < response.data.data.length; i++) {
+            let item = {
+              label: response.data.data[i].name,
+              value: response.data.data[i].crn
+            }
+            this.courseOptions.push(item)
+          }
+        })
+        loading(false)
+      },
+
       onFiltered (filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
@@ -924,12 +970,8 @@
       tempCourseCreate () {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return;
-          if (!this.confirm) {
-            Showbo.Msg.alert('请确认上述信息无误!', function () {
-            })
             return
-          }
+
           this.prepare()
 
           axios.post('/request/course/register', this.course).then((response) => {
