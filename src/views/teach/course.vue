@@ -96,10 +96,10 @@
                         </div>
                         <button class="btn btn-success col-sm-2"
                                 style="margin-top:10px;" onclick="return false"
-                                v-on:click="transcriptUpdate">更新
+                                @click="transcriptUpdate">更新
                         </button>
                         <button class="btn btn-danger col-sm-2" onclick="return false"
-                                v-on:click="transcriptReset">
+                                @click="transcriptReset">
                           取消
                         </button>
                       </div>
@@ -191,10 +191,10 @@
                         </div>
                         <button class="btn btn-success col-sm-2"
                                 style="margin-top:10px;" onclick="return false"
-                                v-on:click="addStudent2Course">添加
+                                @click="addStudent2Course">添加
                         </button>
                         <button class="btn btn-danger col-sm-2" onclick="return false"
-                                v-on:click="addStudentReset">
+                                @click="addStudentReset">
                           取消
                         </button>
                       </div>
@@ -253,24 +253,24 @@
           header-tag="header"
           footer-tag="footer">
           <div slot="header">
-            <b-button class="btn btn-primary btn-info"
-                      v-if="pageMode === 'create' && id !== ''"
-                      onclick="window.location.href=basePath + '/teach/request?mode=manage'">
-              <i class="fa fa-arrow-left"></i> 返回列表
-            </b-button>
+            <!--<b-button class="btn btn-primary btn-info"-->
+            <!--v-if="pageMode === 'create' && id !== ''"-->
+            <!--@click="window.location.href=basePath + '/teach/request?mode=manage'">-->
+            <!--<i class="fa fa-arrow-left"></i> 返回列表-->
+            <!--</b-button>-->
             <b-button class="btn btn-primary btn-info"
                       v-if="pageMode === 'request' && id !== ''"
-                      onclick="window.location.href=basePath + '/course/request?mode=faculty'">
+                      @click="backToTempCourseTable">
               <i class="fa fa-arrow-left"></i> 返回列表
             </b-button>
-            <b-button class="btn btn-primary btn-info"
-                      v-if="pageMode === 'view' && url.indexOf('choose') === -1"
-                      onclick="window.location.href=basePath + '/course/view'">
-              <i class="fa fa-arrow-left"></i> 返回查询列表
-            </b-button>
+            <!--<b-button class="btn btn-primary btn-info"-->
+            <!--v-if="pageMode === 'view' && url.indexOf('choose') === -1"-->
+            <!--onclick="window.location.href=basePath + '/course/view'">-->
+            <!--<i class="fa fa-arrow-left"></i> 返回查询列表-->
+            <!--</b-button>-->
             <b-button class="btn btn-primary btn-info"
                       v-if="pageMode === 'manage'"
-                      v-on:click="showTable">
+                      @click="showTable">
               <i class="fa fa-arrow-left"></i> 返回列表
             </b-button>
             <b-button class="btn btn-primary btn-info"
@@ -293,7 +293,7 @@
               <b-col md="3" class="my-1">
                 <input :class="{'form-control': true, 'is-invalid': errors.has('info')}" v-model="course.info"
                        v-validate="'required'" name="info"
-                       :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"/>
+                       :disabled="tempCourse.status!=='0'"/>
                 <div v-show="errors.has('info')" class="invalid-tooltip">{{ errors.first('info') }}</div>
               </b-col>
             </b-row>
@@ -312,7 +312,7 @@
                 <input :class="{'form-control': true, 'is-invalid': errors.has('name')}" name="name"
                        v-validate="'required|min:1|max:20'"
                        v-model="course.name"
-                       :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"/>
+                       :disabled="tempCourse.status!=='0'"/>
                 <div v-show="errors.has('name')" class="invalid-tooltip">{{ errors.first('name') }}</div>
               </b-col>
               <b-col md="2" class="my-1">
@@ -322,7 +322,7 @@
                 <input :class="{'form-control': true, 'is-invalid': errors.has('level')}" placeholder="请输入数字从100到400的数字"
                        v-validate="'required|numeric|min:3|max:3'"
                        v-model="course.level" name="level"
-                       :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"/>
+                       :disabled="tempCourse.status!=='0'"/>
                 <div v-show="errors.has('level')" class="invalid-tooltip">{{ errors.first('level') }}</div>
               </b-col>
             </b-row>
@@ -335,7 +335,7 @@
                        placeholder="请输入数字（例如：01,02,03...）"
                        v-validate="'required|numeric|min:2|max:2'"
                        v-model="course.section"
-                       :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"/>
+                       :disabled="tempCourse.status!=='0'"/>
                 <div v-show="errors.has('section')" class="invalid-tooltip">{{ errors.first('section') }}</div>
               </b-col>
               <b-col md="2" class="my-1">
@@ -346,7 +346,7 @@
                        :class="{'form-control': true, 'is-invalid': errors.has('credits')}" name="credits"
                        v-validate="'required|numeric|min:1|max:1'"
                        v-model="course.credits"
-                       :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"/>
+                       :disabled="tempCourse.status!=='0'"/>
                 <div v-show="errors.has('credits')" class="invalid-tooltip">{{ errors.first('credits') }}</div>
               </b-col>
             </b-row>
@@ -359,7 +359,7 @@
                        :class="{'form-control': true, 'is-invalid': errors.has('capacity')}" required
                        v-model="course.capacity" name="capacity"
                        v-validate="'required|numeric|min:1|max:2'"
-                       :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"/>
+                       :disabled="tempCourse.status!=='0'"/>
                 <div v-show="errors.has('capacity')" class="invalid-tooltip">{{ errors.first('capacity') }}</div>
               </b-col>
               <b-col md="2" class="my-1">
@@ -369,7 +369,7 @@
                 <input :class="{'form-control': true, 'is-invalid': errors.has('classroom')}" name="classroom"
                        v-validate="'max:20'"
                        v-model="course.classroom"
-                       :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"/>
+                       :disabled="tempCourse.status!=='0'"/>
                 <div v-show="errors.has('classroom')" class="invalid-tooltip">{{ errors.first('classroom') }}</div>
               </b-col>
             </b-row>
@@ -381,7 +381,7 @@
               <b-col md="3" class="my-1">
                 <input id="startdate" :class="{'form-control': true, 'is-invalid': errors.has('startdate')}"
                        v-validate="'required'" v-model="course.startDate" name="startdate"
-                       :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"/>
+                       :disabled="tempCourse.status!=='0'"/>
                 <div v-show="errors.has('startdate')" class="invalid-tooltip">{{ errors.first('startdate') }}</div>
               </b-col>
               <b-col md="2" class="my-1">
@@ -392,7 +392,7 @@
                 <input id="enddate" :class="{'form-control': true, 'is-invalid': errors.has('enddate')}"
                        v-validate="'required'" name="enddate"
                        v-model="course.endDate"
-                       :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"/>
+                       :disabled="tempCourse.status!=='0'"/>
                 <div v-show="errors.has('enddate')" class="invalid-tooltip">{{ errors.first('enddate') }}</div>
               </b-col>
             </b-row>
@@ -405,7 +405,7 @@
                 <input id="starttime" :class="{'form-control': true, 'is-invalid': errors.has('startTime')}"
                        name="startTime"
                        v-model="course.startTime" v-validate="'required'"
-                       :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"/>
+                       :disabled="tempCourse.status!=='0'"/>
                 <div v-show="errors.has('startTime')" class="invalid-tooltip">{{ errors.first('startTime') }}</div>
               </b-col>
               <b-col md="2" class="my-1">
@@ -416,7 +416,7 @@
                 <input id="endtime" :class="{'form-control': true, 'is-invalid': errors.has('endTime')}"
                        v-validate="'required'" name="endTime"
                        v-model="course.endTime"
-                       :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"/>
+                       :disabled="tempCourse.status!=='0'"/>
                 <div v-show="errors.has('endTime')" class="invalid-tooltip">{{ errors.first('endTime') }}</div>
               </b-col>
             </b-row>
@@ -429,43 +429,43 @@
                   <div class="custom-control custom-checkbox custom-control-inline">
                     <input type="checkbox" value="m" id="m" name="day" v-model="courseDay"
                            class="custom-control-input"
-                           :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+                           :disabled="tempCourse.status!=='0'">
                     <label class="custom-control-label" for="m">星期一</label>
                   </div>
                   <div class="custom-control custom-checkbox custom-control-inline">
                     <input type="checkbox" value="t" id="t" class="custom-control-input"
                            name="day" v-model="courseDay"
-                           :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+                           :disabled="tempCourse.status!=='0'">
                     <label class="custom-control-label" for="t">星期二</label>
                   </div>
                   <div class="custom-control custom-checkbox custom-control-inline">
                     <input type="checkbox" value="w" id="w" class="custom-control-input"
                            name="day" v-model="courseDay"
-                           :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+                           :disabled="tempCourse.status!=='0'">
                     <label class="custom-control-label" for="w">星期三</label>
                   </div>
                   <div class="custom-control custom-checkbox custom-control-inline">
                     <input type="checkbox" value="tr" id="tr" class="custom-control-input"
                            name="day" v-model="courseDay"
-                           :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+                           :disabled="tempCourse.status!=='0'">
                     <label class="custom-control-label" for="tr">星期四</label>
                   </div>
                   <div class="custom-control custom-checkbox custom-control-inline">
                     <input type="checkbox" value="f" id="f" class="custom-control-input"
                            name="day" v-model="courseDay"
-                           :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+                           :disabled="tempCourse.status!=='0'">
                     <label class="custom-control-label" for="f">星期五</label>
                   </div>
                   <div class="custom-control custom-checkbox custom-control-inline">
                     <input type="checkbox" value="sa" id="sa" class="custom-control-input"
                            name="day" v-model="courseDay"
-                           :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+                           :disabled="tempCourse.status!=='0'">
                     <label class="custom-control-label" for="sa">星期六</label>
                   </div>
                   <div class="custom-control custom-checkbox custom-control-inline">
                     <input type="checkbox" value="s" id="s" class="custom-control-input"
                            name="day" v-model="courseDay"
-                           :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+                           :disabled="tempCourse.status!=='0'">
                     <label class="custom-control-label" for="s">星期日</label>
                   </div>
                 </b-form-checkbox-group>
@@ -493,7 +493,7 @@
                   <v-select
                     name="faculty" v-validate="'required'"
                     :class="{'form-control': true, 'is-invalid': errors.has('faculty')}"
-                    :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+                    :disabled="tempCourse.status!=='0'">
                   </v-select>
                   <div v-show="errors.has('faculty')" class="invalid-tooltip">{{ errors.first('faculty') }}</div>
                 </b-col>
@@ -505,9 +505,8 @@
               <b-col md="8" class="my-1">
                 <v-select v-model="preList" :filterable="false" :options="courseOptions"
                           @search="preCourseList" multiple
-                          :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+                          :disabled="tempCourse.status!=='0'">
                 </v-select>
-                {{preList}}
               </b-col>
             </b-row>
           </b-card>
@@ -523,23 +522,29 @@
               </b-col>
               <b-col md="6" class="my-1" v-if="!showDocument">
                 <input type="file" id="document"
-                       :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+                       :disabled="tempCourse.status!=='0'">
+              </b-col>
+              <b-col md="2" class="my-1" v-if="!showDocument && isNotEmpty(course.courseInfo)">
+                <b-button style="width: 100%" class="btn btn-success"
+                          @click="showDocument = true">
+                  取消替换
+                </b-button>
               </b-col>
               <b-col md="2" class="my-1" v-if="showDocument">
                 <label class="col-sm-12 control-label">课程大纲:</label>
               </b-col>
               <b-col md="6" class="my-1" v-if="showDocument">
-                <div class="col-sm-4" style="margin-top: 10px;">
-                  下载文件： <a onclick="documentDownload()" style="cursor: pointer;"
-                           class="control-label">{{course.courseInfo.name}}</a>
-                </div>
-                <div class="col-sm-2">
-                  <button style="width: 100%" class="btn btn-primary btn-danger"
-                          v-on:click="showDocument = false"
-                          v-if="pageMode !== 'view'">
-                    替换
-                  </button>
-                </div>
+                <b-row>
+                  <b-col md="6">
+                    <a href="#" @click="documentDownload">{{course.courseInfo.name}}</a>
+                  </b-col>
+                  <b-col md="3">
+                    <b-button style="width: 100%" class="btn btn-danger"
+                              @click="showDocument = false">
+                      替换
+                    </b-button>
+                  </b-col>
+                </b-row>
               </b-col>
             </b-row>
             <b-row>
@@ -550,7 +555,7 @@
                  <textarea style="resize: none;"
                            :class="{'form-control': true}"
                            rows="3" v-model="course.comment"
-                           :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+                           :disabled="tempCourse.status!=='0'">
                  </textarea>
               </b-col>
               <b-col md="2" class="my-1">
@@ -558,9 +563,9 @@
               </b-col>
               <b-col md="3" class="my-1">
                 <div class="custom-control custom-radio custom-control-inline">
-                  <input type="checkbox" id="yes" class="custom-control-input"
+                  <input type="checkbox" id="yes" :class="{'form-control': true, 'is-invalid': errors.has('confirm')}"
                          name="confirm" v-model="confirm" v-validate="'required'"
-                         :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
+                         :disabled="tempCourse.status!=='0'">
                   <label class="custom-control-label" for="yes">确认</label>
                   <div v-show="errors.has('confirm')" class="invalid-tooltip">{{ errors.first('confirm') }}</div>
                 </div>
@@ -573,42 +578,36 @@
                   <input type="password"
                          :class="{'form-control': true, 'is-invalid': errors.has('name')}" minlength="6"
                          maxlength="16" checkOpPwd="true"
-                         :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"
+                         :disabled="tempCourse.status!=='0'"
                          required/>
                 </b-col>
               </div>
               <b-col md="2" class="my-1">
                 <b-button style="width:150px;" class="btn btn-primary"
                           v-if="pageMode === 'create' && id === ''"
-                          v-on:click="courseCreate"
-                          onclick="return false;">创建课程
+                          @click="courseCreate">创建课程
                 </b-button>
                 <b-button style="width:150px;" class="btn btn-success"
                           v-if="pageMode === 'manage' && id === ''"
-                          v-on:click="courseUpdate"
-                          onclick="return false;">修改课程
+                          @click="courseUpdate">修改课程
                 </b-button>
                 <b-button style="width:150px;" class="btn btn-success"
                           v-if="pageMode === 'create' && id !== ''"
-                          v-on:click="tempCourseApprove"
-                          :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"
-                          onclick="return false;">批准申请
+                          @click="tempCourseApprove"
+                          :disabled="tempCourse.status!=='0'">批准申请
                 </b-button>
                 <b-button style="width:150px;" class="btn btn-danger"
                           v-if="pageMode === 'create' && id !== ''"
-                          v-on:click="tempCourseDecline"
-                          :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"
-                          onclick="return false;">拒绝申请
+                          @click="tempCourseDecline"
+                          :disabled="tempCourse.status!=='0'">拒绝申请
                 </b-button>
                 <b-button style="margin-left: 32%; width:150px;" class="btn btn-primary"
                           v-if="pageMode === 'request' && id === ''"
-                          v-on:click="tempCourseCreate"
-                          onclick="return false;">提交申请
+                          @click="tempCourseCreate">提交申请
                 </b-button>
                 <b-button style="margin-left: 32%; width:150px;" class="btn btn-danger"
                           v-if="pageMode === 'request' && id !== '' && tempCourse.status === '0'"
-                          v-on:click="tempCourseUpdate"
-                          onclick="return false;">修改申请
+                          @click="tempCourseUpdate">修改申请
                 </b-button>
               </b-col>
             </b-row>
@@ -812,44 +811,51 @@
       }
     },
     methods: {
+
+      backToTempCourseTable () {
+        this.$router.push({path: '/course/new/request?mode=faculty'})
+      },
+
       initRequest (id) {
         if (isNotEmpty(id)) {
           axios.get('/request/course/' + id).then((response) => {
             this.tempCourse = response.data.data
             this.course = JSON.parse(response.data.data.courseJson)
             this.course.facultyId = response.data.data.facultyId
-            this.initCourse()
+            this.initCourseExtend()
           })
         }
       },
 
-      initCourse () {
+      initCourseExtend () {
+        let preList = this.course.precrn.split('/')
         this.courseDay = this.course.day.split('/')
-        this.preList = this.course.precrn.split('/')
 
         if (isNotEmpty(this.course.courseInfo)) {
           this.course.courseInfo = JSON.parse(this.course.courseInfo)
           this.showDocument = true
         }
 
-//        let preListOption = [];
-//        for (let i = 0; i < this.preList.length; i++)
-//          if (this.preList[i] !== "")
-//            preListOption.push(new Option(this.preList[i], this.preList[i], true, true));
-//        courseSelect.append(preListOption);
-//        courseSelect.trigger('change');
-//
-//        let facultyId = this.course.facultyId;
-//        userSelect.append(new Option(facultyId, facultyId, true, true));
-//        courseSelect.trigger('change');
+        for (let i = 0; i < preList.length; i++) {
+          if (isNotEmpty(preList[i])) {
+            axios.get('/course/' + preList[i]).then((response) => {
+              this.preList = []
+              this.preList.push({
+                label: response.data.data.name,
+                value: response.data.data.crn
+              })
+            })
+          }
+        }
 
+        this.facultyId = this.course.facultyId
       },
 
       showCourseDetail (crn) {
         if (isNotEmpty(crn)) {
-          axios.get('/course/' + crn).then(function (response) {
+          axios.get('/course/' + crn).then((response) => {
             this.course = response.data.data
-            initCourse()
+            initCourseExtend()
             this.table = false
             this.detail = true
           })
@@ -943,7 +949,6 @@
 
       prepare () {
         let day = '', precrn = ''
-        this.preList = $('.course').val()
 
         if (isNotEmpty(this.courseDay))
           for (let i = 0; i < this.courseDay.length; i++)
@@ -953,11 +958,17 @@
         if (isNotEmpty(this.preList))
           for (let i = 0; i < this.preList.length; i++)
             if (isNotEmpty(this.preList[i]))
-              precrn += this.preList[i] + '/'
+              precrn += this.preList[i].value + '/'
 
         this.course.day = day
         this.course.precrn = precrn
-        this.course.facultyId = $('.user').val()
+
+        if (this.pageMode === 'request' && this.id === '') {
+          this.course.facultyId = ''
+        }
+        else {
+          this.course.facultyId = this.faculty.value
+        }
 
         if (isNotEmpty(this.course.courseInfo))
           this.course.courseInfo = JSON.stringify(this.course.courseInfo)
@@ -967,6 +978,8 @@
         this.detail = false
         this.student = false
       },
+
+      //临时课程创建
       tempCourseCreate () {
         this.$validator.validateAll().then((result) => {
           if (!result)
@@ -976,112 +989,99 @@
 
           axios.post('/request/course/register', this.course).then((response) => {
             if (response.data.code === 2001) {
+              this.msg = '申请成功，等待教务答复!'
+              this.showModal = true
+              this.headerBgVariant = 'success'
               let id = response.data.data.id
-              Showbo.Msg.alert('申请成功，等待教务答复!', function () {
-                documentUpload(id)
-                window.location.href = basePath + '/course/request?mode=faculty'
-              })
+              this.documentUpload(id)
+              window.location.href = basePath + '/course/request?mode=faculty'
             }
-            else
-              Showbo.Msg.alert(response.data.msg, function () {
-              })
+            else {
+              this.msg = response.data.msg
+              this.showModal = true
+              this.headerBgVariant = 'danger'
+            }
           })
         })
       },
-
+      //临时课程修改
       tempCourseUpdate () {
-        if (!this.confirm) {
-          Showbo.Msg.alert('请确认上述信息无误!', function () {
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return
+
+          this.prepare()
+
+          this.tempCourse.courseJson = JSON.stringify(this.course)
+
+          axios.put('/request/course/' + this.id, this.tempCourse).then((response) => {
+            if (response.data.code === 2001){
+              this.documentUpload(this.id)
+              this.msg = '修改成功，请等待答复!'
+              this.showModal = true
+              this.headerBgVariant = 'success'
+              window.location.reload();
+            }
+            else {
+              this.msg = response.data.msg
+              this.showModal = true
+              this.headerBgVariant = 'danger'
+            }
           })
-          return
-        }
-
-        this.prepare()
-
-        this.tempCourse.courseJson = JSON.stringify(this.course)
-
-        axios.put('/request/course/' + this.id, this.tempCourse).then(function (response) {
-          if (response.data.code === 2001)
-            Showbo.Msg.alert('修改成功，等待教务答复!', function () {
-              documentUpload()
-              window.location.href = basePath + '/course/request?mode=faculty'
-            })
-          else
-            Showbo.Msg.alert(response.data.msg, function () {
-            })
         })
       },
       tempCourseApprove () {
-        if (!this.confirm) {
-          Showbo.Msg.alert('请确认上述信息无误!', function () {
-          })
-          return
-        }
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return
 
-        this.prepare()
+          this.prepare()
 
-        this.tempCourse.status = '1'
-        this.tempCourse.courseJson = JSON.stringify(this.course)
+          this.tempCourse.status = '1'
+          this.tempCourse.courseJson = JSON.stringify(this.course)
 
-        if (!this.showDocument)
-          documentUpload(this.id)
-        update(this.id, this.tempCourse)
+          if (!this.showDocument)
+            this.documentUpload(this.id)
+          this.update(this.id, this.tempCourse)
+        })
 
       },
       tempCourseDecline () {
-        if (!this.confirm) {
-          Showbo.Msg.alert('请确认上述信息无误!', function () {
-          })
-          return
-        }
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return
 
-        if (isNotEmpty(this.course.comment)) {
-          this.tempCourse.status = '-1'
-          this.tempCourse.courseJson = JSON.stringify(this.course)
-          update(this.id, this.tempCourse)
-        } else
-          Showbo.Msg.alert('必须填写备注！', function () {
-          })
-
-      },
-      courseCreate () {
-        if (!this.confirm) {
-          Showbo.Msg.alert('请确认上述信息无误!', function () {
-          })
-          return
-        }
-
-        this.prepare()
-
-        axios.post('/course', this.course).then(function (response) {
-          if (response.data.code === 2001)
-            Showbo.Msg.alert('创建成功!', function () {
-              this.course = response.data.data
-              documentUpload(response.data.data.course.crn)
-              window.location.href = basePath + '/teach/course?mode=manage&id='
-            })
-          else
-            Showbo.Msg.alert(response.data.msg, function () {
-            })
+          if (isNotEmpty(this.course.comment)) {
+            this.tempCourse.status = '-1'
+            this.tempCourse.courseJson = JSON.stringify(this.course)
+            this.update(this.id, this.tempCourse)
+          } else {
+            this.msg = '必须填写备注！'
+            this.showModal = true
+            this.headerBgVariant = 'danger'
+          }
         })
-      },
-      courseUpdate () {
-        if (!this.confirm) {
-          Showbo.Msg.alert('请确认上述信息无误!', function () {
-          })
-          return
-        }
 
-        this.prepare()
-        axios.put('/course/' + this.course.crn, this.course).then(function (response) {
-          if (response.data.code === 2001)
-            Showbo.Msg.alert('修改成功!', function () {
-              documentUpload()
-              window.location.reload()
-            })
-          else
-            Showbo.Msg.alert(response.data.msg, function () {
-            })
+      },
+
+      courseUpdate () {
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return
+
+          this.prepare()
+          axios.put('/course/' + this.course.crn, this.course).then((response) => {
+            if (response.data.code === 2001)
+              Showbo.Msg.alert('修改成功!', function () {
+                documentUpload()
+                window.location.reload()
+              })
+            else {
+              this.msg = response.data.msg
+              this.showModal = true
+              this.headerBgVariant = 'danger'
+            }
+          })
         })
       },
       transcriptReset () {
@@ -1095,9 +1095,11 @@
             Showbo.Msg.alert(response.data.msg, function () {
               studentInCourse.draw()
             })
-          else
-            Showbo.Msg.alert(response.data.msg, function () {
-            })
+          else {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
+          }
         })
       },
       addStudent2Course () {
@@ -1107,8 +1109,9 @@
               studentInCourse.draw()
             })
           } else {
-            Showbo.Msg.alert(response.data.msg, function () {
-            })
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
           }
         })
       },
@@ -1125,9 +1128,11 @@
             Showbo.Msg.alert(response.data.msg, function () {
               window.location.href = '/teach/request?mode=manage'
             })
-          else
-            Showbo.Msg.alert(response.data.msg, function () {
-            })
+          else {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
+          }
         })
       },
       deleteCourse (crn) {
@@ -1138,9 +1143,11 @@
                 Showbo.Msg.alert('删除成功!', function () {
                   courseTable.draw()
                 })
-              else
-                Showbo.Msg.alert(response.data.msg, function () {
-                })
+              else {
+                this.msg = response.data.msg
+                this.showModal = true
+                this.headerBgVariant = 'danger'
+              }
             })
           }
         })
@@ -1177,17 +1184,18 @@
             this.course.courseInfo = response.data.data
             this.showDocument = true
           } else {
-            Showbo.Msg.alert(response.data.msg, function () {
-            })
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
           }
         })
       },
 
       documentDownload () {
         if (isNotEmpty(this.id))//申请中的下载
-          window.open(basePath + '/request/course/info/' + this.id)
+          window.open(basePath + '/request/course/info/' + this.id  + "?token=" + window.localStorage.getItem('access_token'))
         else {//查看下载
-          window.open(basePath + '/course/info/' + this.course.crn)
+          window.open(basePath + '/course/info/' + this.course.crn  + "?token=" + window.localStorage.getItem('access_token'))
         }
       },
 
@@ -1200,8 +1208,9 @@
                   studentInCourse.draw()
                 })
               } else {
-                Showbo.Msg.alert(response.data.msg, function () {
-                })
+                this.msg = response.data.msg
+                this.showModal = true
+                this.headerBgVariant = 'danger'
               }
             })
           }
