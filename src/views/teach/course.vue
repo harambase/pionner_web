@@ -563,7 +563,7 @@
               </b-col>
               <b-col md="3" class="my-1">
                 <div class="custom-control custom-radio custom-control-inline">
-                  <input type="checkbox" id="yes" :class="{'form-control': true, 'is-invalid': errors.has('confirm')}"
+                  <input type="checkbox" id="yes" :class="{'custom-control-input': true, 'is-invalid': errors.has('confirm')}"
                          name="confirm" v-model="confirm" v-validate="'required'"
                          :disabled="tempCourse.status!=='0'">
                   <label class="custom-control-label" for="yes">确认</label>
@@ -615,7 +615,10 @@
         </b-card>
       </b-col>
     </b-row>
-    <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
+    <b-modal v-model="showModal" size="sm"
+             :header-bg-variant="headerBgVariant"
+             @ok="goTo"
+             ok-only centered title="消息">
       <div class="d-block text-center">
         <h3>{{msg}}</h3>
       </div>
@@ -719,10 +722,10 @@
         info: '',
         faculty: '',
         preList: '',
+        goToUrl:'',
       }
     },
     mounted () {
-      console.log(this.$route.fullPath)
       //学期信息
       axios.get('/course/info?search=').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
@@ -811,7 +814,11 @@
       }
     },
     methods: {
-
+      goTo(){
+        if(isNotEmpty(this.goToUrl)){
+          this.$router.push({path: this.goToUrl})
+        }
+      },
       backToTempCourseTable () {
         this.$router.push({path: '/course/new/request?mode=faculty'})
       },
@@ -994,7 +1001,7 @@
               this.headerBgVariant = 'success'
               let id = response.data.data.id
               this.documentUpload(id)
-              window.location.href = basePath + '/course/request?mode=faculty'
+              this.goToUrl = '/course/request?mode=faculty'
             }
             else {
               this.msg = response.data.msg
@@ -1020,7 +1027,7 @@
               this.msg = '修改成功，请等待答复!'
               this.showModal = true
               this.headerBgVariant = 'success'
-              window.location.reload();
+              this.goToUrl = '/course/new/request?mode=faculty'
             }
             else {
               this.msg = response.data.msg
