@@ -30,7 +30,7 @@ export default {
     },
     {
       name: '新课程',
-      url: '/course/new/create',
+      url: '/course/new',
       icon: 'icon-pencil',
       children: [
         {

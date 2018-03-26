@@ -253,11 +253,11 @@
           header-tag="header"
           footer-tag="footer">
           <div slot="header">
-            <!--<b-button class="btn btn-primary btn-info"-->
-            <!--v-if="pageMode === 'create' && id !== ''"-->
-            <!--@click="window.location.href=basePath + '/teach/request?mode=manage'">-->
-            <!--<i class="fa fa-arrow-left"></i> 返回列表-->
-            <!--</b-button>-->
+            <b-button class="btn btn-primary btn-info"
+                      v-if="pageMode === 'create' && id !== ''"
+                      @click="backToTempCourseTable">
+              <i class="fa fa-arrow-left"></i> 返回列表
+            </b-button>
             <b-button class="btn btn-primary btn-info"
                       v-if="pageMode === 'request' && id !== ''"
                       @click="backToTempCourseTable">
@@ -481,17 +481,16 @@
             <div slot="header" v-if="pageMode === 'request'">
               <i className="fa fa-align-justify"></i><strong>预修课分配</strong>
             </div>
-            <b-row  v-show="pageMode === 'create' || pageMode === 'manage' || pageMode === 'view'">
+            <b-row>
               <b-col md="3" class="my-1">
                 <label class="col-sm-12 control-label">*分配教师:</label>
               </b-col>
               <b-col md="6" class="my-1">
-                <v-select
-                  name="faculty" v-validate="'required'" :option="facultyOptions"
-                  :class="{'is-invalid': errors.has('faculty')}"
-                  @search="facultyList" :filterable="false" v-model="faculty"
-                  :disabled="tempCourse.status!=='0'">
-                </v-select>
+                <v-select name="faculty" v-validate="'required'"
+                          v-model="faculty" :filterable="false" :options="facultyOptions"
+                          :disabled="tempCourse.status!=='0'"
+                          :class="{'is-invalid': errors.has('faculty')}"
+                          @search="facultyList"></v-select>
                 <div v-show="errors.has('faculty')" class="invalid-tooltip">{{ errors.first('faculty') }}</div>
               </b-col>
             </b-row>
@@ -817,7 +816,11 @@
         }
       },
       backToTempCourseTable () {
-        this.$router.push({path: '/course/new/request?mode=faculty'})
+        if (this.pageMode === 'create') {
+          this.$router.push({path: '/teach/request?mode=manage'})
+        } else {
+          this.$router.push({path: '/course/new/request?mode=faculty'})
+        }
       },
 
       initRequest (id) {
@@ -852,6 +855,13 @@
           }
         }
 
+        axios.get('/user/' + this.course.facultyId).then((response) => {
+          let name = response.data.data.lastName + ', ' + response.data.data.firstName
+          this.faculty = {
+            label: name,
+            value: response.data.data.userId
+          }
+        })
         this.facultyId = this.course.facultyId
       },
 
@@ -900,6 +910,7 @@
               value: response.data.data[i].userId
             }
             this.facultyOptions.push(item)
+
           }
         })
         loading(false)
