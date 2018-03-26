@@ -11,7 +11,6 @@ import Typography from '@/views/theme/Typography'
 import Charts from '@/views/Charts'
 import Widgets from '@/views/Widgets'
 
-
 import ViewCourse from '@/views/course/Course'
 import Choose from '@/views/course/Choose'
 import Transcript from '@/views/course/Transcript'
@@ -231,7 +230,7 @@ const router = new Router({
             {
               path: 'user',
               name: '用户管理',
-              component: User
+              component: Role
             },
             {
               path: 'role',
@@ -241,7 +240,7 @@ const router = new Router({
             {
               path: 'registration',
               name: '用户注册',
-              component: Registration
+              component: Role
             },
             {
               path: 'monitor',
