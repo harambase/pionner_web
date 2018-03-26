@@ -140,9 +140,14 @@
 
                         </dl>
                         <dl class="row">
-                          <dt class="col-sm-1">备注:</dt>
-                          <dd class="col-sm-5"><p style="color:red">{{JSON.parse(row.item.courseJson).comment}}</p></dd>
+                          <dt class="col-sm-1">操作人:</dt>
+                          <dd class="col-sm-5" style="color:red">{{row.item.operatorId}}</dd>
                         </dl>
+                        <dl class="row">
+                          <dt class="col-sm-1">备注:</dt>
+                          <dd class="col-sm-5" style="color:red">{{JSON.parse(row.item.courseJson).comment}}</dd>
+                        </dl>
+
                       </div>
                       <!--<button class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>-->
                     </b-list-group-item>
@@ -165,7 +170,7 @@
              centered
              title="不可逆操作警告！">
       <div class="d-block text-center">
-        <h3>确认删除该申请</h3>
+        <h3>确认删除该申请？</h3>
       </div>
     </b-modal>
     <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
@@ -214,9 +219,6 @@
         msg: '',
         id: '',
       }
-    },
-    mounted: function () {
-      console.log(this.pageMode)
     },
     computed: {
       sortOptions () {

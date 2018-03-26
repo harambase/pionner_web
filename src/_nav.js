@@ -25,7 +25,7 @@ export default {
     },
     {
       name: '所有课程',
-      url: '/course/view',
+      url: '/course/view?mode=view',
       icon: 'icon-list'
     },
     {
@@ -66,7 +66,7 @@ export default {
     },
     {
       name: '课程管理',
-      url: '/teach/curriculum/manage',
+      url: '/teach/curriculum?mode=manage',
       icon: 'icon-list'
     },
     {

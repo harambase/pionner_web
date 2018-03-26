@@ -1,257 +1,185 @@
 ﻿<template>
   <div class="animated fadeIn">
 
-    <b-row v-show="pageMode === 'manage' && student">
-      <div class="col-md-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-              <span style="cursor: pointer" data-toggle="collapse" data-parent="#accordion"
-                    href="#collapseTwo" class="collapsed">课程中学生详情</span>
-          </div>
-          <div id="collapseTwo" class="panel-collapse in">
-            <div class="panel-body">
-              <div class="col-md-7 col-sm-4">
-                <div class="panel panel-default">
-                  <div class="panel-body">
-                    <table style="width: 100%" id="studentInCourse"
-                           class="table table-striped table-bordered table-hover"></table>
-                  </div>
-                </div>
-              </div>
-              <form class="form-horizontal">
-                <div class="col-md-5 col-sm-4">
-                  <div class="panel panel-primary">
-                    <div class="panel-heading">
-                      学生成绩详情
-                    </div>
-                    <div class="panel-body">
-                      <div class="form-group">
-                        <div class="col-sm-3">
-                          <label for="sid"
-                                 class="col-sm-12 control-label">学生ID:</label>
-                        </div>
-                        <div class="col-sm-9">
-                          <input id="sid" value="" :class="{'form-control': true, 'is-invalid': errors.has('name')}"
-                                 v-model="transcript.studentId"
-                                 disabled>
-                        </div>
-                        <div class="col-sm-3" style="margin-top:10px;">
-                          <label class="col-sm-12 control-label">*课程CRN:</label>
-                        </div>
-                        <div class="col-sm-9" style="margin-top:10px;">
-                          <input :class="{'form-control': true, 'is-invalid': errors.has('name')}" required disabled
-                                 v-model="transcript.crn"/>
-                        </div>
-                        <div class="col-sm-3" style="margin-top:10px;">
-                          <label class="col-sm-12 control-label">*课程学分:</label>
-                        </div>
-                        <div class="col-sm-9" style="margin-top:10px;">
-                          <input id="credits2" :class="{'form-control': true, 'is-invalid': errors.has('name')}"
-                                 required v-model="transcript.credits"
-                                 disabled/>
-                        </div>
-                        <div class="col-sm-3" style="margin-top:10px;">
-                          <label class="col-sm-12 control-label">*成绩:</label>
-                        </div>
-                        <div class="col-sm-9" style="margin-top:10px;">
-                          <input placeholder="可使用Letter Grade或百分制"
-                                 id="grade"
-                                 name="grade" value=""
-                                 :class="{'form-control': true, 'is-invalid': errors.has('name')}"
-                                 v-model="transcript.grade"
-                                 minlength="1" required>
-                        </div>
-
-                        <div class="col-sm-3" style="margin-top:10px;">
-                          <label class="col-sm-12 control-label">*完成情况:</label>
-                        </div>
-                        <div class="col-sm-9" style="margin-top:10px;">
-                          <div class="radio3 radio-check radio-success radio-inline">
-                            <input type="radio" id="complete" name="complete"
-                                   value="1"
-                                   v-model="transcript.complete">
-                            <label for="complete">完成</label>
-                          </div>
-                          <div class="radio3 radio-check radio-success radio-inline">
-                            <input type="radio" id="process" name="complete"
-                                   value="0"
-                                   v-model="transcript.complete">
-                            <label for="process">正在进行</label>
-                          </div>
-                          <div class="radio3 radio-check radio-success radio-inline">
-                            <input type="radio" id="nComplete" name="nComplete"
-                                   value="-1"
-                                   v-model="transcript.complete">
-                            <label for="nComplete">未完成</label>
-                          </div>
-                        </div>
-                        <div class="col-sm-3" style="margin-top:10px;">
-                          <label for="tPassword"
-                                 class="col-sm-12 control-label">*管理员操作密码:</label>
-                        </div>
-                        <div class="col-sm-6" style="margin-top:10px;">
-                          <input type="password" id="tPassword"
-                                 :class="{'form-control': true, 'is-invalid': errors.has('name')}" minlength="6"
-                                 maxlength="16" checkOpPwd="true" required/>
-                        </div>
-                        <button class="btn btn-success col-sm-2"
-                                style="margin-top:10px;" onclick="return false"
-                                @click="transcriptUpdate">更新
-                        </button>
-                        <button class="btn btn-danger col-sm-2" onclick="return false"
-                                @click="transcriptReset">
-                          取消
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-                            <span style="cursor: pointer" data-toggle="collapse" data-parent="#accordion"
-                                  href="#collapseThree" class="collapsed">添加学生</span>
-          </div>
-          <div id="collapseThree" class="panel-collapse in">
-            <div class="panel-body">
-              <div class="col-md-7 col-sm-4">
-                <div class="panel panel-default">
-                  <div class="panel-body">
-                    <table style="width:100%" id="studentTable"
-                           class="table table-striped table-bordered table-hover"></table>
-                  </div>
-                </div>
-              </div>
-              <form class="form-horizontal">
-                <div class="col-md-5 col-sm-4">
-                  <div class="panel panel-primary">
-                    <div class="panel-heading">
-                      添加学生选项
-                    </div>
-                    <div class="panel-body">
-                      <div class="form-group">
-                        <div class="col-sm-3">
-                          <label for="sid"
-                                 class="col-sm-12 control-label">学生ID:</label>
-                        </div>
-                        <div class="col-sm-9">
-                          <input :class="{'form-control': true, 'is-invalid': errors.has('name')}"
-                                 v-model="addStudent.studentId"
-                                 disabled>
-                        </div>
-                        <div class="col-sm-3" style="margin-top:10px;">
-                          <label class="col-sm-12 control-label">*课程CRN:</label>
-                        </div>
-                        <div class="col-sm-9" style="margin-top:10px;">
-                          <input :class="{'form-control': true, 'is-invalid': errors.has('name')}" required disabled
-                                 v-model="addStudent.crn"/>
-                        </div>
-                        <div class="col-sm-3" style="margin-top:10px;">
-                          <label class="col-sm-12 control-label">*课程学分:</label>
-                        </div>
-                        <div class="col-sm-9" style="margin-top:10px;">
-                          <input :class="{'form-control': true, 'is-invalid': errors.has('name')}"
-                                 required v-model="addStudent.credits"
-                                 disabled/>
-                        </div>
-                        <div class="col-sm-9" style="margin-top:10px;">
-                          <div
-                            class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                            <input type="checkbox" id="prereq" name="prereq"
-                                   value="1"
-                                   v-model="addStudent.option.prereq">
-                            <label for="prereq">添加此学生，即使未完成预选课程</label>
-                          </div>
-                          <div
-                            class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                            <input type="checkbox" id="time" name="time"
-                                   v-model="addStudent.option.time"
-                                   value="2">
-                            <label for="time">添加此学生，即使有时间冲突</label>
-                          </div>
-                          <div
-                            class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                            <input type="checkbox" id="capacity" name="type"
-                                   v-model="addStudent.option.capacity"
-                                   value="2">
-                            <label for="capacity">添加此学生，即使已经达到课程人数上限</label>
-                          </div>
-                        </div>
-                        <div class="col-sm-3" style="margin-top:10px;">
-                          <label for="tPassword"
-                                 class="col-sm-12 control-label">*管理员操作密码:</label>
-                        </div>
-                        <div class="col-sm-6" style="margin-top:10px;">
-                          <input type="password"
-                                 :class="{'form-control': true, 'is-invalid': errors.has('name')}" minlength="6"
-                                 maxlength="16" checkOpPwd="true" required/>
-                        </div>
-                        <button class="btn btn-success col-sm-2"
-                                style="margin-top:10px;" onclick="return false"
-                                @click="addStudent2Course">添加
-                        </button>
-                        <button class="btn btn-danger col-sm-2" onclick="return false"
-                                @click="addStudentReset">
-                          取消
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </b-row>
-
-    <b-row v-show="pageMode === 'manage' && table">
-      <div class="col-md-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            搜索条件
-          </div>
-          <div class="panel-body">
-            <div class="form-group">
-              <div class="col-sm-2">
-                <label class="col-sm-12 control-label">*按学期查询:</label>
-              </div>
-              <div class="col-sm-3">
-                <select class="js-example-basic-single info col-sm-12"></select>
-              </div>
-              <div class="col-sm-2">
-                <label class="col-sm-12 control-label">*按授课老师查询:</label>
-              </div>
-              <div class="col-sm-3">
-                <select class="js-example-basic-single user col-sm-12"></select>
-              </div>
-              <div class="col-sm-2">
-                <button class="btn btn-primary col-sm-12" onclick="refresh()">查询</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            课程列表
-          </div>
-          <div class="panel-body">
-            <table class="table table-striped table-bordered table-hover" id="courseTable"></table>
-          </div>
-        </div>
-      </div>
-    </b-row>
-
-    <b-row v-show="pageMode === 'request' || pageMode === 'create' || pageMode === 'view' || detail">
+    <b-row v-show="pageMode === 'student'">
+      <b-button class="btn btn-primary btn-info"
+                @click="showTable">
+        <i class="fa fa-arrow-left"></i> 返回列表
+      </b-button>
       <b-col cols="12">
-        <b-card
-          header-tag="header"
-          footer-tag="footer">
+        <b-card header-tag="header" footer-tag="footer">
+          <div slot="header">
+            <i className="fa fa-align-justify"></i><strong>课程中学生详情</strong>
+          </div>
+          <b-card
+              header-tag="header"
+              footer-tag="footer">
+              <div slot="header">
+                <i className="fa fa-align-justify"></i><strong>学生列表</strong>
+              </div>
+              <b-container fluid>
+                <!-- User Interface controls -->
+                <b-row>
+                  <b-col md="6" class="my-1">
+                    <b-form-group horizontal label="每页显示条数：" class="mb-0">
+                      <b-form-select :options="pageOptions" v-model="perPage"/>
+                    </b-form-group>
+                  </b-col>
+                  <b-col md="6" class="my-1">
+                    <b-form-group horizontal label="模糊查询：" class="mb-0">
+                      <b-input-group>
+                        <b-form-input v-model="filter"/>
+                        <b-input-group-button>
+                          <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
+                        </b-input-group-button>
+                      </b-input-group>
+                    </b-form-group>
+                  </b-col>
+                </b-row>
+
+                <!-- Main table element -->
+                <b-table show-empty
+                         stacked="md"
+                         ref="studentInCourseTable"
+                         :striped=true
+                         :fixed=true
+                         :hover=true
+                         :items="studentInCourseTable"
+                         :fields="studentInCourseField"
+                         :current-page="currentPage"
+                         :per-page="perPage"
+                         :filter="filter"
+                         :sort-by.sync="sortBy"
+                         :sort-desc.sync="sortDesc"
+                         :isBusy="false"
+                         @filtered="onFiltered"
+                >
+                  <template slot="complete" slot-scope="row">
+                    <p v-if="row.value === 1" style="color:green;">完成</p>
+                    <p v-if="row.value === 0" style="color:blue;">进行中</p>
+                    <p v-if="row.value === -1" style="color:red;">挂科</p>
+                  </template>
+                  <template slot="actions" slot-scope="row">
+                    <b-button size="sm" class="btn btn-danger" @click.stop="removeStuFromCourse(row.item.userId)">
+                     移除该学生
+                    </b-button>
+                  </template>
+
+                </b-table>
+                <b-col md="6" class="my-1">
+                  <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
+                                class="my-0"/>
+                </b-col>
+              </b-container>
+            </b-card>
+        </b-card>
+        <b-card header-tag="header" footer-tag="footer">
+          <div slot="header">
+            <i className="fa fa-align-justify"></i><strong>添加学生</strong>
+          </div>
+        </b-card>
+        <!---->
+        <!--<div class="panel panel-default">-->
+          <!--<div class="panel-heading">-->
+                            <!--<span style="cursor: pointer" data-toggle="collapse" data-parent="#accordion"-->
+                                  <!--href="#collapseThree" class="collapsed">添加学生</span>-->
+          <!--</div>-->
+          <!--<div id="collapseThree" class="panel-collapse in">-->
+            <!--<div class="panel-body">-->
+              <!--<div class="col-md-7 col-sm-4">-->
+                <!--<div class="panel panel-default">-->
+                  <!--<div class="panel-body">-->
+                    <!--<table style="width:100%" id="studentTable"-->
+                           <!--class="table table-striped table-bordered table-hover"></table>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<form class="form-horizontal">-->
+                <!--<div class="col-md-5 col-sm-4">-->
+                  <!--<div class="panel panel-primary">-->
+                    <!--<div class="panel-heading">-->
+                      <!--添加学生选项-->
+                    <!--</div>-->
+                    <!--<div class="panel-body">-->
+                      <!--<div class="form-group">-->
+                        <!--<div class="col-sm-3">-->
+                          <!--<label for="sid"-->
+                                 <!--class="col-sm-12 control-label">学生ID:</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-9">-->
+                          <!--<input :class="{'form-control': true, 'is-invalid': errors.has('name')}"-->
+                                 <!--v-model="addStudent.studentId"-->
+                                 <!--disabled>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-3" style="margin-top:10px;">-->
+                          <!--<label class="col-sm-12 control-label">*课程CRN:</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-9" style="margin-top:10px;">-->
+                          <!--<input :class="{'form-control': true, 'is-invalid': errors.has('name')}" required disabled-->
+                                 <!--v-model="addStudent.crn"/>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-3" style="margin-top:10px;">-->
+                          <!--<label class="col-sm-12 control-label">*课程学分:</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-9" style="margin-top:10px;">-->
+                          <!--<input :class="{'form-control': true, 'is-invalid': errors.has('name')}"-->
+                                 <!--required v-model="addStudent.credits"-->
+                                 <!--disabled/>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-9" style="margin-top:10px;">-->
+                          <!--<div-->
+                            <!--class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">-->
+                            <!--<input type="checkbox" id="prereq" name="prereq"-->
+                                   <!--value="1"-->
+                                   <!--v-model="addStudent.option.prereq">-->
+                            <!--<label for="prereq">添加此学生，即使未完成预选课程</label>-->
+                          <!--</div>-->
+                          <!--<div-->
+                            <!--class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">-->
+                            <!--<input type="checkbox" id="time" name="time"-->
+                                   <!--v-model="addStudent.option.time"-->
+                                   <!--value="2">-->
+                            <!--<label for="time">添加此学生，即使有时间冲突</label>-->
+                          <!--</div>-->
+                          <!--<div-->
+                            <!--class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">-->
+                            <!--<input type="checkbox" id="capacity" name="type"-->
+                                   <!--v-model="addStudent.option.capacity"-->
+                                   <!--value="2">-->
+                            <!--<label for="capacity">添加此学生，即使已经达到课程人数上限</label>-->
+                          <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-3" style="margin-top:10px;">-->
+                          <!--<label for="tPassword"-->
+                                 <!--class="col-sm-12 control-label">*管理员操作密码:</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-6" style="margin-top:10px;">-->
+                          <!--<input type="password"-->
+                                 <!--:class="{'form-control': true, 'is-invalid': errors.has('name')}" minlength="6"-->
+                                 <!--maxlength="16" checkOpPwd="true" required/>-->
+                        <!--</div>-->
+                        <!--<button class="btn btn-success col-sm-2"-->
+                                <!--style="margin-top:10px;" onclick="return false"-->
+                                <!--@click="addStudent2Course">添加-->
+                        <!--</button>-->
+                        <!--<button class="btn btn-danger col-sm-2" onclick="return false"-->
+                                <!--@click="addStudentReset">-->
+                          <!--取消-->
+                        <!--</button>-->
+                      <!--</div>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</form>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      </b-col>
+    </b-row>
+
+    <b-row v-show="pageMode === 'request' || pageMode === 'create' || pageMode === 'manage'">
+      <b-col cols="12">
+        <b-card header-tag="header" footer-tag="footer">
           <div slot="header">
             <b-button class="btn btn-primary btn-info"
                       v-if="pageMode === 'create' && id !== ''"
@@ -263,20 +191,10 @@
                       @click="backToTempCourseTable">
               <i class="fa fa-arrow-left"></i> 返回列表
             </b-button>
-            <!--<b-button class="btn btn-primary btn-info"-->
-            <!--v-if="pageMode === 'view' && url.indexOf('choose') === -1"-->
-            <!--onclick="window.location.href=basePath + '/course/view'">-->
-            <!--<i class="fa fa-arrow-left"></i> 返回查询列表-->
-            <!--</b-button>-->
             <b-button class="btn btn-primary btn-info"
                       v-if="pageMode === 'manage'"
                       @click="showTable">
               <i class="fa fa-arrow-left"></i> 返回列表
-            </b-button>
-            <b-button class="btn btn-primary btn-info"
-                      v-if="url.indexOf('choose') !== -1"
-                      onclick="window.location.href=basePath + '/course/choose'">
-              <i class="fa fa-arrow-left"></i> 返回选课工作表
             </b-button>
             <i className="fa fa-align-justify"></i><strong>课程基本信息表</strong>
           </div>
@@ -579,12 +497,8 @@
               </b-col>
 
               <b-col md="2" class="my-1">
-                <b-button style="width:150px;" class="btn btn-primary"
-                          v-if="pageMode === 'create' && id === ''"
-                          @click="courseCreate">创建课程
-                </b-button>
                 <b-button style="width:150px;" class="btn btn-success"
-                          v-if="pageMode === 'manage' && id === ''"
+                          v-if="pageMode === 'manage'"
                           @click="courseUpdate">修改课程
                 </b-button>
                 <b-button style="width:150px;" class="btn btn-success"
@@ -625,18 +539,23 @@
 <script>
   import axios from 'axios'
 
-  const items = []
-  const field = [
-    {key: 'crn', label: '编号', sortable: true},
-    {key: 'name', label: '课程名', sortable: true, 'class': 'text-center'},
-    {key: 'capacity', label: '容量', sortable: true},
-    {key: 'remain', label: '剩余', sortable: true},
-    {key: 'status', label: '状态', sortable: true},
-    {key: 'date', label: '起止时间', sortable: true},
-    {key: 'time', label: '上课时间', sortable: true},
-    {key: 'day', label: '星期', sortable: true},
-    {key: 'faculty', label: '授课老师', sortable: true},
-    {key: 'actions', label: '查看详情'}
+  const studentItems = []
+  const studentField = [
+    {key: 'studentId', label: '学生ID', sortable: true},
+    {key: 'sname', label: '姓名', sortable: true},
+    {key: 'maxCredits', label: '学分上限', sortable: true},
+    {key: 'complete', label: '已完成', sortable: true},
+    {key: 'progress', label: '进行中', sortable: true},
+    {key: 'incomplete', label: '未完成', sortable: true},
+    {key: 'actions', label: '操作', sortable: true}
+  ]
+  const studentInCourseFieldItems = []
+  const studentInCourseField = [
+    {key: 'id', label: '序号', sortable: true},
+    {key: 'studentId', label: '学生ID', sortable: true},
+    {key: 'sname', label: '学生名', sortable: true},
+    {key: 'grade', label: '学生成绩', sortable: true},
+    {key: 'complete', label: '完成情况', sortable: true}
   ]
 
   export default {
@@ -691,15 +610,13 @@
           },
         },
         courseDay: [],
-        table: true,
-        detail: false,
         showDocument: false,
-        student: false,
         confirm: false,
         pageMode: this.$route.fullPath.split('&')[0].split('=')[1],
         id: this.$route.fullPath.split('&')[1].split('=')[1],//maybe CRN
         url: this.$route.fullPath,
-        field: field,
+        studentInCourseField: studentInCourseField,
+        studentField: studentField,
         currentPage: 1,
         perPage: 10,
         totalRows: 0,
@@ -710,7 +627,8 @@
         sortBy: 'crn',
         sortDesc: false,
         filter: null,
-        items: items,
+        studentItems: studentItems,
+        studentInCourseFieldItems: studentInCourseFieldItems,
         isBusy: false,
         msg: '',
         showModal: false,
@@ -722,6 +640,7 @@
       }
     },
     mounted () {
+      console.log(this.pageMode)
       //学期信息
       axios.get('/course/info?search=').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
@@ -755,10 +674,17 @@
       })
 
       if (isNotEmpty(this.id)) {
-        if (this.pageMode !== 'view')
-          this.initRequest(this.id)
-        else
-          this.showCourseDetail(this.id)
+        switch (this.pageMode) {
+          case 'manage':
+            this.showCourseDetail(this.id)
+            break
+          case 'student':
+            this.showStudentDetail(this.id)
+            break
+          default:
+            this.initRequest(this.id)
+            break
+        }
       }
 
       //执行一个laydate实例
@@ -822,7 +748,6 @@
           this.$router.push({path: '/course/new/request?mode=faculty'})
         }
       },
-
       initRequest (id) {
         if (isNotEmpty(id)) {
           axios.get('/request/course/' + id).then((response) => {
@@ -833,7 +758,6 @@
           })
         }
       },
-
       initCourseExtend () {
         let preList = this.course.precrn.split('/')
         this.courseDay = this.course.day.split('/')
@@ -869,9 +793,7 @@
         if (isNotEmpty(crn)) {
           axios.get('/course/' + crn).then((response) => {
             this.course = response.data.data
-            initCourseExtend()
-            this.table = false
-            this.detail = true
+            this.initCourseExtend()
           })
         }
       },
@@ -879,10 +801,7 @@
       showStudentDetail (crn, credits) {
         this.transcript.crn = crn
         this.transcript.credits = credits
-        this.table = false
-        this.detail = false
-        this.student = true
-//        studentInCourse.draw()
+        this.initStudentTable();
       },
 
       infoList (search, loading) {
@@ -934,16 +853,14 @@
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      initTable () {
-        this.$refs.courseTable.refresh()
+      initStudentTable () {
+        this.$refs.studentInCourseTable.refresh()
       },
-      courseTable (ctx) {
+      studentInCourseTable (ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
-        let url = '/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy + '&mode=student'
-        if (this.isNotEmpty(this.info))
-          url += '&info=' + this.info.value
-        if (this.isNotEmpty(this.faculty))
-          url += '&facultyId=' + this.faculty.value
+        let url = '/transcript/course/student?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
+        if (this.isNotEmpty(this.transcript.crn))
+          url += '&crn=' + this.transcript.crn
         if (this.isNotEmpty(ctx.filter))
           url += '&search=' + ctx.filter
         if (ctx.sortDesc)
@@ -989,9 +906,7 @@
           this.course.courseInfo = JSON.stringify(this.course.courseInfo)
       },
       showTable () {
-        this.table = true
-        this.detail = false
-        this.student = false
+        this.$router.push({path: '/teach/curriculum?mode=manage'})
       },
 
       //临时课程创建
@@ -1139,10 +1054,12 @@
 
       update (id, tempCourse) {
         axios.put('/request/course/' + id, tempCourse).then((response) => {
-          if (response.data.code === 2001)
-            Showbo.Msg.alert(response.data.msg, function () {
-              window.location.href = '/teach/request?mode=manage'
-            })
+          if (response.data.code === 2001) {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'success'
+            this.goToUrl = '/teach/request?mode=manage'
+          }
           else {
             this.msg = response.data.msg
             this.showModal = true
@@ -1150,24 +1067,6 @@
           }
         })
       },
-      deleteCourse (crn) {
-        Showbo.Msg.confirm('确认删除该课程？', function () {
-          if ($('.btnfocus').val() !== '取消') {
-            axios.delete('/course/' + crn).then(function (response) {
-              if (response.data.code === 2001)
-                Showbo.Msg.alert('删除成功!', function () {
-                  courseTable.draw()
-                })
-              else {
-                this.msg = response.data.msg
-                this.showModal = true
-                this.headerBgVariant = 'danger'
-              }
-            })
-          }
-        })
-      },
-
       documentUpload (key) {
         if (this.showDocument)
           return

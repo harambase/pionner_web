@@ -123,9 +123,62 @@
                   </template>
                   <template slot="row-details" slot-scope="row">
                     <b-card>
-                      <ul>
-                        <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value}}</li>
-                      </ul>
+                      <b-list-group>
+                        <b-list-group-item href="#" title="查看课程"
+                                           class="flex-column align-items-start"
+                                           :disabled="row.item.status !== '0'" @click="detail(row.item.id)">
+                          <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">课程 <strong>{{row.item.name}}</strong> 的信息</h5>
+                            <small class="text-muted">授课老师ID：{{row.item.facultyId}}</small>
+                          </div>
+                          <hr/>
+                          <div class="mr-1">
+                            <dl class="row">
+                              <dt class="col-sm-1">课程CRN:</dt>
+                              <dd class="col-sm-1">{{row.item.crn}}</dd>
+
+                              <dt class="col-sm-1">课程学期:</dt>
+                              <dd class="col-sm-1">{{row.item.info}}</dd>
+
+                              <dt class="col-sm-1">课程学分:</dt>
+                              <dd class="col-sm-1">{{row.item.credits}}</dd>
+
+                              <dt class="col-sm-1">课程等级:</dt>
+                              <dd class="col-sm-1">{{row.item.level}}</dd>
+
+                              <dt class="col-sm-1">课程班级:</dt>
+                              <dd class="col-sm-1">{{row.item.section}}</dd>
+
+                            </dl>
+                            <dl class="row">
+
+                              <dt class="col-sm-1">上课时间:</dt>
+                              <dd class="col-sm-3">{{row.item.startTime}} to {{row.item.endTime}}， 每周 {{row.item.day}}</dd>
+
+                              <dt class="col-sm-1">上课周期:</dt>
+                              <dd class="col-sm-3">{{row.item.startDate}} to {{row.item.endDate}}</dd>
+
+                              <dt class="col-sm-1">预选课程:</dt>
+                              <dd class="col-sm-3">{{row.item.precrn}}</dd>
+
+                            </dl>
+                            <dl class="row">
+                              <dt class="col-sm-1">课程大纲下载:</dt>
+                              <dd class="col-sm-5"
+                                  v-if="row.item.courseInfo !== '' &&
+                                    row.item.courseInfo !== undefined &&
+                                    row.item.courseInfo !== null ">
+                                <a href="#" @click="download(row.item.crn)">{{JSON.parse(row.item.courseInfo).name}}</a>
+                              </dd>
+                            </dl>
+                            <dl class="row">
+                              <dt class="col-sm-1">备注:</dt>
+                              <dd class="col-sm-5"><p style="color:red">{{row.item.comment}}</p></dd>
+                            </dl>
+                          </div>
+                          <!--<button class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>-->
+                        </b-list-group-item>
+                      </b-list-group>
                     </b-card>
                   </template>
                 </b-table>

@@ -81,10 +81,11 @@
                 <p v-if="row.value === -1" style="color:red;">已结课</p>
               </template>
               <template slot="actions" slot-scope="row">
-                <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
+
                 <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
                   {{ row.detailsShowing ? '隐藏' : '展示' }}详情
                 </b-button>
+
               </template>
               <template slot="row-details" slot-scope="row">
                 <b-card>
@@ -140,6 +141,31 @@
                           <dt class="col-sm-1">备注:</dt>
                           <dd class="col-sm-5"><p style="color:red">{{row.item.comment}}</p></dd>
                         </dl>
+
+                        <dl class="row" v-if="pageMode === 'manage'">
+                          <dt class="col-sm-1">操作:</dt>
+                          <dd class="col-sm-5">
+                            <b-button size="sm"
+                                      class="btn btn-danger"
+                                      @click.stop="showDeleteCourse(row.item.crn)">
+                              删除该课程
+                            </b-button>
+
+                            <b-button size="sm"
+                                      class="btn btn-primary"
+                                      @click.stop="showDetailCourse(row.item.crn)">
+                              修改该课程
+                            </b-button>
+
+                            <b-button size="sm"
+                                      class="btn btn-primary"
+                                      @click.stop="showCourseStudent(row.item.crn)">
+                              课程中的学生
+                            </b-button>
+                          </dd>
+                        </dl>
+
+
                       </div>
                       <!--<button class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>-->
                     </b-list-group-item>
@@ -155,6 +181,21 @@
         </b-card>
       </b-col>
     </b-row>
+    <b-modal v-model="showDeleteModal"
+             size="sm"
+             header-bg-variant='danger'
+             @ok="deleteCourse"
+             centered
+             title="不可逆操作警告！">
+      <div class="d-block text-center">
+        <h3>确认删除该课程？</h3>
+      </div>
+    </b-modal>
+    <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
+      <div class="d-block text-center">
+        <h3>{{msg}}</h3>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -193,6 +234,13 @@
         isBusy: false,
         info: '',
         faculty: '',
+        pageMode: this.$route.fullPath.split('&')[0].split('=')[1],
+        showDeleteModal: false,
+        showModal: false,
+        crn: '',
+        msg: '',
+        headerBgVariant: '',
+
       }
     },
     mounted: function () {
@@ -225,6 +273,31 @@
       }
     },
     methods: {
+      deleteCourse () {
+        axios.delete('/course/' + this.crn).then((response) => {
+          if (response.data.code === 2001) {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'success'
+            this.initTable()
+          }
+          else {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
+          }
+        })
+      },
+      showDeleteCourse (crn) {
+        this.crn = crn
+        this.showDeleteModal = true
+      },
+      showDetailCourse(crn){
+        this.$router.push({path: '/teach/curriculum/detail?mode=manage&crn=' + crn})
+      },
+      showCourseStudent(crn){
+        this.$router.push({path:'/teach/curriculum/detail?mode=student&crn=' + crn})
+      },
       infoList (search, loading) {
         loading(true)
         this.infoOptions = []
@@ -254,8 +327,8 @@
         })
         loading(false)
       },
-      download(crn){
-        window.open(basePath + "/course/info/" + crn + "?token=" + window.localStorage.getItem('access_token'));
+      download (crn) {
+        window.open(basePath + '/course/info/' + crn + '?token=' + window.localStorage.getItem('access_token'))
       },
       onFiltered (filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering

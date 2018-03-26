@@ -6,23 +6,24 @@ import Full from '@/containers/Full'
 
 // Views
 import Dashboard from '@/views/Dashboard'
-
 import Colors from '@/views/theme/Colors'
 import Typography from '@/views/theme/Typography'
+import Charts from '@/views/Charts'
+import Widgets from '@/views/Widgets'
+
 
 import ViewCourse from '@/views/course/Course'
 import Choose from '@/views/course/Choose'
 import Transcript from '@/views/course/Transcript'
-
 import TempCourse from '@/views/teach/TempCourse'
-import Course from '@/views/teach/course'
+import Course from '@/views/teach/Course'
 
+import Role from '@/views/system/Role'
+import Monitor from '@/views/system/Monitor'
+// import User from '@views/system/User'
+// import Registration from '@views/system/Registration'
 
-import Advise from '@/views/advise/Advise'
 import Record from '@/views/advise/Record'
-
-import Charts from '@/views/Charts'
-import Widgets from '@/views/Widgets'
 
 // Views - Components
 import Cards from '@/views/base/Cards'
@@ -143,9 +144,9 @@ const router = new Router({
           },
           children: [
             {
-              path: 'curriculum/manage',
+              path: 'curriculum',
               name: '课程管理',
-              component: Course
+              component: ViewCourse
             },
             {
               path: 'request',
@@ -153,8 +154,8 @@ const router = new Router({
               component: TempCourse
             },
             {
-              path: 'new/create',
-              name: '课程申请管理',
+              path: 'curriculum/detail',
+              name: '课程详情',
               component: Course
             },
             {
@@ -230,22 +231,22 @@ const router = new Router({
             {
               path: 'user',
               name: '用户管理',
-              component: Course
+              component: User
             },
             {
               path: 'role',
               name: '角色与权限',
-              component: Transcript
+              component: Role
             },
             {
               path: 'registration',
               name: '用户注册',
-              component: Choose
+              component: Registration
             },
             {
               path: 'monitor',
               name: '系统监控',
-              component: Choose
+              component: Monitor
             },
           ]
         },
