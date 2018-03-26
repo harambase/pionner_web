@@ -481,28 +481,26 @@
             <div slot="header" v-if="pageMode === 'request'">
               <i className="fa fa-align-justify"></i><strong>预修课分配</strong>
             </div>
+            <b-row  v-show="pageMode === 'create' || pageMode === 'manage' || pageMode === 'view'">
+              <b-col md="3" class="my-1">
+                <label class="col-sm-12 control-label">*分配教师:</label>
+              </b-col>
+              <b-col md="6" class="my-1">
+                <v-select
+                  name="faculty" v-validate="'required'" :option="facultyOptions"
+                  :class="{'is-invalid': errors.has('faculty')}"
+                  @search="facultyList" :filterable="false" v-model="faculty"
+                  :disabled="tempCourse.status!=='0'">
+                </v-select>
+                <div v-show="errors.has('faculty')" class="invalid-tooltip">{{ errors.first('faculty') }}</div>
+              </b-col>
+            </b-row>
+
             <b-row>
-
-              <div class="form-group"
-                   v-if="pageMode === 'create' || pageMode === 'manage' || pageMode === 'view'">
-                <b-col md="2" class="my-1">
-                  <label for="starttime"
-                         class="col-sm-12 control-label">*分配教师:</label>
-                </b-col>
-                <b-col md="8" class="my-1">
-                  <v-select
-                    name="faculty" v-validate="'required'"
-                    :class="{'form-control': true, 'is-invalid': errors.has('faculty')}"
-                    :disabled="tempCourse.status!=='0'">
-                  </v-select>
-                  <div v-show="errors.has('faculty')" class="invalid-tooltip">{{ errors.first('faculty') }}</div>
-                </b-col>
-              </div>
-
-              <b-col md="2" class="my-1">
+              <b-col md="3" class="my-1">
                 <label class="col-sm-12 control-label">预修课程（可多选，可不选）:</label>
               </b-col>
-              <b-col md="8" class="my-1">
+              <b-col md="6" class="my-1">
                 <v-select v-model="preList" :filterable="false" :options="courseOptions"
                           @search="preCourseList" multiple
                           :disabled="tempCourse.status!=='0'">
@@ -563,25 +561,24 @@
               </b-col>
               <b-col md="3" class="my-1">
                 <div class="custom-control custom-radio custom-control-inline">
-                  <input type="checkbox" id="yes" :class="{'custom-control-input': true, 'is-invalid': errors.has('confirm')}"
-                         name="confirm" v-model="confirm" v-validate="'required'"
+                  <input type="checkbox" id="yes"
+                         :class="{'custom-control-input': true, 'is-invalid': errors.has('confirm')}"
+                         name="confirm" v-model="confirm"
                          :disabled="tempCourse.status!=='0'">
                   <label class="custom-control-label" for="yes">确认</label>
                   <div v-show="errors.has('confirm')" class="invalid-tooltip">{{ errors.first('confirm') }}</div>
                 </div>
               </b-col>
-              <div v-if="pageMode === 'create' || pageMode === 'manage'">
-                <b-col md="2" class="my-1">
-                  <label class="col-sm-12 control-label">*管理员操作密码:</label>
-                </b-col>
-                <b-col md="3" class="my-1">
-                  <input type="password"
-                         :class="{'form-control': true, 'is-invalid': errors.has('name')}" minlength="6"
-                         maxlength="16" checkOpPwd="true"
-                         :disabled="tempCourse.status!=='0'"
-                         required/>
-                </b-col>
-              </div>
+
+              <b-col md="2" class="my-1" v-show="pageMode === 'manage' || pageMode === 'create'">
+                <label class="col-sm-12 control-label">*管理员操作密码:</label>
+              </b-col>
+              <b-col md="3" class="my-1" v-show="pageMode === 'manage' || pageMode === 'create'">
+                <input type="password" v-validate="'required'" name="adminPwd"
+                       :class="{'form-control': true, 'is-invalid': errors.has('adminPwd')}"
+                       :disabled="tempCourse.status!=='0'"/>
+              </b-col>
+
               <b-col md="2" class="my-1">
                 <b-button style="width:150px;" class="btn btn-primary"
                           v-if="pageMode === 'create' && id === ''"
@@ -722,7 +719,7 @@
         info: '',
         faculty: '',
         preList: '',
-        goToUrl:'',
+        goToUrl: '',
       }
     },
     mounted () {
@@ -814,8 +811,8 @@
       }
     },
     methods: {
-      goTo(){
-        if(isNotEmpty(this.goToUrl)){
+      goTo () {
+        if (isNotEmpty(this.goToUrl)) {
           this.$router.push({path: this.goToUrl})
         }
       },
@@ -1022,7 +1019,7 @@
           this.tempCourse.courseJson = JSON.stringify(this.course)
 
           axios.put('/request/course/' + this.id, this.tempCourse).then((response) => {
-            if (response.data.code === 2001){
+            if (response.data.code === 2001) {
               this.documentUpload(this.id)
               this.msg = '修改成功，请等待答复!'
               this.showModal = true
@@ -1200,9 +1197,9 @@
 
       documentDownload () {
         if (isNotEmpty(this.id))//申请中的下载
-          window.open(basePath + '/request/course/info/' + this.id  + "?token=" + window.localStorage.getItem('access_token'))
+          window.open(basePath + '/request/course/info/' + this.id + '?token=' + window.localStorage.getItem('access_token'))
         else {//查看下载
-          window.open(basePath + '/course/info/' + this.course.crn  + "?token=" + window.localStorage.getItem('access_token'))
+          window.open(basePath + '/course/info/' + this.course.crn + '?token=' + window.localStorage.getItem('access_token'))
         }
       },
 

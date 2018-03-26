@@ -71,7 +71,7 @@ export default {
     },
     {
       name: '课程申请管理',
-      url: '/teach/request/manage',
+      url: '/teach/request?mode=manage',
       icon: 'icon-pencil',
     },
     {

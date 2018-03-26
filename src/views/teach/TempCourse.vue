@@ -187,7 +187,7 @@
     {key: 'facultyId', label: '申请人ID', sortable: true},
     {key: 'createTime', label: '申请时间', sortable: true},
     {key: 'status', label: '申请状态', sortable: true},
-    {key: 'actions', label: '查看详情'},
+    {key: 'actions', label: '查看详情', sortable: false},
   ]
 
   export default {
@@ -248,11 +248,24 @@
         this.currentPage = 1
       },
       initTable () {
-        this.$refs.tempCourseTable.refresh()
-      },
+        this.$refs.tempCourseTable.refresh()   },
       tempCourseTable (ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
-        let url = '/request/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy + '&mode=student'
+        let url = '/request/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol='
+        switch (ctx.sortBy){
+          case 'courseJson':
+            url += 'course_json'
+            break;
+          case 'facultyId':
+            url += 'faculty_id'
+            break;
+          case 'createTime':
+            url += 'create_time'
+            break;
+          default:
+            url += ctx.sortBy
+            break;
+        }
         if (this.isNotEmpty(this.status))
           url += '&viewStatus=' + this.status
         if (this.isNotEmpty(this.pageMode))

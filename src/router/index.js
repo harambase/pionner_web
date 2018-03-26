@@ -136,7 +136,7 @@ const router = new Router({
         },
         {
           path: 'teach',
-          redirect: '/teach/curriculum/manage',
+          redirect: '/teach/curriculum',
           name: '教务管理',
           component: {
             render (c) { return c('router-view') }
@@ -148,9 +148,14 @@ const router = new Router({
               component: Course
             },
             {
-              path: 'request/manage',
+              path: 'request',
               name: '课程申请管理',
-              component: Typography
+              component: TempCourse
+            },
+            {
+              path: 'new/create',
+              name: '课程申请管理',
+              component: Course
             },
             {
               path: 'transcript',
@@ -164,8 +169,8 @@ const router = new Router({
             },
             {
               path: 'pin',
-              name: '学分管理',
-              component: Course
+              name: '识别码管理',
+              component: Typography
             },
           ]
         },
