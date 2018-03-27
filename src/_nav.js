@@ -100,7 +100,7 @@ export default {
     },
     {
       name: '用户管理',
-      url: '/system/user',
+      url: '/system/user?mode=view',
       icon: 'icon-book-open'
     },
     {

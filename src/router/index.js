@@ -19,7 +19,7 @@ import Course from '@/views/teach/Course'
 
 import Role from '@/views/system/Role'
 import Monitor from '@/views/system/Monitor'
-// import User from '@views/system/User'
+import User from '@/views/system/User'
 // import Registration from '@views/system/Registration'
 
 import Record from '@/views/advise/Record'
@@ -230,7 +230,7 @@ const router = new Router({
             {
               path: 'user',
               name: '用户管理',
-              component: Role
+              component: User
             },
             {
               path: 'role',

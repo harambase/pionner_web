@@ -1,191 +1,161 @@
 ﻿<template>
-  <div class="header" v-if="pageMode === 'create' || pageMode === 'view'">
-    <h1 class="page-header">
-      先锋系统管理
-      <small v-if="pageMode === 'view'">用户管理</small>
-      <small v-if="pageMode === 'create'">创建用户</small>
-    </h1>
-    <ol class="breadcrumb">
-      <li><a href="/index">主页</a></li>
-      <li><a href="#">系统管理</a></li>
-      <li class="active" v-if="pageMode === 'view'">用户管理</li>
-      <li class="active" v-if="pageMode === 'create'">创建用户</li>
-    </ol>
-  </div>
-
-  <div class="header" v-if="pageMode === 'profile'">
-    <h1 class="page-header">
-      先锋OA系统
-      <small>个人中心</small>
-    </h1>
-    <ol class="breadcrumb">
-      <li><a href="/index">主页</a></li>
-      <li class="active">个人中心</li>
-    </ol>
-  </div>
-
-  <b-row>
-    <b-col md="12" v-if="table && pageMode === 'view'">
-      <b-card header-tag="header"
+  <div class="animated fadeIn">
+    <b-row>
+      <b-col md="12" v-if="table && pageMode === 'view'">
+          <b-col cols="12">
+            <b-card
+              header-tag="header"
               footer-tag="footer">
-        <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>系统用户列表</strong>
-        </div>
-        <b-col cols="12">
-          <b-card
-            header-tag="header"
-            footer-tag="footer">
-            <div slot="header">
-              <i className="fa fa-align-justify"></i><strong>系统用户列表</strong>
-            </div>
-            <b-container fluid>
-              <!-- User Interface controls -->
-              <b-row>
-                <b-col md="6" class="my-1">
-                  <b-form-group horizontal label="每页显示条数：" class="mb-0">
-                    <b-form-select :options="pageOptions" v-model="perPage"/>
-                  </b-form-group>
-                </b-col>
-                <b-col md="6" class="my-1">
-                  <b-form-group horizontal label="模糊查询：" class="mb-0">
-                    <b-input-group>
-                      <b-form-input v-model="filter"/>
-                      <b-input-group-button>
-                        <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
-                      </b-input-group-button>
-                    </b-input-group>
-                  </b-form-group>
-                </b-col>
-              </b-row>
+              <div slot="header">
+                <i className="fa fa-align-justify"></i><strong>系统用户列表</strong>
+              </div>
+              <b-container fluid>
+                <!-- User Interface controls -->
+                <b-row>
+                  <b-col md="6" class="my-1">
+                    <b-form-group horizontal label="每页显示条数：" class="mb-0">
+                      <b-form-select :options="pageOptions" v-model="perPage"/>
+                    </b-form-group>
+                  </b-col>
+                  <b-col md="6" class="my-1">
+                    <b-form-group horizontal label="模糊查询：" class="mb-0">
+                      <b-input-group>
+                        <b-form-input v-model="filter"/>
+                        <b-input-group-button>
+                          <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
+                        </b-input-group-button>
+                      </b-input-group>
+                    </b-form-group>
+                  </b-col>
+                </b-row>
 
-              <!-- Main table element -->
-              <b-table show-empty
-                       stacked="md"
-                       ref="userTable"
-                       :striped=true
-                       :fixed=true
-                       :hover=true
-                       :items="userTable"
-                       :fields="field"
-                       :current-page="currentPage"
-                       :per-page="perPage"
-                       :filter="filter"
-                       :sort-by.sync="sortBy"
-                       :sort-desc.sync="sortDesc"
-                       :isBusy="false"
-                       @filtered="onFiltered"
-              >
-                <template slot="status" slot-scope="row">
-                  <p v-if="row.value === 1" style="color:green;">已启用</p>
-                  <p v-if="row.value === 0" style="color:red;">已禁用</p>
-                </template>
-                <template slot="actions" slot-scope="row">
-                  <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
-                    {{ row.detailsShowing ? '隐藏' : '展示' }}详情
-                  </b-button>
-                </template>
-                <template slot="row-details" slot-scope="row">
-                  <b-card>
-                    <b-list-group>
-                      <b-list-group-item href="#" title="编辑用户"
-                                         class="flex-column align-items-start"
-                                         :disabled="row.item.status === '0'">
-                        <div class="d-flex w-100 justify-content-between">
-                          <h5 class="mb-1">用户 <strong>{{row.item.lastName}}, {{row.item.firstName}}</strong> 的信息</h5>
-                          <small class="text-muted">用户ID：{{row.item.userId}}</small>
-                        </div>
-                        <hr/>
-                        <div class="mr-1">
-                          <dl class="row">
-                            <dt class="col-sm-1">邮箱:</dt>
-                            <dd class="col-sm-1">{{row.item.email}}</dd>
+                <!-- Main table element -->
+                <b-table show-empty
+                         stacked="md"
+                         ref="userTable"
+                         :striped=true
+                         :fixed=true
+                         :hover=true
+                         :items="userTable"
+                         :fields="field"
+                         :current-page="currentPage"
+                         :per-page="perPage"
+                         :filter="filter"
+                         :sort-by.sync="sortBy"
+                         :sort-desc.sync="sortDesc"
+                         :isBusy="false"
+                         @filtered="onFiltered"
+                >
+                  <template slot="status" slot-scope="row">
+                    <p v-if="row.value === '1'" style="color:green;">已启用</p>
+                    <p v-if="row.value === '0'" style="color:red;">已禁用</p>
+                  </template>
+                  <template slot="actions" slot-scope="row">
+                    <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
+                      {{ row.detailsShowing ? '隐藏' : '展示' }}详情
+                    </b-button>
+                  </template>
+                  <template slot="row-details" slot-scope="row">
+                    <b-card>
+                      <b-list-group>
+                        <b-list-group-item href="#" title="编辑用户"
+                                           class="flex-column align-items-start"
+                                           :disabled="row.item.status === '0'">
+                          <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">用户 <strong>{{row.item.lastName}}, {{row.item.firstName}}</strong> 的信息</h5>
+                            <small class="text-muted">用户ID：{{row.item.userId}}</small>
+                          </div>
+                          <hr/>
+                          <div class="mr-1">
+                            <dl class="row">
+                              <dt class="col-sm-1">邮箱:</dt>
+                              <dd class="col-sm-1">{{row.item.email}}</dd>
 
-                            <dt class="col-sm-1">QQ:</dt>
-                            <dd class="col-sm-1">{{row.item.qq}}</dd>
+                              <dt class="col-sm-1">QQ:</dt>
+                              <dd class="col-sm-1">{{row.item.qq}}</dd>
 
-                            <dt class="col-sm-1">电话:</dt>
-                            <dd class="col-sm-1">{{row.item.tel}}</dd>
+                              <dt class="col-sm-1">电话:</dt>
+                              <dd class="col-sm-1">{{row.item.tel}}</dd>
 
-                            <dt class="col-sm-1">微信号:</dt>
-                            <dd class="col-sm-1">{{row.item.weChat}}</dd>
+                              <dt class="col-sm-1">微信号:</dt>
+                              <dd class="col-sm-1">{{row.item.weChat}}</dd>
 
-                            <dt class="col-sm-1">性别:</dt>
-                            <dd class="col-sm-1">{{row.item.gender}}</dd>
+                              <dt class="col-sm-1">性别:</dt>
+                              <dd class="col-sm-1">{{row.item.gender}}</dd>
 
-                          </dl>
-                          <dl class="row">
+                            </dl>
+                            <dl class="row">
 
-                            <dt class="col-sm-1">宿舍号:</dt>
-                            <dd class="col-sm-3">{{row.item.dorm}}</dd>
+                              <dt class="col-sm-1">宿舍号:</dt>
+                              <dd class="col-sm-3">{{row.item.dorm}}</dd>
 
-                            <dt class="col-sm-1">家庭住址:</dt>
-                            <dd class="col-sm-3">{{row.item.address}}</dd>
+                              <dt class="col-sm-1">家庭住址:</dt>
+                              <dd class="col-sm-3">{{row.item.address}}</dd>
 
-                          </dl>
-                          <dl class="row">
-                            <dt class="col-sm-1">基本信息表下载:</dt>
-                            <dd class="col-sm-5"
-                                v-if="row.item.baseInfo !== '' &&
+                            </dl>
+                            <dl class="row">
+                              <dt class="col-sm-1">基本信息表下载:</dt>
+                              <dd class="col-sm-5"
+                                  v-if="row.item.baseInfo !== '' &&
                                     row.item.baseInfo !== undefined &&
                                     row.item.baseInfo !== null ">
-                              <a href="#" @click="documentDownload(row.item.userId)">{{JSON.parse(row.item.baseInfo).name}}</a>
-                            </dd>
-                          </dl>
-                          <dl class="row">
-                            <dt class="col-sm-1">备注:</dt>
-                            <dd class="col-sm-5"><p style="color:red">{{row.item.comment}}</p></dd>
-                          </dl>
+                                <a href="#"
+                                   @click="documentDownload(row.item.userId)">{{JSON.parse(row.item.baseInfo).name}}</a>
+                              </dd>
+                            </dl>
+                            <dl class="row">
+                              <dt class="col-sm-1">备注:</dt>
+                              <dd class="col-sm-5"><p style="color:red">{{row.item.comment}}</p></dd>
+                            </dl>
 
-                          <dl class="row" v-if="pageMode === 'manage'">
-                            <dt class="col-sm-1">操作:</dt>
-                            <dd class="col-sm-5">
-                              <b-button size="sm"
-                                        class="btn btn-danger"
-                                        @click.stop="deleteUser(row.item.userId)">
-                                删除该用户
-                              </b-button>
+                            <dl class="row">
+                              <dt class="col-sm-1">操作:</dt>
+                              <dd class="col-sm-5">
+                                <b-button size="sm"
+                                          class="btn btn-danger"
+                                          @click.stop="deleteUser(row.item.userId)">
+                                  删除该用户
+                                </b-button>
 
-                              <b-button size="sm"
-                                        class="btn btn-primary"
-                                        @click.stop="userDetail(row.item.userId)">
-                                修改该用户
-                              </b-button>
+                                <b-button size="sm"
+                                          class="btn btn-primary"
+                                          @click.stop="userDetail(row.item.userId)">
+                                  修改该用户
+                                </b-button>
 
-                              <b-button size="sm"
-                                        class="btn btn-primary"
-                                        @click.stop="showCourseStudent(row.item.crn)">
-                                禁用该用户
-                              </b-button>
-                            </dd>
-                          </dl>
-                        </div>
-                      </b-list-group-item>
-                    </b-list-group>
-                  </b-card>
-                </template>
-              </b-table>
-              <b-col md="6" class="my-1">
-                <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
-                              class="my-0"/>
-              </b-col>
-            </b-container>
-          </b-card>
-        </b-col>
-      </b-card>
-    </b-col>
-    <b-col md="12" v-if="detail || (pageMode === 'create' || pageMode === 'profile')">
-      <b-card header-tag="header"
-              footer-tag="footer">
-        <div slot="header">
-          <b-button v-if="pageMode === 'view'"
-                    class="btn btn-info"
-                    @click="showUserTable">
-            <i class="fa fa-arrow-left"></i> 返回列表
-          </b-button>
-          <i className="fa fa-align-justify"></i><strong>用户信息详情</strong>
-          <div class="panel-body">
-            <form class="form-horizontal" id="editUserForm">
-              <div class="col-md-7 col-sm-4">
+                                <b-button size="sm"
+                                          class="btn btn-primary"
+                                          @click.stop="showCourseStudent(row.item.crn)">
+                                  禁用该用户
+                                </b-button>
+                              </dd>
+                            </dl>
+                          </div>
+                        </b-list-group-item>
+                      </b-list-group>
+                    </b-card>
+                  </template>
+                </b-table>
+                <b-col md="6" class="my-1">
+                  <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
+                                class="my-0"/>
+                </b-col>
+              </b-container>
+            </b-card>
+          </b-col>
+      </b-col>
+      <b-col md="12" v-if="detail || (pageMode === 'create' || pageMode === 'profile')">
+        <b-card header-tag="header"
+                footer-tag="footer">
+          <div slot="header">
+            <b-button v-if="pageMode === 'view'"
+                      class="btn btn-info"
+                      @click="showUserTable">
+              <i class="fa fa-arrow-left"></i> 返回列表
+            </b-button>
+            <i className="fa fa-align-justify"></i><strong>用户信息详情</strong>
+            <b-row>
+              <b-col md="7">
                 <div class="panel panel-primary">
                   <div class="panel-heading">
                     账户信息
@@ -318,8 +288,8 @@
                     注意：*为必填项，其余选填。
                   </div>
                 </div>
-              </div>
-              <div class="col-md-5 col-sm-4">
+              </b-col>
+              <b-col md="5">
                 <div class="panel panel-danger">
                   <div class="panel-heading">
                     用户头像
@@ -348,9 +318,10 @@
                     注意：图片大小不要超过10M。
                   </div>
                 </div>
-              </div>
-
-              <div class="col-md-12 col-sm-4" v-if="pageMode==='create' || pageMode ==='view'">
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col md="12" v-if="pageMode==='create' || pageMode ==='view'">
                 <div class="panel panel-success">
                   <div class="panel-heading">
                     账户属性
@@ -455,8 +426,8 @@
                     注意：1.此处为角色，为用户的属性，非权限。2.用户禁用后将无法登录，但数据不会删除。3.密码重置后，用户登录将要求修改密码。
                   </div>
                 </div>
-              </div>
-              <div class="col-md-12 col-sm-4">
+              </b-col>
+              <b-col md="12">
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     更多信息
@@ -504,8 +475,8 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-12 col-sm-4">
+              </b-col>
+              <b-col md="12">
                 <div class="panel panel-default">
                   <div class="panel-body">
                     <div class="form-group">
@@ -549,32 +520,33 @@
                     注意：操作密码不是登录密码
                   </div>
                 </div>
-              </div>
-            </form>
+              </b-col>
+            </b-row>
           </div>
-        </div>
-      </b-card>
-    </b-col>
-  </b-row>
+        </b-card>
+      </b-col>
+    </b-row>
 
-  <b-modal v-model="showDeleteModal"
-           size="sm"
-           header-bg-variant='danger'
-           @ok="deleteTempCourse"
-           centered
-           title="不可逆操作警告！">
-    <div class="d-block text-center">
-      <h3>确认删除该用户？</h3>
-    </div>
-  </b-modal>
-  <b-modal v-model="showModal" size="sm"
-           :header-bg-variant="headerBgVariant"
-           @ok="goTo"
-           ok-only centered title="消息">
-    <div class="d-block text-center">
-      <h3>{{msg}}</h3>
-    </div>
-  </b-modal>
+    <b-modal v-model="showDeleteModal"
+             size="sm"
+             header-bg-variant='danger'
+             @ok="deleteUser"
+             centered
+             title="不可逆操作警告！">
+      <div class="d-block text-center">
+        <h3>确认删除该用户？</h3>
+      </div>
+    </b-modal>
+
+    <b-modal v-model="showModal" size="sm"
+             :header-bg-variant="headerBgVariant"
+             @ok="goTo"
+             ok-only centered title="消息">
+      <div class="d-block text-center">
+        <h3>{{msg}}</h3>
+      </div>
+    </b-modal>
+  </div>
 </template>
 
 <script>
@@ -596,7 +568,7 @@
     name: 'User',
     data () {
       return {
-        userList: [],
+        userId:'',
         user: {
           userId: '',
           createTime: '',
@@ -627,6 +599,7 @@
         table: true,
         detail: false,
         pageMode: this.$route.fullPath.split('&')[0].split('=')[1],
+        goTo: '',
         msg: '',
         showModal: false,
         showDeleteModal: false,
@@ -726,25 +699,23 @@
                 }
               })
             } else {
-              this.msg = response.data.msg
-              this.showModal = true
-              this.headerBgVariant = 'danger'
+
             }
           })
         }
       },
-      deleteUser (userId) {
-        Showbo.Msg.confirm('确认删除该用户？', function () {
-          if ($('.btnfocus').val() !== '取消') {
-            axios.delete('/user/' + userId).then((response) => {
-              if (response.data.code === 2001)
-                Showbo.Msg.alert('删除成功!', function () {
-                  userTable.draw()
-                })
-              else
-                Showbo.Msg.alert(response.data.msg, function () {
-                })
-            })
+      deleteUser () {
+        axios.delete('/user/' + this.userId).then((response) => {
+          if (response.data.code === 2001) {
+            this.msg = '删除成功!'
+            this.showModal = true
+            this.headerBgVariant = 'success'
+            this.initTable()
+          }
+          else {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
           }
         })
       },
@@ -774,7 +745,7 @@
         this.detail = false
         this.showDocument = false
         this.showProfile = false
-        this.initTable();
+        this.initTable()
       },
 
       update: function () {
