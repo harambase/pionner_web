@@ -95,7 +95,7 @@
                 <input type="password" class="form-control" placeholder="密码" name="password"
                        v-validate="'required|min:6|verify_password'"
                        :class="{'form-control': true, 'is-invalid': errors.has('password')}"
-                       v-model="regUser.password" required>
+                       v-model="regUser.password">
                 <div v-show="errors.has('password')" class="invalid-tooltip">{{ errors.first('password') }}</div>
               </b-input-group>
 

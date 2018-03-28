@@ -2,147 +2,146 @@
   <div class="animated fadeIn">
     <b-row>
       <b-col md="12" v-if="table && pageMode === 'view'">
-          <b-col cols="12">
-            <b-card
-              header-tag="header"
-              footer-tag="footer">
-              <div slot="header">
-                <i className="fa fa-align-justify"></i><strong>系统用户列表</strong>
-              </div>
-              <b-container fluid>
-                <!-- User Interface controls -->
-                <b-row>
-                  <b-col md="6" class="my-1">
-                    <b-form-group horizontal label="每页显示条数：" class="mb-0">
-                      <b-form-select :options="pageOptions" v-model="perPage"/>
-                    </b-form-group>
-                  </b-col>
-                  <b-col md="6" class="my-1">
-                    <b-form-group horizontal label="模糊查询：" class="mb-0">
-                      <b-input-group>
-                        <b-form-input v-model="filter"/>
-                        <b-input-group-button>
-                          <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
-                        </b-input-group-button>
-                      </b-input-group>
-                    </b-form-group>
-                  </b-col>
-                </b-row>
+        <b-col cols="12">
+          <b-card
+            header-tag="header"
+            footer-tag="footer">
+            <div slot="header">
+              <i className="fa fa-align-justify"></i><strong>系统用户列表</strong>
+            </div>
+            <b-container fluid>
+              <!-- User Interface controls -->
+              <b-row>
+                <b-col md="6" class="my-1">
+                  <b-form-group horizontal label="每页显示条数：" class="mb-0">
+                    <b-form-select :options="pageOptions" v-model="perPage"/>
+                  </b-form-group>
+                </b-col>
+                <b-col md="6" class="my-1">
+                  <b-form-group horizontal label="模糊查询：" class="mb-0">
+                    <b-input-group>
+                      <b-form-input v-model="filter"/>
+                      <b-input-group-button>
+                        <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
+                      </b-input-group-button>
+                    </b-input-group>
+                  </b-form-group>
+                </b-col>
+              </b-row>
 
-                <!-- Main table element -->
-                <b-table show-empty
-                         stacked="md"
-                         ref="userTable"
-                         :striped=true
-                         :fixed=true
-                         :hover=true
-                         :items="userTable"
-                         :fields="field"
-                         :current-page="currentPage"
-                         :per-page="perPage"
-                         :filter="filter"
-                         :sort-by.sync="sortBy"
-                         :sort-desc.sync="sortDesc"
-                         :isBusy="false"
-                         @filtered="onFiltered"
-                >
-                  <template slot="status" slot-scope="row">
-                    <p v-if="row.value === '1'" style="color:green;">已启用</p>
-                    <p v-if="row.value === '0'" style="color:red;">已禁用</p>
-                  </template>
-                  <template slot="actions" slot-scope="row">
-                    <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
-                      {{ row.detailsShowing ? '隐藏' : '展示' }}详情
-                    </b-button>
-                  </template>
-                  <template slot="row-details" slot-scope="row">
-                    <b-card>
-                      <b-list-group>
-                        <b-list-group-item href="#" title="编辑用户"
-                                           class="flex-column align-items-start"
-                                           :disabled="row.item.status === '0'">
-                          <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">用户 <strong>{{row.item.lastName}}, {{row.item.firstName}}</strong> 的信息</h5>
-                            <small class="text-muted">用户ID：{{row.item.userId}}</small>
-                          </div>
-                          <hr/>
-                          <div class="mr-1">
-                            <dl class="row">
-                              <dt class="col-sm-1">邮箱:</dt>
-                              <dd class="col-sm-1">{{row.item.email}}</dd>
+              <!-- Main table element -->
+              <b-table show-empty
+                       stacked="md"
+                       ref="userTable"
+                       :striped=true
+                       :fixed=true
+                       :hover=true
+                       :items="userTable"
+                       :fields="field"
+                       :current-page="currentPage"
+                       :per-page="perPage"
+                       :filter="filter"
+                       :sort-by.sync="sortBy"
+                       :sort-desc.sync="sortDesc"
+                       :isBusy="false"
+                       @filtered="onFiltered"
+              >
+                <template slot="status" slot-scope="row">
+                  <p v-if="row.value === '1'" style="color:green;">已启用</p>
+                  <p v-if="row.value === '0'" style="color:red;">已禁用</p>
+                </template>
+                <template slot="actions" slot-scope="row">
+                  <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
+                    {{ row.detailsShowing ? '隐藏' : '展示' }}详情
+                  </b-button>
+                </template>
+                <template slot="row-details" slot-scope="row">
+                  <b-card>
+                    <b-list-group>
+                      <b-list-group-item href="#" title="编辑用户"
+                                         class="flex-column align-items-start"
+                                         :disabled="row.item.status === '0'">
+                        <div class="d-flex w-100 justify-content-between">
+                          <h5 class="mb-1">用户 <strong>{{row.item.lastName}}, {{row.item.firstName}}</strong> 的信息</h5>
+                          <small class="text-muted">用户ID：{{row.item.userId}}</small>
+                        </div>
+                        <hr/>
+                        <div class="mr-1">
+                          <dl class="row">
+                            <dt class="col-sm-1">QQ:</dt>
+                            <dd class="col-sm-1">{{row.item.qq}}</dd>
 
-                              <dt class="col-sm-1">QQ:</dt>
-                              <dd class="col-sm-1">{{row.item.qq}}</dd>
+                            <dt class="col-sm-1">电话:</dt>
+                            <dd class="col-sm-1">{{row.item.tel}}</dd>
 
-                              <dt class="col-sm-1">电话:</dt>
-                              <dd class="col-sm-1">{{row.item.tel}}</dd>
+                            <dt class="col-sm-1">微信号:</dt>
+                            <dd class="col-sm-1">{{row.item.weChat}}</dd>
 
-                              <dt class="col-sm-1">微信号:</dt>
-                              <dd class="col-sm-1">{{row.item.weChat}}</dd>
+                            <dt class="col-sm-1">性别:</dt>
+                            <dd class="col-sm-1">{{row.item.gender}}</dd>
 
-                              <dt class="col-sm-1">性别:</dt>
-                              <dd class="col-sm-1">{{row.item.gender}}</dd>
+                          </dl>
+                          <dl class="row">
+                            <dt class="col-sm-1">邮箱:</dt>
+                            <dd class="col-sm-3">{{row.item.email}}</dd>
 
-                            </dl>
-                            <dl class="row">
+                            <dt class="col-sm-1">宿舍号:</dt>
+                            <dd class="col-sm-3">{{row.item.dorm}}</dd>
 
-                              <dt class="col-sm-1">宿舍号:</dt>
-                              <dd class="col-sm-3">{{row.item.dorm}}</dd>
+                            <dt class="col-sm-1">家庭住址:</dt>
+                            <dd class="col-sm-3">{{row.item.address}}</dd>
 
-                              <dt class="col-sm-1">家庭住址:</dt>
-                              <dd class="col-sm-3">{{row.item.address}}</dd>
-
-                            </dl>
-                            <dl class="row">
-                              <dt class="col-sm-1">基本信息表下载:</dt>
-                              <dd class="col-sm-5"
-                                  v-if="row.item.baseInfo !== '' &&
+                          </dl>
+                          <dl class="row">
+                            <dt class="col-sm-1">基本信息表:</dt>
+                            <dd class="col-sm-5"
+                                v-if="row.item.baseInfo !== '' &&
                                     row.item.baseInfo !== undefined &&
                                     row.item.baseInfo !== null ">
-                                <a href="#"
-                                   @click="documentDownload(row.item.userId)">{{JSON.parse(row.item.baseInfo).name}}</a>
-                              </dd>
-                            </dl>
-                            <dl class="row">
-                              <dt class="col-sm-1">备注:</dt>
-                              <dd class="col-sm-5"><p style="color:red">{{row.item.comment}}</p></dd>
-                            </dl>
+                              <a href="#"
+                                 @click="documentDownload(row.item.userId)">{{JSON.parse(row.item.baseInfo).name}}</a>
+                            </dd>
+                          </dl>
+                          <dl class="row">
+                            <dt class="col-sm-1">备注:</dt>
+                            <dd class="col-sm-5"><p style="color:red">{{row.item.comment}}</p></dd>
+                          </dl>
 
-                            <dl class="row">
-                              <dt class="col-sm-1">操作:</dt>
-                              <dd class="col-sm-5">
-                                <b-button size="sm"
-                                          class="btn btn-danger"
-                                          @click.stop="deleteUser(row.item.userId)">
-                                  删除该用户
-                                </b-button>
+                          <dl class="row">
+                            <dt class="col-sm-1">操作:</dt>
+                            <dd class="col-sm-5">
+                              <b-button size="sm"
+                                        class="btn btn-danger"
+                                        @click.stop="deleteUser(row.item.userId)">
+                                删除该用户
+                              </b-button>
 
-                                <b-button size="sm"
-                                          class="btn btn-primary"
-                                          @click.stop="userDetail(row.item.userId)">
-                                  修改该用户
-                                </b-button>
+                              <b-button size="sm"
+                                        class="btn btn-info"
+                                        @click.stop="userDetail(row.item.userId)">
+                                修改该用户
+                              </b-button>
 
-                                <b-button size="sm"
-                                          class="btn btn-primary"
-                                          @click.stop="showCourseStudent(row.item.crn)">
-                                  禁用该用户
-                                </b-button>
-                              </dd>
-                            </dl>
-                          </div>
-                        </b-list-group-item>
-                      </b-list-group>
-                    </b-card>
-                  </template>
-                </b-table>
-                <b-col md="6" class="my-1">
-                  <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
-                                class="my-0"/>
-                </b-col>
-              </b-container>
-            </b-card>
-          </b-col>
+                              <b-button size="sm"
+                                        class="btn btn-primary"
+                                        @click.stop="showCourseStudent(row.item.crn)">
+                                禁用该用户
+                              </b-button>
+                            </dd>
+                          </dl>
+                        </div>
+                      </b-list-group-item>
+                    </b-list-group>
+                  </b-card>
+                </template>
+              </b-table>
+              <b-col md="6" class="my-1">
+                <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
+                              class="my-0"/>
+              </b-col>
+            </b-container>
+          </b-card>
+        </b-col>
       </b-col>
       <b-col md="12" v-if="detail || (pageMode === 'create' || pageMode === 'profile')">
         <b-card header-tag="header"
@@ -153,376 +152,350 @@
                       @click="showUserTable">
               <i class="fa fa-arrow-left"></i> 返回列表
             </b-button>
-            <i className="fa fa-align-justify"></i><strong>用户信息详情</strong>
-            <b-row>
-              <b-col md="7">
-                <div class="panel panel-primary">
-                  <div class="panel-heading">
-                    账户信息
-                  </div>
-                  <div class="panel-body">
-                    <div class="form-group">
-                      <div class="col-sm-2">
-                        <label for="year-semester"
-                               class="col-sm-12 control-label">*注册学期:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <input id="year-semester" class="form-control" required disabled
-                               v-model="user.info"/>
-                      </div>
-                      <div class="col-sm-2">
-                        <label for="userId"
-                               class="col-sm-12 control-label">*用户ID:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <input id="userId" class="form-control" required disabled
-                               v-model="user.userId"/>
-                      </div>
-                    </div>
-                    <div class="form-group"
-                         v-if="pageMode==='view' || pageMode === 'profile'">
-                      <div class="col-sm-2">
-                        <label for="username"
-                               class="col-sm-12 control-label">*用户名:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <input id="username" class="form-control" minlength="4"
-                               maxlength="20" required v-model="user.username"/>
-                      </div>
-                    </div>
-                    <hr/>
-                    <div class="form-group">
-                      <div class="col-sm-2">
-                        <label for="lastName"
-                               class="col-sm-12 control-label">*姓:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <input id="lastName" class="form-control" minlength="1"
-                               maxlength="20" required v-model="user.lastName"/>
-                      </div>
-                      <div class="col-sm-2">
-                        <label for="firstName"
-                               class="col-sm-12 control-label">*名:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <input id="firstName" class="form-control" minlength="1"
-                               maxlength="20" required v-model="user.firstName"/>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="col-sm-2">
-                        <label for="birthday"
-                               class="col-sm-12 control-label">*生日:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <input id="birthday" class="form-control" minlength="10"
-                               maxlength="10" required v-model="user.birthday"/>
-                      </div>
-                      <div class="col-sm-2">
-                        <label for="email" class="col-sm-12 control-label">*邮箱:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <input id="email" type="email" class="form-control" required
-                               v-model="user.email"/>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="col-sm-2">
-                        <label for="tel" class="col-sm-12 control-label">*电话号:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <input id="tel" isDigits="true" class="form-control"
-                               minlength="8"
-                               maxlength="11" required v-model="user.tel"/>
-                      </div>
-                      <div class="col-sm-2">
-                        <label for="dorm" class="col-sm-12 control-label">宿舍号:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <input id="dorm" class="form-control" v-model="user.dorm"/>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="col-sm-2">
-                        <label for="qq" class="col-sm-12 control-label">QQ号:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <input id="qq" isDigits="true" class="form-control"
-                               minlength="8"
-                               maxlength="20" v-model="user.qq"/>
-                      </div>
-                      <div class="col-sm-2">
-                        <label for="weChat" class="col-sm-12 control-label">微信号:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <input id="weChat" class="form-control" v-model="user.weChat"/>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="col-sm-2">
-                        <label for="qq" class="col-sm-12 control-label">*性别:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <div class="radio3 radio-check radio-success radio-inline">
-                          <input type="radio" id="male" name="gender" value="male"
-                                 v-model="user.gender">
-                          <label for="male">男</label>
-                        </div>
-                        <div class="radio3 radio-check radio-success radio-inline">
-                          <input type="radio" id="female" name="gender" value="female"
-                                 v-model="user.gender">
-                          <label for="female">女</label>
-                        </div>
-                      </div>
-                      <div class="col-sm-2">
-                        <label for="address"
-                               class="col-sm-12 control-label">家庭住址:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <input id="address" class="form-control"
-                               v-model="user.address"/>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel-footer">
-                    注意：*为必填项，其余选填。
-                  </div>
-                </div>
-              </b-col>
-              <b-col md="5">
-                <div class="panel panel-danger">
-                  <div class="panel-heading">
-                    用户头像
-                  </div>
-                  <div class="panel-body">
-                    <div class="form-group">
-                      <div class="col-sm-6">
-                        <input type="file" id="profile" accept="image/*"
-                               onchange="previewImg()">
-                        <p>上传头像预览：</p>
-                        <img id="preview" style="width: 230px;height: 230px">
-                        <button style="width: 100%; margin-top: 20px"
-                                class="btn btn-primary btn-info"
-                                onclick="profileUpload()">
-                          上传
-                        </button>
-                      </div>
-                      <div class="col-sm-6" v-if="showProfile">
-                        <p>当前头像：</p>
-                        <img id="current" v-bind:src="user.profile.path"
-                             style="width: 230px;height: 230px" class="profile">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel-footer">
-                    注意：图片大小不要超过10M。
-                  </div>
-                </div>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col md="12" v-if="pageMode==='create' || pageMode ==='view'">
-                <div class="panel panel-success">
-                  <div class="panel-heading">
-                    账户属性
-                  </div>
-                  <div class="panel-body">
-                    <div class="form-group">
-                      <div class="col-sm-2">
-                        <label class="col-sm-12 control-label">*角色:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <div
-                          class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
-                          <input type="checkbox" id="student1" name="type" value="s"
-                                 v-model="userType">
-                          <label for="student1">学生</label>
-                        </div>
-                        <div
-                          class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
-                          <input type="checkbox" id="faculty1" name="type" value="f"
-                                 v-model="userType">
-                          <label for="faculty1">教师</label>
-                        </div>
-                        <div
-                          class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
-                          <input type="checkbox" id="admin1" name="type" value="a"
-                                 v-model="userType">
-                          <label for="admin1">系统管理员</label>
-                        </div>
-                      </div>
-                      <div class="col-sm-2">
-                        <label class="col-sm-12 control-label">*账户启停:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <div class="radio3 radio-check radio-success radio-inline">
-                          <input type="radio" id="active" name="status" value="1"
-                                 v-model="user.status">
-                          <label for="active">启用</label>
-                        </div>
-                        <div class="radio3 radio-check radio-success radio-inline">
-                          <input type="radio" id="inactive" name="status" value="0"
-                                 v-model="user.status">
-                          <label for="inactive">禁用</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="col-sm-2">
-                        <label class="col-sm-12 control-label">*高级权限:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <div
-                          class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                          <input type="checkbox" id="teach" value="2"
-                                 v-model="userRole">
-                          <label for="teach">教务</label>
-                        </div>
-                        <div
-                          class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                          <input type="checkbox" id="system" value="4"
-                                 v-model="userRole">
-                          <label for="system">系统</label>
-                        </div>
-                        <div
-                          class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                          <input type="checkbox" id="logistic" value="3"
-                                 v-model="userRole">
-                          <label for="logistic">后勤</label>
-                        </div>
-                        <div
-                          class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                          <input type="checkbox" id="admin" value="1"
-                                 v-model="userRole">
-                          <label for="admin" color="red">超级管理员</label>
-                        </div>
-                      </div>
-
-                      <div v-if="pageMode === 'view'">
-                        <div class="col-sm-2">
-                          <label class="col-sm-12 control-label">密码重置(不选不会重置):</label>
-                        </div>
-                        <div class="col-sm-3">
-                          <div
-                            class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                            <input type="checkbox" id="reset" name="reset"
-                                   v-model="passwordReset">
-                            <label for="reset">重置</label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group" v-if="pageMode === 'create'">
-                      <div class="col-sm-2">
-                        <label class="col-sm-12 control-label">密码:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <input type="text" class="form-control" v-model="user.password">
-
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel-footer">
-                    注意：1.此处为角色，为用户的属性，非权限。2.用户禁用后将无法登录，但数据不会删除。3.密码重置后，用户登录将要求修改密码。
-                  </div>
-                </div>
-              </b-col>
-              <b-col md="12">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    更多信息
-                  </div>
-                  <div class="panel-body">
-                    <div class="form-group" v-if="!showDocument">
-                      <div class="col-sm-2">
-                        <label for="password"
-                               class="col-sm-12 control-label">上传个人信息文件:</label>
-                      </div>
-                      <div class="col-sm-6">
-                        <input type="file" id="document">
-                      </div>
-                      <div class="col-sm-2">
-                        <button style="width: 100%" class="btn btn-primary btn-info"
-                                onclick="documentUpload()">
-                          上传
-                        </button>
-                      </div>
-                    </div>
-                    <div class="form-group" v-if="showDocument">
-                      <div class="col-sm-2">
-                        <label class="col-sm-12 control-label">个人信息文件:</label>
-                      </div>
-                      <div class="col-sm-4" style="margin-top: 10px;">
-                        下载文件： <a onclick="documentDownload()" style="cursor: pointer;"
-                                 class="control-label">{{user.userInfo.name}}</a>
-                      </div>
-                      <div class="col-sm-2">
-                        <button style="width: 100%" class="btn btn-primary btn-danger"
-                                v-on:click="showDocument = false">
-                          替换
-                        </button>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="col-sm-2">
-                        <label for="password"
-                               class="col-sm-12 control-label">备注信息:</label>
-                      </div>
-                      <div class="col-sm-8">
-                        <textarea style="resize: none;" class="form-control" rows="3"
-                                  v-model="user.comment"></textarea>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </b-col>
-              <b-col md="12">
-                <div class="panel panel-default">
-                  <div class="panel-body">
-                    <div class="form-group">
-                      <div class="col-sm-2">
-                        <label for="password"
-                               class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
-                      </div>
-                      <div class="col-sm-3">
-                        <div
-                          class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
-                          <input type="checkbox" id="yes" name="confirm" required>
-                          <label for="yes">确认</label>
-                        </div>
-                      </div>
-                      <div v-if="pageMode==='create' || pageMode==='view'">
-                        <div class="col-sm-2">
-                          <label for="password"
-                                 class="col-sm-12 control-label">*管理员操作密码:</label>
-                        </div>
-                        <div class="col-sm-3">
-                          <input type="password" id="password" class="form-control"
-                                 minlength="6" maxlength="16" checkOpPwd="true"
-                                 required/>
-                        </div>
-                      </div>
-                      <button style="width:150px;" class="btn btn-primary btn-danger"
-                              v-if="pageMode !== 'create'" v-on:click="update">
-                        更新
-                      </button>
-                      <button style="width:150px;" class="btn btn-primary btn-danger"
-                              v-if="pageMode === 'create'" v-on:click="create">
-                        创建
-                      </button>
-                      <button class="btn btn-primary btn-info" type="button"
-                              v-on:click="showUserTable" v-if="pageMode === 'view'">
-                        <i class="fa fa-arrow-left"></i> 返回列表
-                      </button>
-                    </div>
-                  </div>
-                  <div class="panel-footer">
-                    注意：操作密码不是登录密码
-                  </div>
-                </div>
-              </b-col>
-            </b-row>
           </div>
+          <b-row>
+            <b-col md="7">
+              <b-card header-tag="header"
+                      footer-tag="footer">
+                <div slot="header">
+                  <i className="fa fa-align-justify"></i><strong>账户信息</strong>
+                </div>
+                <b-row>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">*年份-学期(YYYY-XX):</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <input :class="{'disabled': true, 'form-control': true, 'is-invalid': errors.has('info')}"
+                           v-model="user.info"
+                           v-validate="'required'" name="info"/>
+                    <div v-show="errors.has('info')" class="invalid-tooltip">{{ errors.first('info') }}</div>
+                  </b-col>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">*用户ID:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <input :class="{'disabled': true, 'form-control': true, 'is-invalid': errors.has('userId')}"
+                           v-model="user.userId"
+                           v-validate="'required'" name="userId"/>
+                    <div v-show="errors.has('userId')" class="invalid-tooltip">{{ errors.first('userId') }}</div>
+                  </b-col>
+                </b-row>
+                <b-row v-if="pageMode==='view' || pageMode === 'profile'">
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">*用户名:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <input :class="{'form-control': true, 'is-invalid': errors.has('username')}" v-model="user.username"
+                           v-validate="'required|min:4|max:20'" name="username"/>
+                    <div v-show="errors.has('username')" class="invalid-tooltip">{{ errors.first('username') }}</div>
+                  </b-col>
+                </b-row>
+                <hr/>
+                <b-row>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">*姓:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <input :class="{'form-control': true, 'is-invalid': errors.has('lastName')}"
+                           v-model="user.lastName"
+                           v-validate="'required|min:1|max:20'" name="lastName"/>
+                    <div v-show="errors.has('lastName')" class="invalid-tooltip">{{ errors.first('lastName') }}</div>
+                  </b-col>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">*名:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <input :class="{'form-control': true, 'is-invalid': errors.has('firstName')}"
+                           v-model="user.firstName"
+                           v-validate="'required|min:1|max:20'" name="firstName"/>
+                    <div v-show="errors.has('firstName')" class="invalid-tooltip">{{ errors.first('firstName') }}</div>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">*生日:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <input :class="{'form-control': true, 'is-invalid': errors.has('birthday')}"
+                           v-model="user.birthday"
+                           v-validate="'required|min:10|max:10'" name="birthday"/>
+                    <div v-show="errors.has('birthday')" class="invalid-tooltip">{{ errors.first('birthday') }}</div>
+                  </b-col>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">*邮箱:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <input :class="{'form-control': true, 'is-invalid': errors.has('email')}"
+                           v-model="user.email"
+                           v-validate="'required|email'" name="email"/>
+                    <div v-show="errors.has('email')" class="invalid-tooltip">{{ errors.first('email') }}</div>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">*电话号:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <input :class="{'form-control': true, 'is-invalid': errors.has('tel')}"
+                           v-model="user.tel"
+                           v-validate="'required|min:8|max:11'" name="tel"/>
+                    <div v-show="errors.has('tel')" class="invalid-tooltip">{{ errors.first('tel') }}</div>
+                  </b-col>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">宿舍号:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <input :class="{'form-control': true, 'is-invalid': errors.has('dorm')}"
+                           v-model="user.dorm"
+                           v-validate="'required|dorm'" name="dorm"/>
+                    <div v-show="errors.has('dorm')" class="invalid-tooltip">{{ errors.first('dorm') }}</div>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">*QQ号:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <input :class="{'form-control': true, 'is-invalid': errors.has('qq')}"
+                           v-model="user.qq"
+                           v-validate="'required|min:8|max:20'" name="qq"/>
+                    <div v-show="errors.has('qq')" class="invalid-tooltip">{{ errors.first('qq') }}</div>
+                  </b-col>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">微信号:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <input :class="{'form-control': true, 'is-invalid': errors.has('weChat')}"
+                           v-model="user.weChat"
+                           v-validate="'required|dorm'" name="weChat"/>
+                    <div v-show="errors.has('weChat')" class="invalid-tooltip">{{ errors.first('weChat') }}</div>
+                  </b-col>
+                </b-row>
+              </b-card>
+            </b-col>
+            <b-col md="5">
+              <b-card header-tag="header"
+                      footer-tag="footer">
+                <div slot="header">
+                  <i className="fa fa-align-justify"></i><strong>用户头像</strong>
+                </div>
+                <b-row>
+                  <b-col md="6">
+                    <input type="file" id="profile" accept="image/*"
+                           onchange="previewImg()">
+                    <p>上传头像预览：</p>
+                    <img id="preview" style="width: 230px;height: 230px">
+                    <b-button style="width: 100%; margin-top: 20px"
+                              class="btn btn-success"
+                              onclick="profileUpload()">
+                      上传
+                    </b-button>
+                  </b-col>
+                  <b-col md="6" v-if="showProfile">
+                    <p>当前头像：</p>
+                    <img id="current" :src="user.profile.path"
+                         style="width: 230px;height: 230px" class="profile">
+                  </b-col>
+                </b-row>
+                <div slot="footer">
+                  注意：图片大小不要超过10M。
+                </div>
+              </b-card>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col md="12" v-if="pageMode==='create' || pageMode ==='view'">
+              <b-card header-tag="header"
+                      footer-tag="footer">
+                <div slot="header">
+                  <i className="fa fa-align-justify"></i><strong>账户属性</strong>
+                </div>
+                <b-row>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">*角色:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" value="s" id="student1" class="custom-control-input"
+                             name="type" v-model="userType">
+                      <label class="custom-control-label">学生</label>
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" value="f" class="custom-control-input"
+                             name="type" v-model="userType">
+                      <label class="custom-control-label">教师</label>
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" value="a" class="custom-control-input"
+                             name="type" v-model="userType">
+                      <label class="custom-control-label">系统管理员</label>
+                    </div>
+                  </b-col>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">*账户启停:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <div class="custom-control custom-radio custom-control-inline">
+                      <input type="radio" value="1"
+                             :class="{'custom-control-input': true, 'is-invalid': errors.has('status')}"
+                             name="status" v-model="user.status">
+                      <label class="custom-control-label">启用</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                      <input type="radio" value="0"
+                             :class="{'custom-control-input': true, 'is-invalid': errors.has('status')}"
+                             name="status" v-model="user.status">
+                      <label class="custom-control-label">禁用</label>
+                    </div>
+                  </b-col>
+                  {{user.status}}
+                </b-row>
+                <b-row>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">*高级权限:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" value="2" class="custom-control-input"
+                             name="role" v-model="userRole">
+                      <label class="custom-control-label">教务</label>
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" value="4" class="custom-control-input"
+                             name="role" v-model="userRole">
+                      <label class="custom-control-label">系统</label>
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" value="3" class="custom-control-input"
+                             name="role" v-model="userRole">
+                      <label class="custom-control-label">后勤</label>
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" value="1" class="custom-control-input"
+                             name="role" v-model="userRole">
+                      <label class="custom-control-label">超级管理员</label>
+                    </div>
+                  </b-col>
+                  <div v-if="pageMode === 'view'">
+                    <b-col md="2" class="my-1">
+                      <label class="col-sm-12 control-label">密码重置(不选不会重置):</label>
+                    </b-col>
+                    <b-col md="3" class="my-1">
+                      <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" class="custom-control-input" name="reset" v-model="passwordReset">
+                        <label class="custom-control-label">重置</label>
+                      </div>
+                    </b-col>
+                  </div>
+                </b-row>
+                <b-row v-if="pageMode === 'create'">
+                  <b-col md="2">
+                    <label class="col-sm-12 control-label">密码:</label>
+                  </b-col>
+                  <b-col md="3">
+                    <input type="password" class="form-control" placeholder="密码" name="password"
+                           v-validate="'required|min:6|verify_password'"
+                           :class="{'form-control': true, 'is-invalid': errors.has('password')}"
+                           v-model="user.password">
+                    <div v-show="errors.has('password')" class="invalid-tooltip">{{ errors.first('password') }}</div>
+                  </b-col>
+                </b-row>
+                <div slot="footer">
+                  <i className="fa fa-align-justify"></i><strong>注意：1.此处为角色，为用户的属性，非权限。2.用户禁用后将无法登录，但数据不会删除。3.密码重置后，用户登录将要求修改密码。</strong>
+                </div>
+              </b-card>
+            </b-col>
+            <b-col md="12">
+              <b-card header-tag="header"
+                      footer-tag="footer">
+                <div slot="header">
+                  <i className="fa fa-align-justify"></i><strong>更多信息</strong>
+                </div>
+                <b-row v-if="!showDocument">
+                  <b-col md="2">
+                    <label class="col-sm-12 control-label">上传个人信息文件:</label>
+                  </b-col>
+                  <b-col md="6">
+                    <input type="file" id="document">
+                  </b-col>
+                  <b-col md="2">
+                    <b-button style="width: 100%" class="btn btn-info" @click="documentUpload">
+                      上传
+                    </b-button>
+                  </b-col>
+                </b-row>
+                <b-row v-if="showDocument">
+                  <b-col md="2">
+                    <label class="col-sm-12 control-label">个人信息文件:</label>
+                  </b-col>
+                  <b-col md="4">
+                    下载文件： <a @click="documentDownload" style="cursor: pointer;"
+                             class="control-label">{{user.userInfo.name}}</a>
+                  </b-col>
+                  <b-col md="2">
+                    <b-button style="width: 100%" class="btn btn-danger"
+                            v-on:click="showDocument = false">
+                      替换
+                    </b-button>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col md="2">
+                    <label class="col-sm-12 control-label">备注信息:</label>
+                  </b-col>
+                  <b-col md="8">
+                     <textarea style="resize: none;" class="form-control" rows="3"
+                               v-model="user.comment"></textarea>
+                  </b-col>
+                </b-row>
+              </b-card>
+            </b-col>
+            <b-col md="12">
+              <b-card header-tag="header"
+                      footer-tag="footer">
+                <div slot="header">
+                  <i className="fa fa-align-justify"></i><strong>*请确认上述信息正确无误:</strong>
+                </div>
+                <b-row>
+                  <b-col md="2" class="my-1">
+                    <label class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <div class="custom-control custom-radio custom-control-inline">
+                      <input type="radio" id="yes"
+                             :class="{'custom-control-input': true, 'is-invalid': errors.has('confirm')}"
+                             name="confirm" v-model="confirm"
+                             :disabled="tempCourse.status!=='0'">
+                      <label class="custom-control-label" for="yes">确认</label>
+                      <div v-show="errors.has('confirm')" class="invalid-tooltip">{{ errors.first('confirm') }}</div>
+                    </div>
+                  </b-col>
+                  <b-col md="2" class="my-1" v-show="pageMode === 'create' || pageMode === 'view'">
+                    <label class="col-sm-12 control-label">*管理员操作密码:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1" v-show="pageMode === 'create' || pageMode === 'view'">
+                    <input type="password" v-validate="'required'" name="adminPwd"
+                           :class="{'form-control': true, 'is-invalid': errors.has('adminPwd')}"/>
+                  </b-col>
+                  <b-col md="2" class="my-1">
+                    <b-button style="width:150px;" class="btn btn-success"
+                              v-if="pageMode !== 'create'"
+                              @click="update">更新
+                    </b-button>
+                    <b-button style="width:150px;" class="btn btn-success"
+                              v-if="pageMode === 'create'"
+                              @click="create">创建
+                    </b-button>
+                    <b-button style="width:150px;" class="btn btn-danger"
+                              v-if="pageMode === 'view'"
+                              @click="showUserTable">返回列表
+                    </b-button>
+                  </b-col>
+                </b-row>
+              </b-card>
+            </b-col>
+          </b-row>
+
         </b-card>
       </b-col>
     </b-row>
@@ -568,7 +541,7 @@
     name: 'User',
     data () {
       return {
-        userId:'',
+        userId: '',
         user: {
           userId: '',
           createTime: '',
@@ -659,8 +632,8 @@
         }
       },
 
-      documentDownload (userId) {
-        window.open(basePath + '/user/info/' + userId + '?token=' + window.localStorage.getItem('access_token'))
+      documentDownload () {
+        window.open(basePath + '/user/info/' + this.userId + '?token=' + window.localStorage.getItem('access_token'))
       },
 
       previewImg () {

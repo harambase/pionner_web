@@ -478,7 +478,7 @@
               </b-col>
               <b-col md="3" class="my-1">
                 <div class="custom-control custom-radio custom-control-inline">
-                  <input type="checkbox" id="yes"
+                  <input type="radio" id="yes"
                          :class="{'custom-control-input': true, 'is-invalid': errors.has('confirm')}"
                          name="confirm" v-model="confirm"
                          :disabled="tempCourse.status!=='0'">
