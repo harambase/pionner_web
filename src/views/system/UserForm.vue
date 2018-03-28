@@ -134,7 +134,7 @@
                   <b-col md="2" class="my-1">
                     <label class="col-sm-12 control-label">家庭住址:</label>
                   </b-col>
-                  <b-col md="10" class="my-1">
+                  <b-col md="8" class="my-1">
                     <input :class="{'form-control': true, 'is-invalid': errors.has('address')}"
                            v-model="user.address" v-validate="'max:50'" name="address"/>
                     <div v-show="errors.has('address')" class="invalid-tooltip">{{ errors.first('address') }}</div>
@@ -508,10 +508,10 @@
           })
         }
       },
-      showUserTable: function () {
+      showUserTable () {
         this.$router.push({path: '/system/user?mode=table'})
       },
-      update: function () {
+      update () {
         let type = ''
         let roleId = ''
         for (let i = 0; i < this.userType.length; i++)
@@ -548,7 +548,7 @@
           }
         })
       },
-      create: function () {
+      create () {
         let type = ''
         let roleId = ''
         for (let i = 0; i < this.userType.length; i++)

@@ -46,7 +46,21 @@
                        :isBusy="false"
                        @filtered="onFiltered"
               >
+                <template slot="profile" slot-scope="row">
+                  <b-col md="2">
+                    <img v-if="isNotEmpty(row.item.profile)"
+                         :src="basePath + '/pioneer' + JSON.parse(row.item.profile).path"
+                         style="width: 45px;height: 45px"
+                         class="img-avatar">
+                  </b-col>
+                </template>
+
                 <template slot="status" slot-scope="row">
+                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
+                    <input type="checkbox" class="switch-input">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                  </label>
                   <p v-if="row.value === '1'" style="color:green;">已启用</p>
                   <p v-if="row.value === '0'" style="color:red;">已禁用</p>
                 </template>
@@ -66,70 +80,79 @@
                           <small class="text-muted">用户ID：{{row.item.userId}}</small>
                         </div>
                         <hr/>
-                        <div class="mr-1">
-                          <dl class="row">
-                            <dt class="col-sm-1">QQ:</dt>
-                            <dd class="col-sm-1">{{row.item.qq}}</dd>
+                        <b-row>
+                          <b-col md="9" class="my-1">
+                            <div class="mr-1">
+                              <dl class="row">
+                                <dt class="col-sm-1">QQ:</dt>
+                                <dd class="col-sm-2">{{row.item.qq}}</dd>
 
-                            <dt class="col-sm-1">电话:</dt>
-                            <dd class="col-sm-1">{{row.item.tel}}</dd>
+                                <dt class="col-sm-1">电话:</dt>
+                                <dd class="col-sm-2">{{row.item.tel}}</dd>
 
-                            <dt class="col-sm-1">微信号:</dt>
-                            <dd class="col-sm-1">{{row.item.weChat}}</dd>
+                                <dt class="col-sm-1">微信号:</dt>
+                                <dd class="col-sm-2">{{row.item.weChat}}</dd>
 
-                            <dt class="col-sm-1">性别:</dt>
-                            <dd class="col-sm-1">{{row.item.gender}}</dd>
+                                <dt class="col-sm-1">性别:</dt>
+                                <dd class="col-sm-2">{{row.item.gender}}</dd>
+                              </dl>
+                              <dl class="row">
+                                <dt class="col-sm-1">邮箱:</dt>
+                                <dd class="col-sm-3">{{row.item.email}}</dd>
 
-                          </dl>
-                          <dl class="row">
-                            <dt class="col-sm-1">邮箱:</dt>
-                            <dd class="col-sm-3">{{row.item.email}}</dd>
+                                <dt class="col-sm-1">宿舍号:</dt>
+                                <dd class="col-sm-1">{{row.item.dorm}}</dd>
 
-                            <dt class="col-sm-1">宿舍号:</dt>
-                            <dd class="col-sm-3">{{row.item.dorm}}</dd>
+                                <dt class="col-sm-1">住址:</dt>
+                                <dd class="col-sm-3">{{row.item.address}}</dd>
 
-                            <dt class="col-sm-1">家庭住址:</dt>
-                            <dd class="col-sm-3">{{row.item.address}}</dd>
-
-                          </dl>
-                          <dl class="row">
-                            <dt class="col-sm-1">基本信息表:</dt>
-                            <dd class="col-sm-5"
-                                v-if="row.item.baseInfo !== '' &&
+                              </dl>
+                              <dl class="row">
+                                <dt class="col-sm-2">基本信息表:</dt>
+                                <dd class="col-sm-5"
+                                    v-if="row.item.baseInfo !== '' &&
                                     row.item.baseInfo !== undefined &&
                                     row.item.baseInfo !== null ">
-                              <a href="#"
-                                 @click="documentDownload(row.item.userId)">{{JSON.parse(row.item.baseInfo).name}}</a>
-                            </dd>
-                          </dl>
-                          <dl class="row">
-                            <dt class="col-sm-1">备注:</dt>
-                            <dd class="col-sm-5"><p style="color:red">{{row.item.comment}}</p></dd>
-                          </dl>
+                                  <a href="#"
+                                     @click="documentDownload(row.item.userId)">{{JSON.parse(row.item.baseInfo).name}}</a>
+                                </dd>
+                              </dl>
+                              <dl class="row">
+                                <dt class="col-sm-1">备注:</dt>
+                                <dd class="col-sm-5">{{row.item.comment}}</dd>
+                              </dl>
+                              <hr/>
+                              <dl class="row">
+                                <dt class="col-sm-1">操作:</dt>
+                                <dd class="col-sm-5">
+                                  <b-button size="sm"
+                                            class="btn btn-danger"
+                                            @click.stop="deleteUser(row.item.userId)">
+                                    删除该用户
+                                  </b-button>
 
-                          <dl class="row">
-                            <dt class="col-sm-1">操作:</dt>
-                            <dd class="col-sm-5">
-                              <b-button size="sm"
-                                        class="btn btn-danger"
-                                        @click.stop="deleteUser(row.item.userId)">
-                                删除该用户
-                              </b-button>
+                                  <b-button size="sm"
+                                            class="btn btn-info"
+                                            @click="userDetail(row.item.userId)">
+                                    修改该用户
+                                  </b-button>
 
-                              <b-button size="sm"
-                                        class="btn btn-info"
-                                        @click="userDetail(row.item.userId)">
-                                修改该用户
-                              </b-button>
-
-                              <b-button size="sm"
-                                        class="btn btn-primary"
-                                        @click.stop="disableUser(row.item.userId)">
-                                禁用该用户
-                              </b-button>
-                            </dd>
-                          </dl>
-                        </div>
+                                  <b-button size="sm"
+                                            class="btn btn-primary"
+                                            @click.stop="disableUser(row.item.userId)">
+                                    禁用该用户
+                                  </b-button>
+                                </dd>
+                              </dl>
+                            </div>
+                          </b-col>
+                          <b-col md="3" class="my-1">
+                            <img v-if="isNotEmpty(row.item.profile)"
+                                 :src="basePath + '/pioneer' + JSON.parse(row.item.profile).path"
+                                 style="width: 230px;height: 230px"
+                                 class="img-avatar">
+                          </b-col>
+                        </b-row>
                       </b-list-group-item>
                     </b-list-group>
                   </b-card>
@@ -173,6 +196,7 @@
 
   const items = []
   const field = [
+    {key: 'profile', label: '用户头像'},
     {key: 'userId', label: '用户ID', sortable: true},
     {key: 'username', label: '用户名', sortable: true},
     {key: 'lastName', label: '姓', sortable: true},
@@ -203,6 +227,7 @@
         sortDesc: false,
         filter: null,
         items: items,
+        basePath: basePath
       }
     },
     created: function () {
