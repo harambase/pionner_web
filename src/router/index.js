@@ -20,6 +20,8 @@ import Course from '@/views/teach/Course'
 import Role from '@/views/system/Role'
 import Monitor from '@/views/system/Monitor'
 import User from '@/views/system/User'
+import UserForm from '@/views/system/UserForm'
+
 // import Registration from '@views/system/Registration'
 
 import Record from '@/views/advise/Record'
@@ -231,6 +233,11 @@ const router = new Router({
               path: 'user',
               name: '用户管理',
               component: User
+            },
+            {
+              path: 'user/detail',
+              name: '用户详情',
+              component: UserForm
             },
             {
               path: 'role',

@@ -8,9 +8,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <b-navbar-nav class="d-md-down-none">
-      <b-nav-item class="px-3">Dashboard</b-nav-item>
-      <b-nav-item class="px-3">Users</b-nav-item>
-      <b-nav-item class="px-3">Settings</b-nav-item>
+      <strong>先锋教育教务系统</strong>  <small>PIONEER Educational Administration System</small>
     </b-navbar-nav>
     <b-navbar-nav class="ml-auto">
       <b-nav-item class="d-md-down-none">
