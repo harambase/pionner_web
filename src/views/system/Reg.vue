@@ -1,9 +1,43 @@
 ﻿<template>
   <div class="animated fadeIn">
     <b-row>
-      <b-col md="12">
-        <b-card  header-tag="header"
-                 footer-tag="footer">
+      <b-col cols="12">
+        <b-card
+          header-tag="header"
+          footer-tag="footer">
+          <div slot="header">
+            <i className="fa fa-align-justify"></i><strong>新用户申请</strong>
+            <small>分类查看</small>
+          </div>
+          <b-container fluid>
+            <b-row>
+              <b-col md="3" class="my-1">
+                <b-input-group-button>
+                  <b-button class="mb-4 btn btn-warning" style="width: 100%;" @click="showGeneral">查看所有申请</b-button>
+                </b-input-group-button>
+              </b-col>
+              <b-col md="3" class="my-1">
+                <b-input-group-button>
+                  <b-button class="mb-4 btn btn-primary" style="width: 100%;" @click="showActive">只查看申请中</b-button>
+                </b-input-group-button>
+              </b-col>
+              <b-col md="3" class="my-1">
+                <b-input-group-button>
+                  <b-button class="mb-4 btn btn-success" style="width: 100%;" @click="showApproved">只查看已批准</b-button>
+                </b-input-group-button>
+              </b-col>
+              <b-col md="3" class="my-1">
+                <b-input-group-button>
+                  <b-button class="mb-4 btn btn-danger" style="width: 100%;" @click="showDeclined">只查看已拒绝</b-button>
+                </b-input-group-button>
+              </b-col>
+            </b-row>
+          </b-container>
+        </b-card>
+      </b-col>
+      <b-col cols="12">
+        <b-card header-tag="header"
+                footer-tag="footer">
           <div slot="header">
             <i className="fa fa-align-justify"></i><strong>用户申请列表</strong>
           </div>
@@ -44,7 +78,17 @@
                      :isBusy="false"
                      @filtered="onFiltered"
             >
+              <template slot="userJson" slot-scope="row">
+                {{JSON.parse(row.value).lastName + "," + JSON.parse(row.value).firstName}}
+              </template>
+              <template slot="status" slot-scope="row">
+                <p v-if="row.value === '0'" style="color:blue;">申请中</p>
+                <p v-if="row.value === '1'" style="color:green;">已批准</p>
+                <p v-if="row.value === '-1'" style="color:red;">已拒绝</p>
+              </template>
+              <template>
 
+              </template>
             </b-table>
             <b-col md="6" class="my-1">
               <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
@@ -55,64 +99,16 @@
       </b-col>
     </b-row>
   </div>
-    <!--<div class="row">-->
-      <!--<div class="col-md-12">-->
-        <!--<div class="panel panel-default">-->
-          <!--<div class="panel-body">-->
-            <!--<div class="panel-group">-->
-              <!--<div class="panel panel-info">-->
-                <!--<div class="panel-heading">-->
-                  <!--<h4 class="panel-title">-->
-                    <!--分类查看-->
-                  <!--</h4>-->
-                <!--</div>-->
-                <!--<div class="panel-body">-->
-                  <!--<div class="form-group">-->
-                    <!--<div class="col-sm-3">-->
-                      <!--<button v-on:click="showGeneral" id="showGeneral" style="width: 100%"-->
-                              <!--class="btn btn-primary btn-warning">-->
-                        <!--查看所有申请-->
-                      <!--</button>-->
-                    <!--</div>-->
-                    <!--<div class="col-sm-3">-->
-                      <!--<button v-on:click="showActive" id="showActive" style="width: 100%"-->
-                              <!--class="btn btn-primary">-->
-                        <!--只查看申请中-->
-                      <!--</button>-->
-                    <!--</div>-->
-                    <!--<div class="col-sm-3">-->
-                      <!--<button v-on:click="showApproved" id="showApproved"-->
-                              <!--style="width: 100%" class="btn btn-primary btn-success">-->
-                        <!--只查看已批准-->
-                      <!--</button>-->
-                    <!--</div>-->
-                    <!--<div class="col-sm-3">-->
-                      <!--<button v-on:click="showDeclined" id="showDeclined"-->
-                              <!--style="width: 100%" class="btn btn-primary btn-danger">-->
-                        <!--只查看已拒绝-->
-                      <!--</button>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                <!--</div>-->
-
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
 </template>
 <script>
   import axios from 'axios'
 
   const items = []
   const field = [
-    {key: 'userId', label: '临时用户ID'},
-    {key: 'userJson', label: '姓, 名'},
-    {key: 'createTime', label: '申请时间'},
-    {key: 'status', label: '申请状态'},
+    {key: 'userId', label: '临时用户ID',sortable: true},
+    {key: 'userJson', label: '姓, 名', sortable: true},
+    {key: 'createTime', label: '申请时间', sortable: true},
+    {key: 'status', label: '申请状态', sortable: true},
     {key: 'actions', label: '操作'}
   ]
 
@@ -184,22 +180,22 @@
           })
         }
       },
-//      showGeneral: function () {
-//        status = ''
-//        userRegTable.draw()
-//      },
-//      showActive: function () {
-//        status = '0'
-//        userRegTable.draw()
-//      },
-//      showDeclined: function () {
-//        status = '-1'
-//        userRegTable.draw()
-//      },
-//      showApproved: function () {
-//        status = '1'
-//        userRegTable.draw()
-//      },
+      showGeneral: function () {
+        this.viewStatus = ''
+        this.initTable();
+      },
+      showActive: function () {
+        this.viewStatus = '0'
+        this.initTable();
+      },
+      showDeclined: function () {
+        this.viewStatus = '-1'
+        this.initTable();
+      },
+      showApproved: function () {
+        this.viewStatus = '1'
+        this.initTable();
+      },
       initTable () {
         this.$refs.regTable.refresh()
       },
@@ -207,26 +203,23 @@
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/request/user?start=' + ctx.currentPage + '&length='
           + ctx.perPage + '&orderCol=' + ctx.sortBy
-          +'&viewStatus=' + this.viewStatus
-//        switch (ctx.sortBy) {
-//          case 'userId':
-//            url += 'user_id'
-//            break
-//          case 'lastName':
-//            url += 'last_name'
-//            break
-//          case 'firstName':
-//            url += 'first_name'
-//            break
-//          case 'updateTime':
-//            url += update_time
-//            break
-//          default:
-//            url += ctx.sortBy
-//            break
-//        }
+          + '&viewStatus=' + this.viewStatus
+        switch (ctx.sortBy) {
+          case 'userId':
+            url += 'user_id'
+            break
+          case 'userJson':
+            url += 'user_json'
+            break
+          case 'createTime':
+            url += 'create_time'
+            break
+          default:
+            url += ctx.sortBy
+            break
+        }
 
-        if (this.isNotEmpty(ctx.filter))
+        if (isNotEmpty(ctx.filter))
           url += '&search=' + ctx.filter
         if (ctx.sortDesc)
           url += '&order=desc'

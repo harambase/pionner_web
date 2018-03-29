@@ -322,7 +322,7 @@
             url += 'first_name'
             break
           case 'updateTime':
-            url += update_time
+            url += 'update_time'
             break
           default:
             url += ctx.sortBy

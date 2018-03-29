@@ -21,7 +21,7 @@ import Role from '@/views/system/Role'
 import Monitor from '@/views/system/Monitor'
 import User from '@/views/system/User'
 import UserForm from '@/views/system/UserForm'
-import Reg from '@views/system/Reg'
+import Reg from '@/views/system/Reg'
 
 import Record from '@/views/advise/Record'
 
