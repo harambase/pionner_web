@@ -46,23 +46,27 @@
                        :isBusy="false"
                        @filtered="onFiltered"
               >
-                <template slot="profile" slot-scope="row">
-                  <b-col md="2">
-                    <img v-if="isNotEmpty(row.item.profile)"
-                         :src="basePath + '/pioneer' + JSON.parse(row.item.profile).path"
-                         style="width: 45px;height: 45px"
-                         class="img-avatar">
-                  </b-col>
+                <template slot="userId" slot-scope="row">
+                  <b-row>
+                    <b-col md="3">
+                      <img v-if="isNotEmpty(row.item.profile)"
+                           :src="basePath + '/pioneer' + JSON.parse(row.item.profile).path"
+                           style="width: 45px;height: 45px"
+                           class="img-avatar">
+                    </b-col>
+                    <b-col md="9">
+                      {{row.value}}
+                    </b-col>
+                  </b-row>
                 </template>
 
                 <template slot="status" slot-scope="row">
-                  <label class="switch switch-sm switch-text switch-info float-right mb-0">
-                    <input type="checkbox" class="switch-input">
-                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                  <label class="switch switch-lg switch-text switch-success mb-0">
+                    <input type="checkbox" class="switch-input" :checked="row.item.status==='1'"
+                           @change="inverseStatus(row.item.userId, row.item.status)">
+                    <span class="switch-label" data-on="启用" data-off="停用"></span>
                     <span class="switch-handle"></span>
                   </label>
-                  <p v-if="row.value === '1'" style="color:green;">已启用</p>
-                  <p v-if="row.value === '0'" style="color:red;">已禁用</p>
                 </template>
                 <template slot="actions" slot-scope="row">
                   <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
@@ -76,7 +80,7 @@
                                          class="flex-column align-items-start"
                                          :disabled="row.item.status === '0'">
                         <div class="d-flex w-100 justify-content-between">
-                          <h5 class="mb-1">用户 <strong>{{row.item.lastName}}, {{row.item.firstName}}</strong> 的信息</h5>
+                          <h5 class="mb-1">用户 <strong>{{row.item.lastName}}, {{row.item.firstName}}</strong> 的基本信息</h5>
                           <small class="text-muted">用户ID：{{row.item.userId}}</small>
                         </div>
                         <hr/>
@@ -136,12 +140,6 @@
                                             @click="userDetail(row.item.userId)">
                                     修改该用户
                                   </b-button>
-
-                                  <b-button size="sm"
-                                            class="btn btn-primary"
-                                            @click.stop="disableUser(row.item.userId)">
-                                    禁用该用户
-                                  </b-button>
                                 </dd>
                               </dl>
                             </div>
@@ -181,7 +179,6 @@
 
     <b-modal v-model="showModal" size="sm"
              :header-bg-variant="headerBgVariant"
-             @ok="goTo"
              ok-only centered title="消息">
       <div class="d-block text-center">
         <h3>{{msg}}</h3>
@@ -196,13 +193,12 @@
 
   const items = []
   const field = [
-    {key: 'profile', label: '用户头像'},
-    {key: 'userId', label: '用户ID', sortable: true},
+    {key: 'userId', label: '用户ID', sortable: true, 'class': 'text-center'},
     {key: 'username', label: '用户名', sortable: true},
     {key: 'lastName', label: '姓', sortable: true},
     {key: 'firstName', label: '名', sortable: true},
     {key: 'type', label: '账户类型', sortable: true},
-    {key: 'status', label: '状态', sortable: true},
+    {key: 'status', label: '启停状态', sortable: true},
     {key: 'updateTime', label: '更新时间', sortable: true},
     {key: 'actions', label: '操作'}
   ]
@@ -227,6 +223,7 @@
         sortDesc: false,
         filter: null,
         items: items,
+        status: '',
         basePath: basePath
       }
     },
@@ -275,7 +272,27 @@
           }
         })
       },
-      disableUser () {
+      inverseStatus (userId, status) {
+        let newStatus = '1'
+        if (status === '1')
+          newStatus = '0'
+        axios.get('/user/' + userId).then((response) =>{
+          let user = response.data.data;
+          user.status = newStatus;
+          axios.put('/user/' + userId, user).then((response) => {
+            if (response.data.code === 2001) {
+              this.initTable()
+              this.showModal = true
+              this.msg = '状态修改成功'
+              this.headerBgVariant = 'success'
+            } else {
+              this.showModal = true
+              this.msg = '状态修改失败'
+              this.headerBgVariant = 'danger'
+            }
+          })
+        })
+
       },
       userDetail (userId) {
         this.$router.push({path: '/system/user/detail?mode=view&userId=' + userId})

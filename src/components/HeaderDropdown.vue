@@ -8,7 +8,7 @@
         <b-dropdown-item><i class="fa fa-user"></i> 个人资料</b-dropdown-item>
         <b-dropdown-divider></b-dropdown-divider>
         <b-dropdown-item><i class="fa fa-shield"></i> 账户上锁</b-dropdown-item>
-        <b-dropdown-item><i class="fa fa-lock"></i> 登出</b-dropdown-item>
+        <b-dropdown-item @click="logout"><i class="fa fa-lock"></i> 登出</b-dropdown-item>
       </b-nav-item-dropdown>
 </template>
 <script>
@@ -56,6 +56,12 @@
         }
       })
     },
+    methods:{
+      logout (){
+        window.localStorage.clear()
+        this.$router.push({path: "/"})
+      }
+    }
   }
 </script>
 
