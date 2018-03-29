@@ -21,8 +21,7 @@ import Role from '@/views/system/Role'
 import Monitor from '@/views/system/Monitor'
 import User from '@/views/system/User'
 import UserForm from '@/views/system/UserForm'
-
-// import Registration from '@views/system/Registration'
+import Reg from '@views/system/Reg'
 
 import Record from '@/views/advise/Record'
 
@@ -85,9 +84,9 @@ const router = new Router({
           path: 'dashboard',
           name: '主页',
           component: Dashboard,
-          meta : {
-            requireAuth: true,
-          },
+          // meta : {
+          //   requireAuth: true,
+          // },
         },
         {
           path: 'charts',
@@ -250,7 +249,7 @@ const router = new Router({
             {
               path: 'registration',
               name: '用户注册',
-              component: Role
+              component: Reg
             },
             {
               path: 'monitor',

@@ -189,7 +189,6 @@
 
 <script>
   import axios from 'axios'
-  import UserForm from '@/views/system/UserForm'
 
   const items = []
   const field = [
@@ -227,8 +226,13 @@
         basePath: basePath
       }
     },
-    created: function () {
-
+    computed: {
+      sortOptions () {
+        // Create an options list from our field
+        return this.field
+          .filter(f => f.sortable)
+          .map(f => { return {text: f.label, value: f.key} })
+      }
     },
     mounted: function () {
       laydate.render({

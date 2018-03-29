@@ -7,7 +7,7 @@ import router from './router'
 import VeeValidate from 'vee-validate'
 import vSelect from 'vue-select'
 import axios from 'axios'
-import auth0 from 'auth0-js'
+import auth from 'auth0-js'
 
 Vue.use(BootstrapVue)
 Vue.use(VeeValidate, {fieldsBagName: 'formFields'})
