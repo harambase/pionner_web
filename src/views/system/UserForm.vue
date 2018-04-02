@@ -10,6 +10,12 @@
                       @click="showUserTable">
               <i class="fa fa-arrow-left"></i> 返回列表
             </b-button>
+            <b-button v-if="pageMode === 'request'"
+                      class="btn btn-info"
+                      @click="showTempUserTable">
+              <i class="fa fa-arrow-left"></i> 返回列表
+            </b-button>
+            <i className="fa fa-align-justify"></i><strong>用户详情表单</strong>
           </div>
           <b-row>
             <b-col md="7">
@@ -105,7 +111,7 @@
                   <b-col md="3" class="my-1">
                     <input :class="{'form-control': true, 'is-invalid': errors.has('dorm')}"
                            v-model="user.dorm"
-                           v-validate="'required'" name="dorm"/>
+                           v-validate="'max:50'" name="dorm"/>
                     <div v-show="errors.has('dorm')" class="invalid-tooltip">{{ errors.first('dorm') }}</div>
                   </b-col>
                 </b-row>
@@ -125,7 +131,7 @@
                   <b-col md="3" class="my-1">
                     <input :class="{'form-control': true, 'is-invalid': errors.has('weChat')}"
                            v-model="user.weChat"
-                           v-validate="'required'" name="weChat"/>
+                           v-validate="'max:100'" name="weChat"/>
                     <div v-show="errors.has('weChat')" class="invalid-tooltip">{{ errors.first('weChat') }}</div>
                   </b-col>
                 </b-row>
@@ -140,6 +146,9 @@
                     <div v-show="errors.has('address')" class="invalid-tooltip">{{ errors.first('address') }}</div>
                   </b-col>
                 </b-row>
+                <div slot="footer">
+                  注意：*为必填项，其余选填。
+                </div>
               </b-card>
             </b-col>
             <b-col md="5">
@@ -150,7 +159,10 @@
                 </div>
                 <b-row>
                   <b-col md="6">
-                    上传头像预览：<input type="file" id="profile" accept="image/*" @change="previewImg">
+
+                        <label class="col-sm-12 control-label">头像预览：</label>
+                        <input type="file" id="profile" accept="image/*" @change="previewImg">
+
 
                     <img id="preview" style="width: 237px; height: 237px">
                     <b-button style="width: 82%"
@@ -159,10 +171,10 @@
                       上传
                     </b-button>
                   </b-col>
-                  <b-col md="6" v-if="showProfile">
+                  <b-col md="6">
                     <p>当前头像：</p>
                     <img id="current" :src="profilePath"
-                         style="width: 230px;height: 230px" class="profile">
+                         style="width: 230px;height: 230px" class="profile"  v-if="showProfile">
                   </b-col>
                 </b-row>
                 <div slot="footer">
@@ -335,28 +347,37 @@
                       <div v-show="errors.has('confirm')" class="invalid-tooltip">{{ errors.first('confirm') }}</div>
                     </div>
                   </b-col>
-                  <b-col md="2" class="my-1" v-show="pageMode === 'create' || pageMode === 'view'">
+                  <b-col md="2" class="my-1">
                     <label class="col-sm-12 control-label">*管理员操作密码:</label>
                   </b-col>
-                  <b-col md="3" class="my-1" v-show="pageMode === 'create' || pageMode === 'view'">
+                  <b-col md="3" class="my-1">
                     <input type="password" v-validate="'required'" name="adminPwd"
                            :class="{'form-control': true, 'is-invalid': errors.has('adminPwd')}"/>
                   </b-col>
-                  <b-col md="2" class="my-1">
+                </b-row>
+                <div slot="footer">
+                  <b-col md="6" class="my-1">
                     <b-button style="width:150px;" class="btn btn-success"
-                              v-if="pageMode !== 'create'"
+                              v-if="pageMode === 'view'"
                               @click="update">更新
                     </b-button>
                     <b-button style="width:150px;" class="btn btn-success"
                               v-if="pageMode === 'create'"
                               @click="create">创建
                     </b-button>
+                    <b-button style="width:150px;" class="btn btn-success"
+                              v-if="pageMode === 'request'"
+                              @click="approve">批准申请
+                    </b-button>
+                    <b-button style="width:150px;" class="btn btn-danger"
+                              v-if="pageMode === 'request'"
+                              @click="decline">拒绝申请
+                    </b-button>
                   </b-col>
-                </b-row>
+                </div>
               </b-card>
             </b-col>
           </b-row>
-
         </b-card>
       </b-col>
     </b-row>
@@ -371,7 +392,7 @@
     name: 'UserForm',
     data () {
       return {
-        userId: this.$route.fullPath.split('&')[1].split('=')[1],
+        userId: this.$route.fullPath.split('&')[1].split('=')[1],//maybe tempuser id
         user: {
           userId: '',
           createTime: '',
@@ -394,6 +415,13 @@
           profile: '',
           address: ''
         },
+        regTempUser: {
+          id: '',
+          userId: '',
+          status: '',
+          createTime: '',
+          userJson: ''
+        },
         userType: [],
         userRole: [],
         profilePath: '',
@@ -413,8 +441,10 @@
       if (this.pageMode === 'profile' || this.pageMode === 'view') {
         axios.get('/user/' + this.userId).then((response) => {
           this.user = response.data.data
-          this.userType = this.user.type.split('/')
-          this.userRole = this.user.roleId.split('/')
+          if (isNotEmpty(this.userType))
+            this.userType = this.user.type.split('/')
+          if (isNotEmpty(this.userRole))
+            this.userRole = this.user.roleId.split('/')
 
           if (isNotEmpty(this.user.profile)) {
             this.user.profile = JSON.parse(this.user.profile)
@@ -428,6 +458,30 @@
           }
         })
       }
+      else {
+        axios.get('/request/user/' + this.userId).then((response) => {
+          this.regTempUser = response.data.data
+          this.user = JSON.parse(this.regTempUser.userJson)
+          this.user.userId = this.regTempUser.userId
+
+          if (isNotEmpty(this.user.type))
+            this.userType = this.user.type.split('/')
+          if (isNotEmpty(this.user.roleId))
+            this.userRole = this.user.roleId.split('/')
+
+          if (isNotEmpty(this.user.profile)) {
+            this.user.profile = JSON.parse(this.user.profile)
+            this.profilePath = basePath + '/pioneer' + this.user.profile.path
+            this.showProfile = true
+          }
+
+          if (isNotEmpty(this.user.userInfo)) {
+            this.user.userInfo = JSON.parse(this.user.userInfo)
+            this.showDocument = true
+          }
+        })
+      }
+
       laydate.render({
         elem: '#birthday',
         theme: '#393D49',
@@ -441,8 +495,13 @@
       documentUpload () {
         let formData = new FormData()
         formData.append('file', document.getElementById('document').files[0])
+
+        let url = '/user/info/' + this.user.userId
+        if(this.pageMode === 'request'){
+          url = '/request/user/info/' + this.userId
+        }
         if (formData !== null && formData !== undefined) {
-          axios.put('/user/info/' + this.user.userId, formData).then((response) => {
+          axios.put(url, formData).then((response) => {
             if (response.data.code === 2001) {
               this.msg = response.data.msg
               this.showModal = true
@@ -458,7 +517,10 @@
         }
       },
       documentDownload () {
-        window.open(basePath + '/user/info/' + this.userId + '?token=' + window.localStorage.getItem('access_token'))
+        if(this.pageMode === 'request')
+          window.open(basePath + '/request/user/info/' + this.userId + '?token=' + window.localStorage.getItem('access_token'))
+        else
+          window.open(basePath + '/user/info/' + this.user.userId + '?token=' + window.localStorage.getItem('access_token'))
       },
       previewImg () {
         let preview = document.getElementById('preview')
@@ -476,8 +538,13 @@
       profileUpload () {
         let formData = new FormData()
         formData.append('file', document.getElementById('profile').files[0])
+
+        let url = '/user/profile/' + this.user.userId
+        if(this.pageMode === 'request'){
+          url = '/request/user/profile/' + this.userId
+        }
         if (formData !== null && formData !== undefined) {
-          axios.put('/user/profile/' + this.user.userId, formData).then((response) => {
+          axios.put(url, formData).then((response) => {
             if (response.data.code === 2001) {
 
               this.msg = response.data.msg
@@ -511,7 +578,10 @@
       showUserTable () {
         this.$router.push({path: '/system/user?mode=table'})
       },
-      update () {
+      showTempUserTable () {
+        this.$router.push({path: '/system/registration'})
+      },
+      postPrepare () {
         let type = ''
         let roleId = ''
         for (let i = 0; i < this.userType.length; i++)
@@ -526,6 +596,11 @@
         if (type.indexOf('f') !== -1)
           roleId += '6/7/'
 
+        this.user.type = type
+        this.user.roleId = roleId
+      },
+      update () {
+        this.postPrepare()
         this.user.type = type
         this.user.roleId = roleId
 
@@ -537,10 +612,11 @@
         this.user.userInfo = JSON.stringify(this.user.userInfo)
 
         axios.put('/user/' + this.user.userId, this.user).then((response) => {
-          if (response.data.code === 2001)
-            Showbo.Msg.alert(response.data.msg, function () {
-              window.location.href = basePath + '/system/user/manage?mode=view'
-            })
+          if (response.data.code === 2001) {
+            this.msg = '修改成功！'
+            this.showModal = true
+            this.headerBgVariant = 'success'
+          }
           else {
             this.msg = response.data.msg
             this.showModal = true
@@ -549,29 +625,49 @@
         })
       },
       create () {
-        let type = ''
-        let roleId = ''
-        for (let i = 0; i < this.userType.length; i++)
-          if (this.userType[i] !== '')
-            type += this.userType[i] + '/'
-        for (let i = 0; i < this.userRole.length; i++)
-          if (this.userRole[i] !== '')
-            roleId += this.userRole[i] + '/'
-
-        if (type.indexOf('s') !== -1)
-          roleId += '5/'
-        if (type.indexOf('f') !== -1)
-          roleId += '6/7/'
-
-        this.user.type = type
-        this.user.roleId = roleId
+        this.postPrepare()
         this.user.password = hex_md5(this.user.password)
 
         axios.post('/user', this.user).then((response) => {
-          if (response.data.code === 2001)
-            Showbo.Msg.alert(response.data.msg, function () {
-              window.location.href = basePath + '/system/user/manage?mode=view'
-            })
+          if (response.data.code === 2001) {
+            this.msg = '创建成功！'
+            this.showModal = true
+            this.headerBgVariant = 'success'
+            this.goTo = '/system/user?mode=table'
+          }
+          else {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
+          }
+        })
+      },
+      approve: function () {
+        this.postPrepare()
+        this.user.type = type
+        this.user.roleId = roleId
+        this.regTempUser.status = '1'
+        this.regTempUser.userJson = JSON.stringify(this.user)
+        update()
+      },
+      decline: function () {
+        if (isNotEmpty(this.regUser.comment)) {
+          this.regTempUser.status = '-1'
+          this.regTempUser.userJson = JSON.stringify(this.user)
+          update()
+        } else {
+          this.msg = '必须填写备注！'
+          this.showModal = true
+          this.headerBgVariant = 'danger'
+        }
+      },
+      update () {
+        axios.put('/request/user/' + this.regTempUser.id, this.regTempUser).then((response) => {
+          if (response.data.code === 2001) {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
+          }
           else {
             this.msg = response.data.msg
             this.showModal = true

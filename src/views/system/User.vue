@@ -218,7 +218,7 @@
         perPage: 10,
         totalRows: 0,
         pageOptions: [5, 10, 15],
-        sortBy: 'user_id',
+        sortBy: 'id',
         sortDesc: false,
         filter: null,
         items: items,
