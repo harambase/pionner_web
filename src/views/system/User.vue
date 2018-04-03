@@ -114,11 +114,8 @@
                               <dl class="row">
                                 <dt class="col-sm-2">基本信息表:</dt>
                                 <dd class="col-sm-5"
-                                    v-if="row.item.baseInfo !== '' &&
-                                    row.item.baseInfo !== undefined &&
-                                    row.item.baseInfo !== null ">
-                                  <a href="#"
-                                     @click="documentDownload(row.item.userId)">{{JSON.parse(row.item.baseInfo).name}}</a>
+                                    v-if="isNotEmpty(row.item.userInfo)">
+                                  <a href="#" @click="documentDownload(row.item.userId)">{{JSON.parse(row.item.userInfo).name}}</a>
                                 </dd>
                               </dl>
                               <dl class="row">
@@ -246,8 +243,8 @@
       })
     },
     methods: {
-      documentDownload () {
-        window.open(basePath + '/user/info/' + this.userId + '?token=' + window.localStorage.getItem('access_token'))
+      documentDownload (userId) {
+        window.open(basePath + '/user/info/' + userId + '?token=' + window.localStorage.getItem('access_token'))
       },
       previewImg () {
         let preview = document.getElementById('preview')

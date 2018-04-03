@@ -313,7 +313,7 @@
                   </b-col>
                   <b-col md="4">
                     下载文件： <a @click="documentDownload" style="cursor: pointer;"
-                             class="control-label">{{user.userInfo.name}}</a>
+                             class="control-label">{{userInfo.name}}</a>
                   </b-col>
                   <b-col md="2">
                     <b-button style="width: 100%" class="btn btn-danger"
@@ -344,11 +344,11 @@
                     <label class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
-                    <div class="custom-control custom-radio custom-control-inline">
-                      <input type="radio" id="yes"
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" id="confirm" name="confirm" v-validate="'required'"
                              :class="{'custom-control-input': true, 'is-invalid': errors.has('confirm')}"
-                             name="confirm" v-model="confirm">
-                      <label class="custom-control-label" for="yes">确认</label>
+                             v-model="confirm">
+                      <label class="custom-control-label" for="confirm">确认</label>
                       <div v-show="errors.has('confirm')" class="invalid-tooltip">{{ errors.first('confirm') }}</div>
                     </div>
                   </b-col>
@@ -358,6 +358,7 @@
                   <b-col md="3" class="my-1">
                     <input type="password" v-validate="'required'" name="adminPwd"
                            :class="{'form-control': true, 'is-invalid': errors.has('adminPwd')}"/>
+                    <div v-show="errors.has('adminPwd')" class="invalid-tooltip">{{ errors.first('adminPwd') }}</div>
                   </b-col>
                 </b-row>
                 <div slot="footer">
@@ -386,6 +387,13 @@
         </b-card>
       </b-col>
     </b-row>
+    <b-modal v-model="showModal" size="sm"
+             :header-bg-variant="headerBgVariant"
+             ok-only centered title="消息">
+      <div class="d-block text-center">
+        <h3>{{msg}}</h3>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -430,6 +438,8 @@
         userType: [],
         userRole: [],
         profilePath: '',
+        profile: '',
+        userInfo: '',
         passwordReset: '',
         showDocument: false,
         showProfile: false,
@@ -446,21 +456,7 @@
       if (this.pageMode === 'profile' || this.pageMode === 'view') {
         axios.get('/user/' + this.userId).then((response) => {
           this.user = response.data.data
-          if (isNotEmpty(this.userType))
-            this.userType = this.user.type.split('/')
-          if (isNotEmpty(this.userRole))
-            this.userRole = this.user.roleId.split('/')
-
-          if (isNotEmpty(this.user.profile)) {
-            this.user.profile = JSON.parse(this.user.profile)
-            this.profilePath = basePath + '/pioneer' + this.user.profile.path
-            this.showProfile = true
-          }
-
-          if (isNotEmpty(this.user.userInfo)) {
-            this.user.userInfo = JSON.parse(this.user.userInfo)
-            this.showDocument = true
-          }
+          this.init()
         })
       }
       else {
@@ -468,25 +464,9 @@
           this.regTempUser = response.data.data
           this.user = JSON.parse(this.regTempUser.userJson)
           this.user.userId = this.regTempUser.userId
-
-          if (isNotEmpty(this.user.type))
-            this.userType = this.user.type.split('/')
-          if (isNotEmpty(this.user.roleId))
-            this.userRole = this.user.roleId.split('/')
-
-          if (isNotEmpty(this.user.profile)) {
-            this.user.profile = JSON.parse(this.user.profile)
-            this.profilePath = basePath + '/pioneer' + this.user.profile.path
-            this.showProfile = true
-          }
-
-          if (isNotEmpty(this.user.userInfo)) {
-            this.user.userInfo = JSON.parse(this.user.userInfo)
-            this.showDocument = true
-          }
+          this.init()
         })
       }
-
       laydate.render({
         elem: '#birthday',
         theme: '#393D49',
@@ -497,6 +477,23 @@
       })
     },
     methods: {
+      init () {
+        if (isNotEmpty(this.userType))
+          this.userType = this.user.type.split('/')
+        if (isNotEmpty(this.userRole))
+          this.userRole = this.user.roleId.split('/')
+
+        if (isNotEmpty(this.user.profile)) {
+          this.profile = JSON.parse(this.user.profile)
+          this.profilePath = basePath + '/pioneer' + this.profile.path
+          this.showProfile = true
+        }
+
+        if (isNotEmpty(this.user.userInfo)) {
+          this.userInfo = JSON.parse(this.user.userInfo)
+          this.showDocument = true
+        }
+      },
       documentUpload () {
         let formData = new FormData()
         formData.append('file', document.getElementById('document').files[0])
@@ -512,7 +509,8 @@
               this.showModal = true
               this.headerBgVariant = 'success'
               this.showDocument = true
-              this.user.userInfo = response.data.data
+              this.user.userInfo = JSON.stringify(response.data.data)
+              this.userInfo = response.data.data
             } else {
               this.msg = response.data.msg
               this.showModal = true
@@ -562,12 +560,12 @@
               let file = document.querySelector('input[type=file]').files[0]
               let current = document.getElementById('current')
               let reader = new FileReader()
+
               if (file) {
                 reader.readAsDataURL(file)
               } else {
                 current.src = ''
               }
-
               reader.onloadend = function () {
                 current.src = reader.result
               }
@@ -609,15 +607,10 @@
           if (!result)
             return
           this.postPrepare()
-          this.user.type = type
-          this.user.roleId = roleId
 
           if (this.passwordReset) {
             this.user.password = hex_md5('pioneer123456')
           }
-
-          this.user.profile = JSON.stringify(this.user.profile)
-          this.user.userInfo = JSON.stringify(this.user.userInfo)
 
           axios.put('/user/' + this.user.userId, this.user).then((response) => {
             if (response.data.code === 2001) {
