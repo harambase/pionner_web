@@ -131,7 +131,7 @@
                                 <dd class="col-sm-5">
                                   <b-button size="sm"
                                             class="btn btn-danger"
-                                            @click.stop="deleteUser(row.item.userId)">
+                                            @click.stop="showDeleteTempUser(row.item.userId)">
                                     删除该用户
                                   </b-button>
 
@@ -218,12 +218,13 @@
         perPage: 10,
         totalRows: 0,
         pageOptions: [5, 10, 15],
-        sortBy: 'id',
+        sortBy: 'user_id',
         sortDesc: false,
         filter: null,
         items: items,
         status: '',
-        basePath: basePath
+        basePath: basePath,
+        deleteUserId: ''
       }
     },
     computed: {
@@ -261,8 +262,12 @@
           preview.src = reader.result
         }
       },
+      showDeleteTempUser(userId){
+        this.showDeleteModal = true;
+        this.deleteUserId = userId
+      },
       deleteUser () {
-        axios.delete('/user/' + this.userId).then((response) => {
+        axios.delete('/user/' + this.deleteUserId).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '删除成功!'
             this.showModal = true

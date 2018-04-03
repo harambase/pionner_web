@@ -139,7 +139,7 @@
                                     JSON.parse(row.item.userJson).baseInfo !== undefined &&
                                     JSON.parse(row.item.userJson).baseInfo !== null ">
                                 <a href="#"
-                                   @click="documentDownload(row.item.userId)">{{JSON.parse(JSON.parse(row.item.userJson).baseInfo).name}}</a>
+                                   @click="documentDownload(row.item.userId)">{{JSON.parse(row.item.userJson).baseInfo.name}}</a>
                               </dd>
                             </dl>
                             <dl class="row">
@@ -152,7 +152,7 @@
                               <dd class="col-sm-5">
                                 <b-button size="sm"
                                           class="btn btn-danger"
-                                          @click.stop="deleteTempUser(row.item.id)">
+                                          @click.stop="showDeleteTempUser(row.item.id)">
                                   删除该申请
                                 </b-button>
 
@@ -167,7 +167,7 @@
                         </b-col>
                         <b-col md="3" class="my-1">
                           <img v-if="isNotEmpty(JSON.parse(row.item.userJson).profile)"
-                               :src="basePath + '/pioneer' + JSON.parse(JSON.parse(row.item.userJson).profile).path"
+                               :src="basePath + '/pioneer' + JSON.parse(row.item.userJson).profile.path"
                                style="width: 230px;height: 230px"
                                class="img-avatar">
                         </b-col>
@@ -223,14 +223,15 @@
         perPage: 10,
         totalRows: 0,
         pageOptions: [5, 10, 15],
-        sortBy: 'user_id',
+        sortBy: 'id',
         sortDesc: false,
         filter: null,
         items: items,
         viewStatus: '',
         isBusy: false,
         profilePath: '',
-        basePath: basePath
+        basePath: basePath,
+        deleteId: ''
       }
     },
     computed: {
@@ -242,8 +243,8 @@
       }
     },
     methods: {
-      deleteTempUser (id) {
-        axios.delete('/request/user/' + id).then((response) => {
+      deleteTempUser () {
+        axios.delete('/request/user/' + this.deleteId).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '删除成功!'
             this.showModal = true
@@ -259,6 +260,25 @@
       },
       documentDownload () {
         window.open(basePath + '/request/user/info/' + this.userId + '?token=' + window.localStorage.getItem('access_token'))
+      },
+      showDeleteTempUser(id){
+        this.showDeleteModal = true;
+        this.deleteId = id
+      },
+      deleteTempUser(){
+          axios.delete('/user/' + this.userId).then((response) => {
+            if (response.data.code === 2001) {
+              this.msg = '删除成功!'
+              this.showModal = true
+              this.headerBgVariant = 'success'
+              this.initTable()
+            }
+            else {
+              this.msg = response.data.msg
+              this.showModal = true
+              this.headerBgVariant = 'danger'
+            }
+          })
       },
       previewImg () {
         let preview = document.getElementById('preview')

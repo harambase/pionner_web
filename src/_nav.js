@@ -104,13 +104,13 @@ export default {
       icon: 'icon-book-open'
     },
     {
-      name: '角色与权限',
-      url: '/system/role',
+      name: '用户注册',
+      url: '/system/registration',
       icon: 'icon-book-open'
     },
     {
-      name: '用户注册',
-      url: '/system/registration',
+      name: '角色与权限',
+      url: '/system/role',
       icon: 'icon-book-open'
     },
     {

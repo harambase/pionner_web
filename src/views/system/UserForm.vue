@@ -160,8 +160,8 @@
                 <b-row>
                   <b-col md="6">
 
-                        <label class="col-sm-12 control-label">头像预览：</label>
-                        <input type="file" id="profile" accept="image/*" @change="previewImg">
+                    <label class="col-sm-12 control-label">头像预览：</label>
+                    <input type="file" id="profile" accept="image/*" @change="previewImg">
 
 
                     <img id="preview" style="width: 237px; height: 237px">
@@ -174,7 +174,7 @@
                   <b-col md="6">
                     <p>当前头像：</p>
                     <img id="current" :src="profilePath"
-                         style="width: 230px;height: 230px" class="profile"  v-if="showProfile">
+                         style="width: 230px;height: 230px" class="profile" v-if="showProfile">
                   </b-col>
                 </b-row>
                 <div slot="footer">
@@ -184,7 +184,7 @@
             </b-col>
           </b-row>
           <b-row>
-            <b-col md="12" v-if="pageMode==='create' || pageMode ==='view'">
+            <b-col md="12">
               <b-card header-tag="header"
                       footer-tag="footer">
                 <div slot="header">
@@ -233,16 +233,16 @@
                   <b-col md="2" class="my-1">
                     <label class="col-sm-12 control-label">*高级权限:</label>
                   </b-col>
-                  <b-col md="3" class="my-1">
+                  <b-col md="4" class="my-1">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" value="1" class="custom-control-input"
+                             name="role" v-model="userRole" id="systemAdmin">
+                      <label class="custom-control-label" for="systemAdmin">超级管理员</label>
+                    </div>
                     <div class="custom-control custom-checkbox custom-control-inline">
                       <input type="checkbox" value="2" class="custom-control-input"
                              name="role" v-model="userRole" id="teach">
                       <label class="custom-control-label" for="teach">教务</label>
-                    </div>
-                    <div class="custom-control custom-checkbox custom-control-inline">
-                      <input type="checkbox" value="4" class="custom-control-input"
-                             name="role" v-model="userRole" id="system">
-                      <label class="custom-control-label" for="system">系统</label>
                     </div>
                     <div class="custom-control custom-checkbox custom-control-inline">
                       <input type="checkbox" value="3" class="custom-control-input"
@@ -250,9 +250,14 @@
                       <label class="custom-control-label" for="logistic">后勤</label>
                     </div>
                     <div class="custom-control custom-checkbox custom-control-inline">
-                      <input type="checkbox" value="1" class="custom-control-input"
-                             name="role" v-model="userRole" id="systemAdmin">
-                      <label class="custom-control-label" for="systemAdmin">超级管理员</label>
+                      <input type="checkbox" value="4" class="custom-control-input"
+                             name="role" v-model="userRole" id="system">
+                      <label class="custom-control-label" for="system">系统</label>
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" value="7" class="custom-control-input"
+                             name="role" v-model="userRole" id="advisor">
+                      <label class="custom-control-label" for="advisor">导师</label>
                     </div>
                   </b-col>
                   <b-col md="2" class="my-1" v-if="pageMode === 'view'">
@@ -497,7 +502,7 @@
         formData.append('file', document.getElementById('document').files[0])
 
         let url = '/user/info/' + this.user.userId
-        if(this.pageMode === 'request'){
+        if (this.pageMode === 'request') {
           url = '/request/user/info/' + this.userId
         }
         if (formData !== null && formData !== undefined) {
@@ -517,7 +522,7 @@
         }
       },
       documentDownload () {
-        if(this.pageMode === 'request')
+        if (this.pageMode === 'request')
           window.open(basePath + '/request/user/info/' + this.userId + '?token=' + window.localStorage.getItem('access_token'))
         else
           window.open(basePath + '/user/info/' + this.user.userId + '?token=' + window.localStorage.getItem('access_token'))
@@ -540,7 +545,7 @@
         formData.append('file', document.getElementById('profile').files[0])
 
         let url = '/user/profile/' + this.user.userId
-        if(this.pageMode === 'request'){
+        if (this.pageMode === 'request') {
           url = '/request/user/profile/' + this.userId
         }
         if (formData !== null && formData !== undefined) {
@@ -600,68 +605,82 @@
         this.user.roleId = roleId
       },
       update () {
-        this.postPrepare()
-        this.user.type = type
-        this.user.roleId = roleId
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return
+          this.postPrepare()
+          this.user.type = type
+          this.user.roleId = roleId
 
-        if (this.passwordReset) {
-          this.user.password = hex_md5('pioneer123456')
-        }
-
-        this.user.profile = JSON.stringify(this.user.profile)
-        this.user.userInfo = JSON.stringify(this.user.userInfo)
-
-        axios.put('/user/' + this.user.userId, this.user).then((response) => {
-          if (response.data.code === 2001) {
-            this.msg = '修改成功！'
-            this.showModal = true
-            this.headerBgVariant = 'success'
+          if (this.passwordReset) {
+            this.user.password = hex_md5('pioneer123456')
           }
-          else {
-            this.msg = response.data.msg
-            this.showModal = true
-            this.headerBgVariant = 'danger'
-          }
+
+          this.user.profile = JSON.stringify(this.user.profile)
+          this.user.userInfo = JSON.stringify(this.user.userInfo)
+
+          axios.put('/user/' + this.user.userId, this.user).then((response) => {
+            if (response.data.code === 2001) {
+              this.msg = '修改成功！'
+              this.showModal = true
+              this.headerBgVariant = 'success'
+            }
+            else {
+              this.msg = response.data.msg
+              this.showModal = true
+              this.headerBgVariant = 'danger'
+            }
+          })
         })
       },
       create () {
-        this.postPrepare()
-        this.user.password = hex_md5(this.user.password)
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return
+          this.postPrepare()
+          this.user.password = hex_md5(this.user.password)
 
-        axios.post('/user', this.user).then((response) => {
-          if (response.data.code === 2001) {
-            this.msg = '创建成功！'
-            this.showModal = true
-            this.headerBgVariant = 'success'
-            this.goTo = '/system/user?mode=table'
-          }
-          else {
-            this.msg = response.data.msg
+          axios.post('/user', this.user).then((response) => {
+            if (response.data.code === 2001) {
+              this.msg = '创建成功！'
+              this.showModal = true
+              this.headerBgVariant = 'success'
+              this.goTo = '/system/user?mode=table'
+            }
+            else {
+              this.msg = response.data.msg
+              this.showModal = true
+              this.headerBgVariant = 'danger'
+            }
+          })
+        })
+      },
+      approve: function () {
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return
+          this.postPrepare()
+          this.regTempUser.status = '1'
+          this.regTempUser.userJson = JSON.stringify(this.user)
+          this.tempUserUpdate()
+        })
+      },
+      decline: function () {
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return
+          if (isNotEmpty(this.regUser.comment)) {
+            this.regTempUser.status = '-1'
+            this.regTempUser.userJson = JSON.stringify(this.user)
+            this.tempUserUpdate()
+          } else {
+            this.msg = '必须填写备注！'
             this.showModal = true
             this.headerBgVariant = 'danger'
           }
         })
       },
-      approve: function () {
-        this.postPrepare()
-        this.user.type = type
-        this.user.roleId = roleId
-        this.regTempUser.status = '1'
-        this.regTempUser.userJson = JSON.stringify(this.user)
-        update()
-      },
-      decline: function () {
-        if (isNotEmpty(this.regUser.comment)) {
-          this.regTempUser.status = '-1'
-          this.regTempUser.userJson = JSON.stringify(this.user)
-          update()
-        } else {
-          this.msg = '必须填写备注！'
-          this.showModal = true
-          this.headerBgVariant = 'danger'
-        }
-      },
-      update () {
+      tempUserUpdate () {
         axios.put('/request/user/' + this.regTempUser.id, this.regTempUser).then((response) => {
           if (response.data.code === 2001) {
             this.msg = response.data.msg
