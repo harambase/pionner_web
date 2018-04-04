@@ -149,6 +149,7 @@
                           <dd class="col-sm-3">
                             <input type="password" v-validate="'required'" name="adminPwd"
                                    :class="{'form-control': true, 'is-invalid': errors.has('adminPwd')}"/>
+                            <div v-show="errors.has('adminPwd')" class="invalid-tooltip">{{ errors.first('adminPwd')}}</div>
                           </dd>
                         </dl>
                         <dl class="row">
@@ -156,21 +157,17 @@
                           <dd class="col-sm-5">
                             <b-button size="sm"
                                       class="btn btn-danger"
-                                      @click.stop="transcriptUpdate(row.item.crn)">
+                                      @click.stop="updateTranscript(row.item)">
                               修改成绩
                             </b-button>
-
                             <b-button size="sm"
                                       class="btn btn-primary"
-                                      @click.stop="showDetailCourse(row.item.crn)">
+                                      @click.stop="showDeleteTranscript(row.item.id)">
                               删除成绩
                             </b-button>
                           </dd>
                         </dl>
-
-
                       </div>
-                      <!--<button class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>-->
                     </b-list-group-item>
                   </b-list-group>
                 </b-card>
@@ -245,14 +242,7 @@
     name: 'TranscriptManage',
     data () {
       return {
-        transcript: {
-          id: '',
-          studentId: '',
-          grade: '',
-          crn: '',
-          complete: '',
-          credits: ''
-        },
+
         infoOptions: [],
         studentOptions: [],
         courseOptions: [],
@@ -274,6 +264,7 @@
         sortDesc: false,
         filter: null,
         items: items,
+        deleteId:''
       }
     },
     computed: {
@@ -358,7 +349,32 @@
       isNotEmpty (value) {
         return value !== '' && value !== undefined && value !== null
       },
-      deleteTranscript () {},
+      showDeleteTranscript(id){
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return
+
+          this.showDeleteModal = true;
+          this.deleteId = id
+        })
+      },
+      deleteTranscript () {
+          if (!result)
+            return
+
+          axios.delete('/transcript' + this.deleteId).then((response) => {
+              if (response.data.code === 2001){
+                this.msg = response.data.msg
+                this.showModal = true
+                this.headerBgVariant = 'success'
+              }
+              else{
+                this.msg = response.data.msg
+                this.showModal = true
+                this.headerBgVariant = 'danger'
+              }
+          })
+        },
       infoList (search, loading) {
         loading(true)
         this.infoOptions = []
@@ -369,21 +385,6 @@
               value: response.data.data[i]
             }
             this.infoOptions.push(item)
-          }
-        })
-        loading(false)
-      },
-      studentList (search, loading) {
-        loading(true)
-        this.studentOptions = []
-        axios.get('/user/search?type=s&search=' + search).then((response) => {
-          for (let i = 0; i < response.data.data.length; i++) {
-            let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-            let item = {
-              label: name,
-              value: response.data.data[i].userId
-            }
-            this.studentOptions.push(item)
           }
         })
         loading(false)
@@ -403,6 +404,21 @@
         })
         loading(false)
       },
+      studentList (search, loading) {
+        loading(true)
+        this.studentOptions = []
+        axios.get('/user/search?type=s&search=' + search).then((response) => {
+          for (let i = 0; i < response.data.data.length; i++) {
+            let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
+            let item = {
+              label: name,
+              value: response.data.data[i].userId
+            }
+            this.studentOptions.push(item)
+          }
+        })
+        loading(false)
+      },
       courseList (search, loading) {
         loading(true)
         this.courseOptions = []
@@ -417,21 +433,24 @@
         })
         loading(false)
       },
-      transcriptUpdate () {
-        axios.put('/transcript/' + this.transcript.id, this.transcript).then(function (response) {
-          if (response.data.code === 2001)
-            Showbo.Msg.alert(response.data.msg, function () {
-              transcriptTable.draw()
-            })
-          else
-            Showbo.Msg.alert(response.data.msg, function () {
-            })
+      updateTranscript (transcript) {
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return
+          console.log(transcript)
+          // axios.put('/transcript/' + transcript.id, transcript).then((response) =>{
+          //   if (response.data.code === 2001){
+          //     this.msg = response.data.msg
+          //     this.showModal = true
+          //     this.headerBgVariant = 'success'
+          //   }
+          //   else{
+          //     this.msg = response.data.msg
+          //     this.showModal = true
+          //     this.headerBgVariant = 'danger'
+          //   }
+          // })
         })
-      },
-      transcriptReset () {
-        this.transcript.complete = ''
-        this.transcript.studentId = ''
-        this.transcript.grade = ''
       },
       showTranscript (id, studentId, grade, complete) {
         this.transcript.id = id
@@ -440,7 +459,7 @@
         this.transcript.complete = complete
       },
       downloadReport () {
-        window.open(basePath + '/transcript/report?studentId=' + this.report.value + "&token=" + window.localStorage.getItem("access_token"))
+        window.open(basePath + '/transcript/report?studentId=' + this.report.value + '&token=' + window.localStorage.getItem('access_token'))
       },
     }
   }
