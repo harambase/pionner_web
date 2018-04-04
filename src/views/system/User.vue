@@ -8,6 +8,10 @@
             footer-tag="footer">
             <div slot="header">
               <i className="fa fa-align-justify"></i><strong>系统用户列表</strong>
+              <b-button class="btn btn-success"
+                        @click="createUser">
+                <i class="fa fa-plus-square"></i> 新增用户
+              </b-button>
             </div>
             <b-container fluid>
               <!-- User Interface controls -->
@@ -263,6 +267,9 @@
         this.showDeleteModal = true;
         this.deleteUserId = userId
       },
+      createUser() {
+        this.$router.push({path: '/system/user/detail?mode=create&userId='})
+      },
       deleteUser () {
         axios.delete('/user/' + this.deleteUserId).then((response) => {
           if (response.data.code === 2001) {
@@ -289,11 +296,11 @@
             if (response.data.code === 2001) {
               this.initTable()
               this.showModal = true
-              this.msg = '状态修改成功'
+              this.msg = '状态修改成功！'
               this.headerBgVariant = 'success'
             } else {
               this.showModal = true
-              this.msg = '状态修改失败'
+              this.msg = '状态修改失败！'
               this.headerBgVariant = 'danger'
             }
           })

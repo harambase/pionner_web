@@ -16,6 +16,7 @@ import Choose from '@/views/course/Choose'
 import Transcript from '@/views/course/Transcript'
 import TempCourse from '@/views/teach/TempCourse'
 import Course from '@/views/teach/Course'
+import Credit from '@/views/teach/Credit'
 
 import Role from '@/views/system/Role'
 import Monitor from '@/views/system/Monitor'
@@ -169,7 +170,7 @@ const router = new Router({
             {
               path: 'credit',
               name: '学分管理',
-              component: Course
+              component: Credit
             },
             {
               path: 'pin',
@@ -238,7 +239,7 @@ const router = new Router({
             },
             {
               path: 'user/detail',
-              name: '用户详情',
+              name: '新用户申请管理',
               component: UserForm
             },
             {

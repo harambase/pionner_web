@@ -104,7 +104,7 @@ export default {
       icon: 'icon-book-open'
     },
     {
-      name: '用户注册',
+      name: '新用户申请管理',
       url: '/system/registration',
       icon: 'icon-book-open'
     },

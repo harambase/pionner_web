@@ -5,7 +5,7 @@
         <b-card header-tag="header"
                 footer-tag="footer">
           <div slot="header">
-            <b-button v-if="pageMode === 'view'"
+            <b-button v-if="pageMode === 'view' || pageMode === 'create'"
                       class="btn btn-info"
                       @click="showUserTable">
               <i class="fa fa-arrow-left"></i> 返回列表
@@ -373,10 +373,12 @@
                     </b-button>
                     <b-button style="width:150px;" class="btn btn-success"
                               v-if="pageMode === 'request'"
+                              :disabled="regTempUser.status!=='0'"
                               @click="approve">批准申请
                     </b-button>
                     <b-button style="width:150px;" class="btn btn-danger"
                               v-if="pageMode === 'request'"
+                              :disabled="regTempUser.status!=='0'"
                               @click="decline">拒绝申请
                     </b-button>
                   </b-col>
@@ -478,9 +480,9 @@
     },
     methods: {
       init () {
-        if (isNotEmpty(this.userType))
+        if (isNotEmpty(this.user.type))
           this.userType = this.user.type.split('/')
-        if (isNotEmpty(this.userRole))
+        if (isNotEmpty(this.user.roleId))
           this.userRole = this.user.roleId.split('/')
 
         if (isNotEmpty(this.user.profile)) {
@@ -631,7 +633,7 @@
           if (!result)
             return
           this.postPrepare()
-          this.user.password = hex_md5(this.user.password)
+          this.user.password = hex_md5('pioneer123456')
 
           axios.post('/user', this.user).then((response) => {
             if (response.data.code === 2001) {
@@ -662,7 +664,7 @@
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
-          if (isNotEmpty(this.regUser.comment)) {
+          if (isNotEmpty(this.user.comment)) {
             this.regTempUser.status = '-1'
             this.regTempUser.userJson = JSON.stringify(this.user)
             this.tempUserUpdate()
@@ -678,7 +680,7 @@
           if (response.data.code === 2001) {
             this.msg = response.data.msg
             this.showModal = true
-            this.headerBgVariant = 'danger'
+            this.headerBgVariant = 'success'
           }
           else {
             this.msg = response.data.msg
