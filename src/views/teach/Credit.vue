@@ -54,11 +54,10 @@
                 <template slot="row-details" slot-scope="row">
                   <b-card>
                     <b-list-group>
-                      <b-list-group-item href="#" title="编辑学分"
-                                         class="flex-column align-items-start">
+                      <b-list-group-item title="编辑学分" class="flex-column align-items-start" disabled>
                         <div class="d-flex w-100 justify-content-between">
                           <h5 class="mb-1">学生 <strong>{{row.item.sname}}</strong> 的学分完成情况</h5>
-                          <small class="text-muted">用户ID：{{row.item.studentId}}</small>
+                          <small class="text-muted">学生ID：{{row.item.studentId}}</small>
                         </div>
                         <hr/>
                         <div class="mr-1">

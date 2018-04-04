@@ -17,6 +17,8 @@ import Transcript from '@/views/course/Transcript'
 import TempCourse from '@/views/teach/TempCourse'
 import Course from '@/views/teach/Course'
 import Credit from '@/views/teach/Credit'
+import Pin from '@/views/teach/Pin'
+import TranscriptManage from '@/views/teach/TranscriptManage'
 
 import Role from '@/views/system/Role'
 import Monitor from '@/views/system/Monitor'
@@ -165,7 +167,7 @@ const router = new Router({
             {
               path: 'transcript',
               name: '成绩单管理',
-              component: Transcript
+              component: TranscriptManage
             },
             {
               path: 'credit',
@@ -175,7 +177,7 @@ const router = new Router({
             {
               path: 'pin',
               name: '识别码管理',
-              component: Typography
+              component: Pin
             },
           ]
         },
