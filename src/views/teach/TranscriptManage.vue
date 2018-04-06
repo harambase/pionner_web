@@ -107,11 +107,16 @@
                           <dt class="col-sm-1">学生名:</dt>
                           <dd class="col-sm-1">{{row.item.sname}}</dd>
 
+                          <dt class="col-sm-1">课程学分:</dt>
+                          <dd class="col-sm-1">{{row.item.credits}}</dd>
+
                           <dt class="col-sm-1">成绩:</dt>
                           <dd class="col-sm-1">
-                            <input placeholder="可使用Letter Grade或百分制"
-                                   class="form-control" v-model="row.item.grade"
+                            <input placeholder="可使用Letter Grade或百分制" name="grade"
+                                   :class="{'form-control': true, 'is-invalid': errors.has('grade')}"
+                                   v-model="row.item.grade"
                                    v-validate="'required'">
+                            <div v-show="errors.has('grade')" class="invalid-tooltip">{{ errors.first('grade')}}</div>
                           </dd>
 
                           <dt class="col-sm-1">完成情况:</dt>
@@ -149,7 +154,8 @@
                           <dd class="col-sm-3">
                             <input type="password" v-validate="'required'" name="adminPwd"
                                    :class="{'form-control': true, 'is-invalid': errors.has('adminPwd')}"/>
-                            <div v-show="errors.has('adminPwd')" class="invalid-tooltip">{{ errors.first('adminPwd')}}</div>
+                            <div v-show="errors.has('adminPwd')" class="invalid-tooltip">{{ errors.first('adminPwd')}}
+                            </div>
                           </dd>
                         </dl>
                         <dl class="row">
@@ -157,7 +163,7 @@
                           <dd class="col-sm-5">
                             <b-button size="sm"
                                       class="btn btn-danger"
-                                      @click.stop="updateTranscript(row.item)">
+                                      @click.stop="updateTranscript(row.item, row.detailsShowing)">
                               修改成绩
                             </b-button>
                             <b-button size="sm"
@@ -185,11 +191,11 @@
           header-tag="header"
           footer-tag="footer">
           <div slot="header">
-            <i className="fa fa-align-justify"></i><strong>下载学生成绩单</strong>
+            <i className="fa fa-align-justify"></i><strong>下载成绩单</strong>
           </div>
           <b-container fluid>
             <b-row>
-              <b-col md="3" class="my-1">
+              <b-col md="4" class="my-1">
                 <b-form-group horizontal label="按学生：" class="mb-0">
                   <v-select v-model="report" :filterable="false" :options="reportOptions"
                             @search="reportStudentList"></v-select>
@@ -198,6 +204,28 @@
               <b-col md="3" class="my-1">
                 <b-input-group-button>
                   <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="downloadReport">下载</b-button>
+                </b-input-group-button>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col md="4" class="my-1">
+                <b-form-group horizontal label="(不选将下载所有)按学期：" class="mb-0">
+                  <v-select v-model="reportInfo" :filterable="false" :options="reportInfoOptions"
+                            @search="reportInfoList"></v-select>
+                </b-form-group>
+              </b-col>
+              <b-col md="2" class="my-1">
+                <label class="col-sm-12 control-label">*管理员操作密码:</label>
+              </b-col>
+              <b-col md="3" class="my-1">
+                <input type="password" v-validate="'required'" name="adminPwd"
+                       :class="{'form-control': true, 'is-invalid': errors.has('adminPwd')}"/>
+                <div v-show="errors.has('adminPwd')" class="invalid-tooltip">{{ errors.first('adminPwd') }}</div>
+              </b-col>
+              <b-col md="3" class="my-1">
+                <b-input-group-button>
+                  <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="downloadAllReport">下载
+                  </b-button>
                 </b-input-group-button>
               </b-col>
             </b-row>
@@ -212,7 +240,7 @@
              centered
              title="不可逆操作警告！">
       <div class="d-block text-center">
-        <h3>确认删除该课程？</h3>
+        <h3>确认删除该成绩单？</h3>
       </div>
     </b-modal>
     <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
@@ -242,14 +270,15 @@
     name: 'TranscriptManage',
     data () {
       return {
-
         infoOptions: [],
         studentOptions: [],
         courseOptions: [],
         reportOptions: [],
+        reportInfoOptions: [],
         info: '',
         student: '',
         report: '',
+        reportInfo: '',
         course: '',
         msg: '',
         showModal: false,
@@ -264,7 +293,7 @@
         sortDesc: false,
         filter: null,
         items: items,
-        deleteId:''
+        deleteId: ''
       }
     },
     computed: {
@@ -283,6 +312,7 @@
             value: response.data.data[i]
           }
           this.infoOptions.push(item)
+          this.reportInfoOptions.push(item)
         }
       })
       axios.get('/user/search?type=s&search=').then((response) => {
@@ -293,15 +323,6 @@
             value: response.data.data[i].userId
           }
           this.studentOptions.push(item)
-        }
-      })
-      axios.get('/user/search?type=s&search=').then((response) => {
-        for (let i = 0; i < response.data.data.length; i++) {
-          let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-          let item = {
-            label: name,
-            value: response.data.data[i].userId
-          }
           this.reportOptions.push(item)
         }
       })
@@ -349,32 +370,32 @@
       isNotEmpty (value) {
         return value !== '' && value !== undefined && value !== null
       },
-      showDeleteTranscript(id){
+      showDeleteTranscript (id) {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
 
-          this.showDeleteModal = true;
+          this.showDeleteModal = true
           this.deleteId = id
         })
       },
       deleteTranscript () {
-          if (!result)
-            return
+        if (!result)
+          return
 
-          axios.delete('/transcript' + this.deleteId).then((response) => {
-              if (response.data.code === 2001){
-                this.msg = response.data.msg
-                this.showModal = true
-                this.headerBgVariant = 'success'
-              }
-              else{
-                this.msg = response.data.msg
-                this.showModal = true
-                this.headerBgVariant = 'danger'
-              }
-          })
-        },
+        axios.delete('/transcript' + this.deleteId).then((response) => {
+          if (response.data.code === 2001) {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'success'
+          }
+          else {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
+          }
+        })
+      },
       infoList (search, loading) {
         loading(true)
         this.infoOptions = []
@@ -385,6 +406,20 @@
               value: response.data.data[i]
             }
             this.infoOptions.push(item)
+          }
+        })
+        loading(false)
+      },
+      reportInfoList (search, loading) {
+        loading(true)
+        this.infoOptions = []
+        axios.get('/course/info?search=' + search).then((response) => {
+          for (let i = 0; i < response.data.data.length; i++) {
+            let item = {
+              label: response.data.data[i],
+              value: response.data.data[i]
+            }
+            this.reportInfoList(item)
           }
         })
         loading(false)
@@ -433,23 +468,23 @@
         })
         loading(false)
       },
-      updateTranscript (transcript) {
+      updateTranscript (transcript, detailsShowing) {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
-          console.log(transcript)
-          // axios.put('/transcript/' + transcript.id, transcript).then((response) =>{
-          //   if (response.data.code === 2001){
-          //     this.msg = response.data.msg
-          //     this.showModal = true
-          //     this.headerBgVariant = 'success'
-          //   }
-          //   else{
-          //     this.msg = response.data.msg
-          //     this.showModal = true
-          //     this.headerBgVariant = 'danger'
-          //   }
-          // })
+          axios.put('/transcript/' + transcript.id, transcript).then((response) => {
+            if (response.data.code === 2001) {
+              this.msg = response.data.msg
+              this.showModal = true
+              this.headerBgVariant = 'success'
+              detailsShowing = false
+            }
+            else {
+              this.msg = response.data.msg
+              this.showModal = true
+              this.headerBgVariant = 'danger'
+            }
+          })
         })
       },
       showTranscript (id, studentId, grade, complete) {
@@ -461,6 +496,9 @@
       downloadReport () {
         window.open(basePath + '/transcript/report?studentId=' + this.report.value + '&token=' + window.localStorage.getItem('access_token'))
       },
+      downloadAllReport () {
+        window.open(basePath + '/transcript/all/report?info=' + this.reportInfo.value +'&token=' + window.localStorage.getItem('access_token'))
+      }
     }
   }
 </script>
