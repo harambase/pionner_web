@@ -6,27 +6,18 @@
           header-tag="header"
           footer-tag="footer">
           <div slot="header">
-            <i className="fa fa-align-justify"></i><strong>课程查询</strong>
+            <i className="fa fa-align-justify"></i><strong>成绩单查询</strong>
           </div>
           <b-container fluid>
             <b-row>
               <b-col md="3" class="my-1">
-                <b-form-group horizontal label="按学期：" class="mb-0">
-                  <v-select v-model="info" :filterable="false" :options="infoOptions"
-                            @search="infoList"></v-select>
-                </b-form-group>
+                <InfoSelect/>
               </b-col>
               <b-col md="3" class="my-1">
-                <b-form-group horizontal label="按学生：" class="mb-0">
-                  <v-select v-model="student" :filterable="false" :options="studentOptions"
-                            @search="studentList"></v-select>
-                </b-form-group>
+                <StudentSelect/>
               </b-col>
               <b-col md="3" class="my-1">
-                <b-form-group horizontal label="按课程：" class="mb-0">
-                  <v-select v-model="course" :filterable="false" :options="courseOptions"
-                            @search="courseList"></v-select>
-                </b-form-group>
+                <CourseSelect/>
               </b-col>
               <b-col md="3" class="my-1">
                 <b-input-group-button>
@@ -196,10 +187,7 @@
           <b-container fluid>
             <b-row>
               <b-col md="4" class="my-1">
-                <b-form-group horizontal label="按学生：" class="mb-0">
-                  <v-select v-model="report" :filterable="false" :options="reportOptions"
-                            @search="reportStudentList"></v-select>
-                </b-form-group>
+                <StudentSelect/>
               </b-col>
               <b-col md="3" class="my-1">
                 <b-input-group-button>
@@ -209,10 +197,7 @@
             </b-row>
             <b-row>
               <b-col md="4" class="my-1">
-                <b-form-group horizontal label="(不选将下载所有)按学期：" class="mb-0">
-                  <v-select v-model="reportInfo" :filterable="false" :options="reportInfoOptions"
-                            @search="reportInfoList"></v-select>
-                </b-form-group>
+                <InfoSelect/>
               </b-col>
               <b-col md="2" class="my-1">
                 <label class="col-sm-12 control-label">*管理员操作密码:</label>
@@ -253,6 +238,7 @@
 
 <script>
   import axios from 'axios'
+  import {InfoSelect, StudentSelect, CourseSelect} from '../../components/'
 
   const items = []
   const field = [
@@ -268,18 +254,9 @@
 
   export default {
     name: 'TranscriptManage',
+    components: {InfoSelect, StudentSelect, CourseSelect},
     data () {
       return {
-        infoOptions: [],
-        studentOptions: [],
-        courseOptions: [],
-        reportOptions: [],
-        reportInfoOptions: [],
-        info: '',
-        student: '',
-        report: '',
-        reportInfo: '',
-        course: '',
         msg: '',
         showModal: false,
         showDeleteModal: false,
@@ -303,38 +280,6 @@
           .filter(f => f.sortable)
           .map(f => { return {text: f.label, value: f.key} })
       }
-    },
-    mounted () {
-      axios.get('/course/info?search=').then((response) => {
-        for (let i = 0; i < response.data.data.length; i++) {
-          let item = {
-            label: response.data.data[i],
-            value: response.data.data[i]
-          }
-          this.infoOptions.push(item)
-          this.reportInfoOptions.push(item)
-        }
-      })
-      axios.get('/user/search?type=s&search=').then((response) => {
-        for (let i = 0; i < response.data.data.length; i++) {
-          let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-          let item = {
-            label: name,
-            value: response.data.data[i].userId
-          }
-          this.studentOptions.push(item)
-          this.reportOptions.push(item)
-        }
-      })
-      axios.get('/course/search?search=').then((response) => {
-        for (let i = 0; i < response.data.data.length; i++) {
-          let item = {
-            label: response.data.data[i].name,
-            value: response.data.data[i].crn
-          }
-          this.courseOptions.push(item)
-        }
-      })
     },
     methods: {
       onFiltered (filteredItems) {
@@ -396,78 +341,7 @@
           }
         })
       },
-      infoList (search, loading) {
-        loading(true)
-        this.infoOptions = []
-        axios.get('/course/info?search=' + search).then((response) => {
-          for (let i = 0; i < response.data.data.length; i++) {
-            let item = {
-              label: response.data.data[i],
-              value: response.data.data[i]
-            }
-            this.infoOptions.push(item)
-          }
-        })
-        loading(false)
-      },
-      reportInfoList (search, loading) {
-        loading(true)
-        this.infoOptions = []
-        axios.get('/course/info?search=' + search).then((response) => {
-          for (let i = 0; i < response.data.data.length; i++) {
-            let item = {
-              label: response.data.data[i],
-              value: response.data.data[i]
-            }
-            this.reportInfoList(item)
-          }
-        })
-        loading(false)
-      },
-      reportStudentList (search, loading) {
-        loading(true)
-        this.studentOptions = []
-        axios.get('/user/search?type=s&search=' + search).then((response) => {
-          for (let i = 0; i < response.data.data.length; i++) {
-            let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-            let item = {
-              label: name,
-              value: response.data.data[i].userId
-            }
-            this.reportOptions.push(item)
-          }
-        })
-        loading(false)
-      },
-      studentList (search, loading) {
-        loading(true)
-        this.studentOptions = []
-        axios.get('/user/search?type=s&search=' + search).then((response) => {
-          for (let i = 0; i < response.data.data.length; i++) {
-            let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-            let item = {
-              label: name,
-              value: response.data.data[i].userId
-            }
-            this.studentOptions.push(item)
-          }
-        })
-        loading(false)
-      },
-      courseList (search, loading) {
-        loading(true)
-        this.courseOptions = []
-        axios.get('/course/search?search=' + search).then((response) => {
-          for (let i = 0; i < response.data.data.length; i++) {
-            let item = {
-              label: response.data.data[i].name,
-              value: response.data.data[i].crn
-            }
-            this.courseOptions.push(item)
-          }
-        })
-        loading(false)
-      },
+
       updateTranscript (transcript, detailsShowing) {
         this.$validator.validateAll().then((result) => {
           if (!result)

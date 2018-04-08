@@ -11,16 +11,10 @@
           <b-container fluid>
             <b-row>
               <b-col md="5" class="my-1">
-                <b-form-group horizontal label="按学期查询：" class="mb-0">
-                  <v-select v-model="info" :filterable="false" :options="infoOptions"
-                            @search="infoList"></v-select>
-                </b-form-group>
+                <InfoSelect/>
               </b-col>
               <b-col md="5" class="my-1">
-                <b-form-group horizontal label="按授课老师查询：" class="mb-0">
-                  <v-select v-model="faculty" :filterable="false" :options="facultyOptions"
-                            @search="facultyList"></v-select>
-                </b-form-group>
+                <FacultySelect/>
               </b-col>
               <b-col md="2" class="my-1">
                 <b-input-group-button>
@@ -201,6 +195,7 @@
 
 <script>
   import axios from 'axios'
+  import {InfoSelect, FacultySelect} from '../../components/'
 
   const items = []
   const field = [
@@ -218,6 +213,7 @@
 
   export default {
     name: 'ViewCourse',
+    components: {InfoSelect, FaucultySelect},
     data () {
       return {
         field: field,
@@ -225,22 +221,17 @@
         perPage: 10,
         totalRows: 0,
         pageOptions: [5, 10, 15],
-        infoOptions: [],
-        facultyOptions: [],
         sortBy: 'crn',
         sortDesc: false,
         filter: null,
         items: items,
         isBusy: false,
-        info: '',
-        faculty: '',
         pageMode: this.$route.fullPath.split('&')[0].split('=')[1],
         showDeleteModal: false,
         showModal: false,
         crn: '',
         msg: '',
         headerBgVariant: '',
-
       }
     },
     mounted: function () {
@@ -297,35 +288,6 @@
       },
       showCourseStudent(crn){
         this.$router.push({path:'/teach/curriculum/detail?mode=student&crn=' + crn})
-      },
-      infoList (search, loading) {
-        loading(true)
-        this.infoOptions = []
-        axios.get('/course/info?search=' + search).then((response) => {
-          for (let i = 0; i < response.data.data.length; i++) {
-            let item = {
-              label: response.data.data[i],
-              value: response.data.data[i]
-            }
-            this.infoOptions.push(item)
-          }
-        })
-        loading(false)
-      },
-      facultyList (search, loading) {
-        loading(true)
-        this.facultyOptions = []
-        axios.get('/user/search?status=1&type=f&search=' + search).then((response) => {
-          for (let i = 0; i < response.data.data.length; i++) {
-            let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-            let item = {
-              label: name,
-              value: response.data.data[i].userId
-            }
-            this.facultyOptions.push(item)
-          }
-        })
-        loading(false)
       },
       download (crn) {
         window.open(basePath + '/course/info/' + crn + '?token=' + window.localStorage.getItem('access_token'))

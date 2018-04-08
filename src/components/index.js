@@ -5,6 +5,9 @@ import Footer from './Footer.vue'
 import Header from './Header.vue'
 import Sidebar from './Sidebar.vue'
 import Switch from './Switch.vue'
+import InfoSelect from './selects/InfoSelect.vue'
+import StudentSelect from './selects/StudentSelect.vue'
+import CourseSelect from './selects/CourseSelect.vue'
 
 export {
   Aside,
@@ -13,5 +16,8 @@ export {
   Footer,
   Header,
   Sidebar,
-  Switch
+  Switch,
+  InfoSelect,
+  StudentSelect,
+  CourseSelect,
 }
