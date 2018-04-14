@@ -130,11 +130,11 @@
         user.password = md5(this.user.password)
         axios.put('/system/user/reset/password/' + this.user.userId, user).then((response) => {
           if (response.data.code === 2001) {
-            this.msg = '密码修改成功！'
+            this.msg = '密码修改成功!'
             this.headerBgVariant = 'success'
             this.showModal = true
           } else {
-            this.msg = '信息验证未通过，请与管理员联系！'
+            this.msg = '密码修改失败!'
             this.headerBgVariant = 'danger'
             this.showModal = true
           }

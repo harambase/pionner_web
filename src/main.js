@@ -34,7 +34,6 @@ axios.interceptors.response.use(
   },
   error => {
     if (error.response) {
-      console.log('axios:' + error.response.status)
       switch (error.response.status) {
         case 401:
           // 返回 401 清除token信息并跳转到登录页面
@@ -43,6 +42,19 @@ axios.interceptors.response.use(
             path: '/',
             query: {redirect: router.currentRoute.fullPath}
           })
+          break;
+        case 404:
+          router.replace({
+            path: '/404',
+            query: {redirect: router.currentRoute.fullPath}
+          })
+          break;
+        case 500:
+          router.replace({
+            path: '/500',
+            query: {redirect: router.currentRoute.fullPath}
+          })
+          break;
       }
     }
     return Promise.reject(error.response.data)   // 返回接口返回的错误信息

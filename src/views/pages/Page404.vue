@@ -5,8 +5,8 @@
         <b-col md="6">
           <div class="clearfix">
             <h1 class="float-left display-3 mr-4">404</h1>
-            <h4 class="pt-3">Oops! You're lost. 对不起，您所访问的页面不存在！</h4>
-            <p class="text-muted">The page you are looking for was not found.</p>
+            <h4 class="pt-3">Oops! Your request was not found. 对不起，您所访问的资源不存在！</h4>
+            <p class="text-muted">The resources or request you are looking for was not found.</p>
           </div>
           <b-input-group>
             <div class="input-group-prepend">
