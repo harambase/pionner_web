@@ -5,18 +5,17 @@
         <b-col md="6">
           <div class="clearfix">
             <h1 class="float-left display-3 mr-4">404</h1>
-            <h4 class="pt-3">Oops! You're lost.</h4>
+            <h4 class="pt-3">Oops! You're lost. 对不起，您所访问的页面不存在！</h4>
             <p class="text-muted">The page you are looking for was not found.</p>
           </div>
           <b-input-group>
             <div class="input-group-prepend">
               <span class="input-group-text">
-                <i class="fa fa-search"></i>
+                <i class="fa fa-arrow-left"></i>
               </span>
             </div>
-            <input id="prependedInput" class="form-control" size="16" type="text" placeholder="What are you looking for?">
             <div class="input-group-append">
-              <b-button variant="info">Search</b-button>
+              <b-button variant="info" @click="backToDashBoard">返回主页</b-button>
             </div>
           </b-input-group>
         </b-col>
@@ -27,6 +26,11 @@
 
 <script>
 export default {
-  name: 'Page404'
+  name: 'Page404',
+  methods: {
+    backToDashBoard () {
+      this.$router.push({path: '/dashboard'})
+    }
+  }
 }
 </script>

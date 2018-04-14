@@ -64,7 +64,7 @@
       }
     },
     methods: {
-      doLogin: function () {
+      doLogin () {
         this.$validator.validateAll().then((result) => {
           if(!result)
             return;
@@ -79,10 +79,10 @@
           })
         });
       },
-      goToReg: function(){
+      goToReg(){
         this.$router.push({path:'/register'})
       },
-      resetPassword: function(){
+      resetPassword(){
 
       }
     }

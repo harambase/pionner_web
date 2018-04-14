@@ -1,8 +1,8 @@
 // Here you can add other styles
-body {
-  background-image: url("/static/img/background.jpg");
-  background-size: cover;
-}
+//body {
+//  background-image: url("/static/img/background.jpg");
+//  background-size: cover;
+//}
 
 legend {
   font-size: 17px;
@@ -231,4 +231,8 @@ legend {
   .lessons-item .lessons-pic {
     display: none
   }
+}
+
+button {
+  color: white;
 }

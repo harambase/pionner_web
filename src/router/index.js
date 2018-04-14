@@ -63,6 +63,7 @@ import Modals from '@/views/notifications/Modals'
 
 // Views - Pages
 import Page404 from '@/views/pages/Page404'
+import Page401 from '@/views/pages/Page401'
 import Page500 from '@/views/pages/Page500'
 import Login from '@/views/pages/Login'
 import Register from '@/views/pages/Register'
@@ -185,79 +186,98 @@ const router = new Router({
             {
               path: 'curriculum',
               name: '课程管理',
-              component: ViewCourse
+              component: ViewCourse,
+              meta : {
+                requireAuth: true,
+                role: ['2']
+              },
             },
             {
               path: 'request',
               name: '课程申请管理',
-              component: TempCourse
+              component: TempCourse,
+              meta : {
+                requireAuth: true,
+                role: ['2']
+              },
             },
             {
               path: 'curriculum/detail',
               name: '课程详情',
-              component: Course
+              component: Course,
+              meta : {
+                requireAuth: true,
+                role: ['2', '5', '6']
+              },
             },
             {
               path: 'transcript',
               name: '成绩单管理',
-              component: TranscriptManage
+              component: TranscriptManage,
+              meta : {
+                requireAuth: true,
+                role: ['2']
+              },
             },
             {
               path: 'credit',
               name: '学分管理',
-              component: Credit
+              component: Credit,
+              meta : {
+                requireAuth: true,
+                role: ['2']
+              },
             },
             {
               path: 'pin',
               name: '识别码管理',
-              component: Pin
+              component: Pin,
+              meta : {
+                requireAuth: true,
+                role: ['2']
+              },
             },
           ]
         },
         {
           path: 'advise',
           redirect: '/advise/info',
-          name: '导师系统',
+          name: '导师模块',
           component: {
             render (c) { return c('router-view') }
-          },meta : {
-            requireAuth: true,
           },
           children: [
             {
               path: 'info',
-              name: '关系课程',
-              component: Course
-            },
-            {
-              path: 'request',
-              redirect: '/course/request/new',
-              name: '新课程申请',
-              component: {
-                render (c) { return c('router-view') }
+              name: '导师关系管理',
+              component: Course,
+              meta : {
+                requireAuth: true,
+                role: ['2']
               },
-              children: [
-                {
-                  path: 'new',
-                  name: '新建申请',
-                  component: Colors
-                },
-                {
-                  path: 'manage',
-                  name: '申请查看',
-                  component: Typography
-                }
-              ]
             },
             {
-              path: 'record',
-              name: '成长记录',
-              component: Transcript
+              path: 'choose/faculty',
+              name: '导师选择',
+              component: Choose,
+              meta : {
+                requireAuth: true,
+                role: ['5']
+              },
             },
             {
-              path: 'choose',
-              name: '新学期选课',
-              component: Choose
+              path: 'choose/student',
+              name: '学生选择',
+              component: Choose,
+              meta : {
+                requireAuth: true,
+                role: ['7']
+              },
+            },
+            {
+              // href: 'https://login.partner.microsoftonline.cn/login',
+              path: '',
+              name: 'ONENOTE',
             },
           ]
         },
@@ -268,34 +288,51 @@ const router = new Router({
           component: {
             render (c) { return c('router-view') }
           },
-          meta : {
-            requireAuth: true,
-          },
           children: [
             {
               path: 'user',
               name: '用户管理',
-              component: User
+              component: User,
+              meta : {
+                requireAuth: true,
+                role: ['4']
+              },
             },
             {
               path: 'user/detail',
               name: '新用户申请管理',
-              component: UserForm
+              component: UserForm,
+              meta : {
+                requireAuth: true,
+                role: ['0', '4']
+              },
             },
             {
               path: 'role',
               name: '角色与权限',
-              component: Role
+              component: Role,
+              meta : {
+                requireAuth: true,
+                role: ['4']
+              },
             },
             {
               path: 'registration',
               name: '用户注册',
-              component: Reg
+              component: Reg,
+              meta : {
+                requireAuth: true,
+                role: ['4']
+              },
             },
             {
               path: 'monitor',
               name: '系统监控',
-              component: Monitor
+              component: Monitor,
+              meta : {
+                requireAuth: true,
+                role: ['4']
+              },
             },
           ]
         },
@@ -485,6 +522,11 @@ const router = new Router({
           component: Page404
         },
         {
+          path: '401',
+          name: 'Page401',
+          component: Page401
+        },
+        {
           path: '500',
           name: 'Page500',
           component: Page500
@@ -519,7 +561,7 @@ router.beforeEach((to,from,next) => {
           }
         }
       next({
-        path : '/500',
+        path : '/401',
         query : {redirect : to.fullPath}
       })
     }else {
