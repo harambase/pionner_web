@@ -92,7 +92,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="icon-lock"></i></span>
                 </div>
-                <input type="password" class="form-control" placeholder="密码" name="password"
+                <input type="password" class="form-control" placeholder="*密码" name="password"
                        v-validate="'required|min:6|verify_password'"
                        :class="{'form-control': true, 'is-invalid': errors.has('password')}"
                        v-model="regUser.password">
@@ -103,7 +103,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="icon-lock"></i></span>
                 </div>
-                <input type="password" name="newPwd" class="form-control" placeholder="请再次输入密码"
+                <input type="password" name="newPwd" class="form-control" placeholder="*请再次输入密码"
                        v-validate="'required|min:6'" v-model="newPwd"
                        v-on:change="notSame = newPwd !== regUser.password"
                        :class="{'form-control': true, 'is-invalid': errors.has('password') || notSame}">

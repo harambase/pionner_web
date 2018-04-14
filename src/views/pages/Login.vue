@@ -8,7 +8,10 @@
               <b-card-body>
                 <h1>登录 Login</h1>
                 <p class='text-muted'>Log in via Pioneer Network Account:</p>
-                <b-input-group class='mb-3'>
+                <div v-if="loginError">
+                  <p class='text-danger'>用户名或者密码不正确!</p>
+                </div>
+                <b-input-group class='mb-4'>
                   <div class='input-group-prepend'><span class='input-group-text'><i class='icon-user'></i></span></div>
                   <input type='text' class='form-control' placeholder='用户ID' v-model='user.username'
                          v-validate="'required|numeric|min:10|max:10'" name="username"
@@ -51,7 +54,6 @@
 <script>
   import axios from 'axios'
   import md5 from 'js-md5'
-  import auth from '../../auth'
 
   export default ({
     name: 'Login',
@@ -60,7 +62,8 @@
         user: {
           username: '',
           password: ''
-        }
+        },
+        loginError:false
       }
     },
     methods: {
@@ -76,7 +79,7 @@
               token = response.data.data.access_token
               this.$router.push({path: '/dashboard'})
             }else{
-
+              this.loginError = true;
             }
           })
         });
@@ -85,7 +88,7 @@
         this.$router.push({path:'/register'})
       },
       resetPassword(){
-
+        this.$router.push({path:'/resetPassword'})
       }
     }
   })

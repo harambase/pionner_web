@@ -67,6 +67,7 @@ import Page403 from '@/views/pages/Page403'
 import Page500 from '@/views/pages/Page500'
 import Login from '@/views/pages/Login'
 import Register from '@/views/pages/Register'
+import ResetPassword from '@/views/pages/ResetPassword'
 
 Vue.use(Router)
 
@@ -540,6 +541,11 @@ const router = new Router({
           path: 'register',
           name: 'Register',
           component: Register
+        },
+        {
+          path: 'resetPassword',
+          name: 'ResetPassword',
+          component: ResetPassword
         }
       ]
     }
