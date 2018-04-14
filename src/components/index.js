@@ -8,6 +8,7 @@ import Switch from './Switch.vue'
 import InfoSelect from './selects/InfoSelect.vue'
 import StudentSelect from './selects/StudentSelect.vue'
 import CourseSelect from './selects/CourseSelect.vue'
+import FacultySelect from './selects/FacultySelect.vue'
 
 export {
   Aside,
@@ -19,5 +20,6 @@ export {
   Switch,
   InfoSelect,
   StudentSelect,
+  FacultySelect,
   CourseSelect,
 }

@@ -1,7 +1,7 @@
 <template>
   <b-form-group horizontal label="按学期：" class="mb-0">
-    <v-select v-model="info" :filterable="false" :options="infoOptions"
-              @search="infoList"></v-select>
+    <v-select :onchange="passValue"  v-model="info" :filterable="false"
+              :options="infoOptions" @search="infoList"></v-select>
   </b-form-group>
 </template>
 
@@ -29,6 +29,10 @@
       })
     },
     methods: {
+      passValue(){
+        console.log(this.info)
+        this.$emit('info', this.info)
+      },
       infoList (search, loading) {
         loading(true)
         this.infoOptions = []

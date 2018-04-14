@@ -1,19 +1,6 @@
 import decode from 'jwt-decode'
-import auth0 from 'auth0-js'
-import Router from 'vue-router'
 
 const ACCESS_TOKEN_KEY = 'access_token'
-
-// export function requireAuth(to, from, next) {
-//   if (!isLoggedIn()) {
-//     next({
-//       path: '/',
-//       query: { redirect: to.fullPath }
-//     });
-//   } else {
-//     next();
-//   }
-// }
 
 export default ({
   methods: {

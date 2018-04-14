@@ -80,21 +80,27 @@ const router = new Router({
       name: '主页',
       component: Full,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        role:[]
       },
       children: [
         {
           path: 'dashboard',
           name: '主页',
           component: Dashboard,
-          // meta : {
-          //   requireAuth: true,
-          // },
+          meta : {
+            requireAuth: true,
+            role:['0']
+          },
         },
         {
           path: 'charts',
           name: '消息中心',
-          component: Charts
+          component: Charts,
+          meta : {
+            requireAuth: true,
+            role: ['0']
+          },
         },
         {
           path: 'course',
@@ -103,11 +109,19 @@ const router = new Router({
           component: {
             render (c) { return c('router-view') }
           },
+          meta : {
+            requireAuth: true,
+            role: ['2','5','6']
+          },
           children: [
             {
               path: 'view',
               name: '所有课程',
-              component: ViewCourse
+              component: ViewCourse,
+              meta : {
+                requireAuth: true,
+                role: ['2','5','6']
+              },
             },
             {
               path: 'new',
@@ -120,24 +134,40 @@ const router = new Router({
                 {
                   path: 'create',
                   name: '新课程申请',
-                  component: Course
+                  component: Course,
+                  meta : {
+                    requireAuth: true,
+                    role: ['2','6']
+                  },
                 },
                 {
                   path: 'request',
                   name: '你的申请',
-                  component: TempCourse
+                  component: TempCourse,
+                  meta : {
+                    requireAuth: true,
+                    role: ['2','6']
+                  },
                 },
               ]
             },
             {
               path: 'transcript',
               name: '个人成绩单',
-              component: Transcript
+              component: Transcript,
+              meta : {
+                requireAuth: true,
+                role: ['5']
+              },
             },
             {
               path: 'choose',
               name: '新学期选课',
-              component: Choose
+              component: Choose,
+              meta : {
+                requireAuth: true,
+                role: ['5']
+              },
             },
           ]
         },
@@ -147,6 +177,9 @@ const router = new Router({
           name: '教务管理',
           component: {
             render (c) { return c('router-view') }
+          },
+          meta : {
+            requireAuth: true,
           },
           children: [
             {
@@ -187,6 +220,8 @@ const router = new Router({
           name: '导师系统',
           component: {
             render (c) { return c('router-view') }
+          },meta : {
+            requireAuth: true,
           },
           children: [
             {
@@ -232,6 +267,9 @@ const router = new Router({
           name: '系统管理',
           component: {
             render (c) { return c('router-view') }
+          },
+          meta : {
+            requireAuth: true,
           },
           children: [
             {
@@ -464,35 +502,26 @@ const router = new Router({
       ]
     }
   ]
-
 })
+import decode from 'jwt-decode'
 
-// router.beforeEach((to, from, next) => {
-//   window.localStorage.clear();
-//   console.log(window.localStorage.getItem('token'))
-//   return next('/pages/login');
-//   // if ((window.localStorage.getItem('token') === null || window.localStorage.getItem('token') === undefined)
-//   //   && to.path !== '/pages/register') { // 判断没有本地存储token,如果不是跳转登陆注册修改密码，则跳转到登陆
-//   //   next('/pages/login');
-//   // } else {
-//   //   if (window.localStorage.getItem('token') && to.path === '/') { //判断如果有本地存储token，用户打开应用则跳转到首页
-//   //     next({
-//   //       path: '/dashboard'
-//   //     });
-//   //   } else {
-//   //     next();
-//   //   }
-//   // }
-// })
-
-// 为什么传这三个参数，官网有详细介绍
 router.beforeEach((to,from,next) => {
   // 这里的meta就是我们刚刚在路由里面配置的meta
   if(to.meta.requireAuth){
-    // 下面这个判断是自行实现到底是否有没有登录
+    //登录成功
     if (isNotEmpty(window.localStorage.getItem("access_token"))){
-      // 登录就继续
-      next();
+      const token = decode(window.localStorage.getItem('access_token'))
+      for(let i = 0; i < to.meta.role.length; i++)
+        for(let j = 0; j < token.rol.length; j++){
+          if(token.rol[j] == '1' || to.meta.role[i] == token.rol[j]) {
+            next()
+            return
+          }
+        }
+      next({
+        path : '/500',
+        query : {redirect : to.fullPath}
+      })
     }else {
       // 没有登录跳转到登录页面，登录成功之后再返回到之前请求的页面
       next({

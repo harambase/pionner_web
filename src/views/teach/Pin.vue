@@ -11,10 +11,7 @@
           <b-container fluid>
             <b-row>
               <b-col md="3" class="my-1">
-                <b-form-group horizontal label="按学期：" class="mb-0">
-                  <v-select v-model="info" :filterable="false" :options="infoOptions"
-                            @search="infoList"></v-select>
-                </b-form-group>
+                <CInfoSelect/>
               </b-col>
               <b-col md="3" class="my-1">
                 <b-input-group-button>
@@ -53,11 +50,11 @@
                 <!-- Main table element -->
                 <b-table show-empty
                          stacked="md"
-                         ref="transcriptTable"
+                         ref="pinTable"
                          :striped=true
                          :fixed=true
                          :hover=true
-                         :items="transcriptTable"
+                         :items="pinTable"
                          :fields="field"
                          :current-page="currentPage"
                          :per-page="perPage"
@@ -83,7 +80,8 @@
                       <b-list-group>
                         <b-list-group-item title="修改成绩" class="flex-column align-items-start" disabled>
                           <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">学生 <strong>{{row.item.sname}}</strong> 在 <strong>{{row.item.cname}}</strong>
+                            <h5 class="mb-1">学生 <strong>{{row.item.sname}}</strong> 在
+                              <strong>{{row.item.cname}}</strong>
                               课程的成绩信息</h5>
                             <small class="text-muted">课程CRN：{{row.item.crn}}</small>
                           </div>
@@ -102,7 +100,8 @@
                                        :class="{'form-control': true, 'is-invalid': errors.has('grade')}"
                                        v-model="row.item.grade"
                                        v-validate="'required'">
-                                <div v-show="errors.has('grade')" class="invalid-tooltip">{{ errors.first('grade')}}</div>
+                                <div v-show="errors.has('grade')" class="invalid-tooltip">{{ errors.first('grade')}}
+                                </div>
                               </dd>
 
                               <dt class="col-sm-1">完成情况:</dt>
@@ -140,7 +139,8 @@
                               <dd class="col-sm-3">
                                 <input type="password" v-validate="'required'" name="adminPwd"
                                        :class="{'form-control': true, 'is-invalid': errors.has('adminPwd')}"/>
-                                <div v-show="errors.has('adminPwd')" class="invalid-tooltip">{{ errors.first('adminPwd')}}
+                                <div v-show="errors.has('adminPwd')" class="invalid-tooltip">{{
+                                  errors.first('adminPwd')}}
                                 </div>
                               </dd>
                             </dl>
@@ -185,7 +185,8 @@
             <b-card header-tag="header"
                     footer-tag="footer">
               <div slot="header">
-                <i className="fa fa-align-justify"></i><strong>PIN生成</strong><small>生成规则信息</small>
+                <i className="fa fa-align-justify"></i><strong>PIN生成</strong>
+                <small>生成规则信息</small>
               </div>
               <b-row>
                 <b-col md="2">
@@ -277,8 +278,7 @@
                   <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="yes"
                            :class="{'custom-control-input': true, 'is-invalid': errors.has('confirm')}"
-                           name="confirm" v-model="confirm"
-                           :disabled="tempCourse.status!=='0'">
+                           name="confirm" v-model="confirm">
                     <label class="custom-control-label" for="yes">确认</label>
                     <div v-show="errors.has('confirm')" class="invalid-tooltip">{{ errors.first('confirm') }}</div>
                   </div>
@@ -325,13 +325,9 @@
               </div>
               <div id="collapseThree" class="panel-collapse collapse">
                 <div class="panel-body">
-                  <div class="col-sm-2">
-                    <label class="col-sm-12 control-label">*请选择清空学期:</label>
-                  </div>
-                  <div class="col-sm-3">
-                    <select style="width: 100%" class="js-example-basic-single info" name="states">
-                    </select>
-                  </div>
+                  <b-col md="5">
+                    <CInfoSelect/>
+                  </b-col>
                   <div class="col-sm-2">
                     <label for="password" class="col-sm-12 control-label">*管理员操作密码:</label>
                   </div>
@@ -350,12 +346,8 @@
                 <i className="fa fa-align-justify"></i><strong>识别码(PIN)批量清空</strong>
               </div>
               <b-row>
-                <b-col md="2">
-                  <label class="col-sm-12 control-label">*请选择清空学期:</label>
-                </b-col>
-                <b-col md="3">
-                  <select style="width: 100%" class="js-example-basic-single info" name="states">
-                  </select>
+                <b-col md="5">
+                  <CInfoSelect/>
                 </b-col>
                 <b-col md="2">
                   <label class="col-sm-12 control-label">*是否批量:</label>
@@ -381,8 +373,7 @@
                   <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="yes"
                            :class="{'custom-control-input': true, 'is-invalid': errors.has('confirm')}"
-                           name="confirm" v-model="confirm"
-                           :disabled="tempCourse.status!=='0'">
+                           name="confirm" v-model="confirm">
                     <label class="custom-control-label" for="yes">确认</label>
                     <div v-show="errors.has('confirm')" class="invalid-tooltip">{{ errors.first('confirm') }}</div>
                   </div>
@@ -406,19 +397,49 @@
 
 <script>
   import axios from 'axios'
+  import CInfoSelect from '../../components/selects/InfoSelect'
+
+  const items = []
+  const field = [
+    {key: 'pin', label: '识别码', sortable: true},
+    {key: 'owner', label: '所有人', sortable: true, 'class': 'text-center'},
+    {key: 'role', label: '类型', sortable: true},
+    {key: 'effective', label: '有效时间'},
+    {key: 'remark', label: '备注', sortable: true},
+    {key: 'createTime', label: '创建时间', sortable: true},
+    {key: 'actions', label: '操作'}
+  ]
 
   export default {
     name: 'Pin',
+    components: {CInfoSelect},
     data () {
       return {
         startTime: '',
         endTime: '',
         role: [],
-        info: '',
-        infoOptions: [],
         remark: '',
+        info: '',
         table: '',
-        mode: ''
+        mode: '',
+        field: field,
+        currentPage: 1,
+        perPage: 10,
+        totalRows: 0,
+        pageOptions: [5, 10, 15],
+        sortBy: 'crn',
+        sortDesc: false,
+        filter: null,
+        items: items,
+        confirm: '',
+      }
+    },
+    computed: {
+      sortOptions () {
+        // Create an options list from our field
+        return this.field
+          .filter(f => f.sortable)
+          .map(f => { return {text: f.label, value: f.key} })
       }
     },
     mounted: function () {
@@ -442,32 +463,61 @@
       })
     },
     methods: {
+      initTable () {
+        this.$refs.pinTable.refresh()
+      },
+      onFiltered (filteredItems) {
+        this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
+        this.currentPage = 1
+      },
+      pinTable (ctx) {
+        this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
+        let url = '/pin?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
+        if (this.isNotEmpty(this.info))
+          url += '&info=' + this.info.value
+        if (this.isNotEmpty(ctx.filter))
+          url += '&search=' + ctx.filter
+        if (ctx.sortDesc)
+          url += '&order=desc'
+        else
+          url += '&order=asc'
+
+        return axios.get(url).then((response) => {
+          let items = response.data.data
+          this.totalRows = response.data.recordsTotal
+          return (items || [])
+        })
+
+      },
+      isNotEmpty (value) {
+        return value !== '' && value !== undefined && value !== null
+      },
       sendAdvisorPin () {
-        axios.delete('/send/advisor/' + $('#send').val()).then(function (response) {
-          Showbo.Msg.alert(response.data.msg, function () {
-          })
+        axios.delete('/send/advisor/' + $('#send').val()).then((response) => {
+          this.msg = response.data.msg
+          this.showModal = true
+          this.headerBgVariant = 'danger'
         })
       },
       sendFacultyPin () {
-        axios.delete('/send/faculty/' + $('#send').val()).then(function (response) {
-          Showbo.Msg.alert(response.data.msg, function () {
-          })
+        axios.delete('/send/faculty/' + $('#send').val()).then((response) => {
+          this.msg = response.data.msg
+          this.showModal = true
+          this.headerBgVariant = 'danger'
         })
-      },
-      initTable () {
-        pinTable.draw()
       },
       deleteOne (pin) {
         Showbo.Msg.confirm('确认删除该识别码？', function () {
           if ($('.btnfocus').val() !== '取消') {
-            axios.delete('/pin/' + pin).then(function (response) {
+            axios.delete('/pin/' + pin).then((response) => {
               if (response.data.code === 2001)
                 Showbo.Msg.alert(response.data.msg, function () {
-                  pinTable.draw()
+                  this.initTable()
                 })
               else {
-                Showbo.Msg.alert(response.data.msg, function () {
-                })
+                this.msg = response.data.msg
+                this.showModal = true
+                this.headerBgVariant = 'danger'
               }
             })
           }
@@ -481,14 +531,15 @@
           + '&role=' + this.role
           + '&info=' + this.info
           + '&remark=' + this.remark
-        axios.post(url).then(function (response) {
+        axios.post(url).then((response) => {
           if (response.data.code === 2001)
             Showbo.Msg.alert(response.data.msg, function () {
               window.location.reload()
             })
           else {
-            Showbo.Msg.alert(response.data.msg, function () {
-            })
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
           }
         })
       },
@@ -499,28 +550,30 @@
           + '&role=' + this.role
           + '&info=' + this.info
           + '&remark=' + this.remark
-        axios.post(url).then(function (response) {
+        axios.post(url).then((response) => {
           if (response.data.code === 2001)
             Showbo.Msg.alert(response.data.msg, function () {
               window.location.reload()
             })
           else {
-            Showbo.Msg.alert(response.data.msg, function () {
-            })
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
           }
         })
       },
       deleteAll: function () {
         Showbo.Msg.confirm('确认清除？', function () {
           if ($('.btnfocus').val() !== '取消') {
-            axios.delete('/pin/' + this.info + '/all').then(function (response) {
+            axios.delete('/pin/' + this.info + '/all').then((response) => {
               if (response.data.code === 2001)
                 Showbo.Msg.alert(response.data.msg, function () {
                   window.location.reload()
                 })
               else {
-                Showbo.Msg.alert(response.data.msg, function () {
-                })
+                this.msg = response.data.msg
+                this.showModal = true
+                this.headerBgVariant = 'danger'
               }
             })
           }

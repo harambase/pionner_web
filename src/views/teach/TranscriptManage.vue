@@ -11,7 +11,7 @@
           <b-container fluid>
             <b-row>
               <b-col md="3" class="my-1">
-                <InfoSelect/>
+                <InfoSelect :passValue="info"/>
               </b-col>
               <b-col md="3" class="my-1">
                 <StudentSelect/>
@@ -257,6 +257,7 @@
     components: {InfoSelect, StudentSelect, CourseSelect},
     data () {
       return {
+        info: '',
         msg: '',
         showModal: false,
         showDeleteModal: false,
@@ -292,6 +293,7 @@
       transcriptTable (ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/transcript/list?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
+        console.log(this.info)
         if (this.isNotEmpty(this.info))
           url += '&info=' + this.info.value
         if (this.isNotEmpty(this.student))

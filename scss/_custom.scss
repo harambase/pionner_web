@@ -1,60 +1,11 @@
 // Here you can add other styles
 body {
-  //font-family: 'Open Sans', sans-serif;
   background-image: url("/static/img/background.jpg");
   background-size: cover;
-  /*overflow: hidden;*/
 }
-//address, article, aside, b, caption, cite, code, dd, del, details, div, dl, dt, em, fieldset, figcaption, figure, footer, form, header, hgroup, i, input, legend, li, nav, ol, p, pre, section, select, strong, summary, table, tbody, td, textarea, tfoot, th, thead, ul {
-//  margin: 0;
-//  padding: 0;
-//  font-size: 100%;
-//  font-style: normal;
-//  font-weight: 400;
-//  word-wrap: break-word;
-//  outline: 0
-//}
 
 legend {
   font-size: 17px;
-}
-
-article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary {
-  display: block
-}
-
-//table {
-//  border-collapse: collapse;
-//  table-layout: fixed
-//}
-
-li {
-  list-style: none
-}
-
-img {
-  border: 0
-}
-
-input, select, textarea {
-  background: #fff;
-  font-family: inherit;
-  resize: none
-}
-
-input[type=button], input[type=reset], input[type=submit] {
-  -webkit-appearance: none
-}
-
-a {
-  color: #333;
-  text-decoration: none;
-  outline: 0
-}
-
-a:hover {
-  color: #419cff;
-  text-decoration: none
 }
 
 .clearfix, .g-clearfix, .ym-clearfix {
@@ -71,7 +22,6 @@ a:hover {
 }
 
 .lesson-table {
-  color: #99b5c0;
   color: #fff;
   background: #21282e;
   height: 46px;

@@ -213,7 +213,7 @@
 
   export default {
     name: 'ViewCourse',
-    components: {InfoSelect, FaucultySelect},
+    components: {InfoSelect, FacultySelect},
     data () {
       return {
         field: field,
