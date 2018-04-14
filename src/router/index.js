@@ -63,7 +63,7 @@ import Modals from '@/views/notifications/Modals'
 
 // Views - Pages
 import Page404 from '@/views/pages/Page404'
-import Page401 from '@/views/pages/Page401'
+import Page403 from '@/views/pages/Page403'
 import Page500 from '@/views/pages/Page500'
 import Login from '@/views/pages/Login'
 import Register from '@/views/pages/Register'
@@ -522,9 +522,9 @@ const router = new Router({
           component: Page404
         },
         {
-          path: '401',
-          name: 'Page401',
-          component: Page401
+          path: '403',
+          name: 'Page403',
+          component: Page403
         },
         {
           path: '500',
@@ -561,7 +561,7 @@ router.beforeEach((to,from,next) => {
           }
         }
       next({
-        path : '/401',
+        path : '/403',
         query : {redirect : to.fullPath}
       })
     }else {
