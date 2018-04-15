@@ -17,59 +17,7 @@
               <div slot="header">
                 <i className="fa fa-align-justify"></i><strong>学生列表</strong>
               </div>
-              <b-container fluid>
-                <b-row>
-                  <b-col md="6" class="my-1">
-                    <b-form-group horizontal label="每页显示条数：" class="mb-0">
-                      <b-form-select :options="pageOptions" v-model="perPage"/>
-                    </b-form-group>
-                  </b-col>
-                  <b-col md="6" class="my-1">
-                    <b-form-group horizontal label="模糊查询：" class="mb-0">
-                      <b-input-group>
-                        <b-form-input v-model="filter"/>
-                        <b-input-group-button>
-                          <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
-                        </b-input-group-button>
-                      </b-input-group>
-                    </b-form-group>
-                  </b-col>
-                </b-row>
-
-                <!-- Main table element -->
-                <b-table show-empty
-                         stacked="md"
-                         ref="studentInCourseTable"
-                         :striped=true
-                         :fixed=true
-                         :hover=true
-                         :items="studentInCourseTable"
-                         :fields="studentInCourseField"
-                         :current-page="currentPage"
-                         :per-page="perPage"
-                         :filter="filter"
-                         :sort-by.sync="sortBy"
-                         :sort-desc.sync="sortDesc"
-                         :isBusy="false"
-                         @filtered="onFiltered"
-                >
-                  <template slot="complete" slot-scope="row">
-                    <p v-if="row.value === 1" style="color:green;">完成</p>
-                    <p v-if="row.value === 0" style="color:blue;">进行中</p>
-                    <p v-if="row.value === -1" style="color:red;">挂科</p>
-                  </template>
-                  <template slot="actions" slot-scope="row">
-                    <b-button size="sm" class="btn btn-danger" @click.stop="removeStuFromCourse(row.item.userId)">
-                     移除该学生
-                    </b-button>
-                  </template>
-
-                </b-table>
-                <b-col md="6" class="my-1">
-                  <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
-                                class="my-0"/>
-                </b-col>
-              </b-container>
+              <CStudentInCourseTable v-bind:crn="id"/>
             </b-card>
         </b-card>
         <b-card header-tag="header" footer-tag="footer">
@@ -431,7 +379,6 @@
 
     </b-row>
 
-
     <b-modal v-model="showModal" size="sm"
              :header-bg-variant="headerBgVariant"
              @ok="goTo"
@@ -446,19 +393,11 @@
 <script>
   import axios from 'axios'
   import CAddStudentTable from '../../components/tables/AddStudentTable'
-
-  const studentInCourseFieldItems = []
-  const studentInCourseField = [
-    {key: 'id', label: '序号', sortable: true},
-    {key: 'studentId', label: '学生ID', sortable: true},
-    {key: 'sname', label: '学生名', sortable: true},
-    {key: 'grade', label: '学生成绩', sortable: true},
-    {key: 'complete', label: '完成情况', sortable: true}
-  ]
+  import CStudentInCourseTable from '../../components/tables/StudentInCourseTable'
 
   export default {
     name: 'ViewCourse',
-    components: {CAddStudentTable},
+    components: {CStudentInCourseTable, CAddStudentTable},
     data () {
       return {
         course: {
@@ -491,31 +430,12 @@
           facultyId: '',
           courseJson: '',
         },
-        transcript: {
-          id: '',
-          studentId: '',
-          grade: '',
-          crn: '',
-          complete: '',
-          credits: ''
-        },
-        addStudent: {
-          crn: '',
-          studentId: '',
-          credits: '',
-          option: {
-            prereq: false,
-            time: false,
-            capacity: false,
-          },
-        },
         courseDay: [],
         showDocument: false,
         confirm: false,
         pageMode: this.$route.fullPath.split('&')[0].split('=')[1],
         id: this.$route.fullPath.split('&')[1].split('=')[1],//maybe CRN
         url: this.$route.fullPath,
-        studentInCourseField: studentInCourseField,
         currentPage: 1,
         perPage: 10,
         totalRows: 0,
@@ -526,7 +446,6 @@
         sortBy: 'crn',
         sortDesc: false,
         filter: null,
-        studentInCourseFieldItems: studentInCourseFieldItems,
         isBusy: false,
         msg: '',
         showModal: false,
@@ -751,28 +670,7 @@
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      initStudentTable () {
-        this.$refs.studentInCourseTable.refresh()
-      },
-      studentInCourseTable (ctx) {
-        this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
-        let url = '/transcript/course/student?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
-        if (this.isNotEmpty(this.transcript.crn))
-          url += '&crn=' + this.transcript.crn
-        if (this.isNotEmpty(ctx.filter))
-          url += '&search=' + ctx.filter
-        if (ctx.sortDesc)
-          url += '&order=desc'
-        else
-          url += '&order=asc'
 
-        return axios.get(url).then((response) => {
-          let items = response.data.data
-          this.totalRows = response.data.recordsTotal
-          return (items || [])
-        })
-
-      },
       isNotEmpty (value) {
         return value !== '' && value !== undefined && value !== null
       },
@@ -997,37 +895,6 @@
         else {//查看下载
           window.open(basePath + '/course/info/' + this.course.crn + '?token=' + window.localStorage.getItem('access_token'))
         }
-      },
-
-      removeStuFromCourse (studentId, crn) {
-        Showbo.Msg.confirm('确认从课程中删除该学生？', function () {
-          if ($('.btnfocus').val() !== '取消') {
-            axios.delete('/course/' + crn + '/student/' + studentId).then(function (response) {
-              if (response.data.code === 2001) {
-                Showbo.Msg.alert('删除成功!', function () {
-                  studentInCourse.draw()
-                })
-              } else {
-                this.msg = response.data.msg
-                this.showModal = true
-                this.headerBgVariant = 'danger'
-              }
-            })
-          }
-        })
-      },
-
-      showAddStudentToCourse (studentId) {
-        this.addStudent.studentId = studentId
-        this.addStudent.crn = this.transcript.crn
-        this.addStudent.credits = this.transcript.credits
-      },
-
-      showTranscript (id, studentId, grade, complete) {
-        this.transcript.id = id
-        this.transcript.studentId = studentId
-        this.transcript.grade = grade
-        this.transcript.complete = complete
       },
     }
   }

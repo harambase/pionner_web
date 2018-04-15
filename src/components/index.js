@@ -10,6 +10,7 @@ import StudentSelect from './selects/StudentSelect.vue'
 import CourseSelect from './selects/CourseSelect.vue'
 import FacultySelect from './selects/FacultySelect.vue'
 import AddStudentTable from './tables/AddStudentTable.vue'
+import StudentInCourseTable from './tables/StudentInCourseTable.vue'
 
 export {
   Aside,
@@ -24,4 +25,5 @@ export {
   FacultySelect,
   CourseSelect,
   AddStudentTable,
+  StudentInCourseTable
 }
