@@ -1,14 +1,14 @@
 ﻿<template>
   <div class="animated fadeIn">
 
-    <b-row v-show="pageMode === 'student'">
-      <b-button class="btn btn-primary btn-info"
-                @click="showTable">
-        <i class="fa fa-arrow-left"></i> 返回列表
-      </b-button>
+    <b-row v-if="pageMode === 'student'">
       <b-col cols="12">
         <b-card header-tag="header" footer-tag="footer">
           <div slot="header">
+            <b-button class="btn btn-primary btn-info"
+                      @click="showTable">
+              <i class="fa fa-arrow-left"></i> 返回列表
+            </b-button>
             <i className="fa fa-align-justify"></i><strong>课程中学生详情</strong>
           </div>
           <b-card
@@ -18,7 +18,6 @@
                 <i className="fa fa-align-justify"></i><strong>学生列表</strong>
               </div>
               <b-container fluid>
-                <!-- User Interface controls -->
                 <b-row>
                   <b-col md="6" class="my-1">
                     <b-form-group horizontal label="每页显示条数：" class="mb-0">
@@ -77,107 +76,12 @@
           <div slot="header">
             <i className="fa fa-align-justify"></i><strong>添加学生</strong>
           </div>
+          <CAddStudentTable mode="addStudent" v-bind:crn="id"/>
         </b-card>
-        <!---->
-        <!--<div class="panel panel-default">-->
-          <!--<div class="panel-heading">-->
-                            <!--<span style="cursor: pointer" data-toggle="collapse" data-parent="#accordion"-->
-                                  <!--href="#collapseThree" class="collapsed">添加学生</span>-->
-          <!--</div>-->
-          <!--<div id="collapseThree" class="panel-collapse in">-->
-            <!--<div class="panel-body">-->
-              <!--<div class="col-md-7 col-sm-4">-->
-                <!--<div class="panel panel-default">-->
-                  <!--<div class="panel-body">-->
-                    <!--<table style="width:100%" id="studentTable"-->
-                           <!--class="table table-striped table-bordered table-hover"></table>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-              <!--<form class="form-horizontal">-->
-                <!--<div class="col-md-5 col-sm-4">-->
-                  <!--<div class="panel panel-primary">-->
-                    <!--<div class="panel-heading">-->
-                      <!--添加学生选项-->
-                    <!--</div>-->
-                    <!--<div class="panel-body">-->
-                      <!--<div class="form-group">-->
-                        <!--<div class="col-sm-3">-->
-                          <!--<label for="sid"-->
-                                 <!--class="col-sm-12 control-label">学生ID:</label>-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-9">-->
-                          <!--<input :class="{'form-control': true, 'is-invalid': errors.has('name')}"-->
-                                 <!--v-model="addStudent.studentId"-->
-                                 <!--disabled>-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-3" style="margin-top:10px;">-->
-                          <!--<label class="col-sm-12 control-label">*课程CRN:</label>-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-9" style="margin-top:10px;">-->
-                          <!--<input :class="{'form-control': true, 'is-invalid': errors.has('name')}" required disabled-->
-                                 <!--v-model="addStudent.crn"/>-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-3" style="margin-top:10px;">-->
-                          <!--<label class="col-sm-12 control-label">*课程学分:</label>-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-9" style="margin-top:10px;">-->
-                          <!--<input :class="{'form-control': true, 'is-invalid': errors.has('name')}"-->
-                                 <!--required v-model="addStudent.credits"-->
-                                 <!--disabled/>-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-9" style="margin-top:10px;">-->
-                          <!--<div-->
-                            <!--class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">-->
-                            <!--<input type="checkbox" id="prereq" name="prereq"-->
-                                   <!--value="1"-->
-                                   <!--v-model="addStudent.option.prereq">-->
-                            <!--<label for="prereq">添加此学生，即使未完成预选课程</label>-->
-                          <!--</div>-->
-                          <!--<div-->
-                            <!--class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">-->
-                            <!--<input type="checkbox" id="time" name="time"-->
-                                   <!--v-model="addStudent.option.time"-->
-                                   <!--value="2">-->
-                            <!--<label for="time">添加此学生，即使有时间冲突</label>-->
-                          <!--</div>-->
-                          <!--<div-->
-                            <!--class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">-->
-                            <!--<input type="checkbox" id="capacity" name="type"-->
-                                   <!--v-model="addStudent.option.capacity"-->
-                                   <!--value="2">-->
-                            <!--<label for="capacity">添加此学生，即使已经达到课程人数上限</label>-->
-                          <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-3" style="margin-top:10px;">-->
-                          <!--<label for="tPassword"-->
-                                 <!--class="col-sm-12 control-label">*管理员操作密码:</label>-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-6" style="margin-top:10px;">-->
-                          <!--<input type="password"-->
-                                 <!--:class="{'form-control': true, 'is-invalid': errors.has('name')}" minlength="6"-->
-                                 <!--maxlength="16" checkOpPwd="true" required/>-->
-                        <!--</div>-->
-                        <!--<button class="btn btn-success col-sm-2"-->
-                                <!--style="margin-top:10px;" onclick="return false"-->
-                                <!--@click="addStudent2Course">添加-->
-                        <!--</button>-->
-                        <!--<button class="btn btn-danger col-sm-2" onclick="return false"-->
-                                <!--@click="addStudentReset">-->
-                          <!--取消-->
-                        <!--</button>-->
-                      <!--</div>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</form>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
       </b-col>
     </b-row>
 
-    <b-row v-show="pageMode === 'request' || pageMode === 'create' || pageMode === 'manage'">
+    <b-row v-if="pageMode === 'request' || pageMode === 'create' || pageMode === 'manage'">
       <b-col cols="12">
         <b-card header-tag="header" footer-tag="footer">
           <div slot="header">
@@ -524,7 +428,10 @@
           </b-card>
         </b-card>
       </b-col>
+
     </b-row>
+
+
     <b-modal v-model="showModal" size="sm"
              :header-bg-variant="headerBgVariant"
              @ok="goTo"
@@ -538,17 +445,8 @@
 
 <script>
   import axios from 'axios'
+  import CAddStudentTable from '../../components/tables/AddStudentTable'
 
-  const studentItems = []
-  const studentField = [
-    {key: 'studentId', label: '学生ID', sortable: true},
-    {key: 'sname', label: '姓名', sortable: true},
-    {key: 'maxCredits', label: '学分上限', sortable: true},
-    {key: 'complete', label: '已完成', sortable: true},
-    {key: 'progress', label: '进行中', sortable: true},
-    {key: 'incomplete', label: '未完成', sortable: true},
-    {key: 'actions', label: '操作', sortable: true}
-  ]
   const studentInCourseFieldItems = []
   const studentInCourseField = [
     {key: 'id', label: '序号', sortable: true},
@@ -560,6 +458,7 @@
 
   export default {
     name: 'ViewCourse',
+    components: {CAddStudentTable},
     data () {
       return {
         course: {
@@ -581,6 +480,7 @@
           facultyId: '',
           courseInfo: ''
         },
+        showAside: false,
         tempCourse: {
           id: '',
           crn: '',
@@ -616,7 +516,6 @@
         id: this.$route.fullPath.split('&')[1].split('=')[1],//maybe CRN
         url: this.$route.fullPath,
         studentInCourseField: studentInCourseField,
-        studentField: studentField,
         currentPage: 1,
         perPage: 10,
         totalRows: 0,
@@ -627,7 +526,6 @@
         sortBy: 'crn',
         sortDesc: false,
         filter: null,
-        studentItems: studentItems,
         studentInCourseFieldItems: studentInCourseFieldItems,
         isBusy: false,
         msg: '',
@@ -1032,19 +930,7 @@
           }
         })
       },
-      addStudent2Course () {
-        axios.put('/course/' + this.addStudent.crn + '/student/' + this.addStudent.studentId, this.addStudent.option).then(function (response) {
-          if (response.data.code === 2001) {
-            Showbo.Msg.alert('添加成功!', function () {
-              studentInCourse.draw()
-            })
-          } else {
-            this.msg = response.data.msg
-            this.showModal = true
-            this.headerBgVariant = 'danger'
-          }
-        })
-      },
+
       addStudentReset () {
         this.addStudent.studentId = ''
         this.addStudent.option.capacity = false

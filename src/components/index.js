@@ -9,6 +9,7 @@ import InfoSelect from './selects/InfoSelect.vue'
 import StudentSelect from './selects/StudentSelect.vue'
 import CourseSelect from './selects/CourseSelect.vue'
 import FacultySelect from './selects/FacultySelect.vue'
+import AddStudentTable from './tables/AddStudentTable.vue'
 
 export {
   Aside,
@@ -22,4 +23,5 @@ export {
   StudentSelect,
   FacultySelect,
   CourseSelect,
+  AddStudentTable,
 }

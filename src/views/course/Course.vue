@@ -144,24 +144,17 @@
                                       @click.stop="showDeleteCourse(row.item.crn)">
                               删除该课程
                             </b-button>
-
-                            <b-button size="sm"
-                                      class="btn btn-primary"
+                            <b-button size="sm" variant="primary"
                                       @click.stop="showDetailCourse(row.item.crn)">
                               修改该课程
                             </b-button>
-
-                            <b-button size="sm"
-                                      class="btn btn-primary"
+                            <b-button size="sm" variant="success"
                                       @click.stop="showCourseStudent(row.item.crn)">
                               课程中的学生
                             </b-button>
                           </dd>
                         </dl>
-
-
                       </div>
-                      <!--<button class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>-->
                     </b-list-group-item>
                   </b-list-group>
                 </b-card>
@@ -175,6 +168,7 @@
         </b-card>
       </b-col>
     </b-row>
+
     <b-modal v-model="showDeleteModal"
              size="sm"
              header-bg-variant='danger'
@@ -232,28 +226,29 @@
         crn: '',
         msg: '',
         headerBgVariant: '',
+
       }
     },
-    mounted: function () {
-      axios.get('/course/info?search=').then((response) => {
-        for (let i = 0; i < response.data.data.length; i++) {
-          let item = {
-            label: response.data.data[i],
-            value: response.data.data[i]
-          }
-          this.infoOptions.push(item)
-        }
-      })
-      axios.get('/user/search?status=1&type=f&search=').then((response) => {
-        for (let i = 0; i < response.data.data.length; i++) {
-          let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-          let item = {
-            label: name,
-            value: response.data.data[i].userId
-          }
-          this.facultyOptions.push(item)
-        }
-      })
+    mounted() {
+      // axios.get('/course/info?search=').then((response) => {
+      //   for (let i = 0; i < response.data.data.length; i++) {
+      //     let item = {
+      //       label: response.data.data[i],
+      //       value: response.data.data[i]
+      //     }
+      //     this.infoOptions.push(item)
+      //   }
+      // })
+      // axios.get('/user/search?status=1&type=f&search=').then((response) => {
+      //   for (let i = 0; i < response.data.data.length; i++) {
+      //     let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
+      //     let item = {
+      //       label: name,
+      //       value: response.data.data[i].userId
+      //     }
+      //     this.facultyOptions.push(item)
+      //   }
+      // })
     },
     computed: {
       sortOptions () {
