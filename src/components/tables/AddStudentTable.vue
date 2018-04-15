@@ -261,7 +261,28 @@
             this.headerBgVariant = 'danger'
           }
         })
-      }
+      },
+      doUpdate: function (studentId, maxCredits) {
+        this.$validator.validateAll().then((result) => {
+          let student = {
+            studentId: studentId,
+            maxCredits: maxCredits,
+          }
+          console.log(student)
+          axios.put('/student/' + studentId, student).then((response) => {
+            if (response.data.code === 2001) {
+              this.msg = response.data.msg
+              this.showModal = true
+              this.headerBgVariant = 'success'
+            }
+            else {
+              this.msg = response.data.msg
+              this.showModal = true
+              this.headerBgVariant = 'danger'
+            }
+          })
+        })
+      },
     }
   }
 
