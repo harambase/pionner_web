@@ -11,10 +11,10 @@
           <b-container fluid>
             <b-row>
               <b-col md="5" class="my-1">
-                <InfoSelect/>
+                <InfoSelect v-on:pass="passInfo"/>
               </b-col>
               <b-col md="5" class="my-1">
-                <FacultySelect/>
+                <FacultySelect v-on:pass="passFaculty"/>
               </b-col>
               <b-col md="2" class="my-1">
                 <b-input-group-button>
@@ -226,29 +226,9 @@
         crn: '',
         msg: '',
         headerBgVariant: '',
-
+        info: '',
+        faculty: ''
       }
-    },
-    mounted() {
-      // axios.get('/course/info?search=').then((response) => {
-      //   for (let i = 0; i < response.data.data.length; i++) {
-      //     let item = {
-      //       label: response.data.data[i],
-      //       value: response.data.data[i]
-      //     }
-      //     this.infoOptions.push(item)
-      //   }
-      // })
-      // axios.get('/user/search?status=1&type=f&search=').then((response) => {
-      //   for (let i = 0; i < response.data.data.length; i++) {
-      //     let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-      //     let item = {
-      //       label: name,
-      //       value: response.data.data[i].userId
-      //     }
-      //     this.facultyOptions.push(item)
-      //   }
-      // })
     },
     computed: {
       sortOptions () {
@@ -259,6 +239,12 @@
       }
     },
     methods: {
+      passInfo(val){
+        this.info = val;
+      },
+      passFaculty(val){
+        this.faculty = val;
+      },
       deleteCourse () {
         axios.delete('/course/' + this.crn).then((response) => {
           if (response.data.code === 2001) {

@@ -16,6 +16,15 @@
         facultyOptions: [],
       }
     },
+    watch:{
+      faculty: function (val) {
+        let faculty = {
+          label: val.label,
+          value: val.value
+        }
+        this.$emit('pass', faculty)
+      }
+    },
     mounted() {
       axios.get('/user/search?status=1&type=f&search=').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {

@@ -36,9 +36,9 @@
              @filtered="onFiltered"
     >
       <template slot="complete" slot-scope="row">
-        <p v-if="row.value === 1" style="color:green;">完成</p>
-        <p v-if="row.value === 0" style="color:blue;">进行中</p>
-        <p v-if="row.value === -1" style="color:red;">挂科</p>
+        <p v-if="row.value === '1'" style="color:green;">完成</p>
+        <p v-if="row.value === '0'" style="color:blue;">进行中</p>
+        <p v-if="row.value === '-1'" style="color:red;">挂科</p>
       </template>
       <template slot="actions" slot-scope="row">
         <b-button size="sm" class="btn btn-danger" @click.stop="removeStuFromCourse(row.item.userId)">
@@ -72,7 +72,8 @@
     {key: 'studentId', label: '学生ID', sortable: true},
     {key: 'sname', label: '学生名', sortable: true},
     {key: 'grade', label: '学生成绩', sortable: true},
-    {key: 'complete', label: '完成情况', sortable: true}
+    {key: 'complete', label: '完成情况', sortable: true},
+    {key: 'actions', label: '操作'}
   ]
 
   export default {

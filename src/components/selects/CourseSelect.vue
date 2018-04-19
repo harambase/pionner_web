@@ -7,13 +7,22 @@
 
 <script>
   import axios from 'axios'
-  
+
   export default {
     name: 'c-courseSelect',
     data () {
       return {
         course: '',
         courseOptions: [],
+      }
+    },
+    watch:{
+      course: function (val) {
+        let course = {
+          label: val.label,
+          value: val.value
+        }
+        this.$emit('pass', course)
       }
     },
     mounted() {
