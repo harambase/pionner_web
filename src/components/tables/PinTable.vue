@@ -3,6 +3,19 @@
     <!-- User Interface controls -->
     <b-row>
       <b-col md="1" class="my-1">
+        <legend class="col-form-legend">检索条件：</legend>
+      </b-col>
+      <b-col md="3" class="my-1">
+        <CInfoSelect v-on:pass="passInfo"/>
+      </b-col>
+      <b-col md="3" class="my-1">
+      </b-col>
+      <b-col md="3" class="my-1">
+      </b-col>
+    </b-row>
+
+    <b-row>
+      <b-col md="1" class="my-1">
         <legend class="col-form-legend">每页显示：</legend>
       </b-col>
       <b-col md="3" class="my-1">
@@ -43,117 +56,51 @@
              :isBusy="false"
              @filtered="onFiltered"
     >
-      <template slot="status" slot-scope="row">
-        <p v-if="row.value === 1" style="color:blue;">未开始</p>
-        <p v-if="row.value === 0" style="color:green;">进行中</p>
-        <p v-if="row.value === -1" style="color:red;">已结课</p>
+      <template slot="effective" slot-scope="row">
+        <p class="text-muted">从{{row.item.startTime}} <br> 至{{row.item.endTime}}</p>
+      </template>
+      <template slot="role" slot-scope="row">
+        <p class="text-muted" v-if="row.item.role == 2">教务</p>
+        <p class="text-muted" v-else>选课</p>
       </template>
       <template slot="actions" slot-scope="row">
-
-        <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
-          {{ row.detailsShowing ? '隐藏' : '展示' }}详情
+        <b-button size="sm" class="btn btn-danger" @click.stop="showDeleteOne(row.item.pin)">
+          删除识别码
         </b-button>
-
-      </template>
-      <template slot="row-details" slot-scope="row">
-        <b-card>
-          <b-list-group>
-            <b-list-group-item href="#" title="查看课程"
-                               class="flex-column align-items-start"
-                               :disabled="row.item.status !== '0'" @click="detail(row.item.id)">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">课程 <strong>{{row.item.name}}</strong> 的信息</h5>
-                <small class="text-muted">授课老师ID：{{row.item.facultyId}}</small>
-              </div>
-              <hr/>
-              <div class="mr-1">
-                <dl class="row">
-                  <dt class="col-sm-1">课程CRN:</dt>
-                  <dd class="col-sm-1">{{row.item.crn}}</dd>
-
-                  <dt class="col-sm-1">课程学期:</dt>
-                  <dd class="col-sm-1">{{row.item.info}}</dd>
-
-                  <dt class="col-sm-1">课程学分:</dt>
-                  <dd class="col-sm-1">{{row.item.credits}}</dd>
-
-                  <dt class="col-sm-1">课程等级:</dt>
-                  <dd class="col-sm-1">{{row.item.level}}</dd>
-
-                  <dt class="col-sm-1">课程班级:</dt>
-                  <dd class="col-sm-1">{{row.item.section}}</dd>
-
-                </dl>
-                <dl class="row">
-
-                  <dt class="col-sm-1">上课时间:</dt>
-                  <dd class="col-sm-3">{{row.item.startTime}} to {{row.item.endTime}}， 每周 {{row.item.day}}</dd>
-
-                  <dt class="col-sm-1">上课周期:</dt>
-                  <dd class="col-sm-3">{{row.item.startDate}} to {{row.item.endDate}}</dd>
-
-                  <dt class="col-sm-1">预选课程:</dt>
-                  <dd class="col-sm-3">{{row.item.precrn}}</dd>
-
-                </dl>
-                <dl class="row">
-                  <dt class="col-sm-1">课程大纲下载:</dt>
-                  <dd class="col-sm-5"
-                      v-if="row.item.courseInfo !== '' &&
-                                    row.item.courseInfo !== undefined &&
-                                    row.item.courseInfo !== null ">
-                    <a href="#" @click="download(row.item.crn)">{{JSON.parse(row.item.courseInfo).name}}</a>
-                  </dd>
-                </dl>
-                <dl class="row">
-                  <dt class="col-sm-1">备注:</dt>
-                  <dd class="col-sm-5"><p style="color:red">{{row.item.comment}}</p></dd>
-                </dl>
-
-                <dl class="row" v-if="pageMode === 'manage'">
-                  <dt class="col-sm-1">操作:</dt>
-                  <dd class="col-sm-5">
-                    <b-button size="sm"
-                              class="btn btn-danger"
-                              @click.stop="showDeleteCourse(row.item.crn)">
-                      删除该课程
-                    </b-button>
-
-                    <b-button size="sm"
-                              class="btn btn-primary"
-                              @click.stop="showDetailCourse(row.item.crn)">
-                      修改该课程
-                    </b-button>
-
-                    <b-button size="sm"
-                              class="btn btn-primary"
-                              @click.stop="showCourseStudent(row.item.crn)">
-                      课程中的学生
-                    </b-button>
-                  </dd>
-                </dl>
-
-
-              </div>
-              <!--<button class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>-->
-            </b-list-group-item>
-          </b-list-group>
-        </b-card>
       </template>
     </b-table>
     <b-col md="6" class="my-1">
       <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
                     class="my-0"/>
     </b-col>
+
+    <b-modal v-model="showDeleteModal"
+             size="sm"
+             header-bg-variant='danger'
+             @ok="deleteOne"
+             centered
+             title="不可逆操作警告！">
+      <div class="d-block text-center">
+        <h3>确认删除该识别码？</h3>
+      </div>
+    </b-modal>
+    <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
+      <div class="d-block text-center">
+        <h3>{{msg}}</h3>
+      </div>
+    </b-modal>
   </b-container>
 </template>
 
 <script>
+  import axios from 'axios'
+  import CInfoSelect from '../../components/selects/InfoSelect'
+
   const items = []
   const field = [
     {key: 'pin', label: '识别码', sortable: true},
     {key: 'owner', label: '所有人', sortable: true, 'class': 'text-center'},
-    {key: 'role', label: '类型', sortable: true},
+    {key: 'role', label: '类型', sortable: true, 'class': 'text-center'},
     {key: 'effective', label: '有效时间'},
     {key: 'remark', label: '备注', sortable: true},
     {key: 'createTime', label: '创建时间', sortable: true},
@@ -162,20 +109,32 @@
 
   export default {
     name: 'c-pinTable',
-    data() {
-      return{
+    components: {CInfoSelect},
+    data () {
+      return {
         field: field,
         currentPage: 1,
         perPage: 10,
         totalRows: 0,
         pageOptions: [5, 10, 15],
-        sortBy: 'crn',
+        sortBy: 'pin',
         sortDesc: false,
         filter: null,
         items: items,
+        info: '',
+        showDeleteModal: false,
+        showModal: false,
+        pin: '',
+        msg: '',
+        headerBgVariant: '',
       }
     },
-    computed:{
+    watch: {
+      info: function () {
+        this.initTable()
+      }
+    },
+    computed: {
       sortOptions () {
         // Create an options list from our field
         return this.field
@@ -183,7 +142,10 @@
           .map(f => { return {text: f.label, value: f.key} })
       }
     },
-    methods:{
+    methods: {
+      passInfo (val) {
+        this.info = val
+      },
       initTable () {
         this.$refs.pinTable.refresh()
       },
@@ -208,8 +170,31 @@
         })
 
       },
+      onFiltered (filteredItems) {
+        this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
+        this.currentPage = 1
+      },
       isNotEmpty (value) {
         return value !== '' && value !== undefined && value !== null
+      },
+      showDeleteOne (pin) {
+        this.pin = pin
+        this.showDeleteModal = true
+      },
+      deleteOne () {
+        axios.delete('/pin/' + this.pin).then((response) => {
+          if (response.data.code === 2001) {
+            this.msg = '删除成功！'
+            this.showModal = true
+            this.headerBgVariant = 'success'
+            this.initTable()
+          }
+          else {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
+          }
+        })
       },
     }
   }
