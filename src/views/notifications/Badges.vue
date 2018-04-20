@@ -9,27 +9,40 @@
             <div slot="header">
               <i className="fa fa-align-justify"></i><strong>Bootstrap Badge</strong>
               <div class="card-actions">
-                <a href="https://bootstrap-vue.js.org/docs/components/badge" target="_blank"><small className="text-muted">docs</small></a>
+                <a href="https://bootstrap-vue.js.org/docs/components/badge" target="_blank">
+                  <small className="text-muted">docs</small>
+                </a>
               </div>
             </div>
             <div>
-              <h2>Example heading <b-badge>New</b-badge></h2>
-              <h3>Example heading <b-badge>New</b-badge></h3>
-              <h4>Example heading <b-badge>New</b-badge></h4>
-              <h5>Example heading <b-badge>New</b-badge></h5>
-              <h6>Example heading <b-badge>New</b-badge></h6>
+              <h2>Example heading
+                <b-badge>New</b-badge>
+              </h2>
+              <h3>Example heading
+                <b-badge>New</b-badge>
+              </h3>
+              <h4>Example heading
+                <b-badge>New</b-badge>
+              </h4>
+              <h5>Example heading
+                <b-badge>New</b-badge>
+              </h5>
+              <h6>Example heading
+                <b-badge>New</b-badge>
+              </h6>
             </div>
             <div slot="footer">
               <b-button variant="primary">
-                Notifications <b-badge variant="light" :style="{position: 'static'}">4</b-badge>
+                Notifications
+                <b-badge variant="light" :style="{position: 'static'}">4</b-badge>
               </b-button>
             </div>
           </b-card>
         </b-col>
         <b-col cols="12" md="6">
           <b-card header="Badge <small>contextual variations</small>"
-            header-tag="header"
-            footer-tag="footer">
+                  header-tag="header"
+                  footer-tag="footer">
             <div>
               <b-badge variant="primary">Primary</b-badge>
               <b-badge variant="secondary">Secondary</b-badge>
@@ -42,8 +55,8 @@
             </div>
           </b-card>
           <b-card header="Badge <small>pills</small>"
-            header-tag="header"
-            footer-tag="footer">
+                  header-tag="header"
+                  footer-tag="footer">
             <div>
               <b-badge pill variant="primary">Primary</b-badge>
               <b-badge pill variant="secondary">Secondary</b-badge>
@@ -56,8 +69,8 @@
             </div>
           </b-card>
           <b-card header="Badge <small>actionable</small>"
-            header-tag="header"
-            footer-tag="footer">
+                  header-tag="header"
+                  footer-tag="footer">
             <div>
               <b-badge href="#" variant="primary">Primary</b-badge>
               <b-badge href="#" variant="secondary">Secondary</b-badge>
@@ -78,11 +91,10 @@
 </template>
 
 <script>
-export default {
-  name: 'badges',
-  data () {
-    return {
+  export default {
+    name: 'badges',
+    data () {
+      return {}
     }
   }
-}
 </script>

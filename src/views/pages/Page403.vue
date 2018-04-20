@@ -15,8 +15,8 @@
               </span>
             </div>
             <div class="input-group-append">
-            <b-button variant="info" @click="backToDashBoard">返回主页</b-button>
-          </div>
+              <b-button variant="info" @click="backToDashBoard">返回主页</b-button>
+            </div>
           </b-input-group>
         </b-col>
       </b-row>

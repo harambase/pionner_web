@@ -7,7 +7,9 @@
       <b-card-body>
         <b-row class="text-center">
           <b-col class="mb-5" cols="12">
-            For using the flags inline with text add the classes <code>.flag-icon</code> and <code>.flag-icon-xx</code> (where xx is the ISO 3166-1-alpha-2 code of a country) to an empty span. If you want to have a squared version flag then add the class flag-icon-squared as well.
+            For using the flags inline with text add the classes <code>.flag-icon</code> and <code>.flag-icon-xx</code>
+            (where xx is the ISO 3166-1-alpha-2 code of a country) to an empty span. If you want to have a squared
+            version flag then add the class flag-icon-squared as well.
           </b-col>
           <b-col class="mb-5" cols="3" sm="2">
             <i class="flag-icon flag-icon-ad h1" title="ad" id="ad"></i>
@@ -1012,7 +1014,7 @@
 </template>
 
 <script>
-export default {
-  name: 'flags'
-}
+  export default {
+    name: 'flags'
+  }
 </script>

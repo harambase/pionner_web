@@ -25,12 +25,12 @@
 </template>
 
 <script>
-export default {
-  name: 'Page404',
-  methods: {
-    backToDashBoard () {
-      this.$router.push({path: '/dashboard'})
+  export default {
+    name: 'Page404',
+    methods: {
+      backToDashBoard () {
+        this.$router.push({path: '/dashboard'})
+      }
     }
   }
-}
 </script>

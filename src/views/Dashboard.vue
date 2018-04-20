@@ -42,9 +42,9 @@
           <div slot="header">
             <i className="fa fa-align-justify"></i><strong>我教的课程</strong>
             <!--<div class="card-actions">-->
-              <!--<a href="https://bootstrap-vue.js.org/docs/components/breadcrumb" target="_blank">-->
-                <!--<small className="text-muted">docs</small>-->
-              <!--</a>-->
+            <!--<a href="https://bootstrap-vue.js.org/docs/components/breadcrumb" target="_blank">-->
+            <!--<small className="text-muted">docs</small>-->
+            <!--</a>-->
             <!--</div>-->
           </div>
           <div class="firstStep clearfix" v-for="course in teachList">

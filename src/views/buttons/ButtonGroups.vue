@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="animated fadeIn">
       <b-row>
-        <b-col cols="12" >
+        <b-col cols="12">
           <b-card
             header-tag="header"
             footer-tag="footer">
@@ -111,12 +111,13 @@
             header-tag="header"
             footer-tag="footer">
             <div slot="header">
-              <i className="fa fa-align-justify"></i><strong>Button toolbar</strong> <small>with button groups</small>
-                <div class="card-actions">
-                  <a href="https://bootstrap-vue.js.org/docs/components/button-toolbar" target="_blank">
-                    <small className="text-muted">docs</small>
-                  </a>
-                </div>
+              <i className="fa fa-align-justify"></i><strong>Button toolbar</strong>
+              <small>with button groups</small>
+              <div class="card-actions">
+                <a href="https://bootstrap-vue.js.org/docs/components/button-toolbar" target="_blank">
+                  <small className="text-muted">docs</small>
+                </a>
+              </div>
             </div>
             <div>
               <b-button-toolbar key-nav aria-label="Toolbar with button groups">
@@ -151,13 +152,13 @@
                     <span class="input-group-text">.00</span>
                   </div>
                 </b-input-group>
-                <b-input-group  size="sm" class="w-25 mx-1">
+                <b-input-group size="sm" class="w-25 mx-1">
                   <div class="input-group-prepend">
                     <span class="input-group-text">Size</span>
                   </div>
                   <b-form-select value="Medium" :options="['Large','Medium','Small']"></b-form-select>
                 </b-input-group>
-                <b-button-group  size="sm" class="mx-1">
+                <b-button-group size="sm" class="mx-1">
                   <b-btn>Save</b-btn>
                   <b-btn>Cancel</b-btn>
                 </b-button-group>

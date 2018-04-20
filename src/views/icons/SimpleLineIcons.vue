@@ -745,7 +745,7 @@
 </template>
 
 <script>
-export default {
-  name: 'simple-line-icons'
-}
+  export default {
+    name: 'simple-line-icons'
+  }
 </script>

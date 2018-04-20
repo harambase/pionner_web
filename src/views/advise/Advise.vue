@@ -50,7 +50,7 @@
                 </b-col>
                 <b-col cols="6" md="6">
                   <b-button style="width:150px;" class="btn btn-danger"
-                          id="reset" @click="reset">
+                            id="reset" @click="reset">
                     重置当前
                   </b-button>
                 </b-col>
@@ -205,7 +205,7 @@
         ava_credits: 0,
         counter: 0,
         crnList: [],
-        failList:[],
+        failList: [],
         worksheet: '',
         msg: '',
         field: field,

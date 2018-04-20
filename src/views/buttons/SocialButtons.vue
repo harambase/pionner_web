@@ -4,9 +4,13 @@
       <b-col cols="12">
         <b-card>
           <div slot="header">
-            <strong>Social Media Button</strong> <small>Usage ex.</small><code style="text-transform:lowercase">&lt;b-button variant="facebook"&gt;&lt;span&gt;Facebook&lt;/span&gt;&lt;/b-button&gt;</code>
+            <strong>Social Media Button</strong>
+            <small>Usage ex.</small>
+            <code style="text-transform:lowercase">&lt;b-button variant="facebook"&gt;&lt;span&gt;Facebook&lt;/span&gt;&lt;/b-button&gt;</code>
           </div>
-          <h6>Size Small <small>Add this <code>size="sm"</code></small></h6>
+          <h6>Size Small
+            <small>Add this <code>size="sm"</code></small>
+          </h6>
           <p>
             <b-button size="sm" variant="facebook"><span>Facebook</span></b-button>
             <b-button size="sm" variant="twitter"><span>Twitter</span></b-button>
@@ -62,7 +66,9 @@
             <b-button variant="foursquare"><span>Forsquare</span></b-button>
             <b-button variant="vimeo"><span>Vimeo</span></b-button>
           </p>
-          <h6>Size Large <small>Add this <code>size="lg"</code></small></h6>
+          <h6>Size Large
+            <small>Add this <code>size="lg"</code></small>
+          </h6>
           <p>
             <b-button size="lg" variant="facebook"><span>Facebook</span></b-button>
             <b-button size="lg" variant="twitter"><span>Twitter</span></b-button>
@@ -95,9 +101,13 @@
       <b-col cols="12">
         <b-card>
           <div slot="header">
-            <strong>Social Media Button</strong> <small>Only icons. Usage ex.</small> <code style="text-transform:lowercase">&lt;b-button variant="facebook icon"&gt;&lt;span&gt;Facebook&lt;/span&gt;&lt;/b-button&gt;</code>
+            <strong>Social Media Button</strong>
+            <small>Only icons. Usage ex.</small>
+            <code style="text-transform:lowercase">&lt;b-button variant="facebook icon"&gt;&lt;span&gt;Facebook&lt;/span&gt;&lt;/b-button&gt;</code>
           </div>
-          <h6>Size Small <small>Add this <code>size="sm"</code></small></h6>
+          <h6>Size Small
+            <small>Add this <code>size="sm"</code></small>
+          </h6>
           <p>
             <b-button size="sm" variant="facebook icon"></b-button>
             <b-button size="sm" variant="twitter icon"></b-button>
@@ -153,7 +163,9 @@
             <b-button variant="foursquare icon"></b-button>
             <b-button variant="vimeo icon"></b-button>
           </p>
-          <h6>Size Large <small>Add this <code>size="lg"</code></small></h6>
+          <h6>Size Large
+            <small>Add this <code>size="lg"</code></small>
+          </h6>
           <p>
             <b-button size="lg" variant="facebook icon"><span>Facebook</span></b-button>
             <b-button size="lg" variant="twitter icon"><span>Twitter</span></b-button>
@@ -187,9 +199,13 @@
       <b-col cols="12">
         <b-card>
           <div slot="header">
-            <strong>Social Media Button</strong> <small>Only text. Usage ex.</small> <code style="text-transform:lowercase">&lt;b-button variant="facebook text"&gt;&lt;span&gt;Facebook&lt;/span&gt;&lt;/b-button&gt;</code>
+            <strong>Social Media Button</strong>
+            <small>Only text. Usage ex.</small>
+            <code style="text-transform:lowercase">&lt;b-button variant="facebook text"&gt;&lt;span&gt;Facebook&lt;/span&gt;&lt;/b-button&gt;</code>
           </div>
-          <h6>Size Small <small>Add this <code>size="sm"</code></small></h6>
+          <h6>Size Small
+            <small>Add this <code>size="sm"</code></small>
+          </h6>
           <p>
             <b-button size="sm" variant="facebook text"><span>Facebook</span></b-button>
             <b-button size="sm" variant="twitter text"><span>Twitter</span></b-button>
@@ -245,7 +261,9 @@
             <b-button variant="foursquare text"><span>Forsquare</span></b-button>
             <b-button variant="vimeo text"><span>Vimeo</span></b-button>
           </p>
-          <h6>Size Large <small>Add this <code>size="lg"</code></small></h6>
+          <h6>Size Large
+            <small>Add this <code>size="lg"</code></small>
+          </h6>
           <p>
             <b-button size="lg" variant="facebook text"><span>Facebook</span></b-button>
             <b-button size="lg" variant="twitter text"><span>Twitter</span></b-button>
@@ -280,13 +298,13 @@
 </template>
 
 <script>
-export default {
-  name: 'social-buttons'
-}
+  export default {
+    name: 'social-buttons'
+  }
 </script>
 
 <style scoped lang="css">
-.btn {
-  margin-bottom: 4px;
-}
+  .btn {
+    margin-bottom: 4px;
+  }
 </style>

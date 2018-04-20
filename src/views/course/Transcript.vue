@@ -9,25 +9,27 @@
             <i className="fa fa-align-justify"></i><strong>成绩单</strong>
           </div>
           <b-container fluid>
-            <b-row>
-              <h5 style="float: left">官方个人成绩单报告：</h5>
-              <b-input-group-button>
-                <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="download">下载</b-button>
-              </b-input-group-button>
-            </b-row>
+
             <!-- User Interface controls -->
             <b-row>
-              <b-col md="6" class="my-1">
-                <b-form-group horizontal label="每页显示条数：" class="mb-0">
+              <b-col md="1" class="my-1">
+                <legend class="col-form-legend">每页显示：</legend>
+              </b-col>
+              <b-col md="3" class="my-1">
+                <b-form-group>
                   <b-form-select :options="pageOptions" v-model="perPage"/>
                 </b-form-group>
               </b-col>
-              <b-col md="6" class="my-1">
-                <b-form-group horizontal label="模糊查询：" class="mb-0">
+              <b-col md="4" class="my-1"></b-col>
+              <b-col md="3" class="my-1">
+                <b-form-group>
                   <b-input-group>
+                    <b-input-group-button>
+                      <b-button disabled><i class="fa fa-search"></i></b-button>
+                    </b-input-group-button>
                     <b-form-input v-model="filter"/>
                     <b-input-group-button>
-                      <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
+                      <b-button variant="danger" :disabled="!filter" @click="filter = ''">重置</b-button>
                     </b-input-group-button>
                   </b-input-group>
                 </b-form-group>
@@ -61,6 +63,23 @@
               <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
                             class="my-0"/>
             </b-col>
+          </b-container>
+        </b-card>
+      </b-col>
+      <b-col cols="12">
+        <b-card
+          header-tag="header"
+          footer-tag="footer">
+          <div slot="header">
+            <i className="fa fa-align-justify"></i><strong>下载成绩单</strong>
+          </div>
+          <b-container fluid>
+            <b-row>
+              <h5 style="float: left">官方个人成绩单报告：</h5>
+              <b-input-group-button>
+                <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="download">下载</b-button>
+              </b-input-group-button>
+            </b-row>
           </b-container>
         </b-card>
       </b-col>

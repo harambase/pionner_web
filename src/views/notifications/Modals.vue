@@ -52,7 +52,8 @@
       cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
       proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </b-modal>
-    <b-modal title="Modal title" class="modal-success" v-model="successModal" @ok="successModal = false" ok-variant="success">
+    <b-modal title="Modal title" class="modal-success" v-model="successModal" @ok="successModal = false"
+             ok-variant="success">
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
       quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -60,7 +61,8 @@
       cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
       proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </b-modal>
-    <b-modal title="Modal title" class="modal-warning" v-model="warningModal" @ok="warningModal = false" ok-variant="warning">
+    <b-modal title="Modal title" class="modal-warning" v-model="warningModal" @ok="warningModal = false"
+             ok-variant="warning">
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
       quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -68,7 +70,8 @@
       cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
       proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </b-modal>
-    <b-modal title="Modal title" class="modal-danger" v-model="dangerModal" @ok="dangerModal = false" ok-variant="danger">
+    <b-modal title="Modal title" class="modal-danger" v-model="dangerModal" @ok="dangerModal = false"
+             ok-variant="danger">
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
       quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -89,19 +92,19 @@
 </template>
 
 <script>
-export default {
-  name: 'modals',
-  data () {
-    return {
-      myModal: false,
-      largeModal: false,
-      smallModal: false,
-      primaryModal: false,
-      successModal: false,
-      warningModal: false,
-      dangerModal: false,
-      infoModal: false
+  export default {
+    name: 'modals',
+    data () {
+      return {
+        myModal: false,
+        largeModal: false,
+        smallModal: false,
+        primaryModal: false,
+        successModal: false,
+        warningModal: false,
+        dangerModal: false,
+        infoModal: false
+      }
     }
   }
-}
 </script>

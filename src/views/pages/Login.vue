@@ -63,14 +63,14 @@
           username: '',
           password: ''
         },
-        loginError:false
+        loginError: false
       }
     },
     methods: {
       doLogin () {
         this.$validator.validateAll().then((result) => {
-          if(!result)
-            return;
+          if (!result)
+            return
           const loginUser = this.user
           loginUser.password = md5(this.user.password)
           axios.post('/system/login', loginUser).then((response) => {
@@ -78,17 +78,17 @@
               window.localStorage.setItem('access_token', response.data.data.access_token)
               token = response.data.data.access_token
               this.$router.push({path: '/dashboard'})
-            }else{
-              this.loginError = true;
+            } else {
+              this.loginError = true
             }
           })
-        });
+        })
       },
-      goToReg(){
-        this.$router.push({path:'/register'})
+      goToReg () {
+        this.$router.push({path: '/register'})
       },
-      resetPassword(){
-        this.$router.push({path:'/resetPassword'})
+      resetPassword () {
+        this.$router.push({path: '/resetPassword'})
       }
     }
   })

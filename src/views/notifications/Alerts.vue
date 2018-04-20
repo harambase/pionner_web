@@ -98,15 +98,15 @@
               <b-alert show dismissible>
                 Dismissible Alert!
               </b-alert>
-            <b-alert variant="danger"
-                     dismissible
-                     :show="showDismissibleAlert"
-                     @dismissed="showDismissibleAlert=false">
-              Dismissible Alert!
-            </b-alert>
-            <b-btn @click="showDismissibleAlert=true" variant="info" class="m-1">
-              Show dismissible alert ({{showDismissibleAlert?'visible':'hidden'}})
-            </b-btn>
+              <b-alert variant="danger"
+                       dismissible
+                       :show="showDismissibleAlert"
+                       @dismissed="showDismissibleAlert=false">
+                Dismissible Alert!
+              </b-alert>
+              <b-btn @click="showDismissibleAlert=true" variant="info" class="m-1">
+                Show dismissible alert ({{showDismissibleAlert?'visible':'hidden'}})
+              </b-btn>
             </div>
           </b-card>
           <b-card

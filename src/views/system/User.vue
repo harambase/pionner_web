@@ -263,11 +263,11 @@
           preview.src = reader.result
         }
       },
-      showDeleteTempUser(userId){
-        this.showDeleteModal = true;
+      showDeleteTempUser (userId) {
+        this.showDeleteModal = true
         this.deleteUserId = userId
       },
-      createUser() {
+      createUser () {
         this.$router.push({path: '/system/user/detail?mode=create&userId='})
       },
       deleteUser () {
@@ -289,9 +289,9 @@
         let newStatus = '1'
         if (status === '1')
           newStatus = '0'
-        axios.get('/user/' + userId).then((response) =>{
-          let user = response.data.data;
-          user.status = newStatus;
+        axios.get('/user/' + userId).then((response) => {
+          let user = response.data.data
+          user.status = newStatus
           axios.put('/user/' + userId, user).then((response) => {
             if (response.data.code === 2001) {
               this.initTable()

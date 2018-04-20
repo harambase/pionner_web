@@ -28,7 +28,8 @@
             header-tag="header"
             footer-tag="footer">
             <div slot="header">
-              <i className="fa fa-align-justify"></i><strong>List group</strong> <small>active items</small>
+              <i className="fa fa-align-justify"></i><strong>List group</strong>
+              <small>active items</small>
             </div>
             <b-list-group>
               <b-list-group-item>Cras justo odio</b-list-group-item>
@@ -46,7 +47,8 @@
             header-tag="header"
             footer-tag="footer">
             <div slot="header">
-              <i className="fa fa-align-justify"></i><strong>List group</strong> <small>disabled items</small>
+              <i className="fa fa-align-justify"></i><strong>List group</strong>
+              <small>disabled items</small>
             </div>
             <b-list-group>
               <b-list-group-item disabled>Cras justo odio</b-list-group-item>
@@ -62,7 +64,8 @@
             header-tag="header"
             footer-tag="footer">
             <div slot="header">
-              <i className="fa fa-align-justify"></i><strong>List group</strong> <small>actionable items</small>
+              <i className="fa fa-align-justify"></i><strong>List group</strong>
+              <small>actionable items</small>
             </div>
             <b-list-group>
               <b-list-group-item href="#some-link">Awesome link</b-list-group-item>
@@ -79,7 +82,8 @@
             header-tag="header"
             footer-tag="footer">
             <div slot="header">
-              <i className="fa fa-align-justify"></i><strong>List group</strong> <small>buttons</small>
+              <i className="fa fa-align-justify"></i><strong>List group</strong>
+              <small>buttons</small>
             </div>
             <b-list-group>
               <b-list-group-item button>Button item</b-list-group-item>
@@ -94,7 +98,8 @@
             header-tag="header"
             footer-tag="footer">
             <div slot="header">
-              <i className="fa fa-align-justify"></i><strong>List group</strong> <small>with badges</small>
+              <i className="fa fa-align-justify"></i><strong>List group</strong>
+              <small>with badges</small>
             </div>
             <b-list-group>
               <b-list-group-item class="d-flex justify-content-between align-items-center">
@@ -119,7 +124,8 @@
             header-tag="header"
             footer-tag="footer">
             <div slot="header">
-              <i className="fa fa-align-justify"></i><strong>List group</strong> <small>variants</small>
+              <i className="fa fa-align-justify"></i><strong>List group</strong>
+              <small>variants</small>
             </div>
             <b-list-group>
               <b-list-group-item>This is a default list group item</b-list-group-item>
@@ -139,7 +145,8 @@
             header-tag="header"
             footer-tag="footer">
             <div slot="header">
-              <i className="fa fa-align-justify"></i><strong>List group</strong> <small>variants active</small>
+              <i className="fa fa-align-justify"></i><strong>List group</strong>
+              <small>variants active</small>
             </div>
             <b-list-group>
               <b-list-group-item href="#">This is a default list group item</b-list-group-item>
@@ -161,7 +168,8 @@
             header-tag="header"
             footer-tag="footer">
             <div slot="header">
-              <i className="fa fa-align-justify"></i><strong>List group</strong> <small>inside cards</small>
+              <i className="fa fa-align-justify"></i><strong>List group</strong>
+              <small>inside cards</small>
             </div>
             <b-card-group deck>
               <b-card header="<b>Card with list group</b>">
@@ -200,7 +208,8 @@
             header-tag="header"
             footer-tag="footer">
             <div slot="header">
-              <i className="fa fa-align-justify"></i><strong>List group</strong> <small>custom content</small>
+              <i className="fa fa-align-justify"></i><strong>List group</strong>
+              <small>custom content</small>
             </div>
             <b-list-group>
               <b-list-group-item href="#" active class="flex-column align-items-start">

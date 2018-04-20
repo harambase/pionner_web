@@ -35,7 +35,7 @@
         ava_credits: 0,
         counter: 0,
         crnList: [],
-        failList:[],
+        failList: [],
         worksheet: '',
         msg: '',
         field: field,

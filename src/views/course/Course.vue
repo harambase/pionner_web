@@ -23,6 +23,7 @@
               <b-col md="3" class="my-1">
               </b-col>
             </b-row>
+
             <b-row>
               <b-col md="1" class="my-1">
                 <legend class="col-form-legend">每页显示：</legend>
@@ -185,7 +186,7 @@
 
 <script>
   import axios from 'axios'
-  import {InfoSelect, FacultySelect} from '../../components/'
+  import { InfoSelect, FacultySelect } from '../../components/'
 
   const items = []
   const field = [
@@ -235,20 +236,20 @@
       },
 
     },
-    watch:{
-      info: function(){
+    watch: {
+      info: function () {
         this.initTable()
       },
-      faculty: function(){
+      faculty: function () {
         this.initTable()
       }
     },
     methods: {
-      passInfo(val){
-        this.info = val;
+      passInfo (val) {
+        this.info = val
       },
-      passFaculty(val){
-        this.faculty = val;
+      passFaculty (val) {
+        this.faculty = val
       },
       deleteCourse () {
         axios.delete('/course/' + this.crn).then((response) => {
@@ -269,11 +270,11 @@
         this.crn = crn
         this.showDeleteModal = true
       },
-      showDetailCourse(crn){
+      showDetailCourse (crn) {
         this.$router.push({path: '/teach/curriculum/detail?mode=manage&crn=' + crn})
       },
-      showCourseStudent(crn){
-        this.$router.push({path:'/teach/curriculum/detail?mode=student&crn=' + crn})
+      showCourseStudent (crn) {
+        this.$router.push({path: '/teach/curriculum/detail?mode=student&crn=' + crn})
       },
       download (crn) {
         window.open(basePath + '/course/info/' + crn + '?token=' + window.localStorage.getItem('access_token'))

@@ -96,7 +96,7 @@
 </template>
 
 <script>
-export default {
-  name: 'colors'
-}
+  export default {
+    name: 'colors'
+  }
 </script>

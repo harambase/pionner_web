@@ -26,7 +26,8 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Progress</strong> <small>labels</small>
+          <i className="fa fa-align-justify"></i><strong>Progress</strong>
+          <small>labels</small>
         </div>
         <div>
           <h5>No label</h5>
@@ -45,7 +46,8 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Progress</strong> <small>width</small>
+          <i className="fa fa-align-justify"></i><strong>Progress</strong>
+          <small>width</small>
         </div>
         <div>
           <h5>Default width</h5>
@@ -60,7 +62,8 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Progress</strong> <small>height</small>
+          <i className="fa fa-align-justify"></i><strong>Progress</strong>
+          <small>height</small>
         </div>
         <div>
           <h5>Default height</h5>
@@ -75,7 +78,8 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Progress</strong> <small>variants</small>
+          <i className="fa fa-align-justify"></i><strong>Progress</strong>
+          <small>variants</small>
         </div>
         <div>
           <div v-for="bar in bars" class="row mb-1">
@@ -93,7 +97,8 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Progress</strong> <small>striped</small>
+          <i className="fa fa-align-justify"></i><strong>Progress</strong>
+          <small>striped</small>
         </div>
         <div>
           <b-progress :value="25" variant="success" :striped="striped" class="mb-2"></b-progress>
@@ -109,7 +114,8 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Progress</strong> <small>animated</small>
+          <i className="fa fa-align-justify"></i><strong>Progress</strong>
+          <small>animated</small>
         </div>
         <div>
           <b-progress :value="25" variant="success" striped :animated="animate" class="mb-2"></b-progress>
@@ -125,7 +131,8 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Progress</strong> <small>multiple bars</small>
+          <i className="fa fa-align-justify"></i><strong>Progress</strong>
+          <small>multiple bars</small>
         </div>
         <div>
           <b-progress :max="max3" class="mb-3">
@@ -177,7 +184,7 @@
         striped: true,
         animate: true,
         max3: 100,
-        values: [ 15, 30, 20 ]
+        values: [15, 30, 20]
       }
     },
     methods: {

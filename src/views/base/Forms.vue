@@ -4,7 +4,8 @@
       <b-col sm="6">
         <b-card>
           <div slot="header">
-            <strong>Credit Card</strong> <small>Form</small>
+            <strong>Credit Card</strong>
+            <small>Form</small>
           </div>
           <b-row>
             <b-col sm="12">
@@ -24,11 +25,11 @@
           </b-row>
           <b-row>
             <b-col sm="4">
-              <b-form-group >
+              <b-form-group>
                 <label for="month1">Month</label>
                 <b-form-select id="month1"
-                  :plain="true"
-                  :options="[1,2,3,4,5,6,7,8,9,10,11,12]">
+                               :plain="true"
+                               :options="[1,2,3,4,5,6,7,8,9,10,11,12]">
                 </b-form-select>
               </b-form-group>
             </b-col>
@@ -36,8 +37,8 @@
               <b-form-group>
                 <label for="year1">Year</label>
                 <b-form-select id="year1"
-                  :plain="true"
-                  :options="[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]">
+                               :plain="true"
+                               :options="[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]">
                 </b-form-select>
               </b-form-group>
             </b-col>
@@ -53,7 +54,8 @@
       <b-col sm="6">
         <b-card>
           <div slot="header">
-            <strong>Company</strong> <small>Form</small>
+            <strong>Company</strong>
+            <small>Form</small>
           </div>
           <b-form-group>
             <label for="company">Company</label>
@@ -153,9 +155,9 @@
             :label-cols="3"
             :horizontal="true">
             <b-form-select id="basicSelect"
-              :plain="true"
-              :options="['Please select','Option 1', 'Option 2', 'Option 3']"
-              value="Please select">
+                           :plain="true"
+                           :options="['Please select','Option 1', 'Option 2', 'Option 3']"
+                           value="Please select">
             </b-form-select>
           </b-form-group>
           <b-form-group
@@ -164,10 +166,10 @@
             :label-cols="3"
             :horizontal="true">
             <b-form-select id="basicSelectLg"
-              size="lg"
-              :plain="true"
-              :options="['Please select','Option 1', 'Option 2', 'Option 3']"
-              value="Please select">
+                           size="lg"
+                           :plain="true"
+                           :options="['Please select','Option 1', 'Option 2', 'Option 3']"
+                           value="Please select">
             </b-form-select>
           </b-form-group>
           <b-form-group
@@ -176,10 +178,10 @@
             :label-cols="3"
             :horizontal="true">
             <b-form-select id="basicSelectSm"
-              size="sm"
-              :plain="true"
-              :options="['Please select','Option 1', 'Option 2', 'Option 3']"
-              value="Please select">
+                           size="sm"
+                           :plain="true"
+                           :options="['Please select','Option 1', 'Option 2', 'Option 3']"
+                           value="Please select">
             </b-form-select>
           </b-form-group>
           <b-form-group
@@ -188,10 +190,10 @@
             :label-cols="3"
             :horizontal="true">
             <b-form-select id="basicSelectDisabled"
-              :plain="true"
-              :options="['Please select','Option 1', 'Option 2', 'Option 3']"
-              :disabled="true"
-              value="Please select">
+                           :plain="true"
+                           :options="['Please select','Option 1', 'Option 2', 'Option 3']"
+                           :disabled="true"
+                           value="Please select">
             </b-form-select>
           </b-form-group>
           <b-form-group
@@ -200,9 +202,9 @@
             :label-cols="3"
             :horizontal="true">
             <b-form-select id="basicMultiSelect"
-              :plain="true"
-              :multiple="true"
-              :options="[
+                           :plain="true"
+                           :multiple="true"
+                           :options="[
                 {
                   text: 'Please select some item',
                   value: null
@@ -221,7 +223,7 @@
                   value: 'd',
                   disabled: true
                 }]"
-              :value="[null,'c']">
+                           :value="[null,'c']">
             </b-form-select>
           </b-form-group>
           <b-form-group
@@ -230,14 +232,14 @@
             :label-cols="3"
             :horizontal="true">
             <b-form-radio-group id="basicRadios"
-              :plain="true"
-              :options="[
+                                :plain="true"
+                                :options="[
                 {text: 'Option 1 ',value: '1'},
                 {text: 'Option 2 ',value: '2'},
                 {text: 'Option 3 ',value: '3'}
               ]"
-              checked="2"
-              stacked>
+                                checked="2"
+                                stacked>
             </b-form-radio-group>
           </b-form-group>
           <b-form-group
@@ -246,13 +248,13 @@
             :label-cols="3"
             :horizontal="true">
             <b-form-radio-group id="basicInlineRadios"
-              :plain="true"
-              :options="[
+                                :plain="true"
+                                :options="[
                 {text: 'Option 1 ',value: '1'},
                 {text: 'Option 2 ',value: '2'},
                 {text: 'Option 3 ',value: '3'}
               ]"
-              :checked="3">
+                                :checked="3">
             </b-form-radio-group>
           </b-form-group>
 
@@ -311,15 +313,18 @@
               id="basicCustomRadios1"
               name="customRadioInline1">
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" value="1">
+                <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input"
+                       value="1">
                 <label class="custom-control-label" for="customRadioInline1">Option 1</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input" value="2" checked>
+                <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input"
+                       value="2" checked>
                 <label class="custom-control-label" for="customRadioInline2">Option 2</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input" value="3">
+                <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input"
+                       value="3">
                 <label class="custom-control-label" for="customRadioInline3">Option 3</label>
               </div>
             </b-form-radio-group>
@@ -369,14 +374,14 @@
             label-for="fileInput"
             :label-cols="3"
             :horizontal="true">
-              <b-form-file id="fileInput" :plain="true"></b-form-file>
+            <b-form-file id="fileInput" :plain="true"></b-form-file>
           </b-form-group>
           <b-form-group
             label="Multiple file input"
             label-for="fileInputMulti"
             :label-cols="3"
             :horizontal="true">
-              <b-form-file id="fileInputMulti" :plain="true" :multiple="true"></b-form-file>
+            <b-form-file id="fileInputMulti" :plain="true" :multiple="true"></b-form-file>
           </b-form-group>
           <div slot="footer">
             <b-button type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
@@ -431,15 +436,15 @@
             <strong>Normal</strong> Form
           </div>
           <b-form-group validated
-            label="Email"
-            label-for="normalEmail"
-            description="Please enter your email.">
+                        label="Email"
+                        label-for="normalEmail"
+                        description="Please enter your email.">
             <b-form-input id="normalEmail" type="email" placeholder="Enter Email.." required></b-form-input>
           </b-form-group>
           <b-form-group validated
-            label="Password"
-            label-for="normalPass"
-            description="Please enter your password.">
+                        label="Password"
+                        label-for="normalPass"
+                        description="Please enter your password.">
             <b-form-input id="normalPass" type="password" placeholder="Enter Password.." required></b-form-input>
           </b-form-group>
           <div slot="footer">
@@ -525,7 +530,7 @@
             label-for="defaultInput"
             :label-cols="5"
             :horizontal="true">
-            <b-form-input  id="defaultInput" type="text" placeholder="normal"></b-form-input>
+            <b-form-input id="defaultInput" type="text" placeholder="normal"></b-form-input>
           </b-form-group>
           <b-form-group
             label="Large input"
@@ -610,7 +615,8 @@
           <b-form-group>
             <b-input-group>
               <b-form-input type="email" placeholder="Email"></b-form-input>
-              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope-o"></i></span></b-input-group-addon>
+              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i
+                class="fa fa-envelope-o"></i></span></b-input-group-addon>
             </b-input-group>
           </b-form-group>
           <b-form-group>
@@ -619,7 +625,8 @@
                 <span class="input-group-text"><i class="fa fa-euro"></i></span>
               </div>
               <b-form-input type="text" placeholder="ex. $1.000.000"></b-form-input>
-              <b-input-group-addon class="input-group-append"><span class="input-group-text">.00</span></b-input-group-addon>
+              <b-input-group-addon class="input-group-append"><span class="input-group-text">.00</span>
+              </b-input-group-addon>
             </b-input-group>
           </b-form-group>
           <div slot="footer">
@@ -678,55 +685,55 @@
             <strong>Dropdowns</strong> Groups
           </div>
           <b-form-group>
-              <b-input-group>
-                <!-- Attach Left button -->
-                <b-input-group-button class="input-group-prepend" slot="left">
-                  <b-dropdown text="Action" variant="primary">
-                    <b-dropdown-item>Action</b-dropdown-item>
-                    <b-dropdown-item>Another action</b-dropdown-item>
-                    <b-dropdown-item>Something else here...</b-dropdown-item>
-                    <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-                  </b-dropdown>
-                </b-input-group-button>
-                <b-form-input placeholder="Username"></b-form-input>
-              </b-input-group>
+            <b-input-group>
+              <!-- Attach Left button -->
+              <b-input-group-button class="input-group-prepend" slot="left">
+                <b-dropdown text="Action" variant="primary">
+                  <b-dropdown-item>Action</b-dropdown-item>
+                  <b-dropdown-item>Another action</b-dropdown-item>
+                  <b-dropdown-item>Something else here...</b-dropdown-item>
+                  <b-dropdown-item disabled>Disabled action</b-dropdown-item>
+                </b-dropdown>
+              </b-input-group-button>
+              <b-form-input placeholder="Username"></b-form-input>
+            </b-input-group>
           </b-form-group>
           <b-form-group>
-              <b-input-group>
-                <b-form-input placeholder="Email"></b-form-input>
-                <!-- Attach Right button -->
-                <b-input-group-button class="input-group-append" slot="right">
-                  <b-dropdown text="Action" variant="primary" right>
-                    <b-dropdown-item>Action</b-dropdown-item>
-                    <b-dropdown-item>Another action</b-dropdown-item>
-                    <b-dropdown-item>Something else here...</b-dropdown-item>
-                    <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-                  </b-dropdown>
-                </b-input-group-button>
-              </b-input-group>
+            <b-input-group>
+              <b-form-input placeholder="Email"></b-form-input>
+              <!-- Attach Right button -->
+              <b-input-group-button class="input-group-append" slot="right">
+                <b-dropdown text="Action" variant="primary" right>
+                  <b-dropdown-item>Action</b-dropdown-item>
+                  <b-dropdown-item>Another action</b-dropdown-item>
+                  <b-dropdown-item>Something else here...</b-dropdown-item>
+                  <b-dropdown-item disabled>Disabled action</b-dropdown-item>
+                </b-dropdown>
+              </b-input-group-button>
+            </b-input-group>
           </b-form-group>
           <b-form-group>
-              <b-input-group>
-                <!-- Attach Left button -->
-                <b-input-group-button class="input-group-prepend" slot="left">
-                  <b-dropdown text="Split" variant="primary" split>
-                    <b-dropdown-item href="#">Action</b-dropdown-item>
-                    <b-dropdown-item href="#">Another action</b-dropdown-item>
-                    <b-dropdown-item href="#">Something else here...</b-dropdown-item>
-                    <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-                  </b-dropdown>
-                </b-input-group-button>
-                <b-form-input placeholder="..."></b-form-input>
-                <!-- Attach Right button -->
-                <b-input-group-button class="input-group-append" slot="right">
-                  <b-dropdown text="Action" variant="primary" right>
-                    <b-dropdown-item>Action</b-dropdown-item>
-                    <b-dropdown-item>Another action</b-dropdown-item>
-                    <b-dropdown-item>Something else here...</b-dropdown-item>
-                    <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-                  </b-dropdown>
-                </b-input-group-button>
-              </b-input-group>
+            <b-input-group>
+              <!-- Attach Left button -->
+              <b-input-group-button class="input-group-prepend" slot="left">
+                <b-dropdown text="Split" variant="primary" split>
+                  <b-dropdown-item href="#">Action</b-dropdown-item>
+                  <b-dropdown-item href="#">Another action</b-dropdown-item>
+                  <b-dropdown-item href="#">Something else here...</b-dropdown-item>
+                  <b-dropdown-item disabled>Disabled action</b-dropdown-item>
+                </b-dropdown>
+              </b-input-group-button>
+              <b-form-input placeholder="..."></b-form-input>
+              <!-- Attach Right button -->
+              <b-input-group-button class="input-group-append" slot="right">
+                <b-dropdown text="Action" variant="primary" right>
+                  <b-dropdown-item>Action</b-dropdown-item>
+                  <b-dropdown-item>Another action</b-dropdown-item>
+                  <b-dropdown-item>Something else here...</b-dropdown-item>
+                  <b-dropdown-item disabled>Disabled action</b-dropdown-item>
+                </b-dropdown>
+              </b-input-group-button>
+            </b-input-group>
           </b-form-group>
           <div slot="footer">
             <b-button type="submit" size="sm" variant="success"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
@@ -739,7 +746,8 @@
       <b-col md="6">
         <b-card>
           <div slot="header">
-            Use the grid for big devices! <small><code>.col-lg-*</code> <code>.col-md-*</code> <code>.col-sm-*</code></small>
+            Use the grid for big devices!
+            <small><code>.col-lg-*</code> <code>.col-md-*</code> <code>.col-sm-*</code></small>
           </div>
           <b-row class="form-group">
             <b-col md="8">
@@ -793,7 +801,8 @@
       <b-col md="6">
         <b-card>
           <div slot="header">
-            Input Grid for small devices! <small> <code>.col-*</code></small>
+            Input Grid for small devices!
+            <small><code>.col-*</code></small>
           </div>
           <b-row class="form-group">
             <b-col cols="4">
@@ -853,23 +862,29 @@
           </div>
           <b-form-group>
             <b-input-group>
-              <b-input-group-addon class="input-group-prepend"><span class="input-group-text">Username</span></b-input-group-addon>
+              <b-input-group-addon class="input-group-prepend"><span class="input-group-text">Username</span>
+              </b-input-group-addon>
               <b-form-input type="text"></b-form-input>
-              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></b-input-group-addon>
+              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span>
+              </b-input-group-addon>
             </b-input-group>
           </b-form-group>
           <b-form-group>
             <b-input-group>
-              <b-input-group-addon class="input-group-prepend"><span class="input-group-text">Email</span></b-input-group-addon>
+              <b-input-group-addon class="input-group-prepend"><span class="input-group-text">Email</span>
+              </b-input-group-addon>
               <b-form-input type="email"></b-form-input>
-              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></b-input-group-addon>
+              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i
+                class="fa fa-envelope"></i></span></b-input-group-addon>
             </b-input-group>
           </b-form-group>
           <b-form-group>
             <b-input-group>
-              <b-input-group-addon class="input-group-prepend"><span class="input-group-text">Password</span></b-input-group-addon>
+              <b-input-group-addon class="input-group-prepend"><span class="input-group-text">Password</span>
+              </b-input-group-addon>
               <b-form-input type="password"></b-form-input>
-              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i class="fa fa-asterisk"></i></span></b-input-group-addon>
+              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i
+                class="fa fa-asterisk"></i></span></b-input-group-addon>
             </b-input-group>
           </b-form-group>
           <div class="form-group form-actions">
@@ -885,19 +900,22 @@
           <b-form-group>
             <b-input-group>
               <b-form-input type="text" placeholder="Username"></b-form-input>
-              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span></b-input-group-addon>
+              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i class="fa fa-user"></i></span>
+              </b-input-group-addon>
             </b-input-group>
           </b-form-group>
           <b-form-group>
             <b-input-group>
               <b-form-input type="email" placeholder="Email"></b-form-input>
-              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i class="fa fa-envelope"></i></span></b-input-group-addon>
+              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i
+                class="fa fa-envelope"></i></span></b-input-group-addon>
             </b-input-group>
           </b-form-group>
           <b-form-group>
             <b-input-group>
               <b-form-input type="password" placeholder="Password"></b-form-input>
-              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i class="fa fa-asterisk"></i></span></b-input-group-addon>
+              <b-input-group-addon class="input-group-append"><span class="input-group-text"><i
+                class="fa fa-asterisk"></i></span></b-input-group-addon>
             </b-input-group>
           </b-form-group>
           <div class="form-group form-actions">
@@ -964,19 +982,23 @@
               <b-form-group label="Appended text" label-for="elementsAppend" description="Here's some help text">
                 <b-input-group>
                   <b-form-input id="elementsAppend" type="text"></b-form-input>
-                  <b-input-group-addon class="input-group-append"><span class="input-group-text">.00</span></b-input-group-addon>
+                  <b-input-group-addon class="input-group-append"><span class="input-group-text">.00</span>
+                  </b-input-group-addon>
                 </b-input-group>
               </b-form-group>
-              <b-form-group label="Append and prepend" label-for="elementsPrependAppend" description="Here's some help text">
+              <b-form-group label="Append and prepend" label-for="elementsPrependAppend"
+                            description="Here's some help text">
                 <b-input-group>
                   <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                   </div>
                   <b-form-input id="elementsPrependAppend" type="text"></b-form-input>
-                  <b-input-group-addon class="input-group-append"><span class="input-group-text">.00</span></b-input-group-addon>
+                  <b-input-group-addon class="input-group-append"><span class="input-group-text">.00</span>
+                  </b-input-group-addon>
                 </b-input-group>
               </b-form-group>
-              <b-form-group label="Append with button" label-for="elementsAppendButton" description="Here's some help text">
+              <b-form-group label="Append with button" label-for="elementsAppendButton"
+                            description="Here's some help text">
                 <b-input-group>
                   <b-form-input id="elementsAppendButton" type="text"></b-form-input>
                   <b-input-group-button class="input-group-append">
@@ -1006,17 +1028,17 @@
 </template>
 
 <script>
-export default {
-  name: 'forms',
-  data () {
-    return {
-      selected: [] // Must be an array reference!
-    }
-  },
-  methods: {
-    click () {
-      // do nothing
+  export default {
+    name: 'forms',
+    data () {
+      return {
+        selected: [] // Must be an array reference!
+      }
+    },
+    methods: {
+      click () {
+        // do nothing
+      }
     }
   }
-}
 </script>

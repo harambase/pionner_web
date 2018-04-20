@@ -12,13 +12,13 @@
             <i className="fa fa-align-justify"></i><strong>课程中学生详情</strong>
           </div>
           <b-card
-              header-tag="header"
-              footer-tag="footer">
-              <div slot="header">
-                <i className="fa fa-align-justify"></i><strong>学生列表</strong>
-              </div>
-              <CStudentInCourseTable v-bind:crn="id"/>
-            </b-card>
+            header-tag="header"
+            footer-tag="footer">
+            <div slot="header">
+              <i className="fa fa-align-justify"></i><strong>学生列表</strong>
+            </div>
+            <CStudentInCourseTable v-bind:crn="id"/>
+          </b-card>
         </b-card>
         <b-card header-tag="header" footer-tag="footer">
           <div slot="header">
@@ -618,7 +618,7 @@
       showStudentDetail (crn, credits) {
         this.transcript.crn = crn
         this.transcript.credits = credits
-        this.initStudentTable();
+        this.initStudentTable()
       },
 
       infoList (search, loading) {

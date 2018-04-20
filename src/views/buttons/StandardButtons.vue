@@ -32,7 +32,8 @@
         </b-card>
         <b-card>
           <div slot="header">
-            <strong>Size Large</strong> <small>Add this <code>size="lg"</code></small>
+            <strong>Size Large</strong>
+            <small>Add this <code>size="lg"</code></small>
           </div>
           <b-button size="lg" variant="primary">Primary</b-button>
           <b-button size="lg" variant="secondary">Secondary</b-button>
@@ -44,7 +45,8 @@
         </b-card>
         <b-card>
           <div slot="header">
-            <strong>Size Small</strong> <small>Add this <code>size="sm"</code></small>
+            <strong>Size Small</strong>
+            <small>Add this <code>size="sm"</code></small>
           </div>
           <b-button size="sm" variant="primary">Primary</b-button>
           <b-button size="sm" variant="secondary">Secondary</b-button>
@@ -56,7 +58,8 @@
         </b-card>
         <b-card>
           <div slot="header">
-            <strong>Disabled state</strong> <small>Add this <code>:disabled="true"</code></small>
+            <strong>Disabled state</strong>
+            <small>Add this <code>:disabled="true"</code></small>
           </div>
           <b-button size="lg" variant="primary" :disabled="true">Primary</b-button>
           <b-button size="lg" variant="secondary" :disabled="true">Secondary</b-button>
@@ -68,7 +71,8 @@
         </b-card>
         <b-card>
           <div slot="header">
-            <strong>Active state</strong> <small>Add this <code>:active="true"</code></small>
+            <strong>Active state</strong>
+            <small>Add this <code>:active="true"</code></small>
           </div>
           <b-button variant="primary" :active="true">Primary</b-button>
           <b-button variant="secondary" :active="true">Secondary</b-button>
@@ -80,7 +84,8 @@
         </b-card>
         <b-card header-tag="header">
           <div slot="header">
-            <strong>Pressed state</strong> <small>Add this <code>:pressed="true"</code></small>
+            <strong>Pressed state</strong>
+            <small>Add this <code>:pressed="true"</code></small>
           </div>
           <b-button variant="primary" :pressed="true">Primary</b-button>
           <b-button variant="secondary" :pressed="true">Secondary</b-button>
@@ -104,7 +109,8 @@
 
         <b-card>
           <div slot="header">
-            <strong>Block Level Buttons</strong> <small>Add this <code>:block="true"</code></small>
+            <strong>Block Level Buttons</strong>
+            <small>Add this <code>:block="true"</code></small>
           </div>
           <b-button size="lg" variant="secondary" :block="true">Block level button</b-button>
           <b-button size="lg" variant="primary" :block="true">Block level button</b-button>
@@ -143,7 +149,8 @@
         </b-card>
         <b-card>
           <div slot="header">
-            <strong>Size Large</strong> <small>Add this <code>size="lg"</code></small>
+            <strong>Size Large</strong>
+            <small>Add this <code>size="lg"</code></small>
           </div>
           <b-button size="lg" variant="outline-primary">Primary</b-button>
           <b-button size="lg" variant="outline-secondary">Secondary</b-button>
@@ -154,7 +161,8 @@
         </b-card>
         <b-card>
           <div slot="header">
-            <strong>Size Small</strong> <small>Add this <code>size="sm"</code></small>
+            <strong>Size Small</strong>
+            <small>Add this <code>size="sm"</code></small>
           </div>
           <b-button size="sm" variant="outline-primary">Primary</b-button>
           <b-button size="sm" variant="outline-secondary">Secondary</b-button>
@@ -165,7 +173,8 @@
         </b-card>
         <b-card>
           <div slot="header">
-            <strong>Disabled state</strong> <small>Add this <code>:disabled="true"</code></small>
+            <strong>Disabled state</strong>
+            <small>Add this <code>:disabled="true"</code></small>
           </div>
           <b-button variant="outline-primary" :disabled="true">Primary</b-button>
           <b-button variant="outline-secondary" :disabled="true">Secondary</b-button>
@@ -176,7 +185,8 @@
         </b-card>
         <b-card>
           <div slot="header">
-            <strong>Active state</strong> <small>Add this <code>:active="true"</code></small>
+            <strong>Active state</strong>
+            <small>Add this <code>:active="true"</code></small>
           </div>
           <b-button variant="outline-primary" :active="true">Primary</b-button>
           <b-button variant="outline-secondary" :active="true">Secondary</b-button>
@@ -187,7 +197,8 @@
         </b-card>
         <b-card>
           <div slot="header">
-            <strong>Pressed state</strong> <small>Add this <code>:pressed="true"</code></small>
+            <strong>Pressed state</strong>
+            <small>Add this <code>:pressed="true"</code></small>
           </div>
           <b-button variant="outline-primary" :pressed="true">Primary</b-button>
           <b-button variant="outline-secondary" :pressed="true">Secondary</b-button>
@@ -201,7 +212,8 @@
             <strong>Toggle pressed state</strong>
           </div>
           <b-button variant="outline-primary" :pressed.sync="myToggle">Primary {{myToggle ? 'On ' : 'Off'}}</b-button>
-          <b-button variant="outline-secondary" :pressed.sync="myToggle">Secondary {{myToggle ? 'On ' : 'Off'}}</b-button>
+          <b-button variant="outline-secondary" :pressed.sync="myToggle">Secondary {{myToggle ? 'On ' : 'Off'}}
+          </b-button>
           <b-button variant="outline-success" :pressed.sync="myToggle">Success {{myToggle ? 'On ' : 'Off'}}</b-button>
           <b-button variant="outline-info" :pressed.sync="myToggle">Info {{myToggle ? 'On ' : 'Off'}}</b-button>
           <b-button variant="outline-warning" :pressed.sync="myToggle">Warning {{myToggle ? 'On ' : 'Off'}}</b-button>
@@ -209,7 +221,8 @@
         </b-card>
         <b-card>
           <div slot="header">
-            <strong>Block Level Buttons</strong> <small>Add this <code>:block="true"</code></small>
+            <strong>Block Level Buttons</strong>
+            <small>Add this <code>:block="true"</code></small>
           </div>
           <b-button size="lg" variant="outline-secondary" :block="true">Block level button</b-button>
           <b-button size="lg" variant="outline-primary" :block="true">Block level button</b-button>
@@ -224,10 +237,10 @@
 </template>
 
 <script>
-export default {
-  name: 'standard-buttons',
-  data: () => {
-    return { myToggle: false }
+  export default {
+    name: 'standard-buttons',
+    data: () => {
+      return {myToggle: false}
+    }
   }
-}
 </script>

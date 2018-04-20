@@ -217,7 +217,8 @@
         <b-card header="Switch with icon - pills">
           <c-switch type="icon" variant="primary" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
           &nbsp;&nbsp;&nbsp;
-          <c-switch type="icon" variant="secondary" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
+          <c-switch type="icon" variant="secondary" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true"
+                    :checked="true"/>
           &nbsp;&nbsp;&nbsp;
           <c-switch type="icon" variant="success" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
           &nbsp;&nbsp;&nbsp;
@@ -245,17 +246,23 @@
       </b-col>
       <b-col md="6">
         <b-card header="Switch with icon outline - pills">
-          <c-switch type="icon" variant="primary-outline" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
+          <c-switch type="icon" variant="primary-outline" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true"
+                    :checked="true"/>
           &nbsp;&nbsp;&nbsp;
-          <c-switch type="icon" variant="secondary-outline" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
+          <c-switch type="icon" variant="secondary-outline" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true"
+                    :checked="true"/>
           &nbsp;&nbsp;&nbsp;
-          <c-switch type="icon" variant="success-outline" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
+          <c-switch type="icon" variant="success-outline" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true"
+                    :checked="true"/>
           &nbsp;&nbsp;&nbsp;
-          <c-switch type="icon" variant="warning-outline" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
+          <c-switch type="icon" variant="warning-outline" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true"
+                    :checked="true"/>
           &nbsp;&nbsp;&nbsp;
-          <c-switch type="icon" variant="info-outline" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
+          <c-switch type="icon" variant="info-outline" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true"
+                    :checked="true"/>
           &nbsp;&nbsp;&nbsp;
-          <c-switch type="icon" variant="danger-outline" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
+          <c-switch type="icon" variant="danger-outline" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true"
+                    :checked="true"/>
         </b-card>
       </b-col>
       <b-col md="6">
@@ -275,17 +282,23 @@
       </b-col>
       <b-col md="6">
         <b-card header="Switch with icon outline alternative - pills">
-          <c-switch type="icon" variant="primary-outline-alt" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
+          <c-switch type="icon" variant="primary-outline-alt" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true"
+                    :checked="true"/>
           &nbsp;&nbsp;&nbsp;
-          <c-switch type="icon" variant="secondary-outline-alt" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
+          <c-switch type="icon" variant="secondary-outline-alt" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true"
+                    :checked="true"/>
           &nbsp;&nbsp;&nbsp;
-          <c-switch type="icon" variant="success-outline-alt" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
+          <c-switch type="icon" variant="success-outline-alt" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true"
+                    :checked="true"/>
           &nbsp;&nbsp;&nbsp;
-          <c-switch type="icon" variant="warning-outline-alt" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
+          <c-switch type="icon" variant="warning-outline-alt" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true"
+                    :checked="true"/>
           &nbsp;&nbsp;&nbsp;
-          <c-switch type="icon" variant="info-outline-alt" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
+          <c-switch type="icon" variant="info-outline-alt" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true"
+                    :checked="true"/>
           &nbsp;&nbsp;&nbsp;
-          <c-switch type="icon" variant="danger-outline-alt" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true" :checked="true"/>
+          <c-switch type="icon" variant="danger-outline-alt" v-bind="{on: '\uf00c', off: '\uf00d'}" :pill="true"
+                    :checked="true"/>
         </b-card>
       </b-col>
 
@@ -297,7 +310,8 @@
           <b-card-body class="p-0">
             <b-table hover striped responsive="sm" class="table-align-middle mb-0" :items="items" :fields="fields">
               <template slot="example" slot-scope="data">
-                <c-switch :type="data.value.type" :variant="data.value.variant" :size="data.value.size" :checked="data.value.checked"/>
+                <c-switch :type="data.value.type" :variant="data.value.variant" :size="data.value.size"
+                          :checked="data.value.checked"/>
               </template>
             </b-table>
           </b-card-body>
@@ -328,10 +342,22 @@
           {key: 'css_class', label: 'CSS Class'}
         ],
         items: [
-          {size: 'Large', example: {type: '3d', variant: 'primary', size: 'lg', checked: true}, css_class: 'Add following code <code>size="lg"</code>'},
+          {
+            size: 'Large',
+            example: {type: '3d', variant: 'primary', size: 'lg', checked: true},
+            css_class: 'Add following code <code>size="lg"</code>'
+          },
           {size: 'Normal', example: {type: '3d', variant: 'primary', size: '', checked: true}, css_class: '-'},
-          {size: 'Small', example: {type: '3d', variant: 'primary', size: 'sm', checked: true}, css_class: 'Add following code <code>size="sm"</code>'},
-          {size: 'Extra small', example: {type: '3d', variant: 'primary', size: 'xs', checked: true}, css_class: 'Add following code <code>size="xs"</code>'}
+          {
+            size: 'Small',
+            example: {type: '3d', variant: 'primary', size: 'sm', checked: true},
+            css_class: 'Add following code <code>size="sm"</code>'
+          },
+          {
+            size: 'Extra small',
+            example: {type: '3d', variant: 'primary', size: 'xs', checked: true},
+            css_class: 'Add following code <code>size="xs"</code>'
+          }
         ]
       }
     }

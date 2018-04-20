@@ -103,8 +103,7 @@
               <template slot="row-details" slot-scope="row">
                 <b-card>
                   <b-list-group>
-                    <b-list-group-item href="#" title="编辑课程"
-                                       class="flex-column align-items-start"
+                    <b-list-group-item title="编辑课程" class="flex-column align-items-start" href="#"
                                        :disabled="row.item.status !== '0'" @click="detail(row.item.id)">
                       <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">你的临时课程 <strong>{{JSON.parse(row.item.courseJson).name}}</strong> 的信息</h5>
@@ -133,10 +132,14 @@
                         </dl>
                         <dl class="row">
                           <dt class="col-sm-1">上课时间:</dt>
-                          <dd class="col-sm-3">{{JSON.parse(row.item.courseJson).startTime}} to {{JSON.parse(row.item.courseJson).endTime}}， 每周 {{JSON.parse(row.item.courseJson).day}}</dd>
+                          <dd class="col-sm-3">{{JSON.parse(row.item.courseJson).startTime}} to
+                            {{JSON.parse(row.item.courseJson).endTime}}， 每周 {{JSON.parse(row.item.courseJson).day}}
+                          </dd>
 
                           <dt class="col-sm-1">上课周期:</dt>
-                          <dd class="col-sm-3">{{JSON.parse(row.item.courseJson).startDate}} to {{JSON.parse(row.item.courseJson).endDate}}</dd>
+                          <dd class="col-sm-3">{{JSON.parse(row.item.courseJson).startDate}} to
+                            {{JSON.parse(row.item.courseJson).endDate}}
+                          </dd>
 
                         </dl>
                         <dl class="row">
@@ -250,23 +253,24 @@
         this.currentPage = 1
       },
       initTable () {
-        this.$refs.tempCourseTable.refresh()   },
+        this.$refs.tempCourseTable.refresh()
+      },
       tempCourseTable (ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/request/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol='
-        switch (ctx.sortBy){
+        switch (ctx.sortBy) {
           case 'courseJson':
             url += 'course_json'
-            break;
+            break
           case 'facultyId':
             url += 'faculty_id'
-            break;
+            break
           case 'createTime':
             url += 'create_time'
-            break;
+            break
           default:
             url += ctx.sortBy
-            break;
+            break
         }
         if (this.isNotEmpty(this.status))
           url += '&viewStatus=' + this.status

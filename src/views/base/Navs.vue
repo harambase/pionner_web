@@ -25,7 +25,8 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Bootstrap Navs</strong> <small>tab style</small>
+          <i className="fa fa-align-justify"></i><strong>Bootstrap Navs</strong>
+          <small>tab style</small>
         </div>
         <div>
           <b-nav tabs>
@@ -40,7 +41,8 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Bootstrap Navs</strong> <small>pill style</small>
+          <i className="fa fa-align-justify"></i><strong>Bootstrap Navs</strong>
+          <small>pill style</small>
         </div>
         <div>
           <b-nav pills>
@@ -55,13 +57,14 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Bootstrap Navs</strong> <small>fill tabs</small>
+          <i className="fa fa-align-justify"></i><strong>Bootstrap Navs</strong>
+          <small>fill tabs</small>
         </div>
         <div>
           <b-nav fill tabs>
             <b-nav-item active>Active</b-nav-item>
             <b-nav-item>Link</b-nav-item>
-            <b-nav-item>Link with a long name </b-nav-item>
+            <b-nav-item>Link with a long name</b-nav-item>
             <b-nav-item disabled>Disabled</b-nav-item>
           </b-nav>
         </div>
@@ -70,13 +73,14 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Bootstrap Navs</strong> <small>justified tabs</small>
+          <i className="fa fa-align-justify"></i><strong>Bootstrap Navs</strong>
+          <small>justified tabs</small>
         </div>
         <div>
           <b-nav justified tabs>
             <b-nav-item active>Active</b-nav-item>
             <b-nav-item>Link</b-nav-item>
-            <b-nav-item>Link with a long name </b-nav-item>
+            <b-nav-item>Link with a long name</b-nav-item>
             <b-nav-item disabled>Disabled</b-nav-item>
           </b-nav>
         </div>
@@ -85,7 +89,8 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Bootstrap Navs</strong> <small>dropdown support</small>
+          <i className="fa fa-align-justify"></i><strong>Bootstrap Navs</strong>
+          <small>dropdown support</small>
         </div>
         <div>
           <b-nav pills>
@@ -104,7 +109,8 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Bootstrap Navs</strong> <small>vertical variation</small>
+          <i className="fa fa-align-justify"></i><strong>Bootstrap Navs</strong>
+          <small>vertical variation</small>
         </div>
         <div>
           <b-nav vertical class="w-25">

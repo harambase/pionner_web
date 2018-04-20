@@ -113,7 +113,8 @@
             <div class="text-muted text-uppercase font-weight-bold font-xs">Income</div>
           </b-card-body>
           <div slot="footer">
-            <a class="font-weight-bold font-xs btn-block text-muted" href="#">View More <i class="fa fa-angle-right float-right font-lg"></i></a>
+            <a class="font-weight-bold font-xs btn-block text-muted" href="#">View More <i
+              class="fa fa-angle-right float-right font-lg"></i></a>
           </div>
         </b-card>
       </b-col>
@@ -125,7 +126,8 @@
             <div class="text-muted text-uppercase font-weight-bold font-xs">Income</div>
           </b-card-body>
           <div slot="footer">
-            <a class="font-weight-bold font-xs btn-block text-muted" href="#">View More <i class="fa fa-angle-right float-right font-lg"></i></a>
+            <a class="font-weight-bold font-xs btn-block text-muted" href="#">View More <i
+              class="fa fa-angle-right float-right font-lg"></i></a>
           </div>
         </b-card>
       </b-col>
@@ -137,7 +139,8 @@
             <div class="text-muted text-uppercase font-weight-bold font-xs">Income</div>
           </b-card-body>
           <div slot="footer">
-            <a class="font-weight-bold font-xs btn-block text-muted" href="#">View More <i class="fa fa-angle-right float-right font-lg"></i></a>
+            <a class="font-weight-bold font-xs btn-block text-muted" href="#">View More <i
+              class="fa fa-angle-right float-right font-lg"></i></a>
           </div>
         </b-card>
       </b-col>
@@ -149,7 +152,8 @@
             <div class="text-muted text-uppercase font-weight-bold font-xs">Income</div>
           </b-card-body>
           <div slot="footer">
-            <a class="font-weight-bold font-xs btn-block text-muted" href="#">View More <i class="fa fa-angle-right float-right font-lg"></i></a>
+            <a class="font-weight-bold font-xs btn-block text-muted" href="#">View More <i
+              class="fa fa-angle-right float-right font-lg"></i></a>
           </div>
         </b-card>
       </b-col>
@@ -390,7 +394,7 @@
           </div>
           <div class="h4 mb-0">972</div>
           <small class="text-muted text-uppercase font-weight-bold">Comments</small>
-          <b-progress height={} class="progress-xs mt-3 mb-0"variant="info" :value="25"/>
+          <b-progress height={} class="progress-xs mt-3 mb-0" variant="info" :value="25"/>
         </b-card>
       </b-col>
     </b-row><!--/.row-->
@@ -460,12 +464,12 @@
 </template>
 
 <script>
-export default {
-  name: 'widgets',
-  data () {
-    return {
-      msg: 'Widgets'
+  export default {
+    name: 'widgets',
+    data () {
+      return {
+        msg: 'Widgets'
+      }
     }
   }
-}
 </script>

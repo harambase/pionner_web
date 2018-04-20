@@ -238,7 +238,7 @@
 
 <script>
   import axios from 'axios'
-  import {InfoSelect, StudentSelect, CourseSelect} from '../../components/'
+  import { InfoSelect, StudentSelect, CourseSelect } from '../../components/'
 
   const items = []
   const field = [
@@ -373,7 +373,7 @@
         window.open(basePath + '/transcript/report?studentId=' + this.report.value + '&token=' + window.localStorage.getItem('access_token'))
       },
       downloadAllReport () {
-        window.open(basePath + '/transcript/all/report?info=' + this.reportInfo.value +'&token=' + window.localStorage.getItem('access_token'))
+        window.open(basePath + '/transcript/all/report?info=' + this.reportInfo.value + '&token=' + window.localStorage.getItem('access_token'))
       }
     }
   }

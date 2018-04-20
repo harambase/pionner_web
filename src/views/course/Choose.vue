@@ -57,7 +57,7 @@
                 </b-col>
                 <b-col cols="6" md="6">
                   <b-button style="width:150px;" class="btn btn-danger"
-                          id="reset" @click="reset">
+                            id="reset" @click="reset">
                     重置当前
                   </b-button>
                 </b-col>
@@ -73,17 +73,33 @@
               <b-container fluid>
                 <!-- User Interface controls -->
                 <b-row>
-                  <b-col md="6" class="my-1">
-                    <b-form-group horizontal label="每页显示条数：" class="mb-0">
+                  <b-col md="2" class="my-1">
+                    <legend class="col-form-legend">检索条件：</legend>
+                  </b-col>
+                  <b-col md="5" class="my-1">
+                    <FacultySelect v-on:pass="passFaculty"/>
+                  </b-col>
+                </b-row>
+
+                <b-row>
+                  <b-col md="1" class="my-1">
+                    <legend class="col-form-legend">显示：</legend>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <b-form-group>
                       <b-form-select :options="pageOptions" v-model="perPage"/>
                     </b-form-group>
                   </b-col>
-                  <b-col md="6" class="my-1">
-                    <b-form-group horizontal label="模糊查询：" class="mb-0">
+                  <b-col md="4" class="my-1"></b-col>
+                  <b-col md="3" class="my-1">
+                    <b-form-group>
                       <b-input-group>
+                        <b-input-group-button>
+                          <b-button disabled><i class="fa fa-search"></i></b-button>
+                        </b-input-group-button>
                         <b-form-input v-model="filter"/>
                         <b-input-group-button>
-                          <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
+                          <b-button variant="danger" :disabled="!filter" @click="filter = ''">重置</b-button>
                         </b-input-group-button>
                       </b-input-group>
                     </b-form-group>
@@ -153,7 +169,8 @@
                             <dl class="row">
 
                               <dt class="col-sm-1">上课时间:</dt>
-                              <dd class="col-sm-3">{{row.item.startTime}} to {{row.item.endTime}}， 每周 {{row.item.day}}</dd>
+                              <dd class="col-sm-3">{{row.item.startTime}} to {{row.item.endTime}}， 每周 {{row.item.day}}
+                              </dd>
 
                               <dt class="col-sm-1">上课周期:</dt>
                               <dd class="col-sm-3">{{row.item.startDate}} to {{row.item.endDate}}</dd>
@@ -236,6 +253,7 @@
   import axios from 'axios'
   import decode from 'jwt-decode'
   import auth0 from 'auth0-js'
+  import { FacultySelect } from '../../components/'
 
   const items = []
   const field = [
@@ -254,6 +272,7 @@
 
   export default {
     name: 'Choose',
+    components: {FacultySelect},
     data () {
       return {
         pinObject: '',
@@ -265,7 +284,7 @@
         ava_credits: 0,
         counter: 0,
         crnList: [],
-        failList:[],
+        failList: [],
         worksheet: '',
         msg: '',
         field: field,
@@ -279,7 +298,8 @@
         items: items,
         isBusy: false,
         showModal: false,
-        headerBgVariant: ''
+        headerBgVariant: '',
+        faculty: '',
       }
     },
     computed: {
@@ -288,8 +308,14 @@
         return this.field
           .filter(f => f.sortable)
           .map(f => { return {text: f.label, value: f.key} })
+      },
+    },
+    watch: {
+      faculty: function () {
+        this.initTable()
       }
     },
+
     mounted: function () {
       if (this.pinObject === null || this.pinObject === '') {
         return
@@ -312,6 +338,9 @@
       }
     },
     methods: {
+      passFaculty (val) {
+        this.faculty = val
+      },
       onFiltered (filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
@@ -319,6 +348,10 @@
       courseTable: function (ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
+        if (this.isNotEmpty(this.faculty))
+          url += '&facultyId=' + this.faculty.value
+        if (this.isNotEmpty(this.pinObject))
+          url += '&info=' + this.pinObject.info
         if (this.isNotEmpty(ctx.filter))
           url += '&search=' + ctx.filter
         if (ctx.sortDesc)
@@ -331,6 +364,9 @@
           this.totalRows = response.data.recordsTotal
           return (items || [])
         })
+      },
+      initTable () {
+        this.$refs.courseTable.refresh()
       },
       validate () {
         this.$validator.validateAll().then((result) => {
@@ -355,6 +391,7 @@
         const decoded_token = decode(window.localStorage.getItem('access_token'))
         const studentId = decoded_token.sub
         const pin_info = this.pinObject.info
+        this.initTable();
         axios.get('/student/' + studentId + '/available/credit?info=' + pin_info).then((response) => {
           if (response.data.code === 2001) {
             this.tol_credits = response.data.data.tol_credits
@@ -448,7 +485,9 @@
       },
       isNotEmpty (value) {
         return value !== '' && value !== undefined && value !== null
-      },
+      }
     }
+
   }
+
 </script>

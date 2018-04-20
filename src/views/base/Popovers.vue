@@ -148,28 +148,33 @@
         header-tag="header"
         footer-tag="footer">
         <div slot="header">
-          <i className="fa fa-align-justify"></i><strong>Popover</strong><small><code>v-b-popover</code>directive</small>
+          <i className="fa fa-align-justify"></i><strong>Popover</strong>
+          <small><code>v-b-popover</code>directive</small>
         </div>
         <b-row>
           <b-col md="3" class="py-3 text-center">
             <b-btn v-b-popover.hover.top="'I am Top'"
                    title="Popover!"
-                   variant="primary">Top</b-btn>
+                   variant="primary">Top
+            </b-btn>
           </b-col>
           <b-col md="3" class="py-3 text-center">
             <b-btn v-b-popover.hover.left="'I am Left'"
                    title="Popover!"
-                   variant="primary">Left</b-btn>
+                   variant="primary">Left
+            </b-btn>
           </b-col>
           <b-col md="3" class="py-3 text-center">
             <b-btn v-b-popover.hover.right="'I am Right'"
                    title="Popover!"
-                   variant="primary">Right</b-btn>
+                   variant="primary">Right
+            </b-btn>
           </b-col>
           <b-col md="3" class="py-3 text-center">
             <b-btn v-b-popover.hover.bottom="'I am Bottom'"
                    title="Popover!"
-                   variant="primary">Bottom</b-btn>
+                   variant="primary">Bottom
+            </b-btn>
           </b-col>
         </b-row>
       </b-card>

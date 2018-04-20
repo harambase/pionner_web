@@ -79,7 +79,7 @@
                      @filtered="onFiltered"
             >
               <template slot="userJson" slot-scope="row">
-                {{JSON.parse(row.value).lastName + "," + JSON.parse(row.value).firstName}}
+                {{JSON.parse(row.value).lastName + ',' + JSON.parse(row.value).firstName}}
               </template>
               <template slot="status" slot-scope="row">
                 <p v-if="row.value === '0'" style="color:blue;">申请中</p>
@@ -100,7 +100,8 @@
                                        :disabled="row.item.status === '0'">
                       <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">
-                          用户 <strong>{{JSON.parse(row.item.userJson).lastName}}, {{JSON.parse(row.item.userJson).firstName}}</strong>
+                          用户 <strong>{{JSON.parse(row.item.userJson).lastName}},
+                          {{JSON.parse(row.item.userJson).firstName}}</strong>
                           的基本信息</h5>
                         <small class="text-muted">用户ID：{{row.item.userId}}</small>
                       </div>
@@ -261,24 +262,24 @@
       documentDownload () {
         window.open(basePath + '/request/user/info/' + this.userId + '?token=' + window.localStorage.getItem('access_token'))
       },
-      showDeleteTempUser(id){
-        this.showDeleteModal = true;
+      showDeleteTempUser (id) {
+        this.showDeleteModal = true
         this.deleteId = id
       },
-      deleteTempUser(){
-          axios.delete('/user/' + this.userId).then((response) => {
-            if (response.data.code === 2001) {
-              this.msg = '删除成功!'
-              this.showModal = true
-              this.headerBgVariant = 'success'
-              this.initTable()
-            }
-            else {
-              this.msg = response.data.msg
-              this.showModal = true
-              this.headerBgVariant = 'danger'
-            }
-          })
+      deleteTempUser () {
+        axios.delete('/user/' + this.userId).then((response) => {
+          if (response.data.code === 2001) {
+            this.msg = '删除成功!'
+            this.showModal = true
+            this.headerBgVariant = 'success'
+            this.initTable()
+          }
+          else {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
+          }
+        })
       },
       previewImg () {
         let preview = document.getElementById('preview')

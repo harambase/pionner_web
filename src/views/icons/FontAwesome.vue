@@ -31,7 +31,8 @@
             <i class="fa fa-drivers-license fa-lg mt-4"></i><br/>drivers-license <span class="text-muted">(alias)</span>
           </b-col>
           <b-col cols="6" sm="4" md="3" lg="2">
-            <i class="fa fa-drivers-license-o fa-lg mt-4"></i><br/>drivers-license-o <span class="text-muted">(alias)</span>
+            <i class="fa fa-drivers-license-o fa-lg mt-4"></i><br/>drivers-license-o <span
+            class="text-muted">(alias)</span>
           </b-col>
           <b-col cols="6" sm="4" md="3" lg="2">
             <i class="fa fa-eercast fa-lg mt-4"></i><br/>eercast
@@ -136,7 +137,8 @@
             <i class="fa fa-times-rectangle fa-lg mt-4"></i><br/>times-rectangle <span class="text-muted">(alias)</span>
           </b-col>
           <b-col cols="6" sm="4" md="3" lg="2">
-            <i class="fa fa-times-rectangle-o fa-lg mt-4"></i><br/>times-rectangle-o <span class="text-muted">(alias)</span>
+            <i class="fa fa-times-rectangle-o fa-lg mt-4"></i><br/>times-rectangle-o <span
+            class="text-muted">(alias)</span>
           </b-col>
           <b-col cols="6" sm="4" md="3" lg="2">
             <i class="fa fa-user-circle fa-lg mt-4"></i><br/>user-circle
@@ -2312,7 +2314,8 @@
           <h4><i class="fa fa-warning"></i> Warning!</h4>
           Apparently, Adblock Plus can remove Font Awesome brand icons with their "Remove Social
           Media Buttons" setting. We will not use hacks to force them to display. Please
-          <a href="https://adblockplus.org/en/bugs" class="alert-link">report an issue with Adblock Plus</a> if you believe this to be
+          <a href="https://adblockplus.org/en/bugs" class="alert-link">report an issue with Adblock Plus</a> if you
+          believe this to be
           an error. To work around this, you'll need to modify the social icon class names.
         </div>
         <b-row class="text-center">
@@ -2762,7 +2765,8 @@
             <i class="fa fa-y-combinator fa-lg mt-4"></i><br>y-combinator
           </b-col>
           <b-col cols="6" sm="4" md="3" lg="2">
-            <i class="fa fa-y-combinator-square fa-lg mt-4"></i><br>y-combinator-square <span class="text-muted">(alias)</span>
+            <i class="fa fa-y-combinator-square fa-lg mt-4"></i><br>y-combinator-square <span
+            class="text-muted">(alias)</span>
           </b-col>
           <b-col cols="6" sm="4" md="3" lg="2">
             <i class="fa fa-yahoo fa-lg mt-4"></i><br>yahoo
@@ -2789,7 +2793,9 @@
         <div class="alert alert-success mt-4">
           <ul class="margin-bottom-none padding-left-lg">
             <li>All brand icons are trademarks of their respective owners.</li>
-            <li>The use of these trademarks does not indicate endorsement of the trademark holder by Font Awesome, nor vice versa.</li>
+            <li>The use of these trademarks does not indicate endorsement of the trademark holder by Font Awesome, nor
+              vice versa.
+            </li>
             <li>Brand icons should only be used to represent the company or product to which they refer.</li>
           </ul>
         </div>
@@ -2842,7 +2848,7 @@
 </template>
 
 <script>
-export default {
-  name: 'font-awesome'
-}
+  export default {
+    name: 'font-awesome'
+  }
 </script>
