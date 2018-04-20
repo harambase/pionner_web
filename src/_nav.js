@@ -83,6 +83,14 @@ export default {
       },
     },
     {
+      name: '成绩录入',
+      url: '/course/grade',
+      icon: 'icon-book-open',
+      meta: {
+        role: ['6']
+      },
+    },
+    {
       title: true,
       name: '教务管理',
       class: '',

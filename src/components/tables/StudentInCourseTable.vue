@@ -47,10 +47,18 @@
         <p v-if="row.value === '0'" style="color:blue;">进行中</p>
         <p v-if="row.value === '-1'" style="color:red;">挂科</p>
       </template>
-      <template slot="actions" slot-scope="row">
+      <template slot="actions" slot-scope="row" v-if="mode!='transcript'">
         <b-button size="sm" class="btn btn-danger" @click.stop="removeStuFromCourse(row.item.userId)">
           移除该学生
         </b-button>
+      </template>
+      <template slot="actions" slot-scope="row" v-if="mode=='transcript'">
+        <b-button size="sm" class="btn btn-danger" @click.stop="row.toggleDetails">
+          修改成绩
+        </b-button>
+      </template>
+      <template slot="row-details" slot-scope="row">
+        <CTranscriptEdit :row="row"/>
       </template>
 
     </b-table>
@@ -60,7 +68,6 @@
     </b-col>
     <b-modal v-model="showModal" size="sm"
              :header-bg-variant="headerBgVariant"
-             @ok="goTo"
              ok-only centered title="消息">
       <div class="d-block text-center">
         <h3>{{msg}}</h3>
@@ -72,6 +79,7 @@
 
 <script>
   import axios from 'axios'
+  import CTranscriptEdit from '../parts/TranscriptEdit'
 
   const items = []
   const field = [
@@ -85,6 +93,7 @@
 
   export default {
     name: 'c-studentInCourseTable',
+    components: {CTranscriptEdit},
     props: ['mode', 'crn', 'cname', 'credit'],
     data () {
       return {

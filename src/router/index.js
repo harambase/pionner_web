@@ -13,6 +13,7 @@ import Widgets from '@/views/Widgets'
 
 import ViewCourse from '@/views/course/Course'
 import Choose from '@/views/course/Choose'
+import Grade from '@/views/course/Grade'
 import Transcript from '@/views/course/Transcript'
 import TempCourse from '@/views/teach/TempCourse'
 import Course from '@/views/teach/Course'
@@ -169,6 +170,15 @@ const router = new Router({
               meta : {
                 requireAuth: true,
                 role: ['5']
+              },
+            },
+            {
+              path: 'grade',
+              name: '新学期选课',
+              component: Grade,
+              meta : {
+                requireAuth: true,
+                role: ['6']
               },
             },
           ]

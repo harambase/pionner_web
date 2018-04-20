@@ -266,21 +266,6 @@
         this.showDeleteModal = true
         this.deleteId = id
       },
-      deleteTempUser () {
-        axios.delete('/user/' + this.userId).then((response) => {
-          if (response.data.code === 2001) {
-            this.msg = '删除成功!'
-            this.showModal = true
-            this.headerBgVariant = 'success'
-            this.initTable()
-          }
-          else {
-            this.msg = response.data.msg
-            this.showModal = true
-            this.headerBgVariant = 'danger'
-          }
-        })
-      },
       previewImg () {
         let preview = document.getElementById('preview')
         let file = document.querySelector('input[type=file]').files[0]

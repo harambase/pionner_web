@@ -57,6 +57,10 @@
                            :src="basePath + '/pioneer' + JSON.parse(row.item.profile).path"
                            style="width: 45px;height: 45px"
                            class="img-avatar">
+                      <img v-else
+                           :src="basePath + '/pioneer/image/profile/logo.png'"
+                           style="width: 45px;height: 45px"
+                           class="img-avatar">
                     </b-col>
                     <b-col md="9">
                       {{row.value}}
@@ -130,15 +134,12 @@
                               <dl class="row">
                                 <dt class="col-sm-1">操作:</dt>
                                 <dd class="col-sm-5">
-                                  <b-button size="sm"
-                                            class="btn btn-danger"
+                                  <b-button size="sm" variant="danger"
                                             @click.stop="showDeleteTempUser(row.item.userId)">
                                     删除该用户
                                   </b-button>
 
-                                  <b-button size="sm"
-                                            class="btn btn-info"
-                                            @click="userDetail(row.item.userId)">
+                                  <b-button size="sm" variant="primary" @click="userDetail(row.item.userId)">
                                     修改该用户
                                   </b-button>
                                 </dd>
