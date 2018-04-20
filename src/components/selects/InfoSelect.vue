@@ -37,11 +37,7 @@
     },
     watch: {
       info: function (val) {
-        let info = {
-          label: val.label,
-          value: val.value
-        }
-        this.$emit('pass', info)
+        this.$emit('pass', val)
       }
     },
     methods: {

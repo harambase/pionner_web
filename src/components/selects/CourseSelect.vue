@@ -1,5 +1,5 @@
 <template>
-  <b-form-group horizontal label="按课程：" class="mb-0">
+  <b-form-group>
     <v-select v-model="course" :filterable="false" :options="courseOptions"
               @search="courseList"></v-select>
   </b-form-group>
@@ -12,17 +12,19 @@
     name: 'c-courseSelect',
     data () {
       return {
-        course: '',
-        courseOptions: [],
+        course: {
+          label: '---选择课程---',
+          value: ''
+        },
+        courseOptions: [{
+          label: '---选择课程---',
+          value: ''
+        }],
       }
     },
     watch:{
       course: function (val) {
-        let course = {
-          label: val.label,
-          value: val.value
-        }
-        this.$emit('pass', course)
+        this.$emit('pass', val)
       }
     },
     mounted() {
