@@ -1,6 +1,6 @@
 <template>
-  <b-form-group horizontal label="按学期：" class="mb-0">
-    <v-select  v-model="info" :filterable="false"
+  <b-form-group>
+    <v-select v-model="info" :filterable="false"
               :options="infoOptions" @search="infoList"></v-select>
   </b-form-group>
 </template>
@@ -12,11 +12,19 @@
     name: 'c-infoSelect',
     data () {
       return {
-        info: '',
-        infoOptions: [],
+        info: {
+          label: '---选择学期---',
+          value: ''
+        },
+        infoOptions: [
+          {
+            label: '---选择学期---',
+            value: ''
+          }
+        ],
       }
     },
-    mounted() {
+    mounted () {
       axios.get('/course/info?search=').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
           let item = {
@@ -24,11 +32,10 @@
             value: response.data.data[i]
           }
           this.infoOptions.push(item)
-          // this.reportInfoOptions.push(item)
         }
       })
     },
-    watch:{
+    watch: {
       info: function (val) {
         let info = {
           label: val.label,

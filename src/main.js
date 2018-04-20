@@ -42,19 +42,19 @@ axios.interceptors.response.use(
             path: '/',
             query: {redirect: router.currentRoute.fullPath}
           })
-          break;
+          break
         case 404:
           router.replace({
             path: '/404',
             query: {redirect: router.currentRoute.fullPath}
           })
-          break;
+          break
         case 500:
           router.replace({
             path: '/500',
             query: {redirect: router.currentRoute.fullPath}
           })
-          break;
+          break
       }
     }
     return Promise.reject(error.response.data)   // 返回接口返回的错误信息
