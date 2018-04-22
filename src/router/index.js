@@ -6,6 +6,7 @@ import Full from '@/containers/Full'
 
 // Views
 import Dashboard from '@/views/Dashboard'
+import Message from '@/views/Message'
 import Colors from '@/views/theme/Colors'
 import Typography from '@/views/theme/Typography'
 import Charts from '@/views/Charts'
@@ -97,9 +98,9 @@ const router = new Router({
           },
         },
         {
-          path: 'charts',
+          path: 'message',
           name: '消息中心',
-          component: Charts,
+          component: Message,
           meta : {
             requireAuth: true,
             role: ['0']

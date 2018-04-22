@@ -14,7 +14,7 @@ export default {
     },
     {
       name: '消息中心',
-      url: '/charts',
+      url: '/message',
       icon: 'icon-envelope',
       meta: {
         role: ['0']
