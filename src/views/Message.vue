@@ -10,40 +10,40 @@
                   <b-button>写一个新InMsg</b-button>
                 </b-list-group-item>
 
-                <b-list-group-item href="#" class="d-flex justify-content-between align-items-center">
+                <b-list-group-item @click="inbox" href="#" class="d-flex justify-content-between align-items-center">
                   收件箱
                   <b-badge variant="primary" pill> {{unread}}</b-badge>
                 </b-list-group-item>
-                <b-list-group-item href="#" class="d-flex justify-content-between align-items-center">
+                <b-list-group-item @click="sent" href="#" class="d-flex justify-content-between align-items-center">
                   已发送
                 </b-list-group-item>
-                <b-list-group-item href="#" class="d-flex justify-content-between align-items-center">
+                <b-list-group-item @click="important" href="#"
+                                   class="d-flex justify-content-between align-items-center">
                   重要
-                  <b-badge variant="primary" pill>{{ important}}</b-badge>
+                  <b-badge variant="primary" pill>{{ importantNum}}</b-badge>
                 </b-list-group-item>
-                <b-list-group-item href="#" class="d-flex justify-content-between align-items-center">
+                <b-list-group-item @click="draft" href="#" class="d-flex justify-content-between align-items-center">
                   草稿
                   <b-badge variant="primary" pill>{{saved}}</b-badge>
                 </b-list-group-item>
-                <b-list-group-item href="#" class="d-flex justify-content-between align-items-center">
+                <b-list-group-item @click="deleted" href="#" class="d-flex justify-content-between align-items-center">
                   已删除
                   <b-badge variant="primary" pill>{{trashed}}</b-badge>
                 </b-list-group-item>
               </b-list-group>
             </b-col>
-            <b-col cols="9">
+            <b-col v-show="table" cols="9">
               <b-card
                 header-tag="header"
                 footer-tag="footer">
                 <div slot="header">
                   <i className="fa fa-align-justify"></i><strong>您的信息列表</strong>
-                  <small>custom content</small>
                 </div>
-                <b-container fluid>
 
+                <b-container fluid>
                   <!-- User Interface controls -->
                   <b-row>
-                    <b-col md="1" class="my-1">
+                    <b-col md="2" class="my-1">
                       <legend class="col-form-legend">每页显示：</legend>
                     </b-col>
                     <b-col md="3" class="my-1">
@@ -51,7 +51,7 @@
                         <b-form-select :options="pageOptions" v-model="perPage"/>
                       </b-form-group>
                     </b-col>
-                    <b-col md="4" class="my-1"></b-col>
+                    <b-col md="3" class="my-1"></b-col>
                     <b-col md="3" class="my-1">
                       <b-form-group>
                         <b-input-group>
@@ -71,7 +71,6 @@
                   <b-table show-empty
                            stacked="md"
                            ref="messageTable"
-                           :striped=true
                            :fixed=true
                            :hover=true
                            :items="messageTable"
@@ -86,20 +85,35 @@
                   >
                     <template slot="actions" slot-scope="row">
                       <b-list-group>
-                        <b-list-group-item href="#" class="flex-column align-items-start">
+                        <b-list-group-item href="#" class="flex-column align-items-start" @click="showMsg(row.item.id)">
                           <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">List group item heading</h5>
-                            <small>3 days ago</small>
+                            <h5 class="mb-1"><strong>{{row.item.title}}</strong> {{row.item.subject}}</h5>
+                            <small>发送时间：{{row.item.date}}</small>
+                            <b-badge variant="primary" pill v-if="row.item.status=='unread'">未读</b-badge>
                           </div>
-                          <p class="mb-1">
-                            Donec id elit non mi porta gravida at eget metus. Maecenas
-                            sed diam eget risus varius blandit.
-                          </p>
-                          <small>Donec id elit non mi porta.</small>
+                          <hr/>
+                          <b-row>
+                            <b-col md="2" class="my-1">
+                              <img v-if="isNotEmpty(row.item.pic)"
+                                   :src="basePath + '/pioneer' + JSON.parse(row.item.pic).path"
+                                   style="width: 40px;height: 40px"
+                                   class="img-avatar">
+                              <img v-else
+                                   :src="basePath + '/pioneer/image/profile/logo.png'"
+                                   style="width: 40px;height: 40px"
+                                   class="img-avatar">
+                              {{row.item.sender}}
+                            </b-col>
+                            <b-col md="10">
+                              <p class="mb-1">
+                                {{row.item.body}}
+                              </p>
+                              <small>{{row.item.attachment}}</small>
+                            </b-col>
+                          </b-row>
                         </b-list-group-item>
                       </b-list-group>
                     </template>
-
                   </b-table>
                   <b-col md="6" class="my-1">
                     <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
@@ -107,6 +121,20 @@
                   </b-col>
                 </b-container>
 
+              </b-card>
+            </b-col>
+            <b-col v-show="detail" cols="9">
+              <b-card
+                header-tag="header"
+                footer-tag="footer">
+                <div slot="header">
+                  <i className="fa fa-align-justify"></i><strong>信息详情</strong>
+                  <b-button class="btn btn-primary btn-info"
+                            @click="back">
+                    <i class="fa fa-arrow-left"></i> 返回列表
+                  </b-button>
+                </div>
+                {{message}}
               </b-card>
             </b-col>
           </b-row>
@@ -122,7 +150,7 @@
 
   const items = []
   const field = [
-    {key: 'actions', label: '操作'}
+    {key: 'actions', label: '消息列表'}
   ]
 
   export default {
@@ -130,11 +158,10 @@
     data () {
       return {
         unread: 0,
-        important: 0,
+        importantNum: 0,
         saved: 0,
         trashed: 0,
         box: 'inbox',
-        activeIndex: 0,
         showWrite: false,
         detail: false,
         table: true,
@@ -147,6 +174,8 @@
         sortDesc: false,
         filter: null,
         items: items,
+        basePath: basePath,
+        message: ''
       }
     },
     computed: {
@@ -157,64 +186,70 @@
           .map(f => { return {text: f.label, value: f.key} })
       }
     },
-    mounted: function () {
+    mounted () {
       this.init()
     },
     methods: {
-      init: function () {
+      init () {
         this.initImportant()
         this.initUnread()
         this.initDraft()
         this.initTrash()
       },
-      initImportant: function () {
-        axios.get('/message/count?status=unread&box=important').then(function (response) {
-          this.important = response.data.data
+      initImportant () {
+        axios.get('/message/count?status=unread&box=important').then((response) => {
+          this.importantNum = response.data.data
         })
       },
 
-      initUnread: function () {
-        axios.get('/message/count?status=unread&box=inbox').then(function (response) {
+      initUnread () {
+        axios.get('/message/count?status=unread&box=inbox').then((response) => {
           this.unread = response.data.data
         })
       },
 
-      initDraft: function () {
-        axios.get('/message/count?status=saved&box=draft').then(function (response) {
+      initDraft () {
+        axios.get('/message/count?status=saved&box=draft').then((response) => {
           this.saved = response.data.data
         })
       },
 
-      initTrash: function () {
-        axios.get('/message/count?status=trashed&box=trash').then(function (response) {
+      initTrash () {
+        axios.get('/message/count?status=trashed&box=trash').then((response) => {
           this.trashed = response.data.data
         })
       },
-
-      inbox: function () {
+      showMsg (id) {
+        axios.get('/message/' + id).then((response) => {
+          this.message = response.data.data
+          this.table = false
+          this.detail = true
+        })
+      },
+      inbox () {
         this.box = 'inbox'
-        this.activeIndex = 0
         this.initTable()
       },
-      sent: function () {
+      sent () {
         this.box = 'sent'
-        this.activeIndex = 1
         this.initTable()
       },
-      draft: function () {
+      draft () {
         this.box = 'draft'
-        this.activeIndex = 2
         this.initTable()
       },
-      important: function () {
+      important () {
         this.box = 'important'
-        this.activeIndex = 3
         this.initTable()
       },
-      write: function () {
+      deleted () {
+        this.box = 'trash'
+        this.initTable()
+      },
+      write () {
         this.showWrite = true
       },
-      back: function () {
+      back () {
         this.detail = false
         this.table = true
       },
@@ -261,7 +296,7 @@
   // }
   //
   // function sendStatusUpdateAjax(id, status) {
-  //   axios.put('/message/' + id + '/status?status=' + status).then(function (response) {
+  //   axios.put('/message/' + id + '/status?status=' + status).then((response)=> {
   //     if (response.data.code === 2001) {
   //       messageVue.init();
   //       this.initTable();
@@ -275,7 +310,7 @@
   // function deleteMsg(id) {
   //   Showbo.Msg.confirm("确认删除该用户？", function () {
   //     if ($(".btnfocus").val() !== "取消") {
-  //       axios.delete('/message/' + id).then(function (response) {
+  //       axios.delete('/message/' + id).then((response)=> {
   //         if (response.data.code === 2001) {
   //           messageVue.init();
   //           this.initTable();
@@ -289,7 +324,7 @@
   // }
   //
   // function viewDraft(id) {
-  //   axios.get('/message/' + id).then(function (response) {
+  //   axios.get('/message/' + id).then((response)=> {
   //     messageVue.$data.showWrite = true;
   //     writeVue.$data.message = response.data.data;
   //   });
@@ -297,7 +332,7 @@
   //
   // function viewDetail(id) {
   //   markAsRead(id);
-  //   axios.get('/message/' + id).then(function (response) {
+  //   axios.get('/message/' + id).then((response)=> {
   //     if (response.data.code === 2001) {
   //       let message = response.data.data;
   //       messageVue.$data.detail = true;
@@ -368,21 +403,21 @@
   //     subject: ""
   //   },
   //   methods: {
-  //     send: function () {
+  //     send() {
   //       let receiverList = $(".user").val();
   //       for (let i = 0; i < receiverList.length; i++)
   //         this.message.receiverId += receiverList[i] + "/";
   //       this.status = "unread";
   //       this.sendWrite();
   //     },
-  //     save: function () {
+  //     save() {
   //       let receiverList = $(".user").val();
   //       for (let i = 0; i < receiverList.length; i++)
   //         this.message.receiverId += receiverList[i] + "/";
   //       this.status = "saved";
   //       this.sendWrite();
   //     },
-  //     quit: function () {
+  //     quit() {
   //       $("#writeMail").modal('hide');
   //       this.message = {
   //         receiverId: "",
@@ -393,8 +428,8 @@
   //         status: ""
   //       }
   //     },
-  //     sendWrite: function () {
-  //       axios.post('/message', this.message).then(function (response) {
+  //     sendWrite() {
+  //       axios.post('/message', this.message).then((response)=> {
   //         if (response.data.code === 2001) {
   //           this.initTable();
   //           this.quit();
