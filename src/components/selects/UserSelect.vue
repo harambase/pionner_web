@@ -1,7 +1,7 @@
 <template>
   <b-form-group>
     <v-select v-model="user" :filterable="false" :options="userOptions"
-              @search="userList">
+              @search="userList" :disabled="mode != 1">
       <template slot="option" slot-scope="option">
         <img class="img-avatar" style="width:30px; height: 30px;" :src="option.profile">
         {{ option.label }}
@@ -15,6 +15,7 @@
 
   export default {
     name: 'c-userSelect',
+    props: ['mode'],
     data () {
       return {
         user: {

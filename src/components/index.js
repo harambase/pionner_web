@@ -10,6 +10,7 @@ import StudentSelect from './selects/StudentSelect.vue'
 import CourseSelect from './selects/CourseSelect.vue'
 import FacultySelect from './selects/FacultySelect.vue'
 import UserSelect from './selects/UserSelect.vue'
+import PinSelect from './selects/PinSelect.vue'
 import AddStudentTable from './tables/AddStudentTable.vue'
 import StudentInCourseTable from './tables/StudentInCourseTable.vue'
 import TranscriptEdit from './parts/TranscriptEdit.vue'
@@ -29,5 +30,6 @@ export {
   AddStudentTable,
   StudentInCourseTable,
   UserSelect,
-  TranscriptEdit
+  TranscriptEdit,
+  PinSelect
 }
