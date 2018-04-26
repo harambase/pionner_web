@@ -82,7 +82,7 @@
                       class="my-0"/>
       </b-col>
       <b-col md="6" class="my-1">
-        <p class="text-muted"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) * perPage + perPage) <=
+        <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) * perPage + perPage) <=
           totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
       </b-col>
     </b-row>
@@ -119,7 +119,7 @@
 
   const items = []
   const field = [
-    {key: 'index', label: '序号'},
+    {key: 'index', label: '序号', class: 'text-center'},
     {key: 'sname', label: '学生姓名'},
     {key: 'fname', label: '教师姓名'},
     {key: 'status', label: '状态'},

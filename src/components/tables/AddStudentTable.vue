@@ -152,10 +152,16 @@
       </template>
     </b-table>
 
-    <b-col md="6" class="my-1">
-      <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
-                    class="my-0"/>
-    </b-col>
+    <b-row>
+      <b-col md="6" class="my-1">
+        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
+                      class="my-0"/>
+      </b-col>
+      <b-col md="6" class="my-1">
+        <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) * perPage + perPage) <=
+          totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
+      </b-col>
+    </b-row>
 
     <b-modal v-model="showModal" size="sm"
              :header-bg-variant="headerBgVariant"
