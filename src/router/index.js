@@ -21,6 +21,7 @@ import Course from '@/views/teach/Course'
 import Credit from '@/views/teach/Credit'
 import Pin from '@/views/teach/Pin'
 import TranscriptManage from '@/views/teach/TranscriptManage'
+import Advise from '@/views/teach/Advise'
 
 import Role from '@/views/system/Role'
 import Monitor from '@/views/system/Monitor'
@@ -244,6 +245,24 @@ const router = new Router({
               path: 'pin',
               name: '识别码管理',
               component: Pin,
+              meta : {
+                requireAuth: true,
+                role: ['2']
+              },
+            },
+            {
+              path: 'advise',
+              name: '辅导关系管理',
+              component: Advise,
+              meta : {
+                requireAuth: true,
+                role: ['2']
+              },
+            },
+            {
+              path: 'advisor',
+              name: '导师管理',
+              component: Advise,
               meta : {
                 requireAuth: true,
                 role: ['2']

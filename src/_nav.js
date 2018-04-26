@@ -143,6 +143,22 @@ export default {
       },
     },
     {
+      name: '辅导关系管理',
+      url: '/teach/advise',
+      icon: 'icon-book-open',
+      meta: {
+        role: ['2']
+      },
+    },
+    {
+      name: '导师管理',
+      url: '/teach/advisor',
+      icon: 'icon-book-open',
+      meta: {
+        role: ['2']
+      },
+    },
+    {
       title: true,
       name: '系统管理',
       class: '',
