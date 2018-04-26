@@ -6,14 +6,14 @@
           header-tag="header"
           footer-tag="footer">
           <div slot="header">
-            <i className="fa fa-align-justify"></i><strong>识别码列表（按学期分类）</strong>
+            <i className="fa fa-align-justify"></i><strong>识别码列表（按学期）</strong>
           </div>
           <b-col cols="12">
             <b-card
               header-tag="header"
               footer-tag="footer">
               <div slot="header">
-                <i className="fa fa-align-justify"></i><strong>成绩单列表</strong>
+                <i className="fa fa-align-justify"></i><strong>识别码列表</strong>
               </div>
               <CPinTable/>
             </b-card>
@@ -67,7 +67,7 @@
                     <label class="col-sm-12 control-label">*识别码的所有人:</label>
                   </b-col>
                   <b-col md="3" class="mt-1">
-                   <CUserSelect v-bind:pass="passUser"/>
+                    <CUserSelect v-bind:pass="passUser"/>
                   </b-col>
                 </b-row>
                 <b-row>
@@ -76,7 +76,8 @@
                   </b-col>
                   <b-col md="3" class="mt-1">
                     <input id="startTime" v-model="startTime" name="startTime"
-                           v-validate="'required'" :class="{'form-control': true, 'is-invalid': errors.has('startTime')}">
+                           v-validate="'required'"
+                           :class="{'form-control': true, 'is-invalid': errors.has('startTime')}">
                     <div v-show="errors.has('startTime')" class="invalid-tooltip">{{ errors.first('startTime') }}</div>
                   </b-col>
                   <b-col md="2" class="mt-1">
@@ -95,12 +96,14 @@
                   </b-col>
                   <b-col md="8">
                     <div class="custom-control custom-checkbox custom-control-inline">
-                      <input type="checkbox" id="course" name="role" v-validate="'required'" class="custom-control-input"
+                      <input type="checkbox" id="course" name="role" v-validate="'required'"
+                             class="custom-control-input"
                              value="1" v-model="role">
                       <label class="custom-control-label" for="course">选课</label>
                     </div>
                     <div class="custom-control custom-checkbox custom-control-inline">
-                      <input type="checkbox" id="transcript" name="role" v-validate="'required'" class="custom-control-input"
+                      <input type="checkbox" id="transcript" name="role" v-validate="'required'"
+                             class="custom-control-input"
                              value="2" v-model="role">
                       <label class="custom-control-label" for="transcript">成绩录入</label>
                     </div>
@@ -139,12 +142,10 @@
                     <div v-show="errors.has('adminPwd')" class="invalid-tooltip">{{ errors.first('adminPwd') }}</div>
                   </b-col>
                   <b-col md="2" class="mt-1">
-                    <b-button style="width:150px;" variant="success" @click="generateAll">生成
+                    <b-button variant="success" @click="generateAll">生成（并自动发送）
                     </b-button>
                   </b-col>
                 </b-row>
-
-
                 <div slot="footer">
                   注意：该处填写规则为注册年份-学期号。学期号规则为：春季是01，秋季是02，其他为03。
                 </div>
@@ -199,8 +200,10 @@
                 <!--</b-row>-->
                 <b-row>
                   <b-col md="5">
-                    <CInfoSelect v-on:pass="passInfo"/>
+                    <CPinSelect v-on:pass="passInfo"/>
                   </b-col>
+                </b-row>
+                <b-row>
                   <b-col md="2" class="my-1">
                     <label class="col-sm-12 control-label">*管理员操作密码:</label>
                   </b-col>
@@ -238,10 +241,10 @@
         table: '',
         mode: '',
         confirm: '',
-        user:''
+        user: ''
       }
     },
-    mounted: function () {
+    mounted () {
       laydate.render({
         elem: '#startTime',
         theme: '#393D49',
@@ -262,7 +265,7 @@
       })
     },
     methods: {
-      passUser(val){
+      passUser (val) {
         this.user = val
       },
       passInfo (val) {
@@ -285,7 +288,7 @@
           this.headerBgVariant = 'danger'
         })
       },
-      generateAll: function () {
+      generateAll () {
         let url = '/pin'
           + '?startTime=' + this.startTime
           + '&endTime=' + this.endTime
@@ -293,10 +296,11 @@
           + '&info=' + this.info
           + '&remark=' + this.remark
         axios.post(url).then((response) => {
-          if (response.data.code === 2001)
-            Showbo.Msg.alert(response.data.msg, function () {
-              window.location.reload()
-            })
+          if (response.data.code === 2001) {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'success'
+          }
           else {
             this.msg = response.data.msg
             this.showModal = true
@@ -304,7 +308,7 @@
           }
         })
       },
-      generateOne: function () {
+      generateOne () {
         let url = '/pin/' + $('.user').val()
           + '?startTime=' + this.startTime
           + '&endTime=' + this.endTime
@@ -323,7 +327,7 @@
           }
         })
       },
-      deleteAll: function () {
+      deleteAll () {
         Showbo.Msg.confirm('确认清除？', function () {
           if ($('.btnfocus').val() !== '取消') {
             axios.delete('/pin/' + this.info + '/all').then((response) => {

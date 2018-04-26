@@ -89,6 +89,7 @@
                           <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1"><strong>{{row.item.title}}</strong> {{row.item.subject}}</h5>
                             <small>发送时间：{{row.item.date}}</small>
+                            <b-badge variant="danger" pill v-if="row.item.status=='unread'">未读</b-badge>
                             <b-badge variant="primary" pill v-if="row.item.status=='unread'">未读</b-badge>
                           </div>
                           <hr/>
@@ -170,7 +171,7 @@
         perPage: 10,
         totalRows: 0,
         pageOptions: [5, 10, 15],
-        sortBy: 'id',
+        sortBy: 'date',
         sortDesc: false,
         filter: null,
         items: items,

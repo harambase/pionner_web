@@ -207,6 +207,7 @@
     {key: 'userId', label: '临时用户ID', sortable: true},
     {key: 'userJson', label: '姓, 名', sortable: true},
     {key: 'createTime', label: '申请时间', sortable: true},
+    {key: 'updateTime', label: '更新时间', sortable: true},
     {key: 'status', label: '申请状态', sortable: true},
     {key: 'actions', label: '操作'}
   ]
@@ -314,6 +315,9 @@
             break
           case 'createTime':
             url += 'create_time'
+            break
+          case 'updateTime':
+            url += 'update_time'
             break
           default:
             url += ctx.sortBy

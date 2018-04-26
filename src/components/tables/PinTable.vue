@@ -63,11 +63,66 @@
         <p class="text-muted" v-if="row.item.role == 2">教务</p>
         <p class="text-muted" v-else>选课</p>
       </template>
+
       <template slot="actions" slot-scope="row">
-        <b-button size="sm" class="btn btn-danger" @click.stop="showDeleteOne(row.item.pin)">
-          删除识别码
-        </b-button>
+        <b-btn size="sm" class="btn btn-danger" style="width: 50%" @click.stop="showDeleteOne(row.item.pin)">
+          删除
+        </b-btn>
+        <b-btn size="sm" class="btn btn-success" style="width: 50%" @click.stop="resendPin(row.item)">
+          重新发送
+        </b-btn>
+        <b-btn size="sm" class="btn btn-info" style="width: 45%" @click.stop="row.toggleDetails">
+          修改时效
+        </b-btn>
       </template>
+
+      <template slot="row-details" slot-scope="row">
+        <b-card>
+          <b-list-group>
+            <b-list-group-item title="编辑识别码" class="flex-column align-items-start">
+              <div class="d-flex w-100 ustify-content-between">
+                <h5 class="mb-1"> PIN {{row.item.pin}} ：<strong>{{row.item.owner}}</strong> 的{{pin.role === 1? '选课': '成绩录入'}}识别码的时效信息</h5>
+              </div>
+              <hr/>
+              <b-row>
+                <b-col md="9" class="my-1">
+                  <div class="mr-1">
+                    <dl class="row">
+                      <b-col md="2" class="mt-1">
+                        <label for="updateStartTime" class="col-sm-12 control-label">*生效时间:</label>
+                      </b-col>
+                      <b-col md="3" class="mt-1">
+                        <input v-model="row.item.startTime" name="updateStartTime" id="updateStartTime"
+                               v-validate="'required'" :class="{'form-control': true, 'is-invalid': errors.has('updateStartTime')}">
+                        <div v-show="errors.has('updateStartTime')" class="invalid-tooltip">{{ errors.first('updateStartTime') }}</div>
+                      </b-col>
+                      <b-col md="2" class="mt-1">
+                        <label for="updateEndTime" class="col-sm-12 control-label">*失效时间:</label>
+                      </b-col>
+                      <b-col md="3" class="mt-1">
+                        <input v-model="row.item.endTime" name="updateEndTime" id="updateEndTime"
+                               v-validate="'required'" :class="{'form-control': true, 'is-invalid': errors.has('updateEndTime')}">
+                        <div v-show="errors.has('updateEndTime')" class="invalid-tooltip">{{ errors.first('updateEndTime') }}</div>
+                      </b-col>
+                    </dl>
+                    <hr/>
+                    <dl class="row">
+                      <dt class="col-sm-1">操作:</dt>
+                      <dd class="col-sm-5">
+                        <b-button size="sm" variant="danger"
+                                  @click.stop="updateOne(row.item)">
+                          修改时效
+                        </b-button>
+                      </dd>
+                    </dl>
+                  </div>
+                </b-col>
+              </b-row>
+            </b-list-group-item>
+          </b-list-group>
+        </b-card>
+      </template>
+
     </b-table>
     <b-col md="6" class="my-1">
       <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
@@ -82,6 +137,24 @@
              title="不可逆操作警告！">
       <div class="d-block text-center">
         <h3>确认删除该识别码？</h3>
+      </div>
+    </b-modal>
+    <b-modal v-model="showSendModal"
+             size="sm"
+             header-bg-variant='primary'
+             @ok="resendOne"
+             ok-title="发送"
+             cancel-title="取消"
+             centered
+             title="确认信息">
+      <div class="d-block text-center">
+        <h4>请确认识别码信息：</h4>
+        <p class="text-muted">
+          识别码：{{pin.pin}} <br>
+          类型：{{pin.role === 1? '选课': '成绩录入'}} <br>
+          有效期：从{{pin.startTime}} 至 {{pin.endTime}}<br>
+          所有人：{{pin.owner}}</p>
+        <h4>确认后请按发送键。</h4>
       </div>
     </b-modal>
     <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
@@ -123,6 +196,7 @@
         items: items,
         info: '',
         showDeleteModal: false,
+        showSendModal: false,
         showModal: false,
         pin: '',
         msg: '',
@@ -196,6 +270,37 @@
           }
         })
       },
+      resendPin (pin) {
+        this.pin = pin
+        console.log(pin)
+        this.showSendModal = true
+      },
+      resendOne () {
+        axios.post('/pin/send', this.pin).then((response) => {
+          if (response.data.code === 2001) {
+            this.msg = '发送成功！'
+            this.showModal = true
+            this.headerBgVariant = 'success'
+          } else {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
+          }
+        })
+      },
+      updateOne(pin){
+        axios.put('/pin/' + pin.pin, pin).then((response) => {
+          if (response.data.code === 2001) {
+            this.msg = '修改成功！'
+            this.showModal = true
+            this.headerBgVariant = 'success'
+          } else {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
+          }
+        })
+      }
     }
   }
 </script>
