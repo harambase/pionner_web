@@ -57,10 +57,11 @@
              :isBusy="false"
              @filtered="onFiltered"
     >
+      <template slot="index" slot-scope="row">
+        {{(currentPage-1) * perPage + 1 + row.index}}
+      </template>
+
       <template slot="actions" slot-scope="row">
-        <b-btn size="sm" class="btn btn-danger" style="width: 50%" @click.stop="showDeleteOne(row.item.advise)">
-          删除
-        </b-btn>
         <b-btn size="sm" class="btn btn-success" style="width: 50%" @click.stop="resendPin(row.item)">
           重新发送
         </b-btn>
@@ -74,10 +75,17 @@
       </template>
 
     </b-table>
-    <b-col md="6" class="my-1">
-      <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
-                    class="my-0"/>
-    </b-col>
+
+    <b-row>
+      <b-col md="6" class="my-1">
+        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
+                      class="my-0"/>
+      </b-col>
+      <b-col md="6" class="my-1">
+        <p class="text-muted"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) * perPage + perPage) <=
+          totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
+      </b-col>
+    </b-row>
 
     <b-modal v-model="showDeleteModal"
              size="sm"
@@ -111,12 +119,13 @@
 
   const items = []
   const field = [
-    {key: "sname", label: "学生姓名"},
-    {key: "fname", label: "教师姓名"},
-    {key: "status", label: "状态"},
-    {key: "updateTime", label: "更新时间"},
-    {key: "oname", label: "操作人"},
-    {key: "actions", label: "操作"}
+    {key: 'index', label: '序号'},
+    {key: 'sname', label: '学生姓名'},
+    {key: 'fname', label: '教师姓名'},
+    {key: 'status', label: '状态'},
+    {key: 'updateTime', label: '更新时间'},
+    {key: 'oname', label: '操作人'},
+    {key: 'actions', label: '操作'}
   ]
 
   export default {
@@ -129,7 +138,7 @@
         perPage: 10,
         totalRows: 0,
         pageOptions: [5, 10, 15],
-        sortBy: 'advise',
+        sortBy: 'id',
         sortDesc: false,
         filter: null,
         items: items,
@@ -141,9 +150,7 @@
         headerBgVariant: '',
       }
     },
-    watch: {
-
-    },
+    watch: {},
     computed: {
       sortOptions () {
         // Create an options list from our field

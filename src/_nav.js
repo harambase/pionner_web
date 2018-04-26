@@ -151,6 +151,14 @@ export default {
       },
     },
     {
+      name: '辅导关系申请管理',
+      url: '/teach/advise/request',
+      icon: 'icon-book-open',
+      meta: {
+        role: ['2']
+      },
+    },
+    {
       name: '导师管理',
       url: '/teach/advisor',
       icon: 'icon-book-open',
