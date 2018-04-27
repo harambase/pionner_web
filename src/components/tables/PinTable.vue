@@ -56,6 +56,9 @@
              :isBusy="false"
              @filtered="onFiltered"
     >
+      <template slot="index" slot-scope="row">
+        {{(currentPage-1) * perPage + 1 + row.index}}
+      </template>
       <template slot="effective" slot-scope="row">
         <p class="text-muted">从{{row.item.startTime}} <br> 至{{row.item.endTime}}</p>
       </template>
@@ -193,6 +196,7 @@
 
   const items = []
   const field = [
+    {key: 'index', label: '序号', class: 'text-center'},
     {key: 'pin', label: '识别码', sortable: true},
     {key: 'owner', label: '所有人', sortable: true, 'class': 'text-center'},
     {key: 'role', label: '类型', sortable: true, 'class': 'text-center'},

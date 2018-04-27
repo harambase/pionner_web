@@ -58,6 +58,9 @@
                        :isBusy="false"
                        @filtered="onFiltered"
               >
+                <template slot="index" slot-scope="row">
+                  {{(currentPage-1) * perPage + 1 + row.index}}
+                </template>
                 <template slot="userId" slot-scope="row">
                   <b-row>
                     <b-col md="3">
@@ -208,6 +211,7 @@
 
   const items = []
   const field = [
+    {key: 'index', label: '序号', class: 'text-center'},
     {key: 'userId', label: '用户ID', sortable: true, 'class': 'text-center'},
     {key: 'username', label: '用户名', sortable: true},
     {key: 'lastName', label: '姓', sortable: true},

@@ -79,6 +79,9 @@
                      :isBusy="false"
                      @filtered="onFiltered"
             >
+              <template slot="index" slot-scope="row">
+                {{(currentPage-1) * perPage + 1 + row.index}}
+              </template>
               <template slot="status" slot-scope="row">
                 <p v-if="row.value === '1'" style="color:green;">已批准</p>
                 <p v-if="row.value === '0'" style="color:blue;">申请中</p>
@@ -195,7 +198,7 @@
 
   const items = []
   const field = [
-    {key: 'id', label: '序列号', sortable: true, 'class': 'text-center'},
+    {key: 'index', label: '序号', class: 'text-center'},
     {key: 'crn', label: '临时课程编码', sortable: true, 'class': 'text-center'},
     {key: 'courseJson', label: '课程名', sortable: true},
     {key: 'facultyId', label: '申请人ID', sortable: true},

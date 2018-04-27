@@ -25,6 +25,9 @@
                      :isBusy="false"
                      @filtered="onFiltered"
             >
+              <template slot="index" slot-scope="row">
+                {{(currentPage-1) * perPage + 1 + row.index}}
+              </template>
             </b-table>
             <b-row>
               <b-col md="6" class="my-1">
@@ -48,6 +51,7 @@
 
   const items = []
   const field = [
+    {key: 'index', label: '序号', class: 'text-center'},
     {key: 'roleId', label: '权限ID', sortable: true},
     {key: 'roleName', label: '角色名', sortable: true},
     {key: 'roleCode', label: '权限代码', sortable: true},

@@ -42,6 +42,9 @@
              :isBusy="false"
              @filtered="onFiltered"
     >
+      <template slot="index" slot-scope="row">
+        {{(currentPage-1) * perPage + 1 + row.index}}
+      </template>
       <template slot="complete" slot-scope="row">
         <p v-if="row.value === '1'" style="color:green;">完成</p>
         <p v-if="row.value === '0'" style="color:blue;">进行中</p>
@@ -90,6 +93,7 @@
 
   const items = []
   const field = [
+    {key: 'index', label: '序号', class: 'text-center'},
     {key: 'id', label: '序号', sortable: true},
     {key: 'studentId', label: '学生ID', sortable: true},
     {key: 'sname', label: '学生名', sortable: true},

@@ -62,16 +62,44 @@
       </template>
 
       <template slot="actions" slot-scope="row">
-        <b-btn size="sm" class="btn btn-success" style="width: 50%" @click.stop="resendPin(row.item)">
-          重新发送
+        <b-btn size="sm" class="btn btn-danger" style="width: 50%" @click.stop="showDeleteOne(row.item)">
+          删除辅导关系
         </b-btn>
         <b-btn size="sm" class="btn btn-info" style="width: 45%" @click.stop="row.toggleDetails">
-          修改时效
+          修改辅导关系
         </b-btn>
       </template>
 
       <template slot="row-details" slot-scope="row">
-
+        <b-card>
+          <b-list-group>
+            <b-list-group-item title="编辑用户" class="flex-column align-items-start">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">修改当前辅导关系</h5>
+                <small class="text-danger">注意：只可以修改导师！</small>
+              </div>
+              <hr/>
+              <b-row>
+                <b-col md="12" class="my-1">
+                  <div class="mr-1">
+                    <dl class="row">
+                      <dt class="col-sm-1">请分配新导师:</dt>
+                      <dd class="col-sm-5">
+                        <CAdvisorSelect v-on:pass="passAdvisor"/>
+                      </dd>
+                      <dd class="col-sm-5">
+                        <b-button size="sm" style="width: 150px;" variant="success"
+                                  @click.stop="updateOne(row.item)">
+                          提交
+                        </b-button>
+                      </dd>
+                    </dl>
+                  </div>
+                </b-col>
+              </b-row>
+            </b-list-group-item>
+          </b-list-group>
+        </b-card>
       </template>
 
     </b-table>
@@ -82,7 +110,8 @@
                       class="my-0"/>
       </b-col>
       <b-col md="6" class="my-1">
-        <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) * perPage + perPage) <=
+        <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) *
+          perPage + perPage) <=
           totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
       </b-col>
     </b-row>
@@ -116,6 +145,7 @@
 <script>
   import axios from 'axios'
   import CStudentSelect from '../selects/StudentSelect'
+  import CAdvisorSelect from '../selects/AdvisorSelect'
 
   const items = []
   const field = [
@@ -130,7 +160,7 @@
 
   export default {
     name: 'c-adviseTable',
-    components: {CStudentSelect},
+    components: {CAdvisorSelect, CStudentSelect},
     data () {
       return {
         field: field,
@@ -148,6 +178,7 @@
         advise: '',
         msg: '',
         headerBgVariant: '',
+        advisor: ''
       }
     },
     watch: {},
@@ -160,6 +191,9 @@
       }
     },
     methods: {
+      passAdvisor (val) {
+        this.advisor = val
+      },
       passStudent (val) {
         this.student = val
       },
@@ -196,6 +230,22 @@
       showDeleteOne (advise) {
         this.advise = advise
         this.showDeleteModal = true
+      },
+      updateOne (advise) {
+        advise.facultyId = this.advisor.value
+        axios.put('/advise/' + advise.id, advise).then((response) => {
+          if (response.data.code === 2001) {
+            this.msg = '更新成功！'
+            this.showModal = true
+            this.headerBgVariant = 'success'
+            this.initTable()
+          }
+          else {
+            this.msg = response.data.msg
+            this.showModal = true
+            this.headerBgVariant = 'danger'
+          }
+        })
       },
       deleteOne () {
         axios.delete('/advise/' + this.advise.id).then((response) => {

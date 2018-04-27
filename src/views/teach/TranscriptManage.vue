@@ -66,6 +66,9 @@
                      :isBusy="false"
                      @filtered="onFiltered"
             >
+              <template slot="index" slot-scope="row">
+                {{(currentPage-1) * perPage + 1 + row.index}}
+              </template>
               <template slot="complete" slot-scope="row">
                 <p v-if="row.value === '1'" style="color:blue;">完成</p>
                 <p v-if="row.value === '0'" style="color:green;">进行中</p>
@@ -150,7 +153,7 @@
 
   const items = []
   const field = [
-    {key: 'id', label: '序号', sortable: true},
+    {key: 'index', label: '序号', class: 'text-center'},
     {key: 'studentId', label: '学生ID', sortable: true},
     {key: 'sname', label: '姓名', sortable: true},
     {key: 'grade', label: '学生成绩', sortable: true},
@@ -253,12 +256,6 @@
       },
       isNotEmpty (value) {
         return value !== '' && value !== undefined && value !== null
-      },
-      showTranscript (id, studentId, grade, complete) {
-        this.transcript.id = id
-        this.transcript.studentId = studentId
-        this.transcript.grade = grade
-        this.transcript.complete = complete
       },
       downloadReport () {
         window.open(basePath + '/transcript/report?studentId=' + this.reportStudent.value + '&token=' + window.localStorage.getItem('access_token'))

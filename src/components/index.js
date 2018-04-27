@@ -11,6 +11,7 @@ import CourseSelect from './selects/CourseSelect.vue'
 import FacultySelect from './selects/FacultySelect.vue'
 import UserSelect from './selects/UserSelect.vue'
 import PinSelect from './selects/PinSelect.vue'
+import AdvisorSelect from './selects/AdvisorSelect.vue'
 import AddStudentTable from './tables/AddStudentTable.vue'
 import StudentInCourseTable from './tables/StudentInCourseTable.vue'
 import TranscriptEdit from './parts/TranscriptEdit.vue'
@@ -31,5 +32,6 @@ export {
   StudentInCourseTable,
   UserSelect,
   TranscriptEdit,
-  PinSelect
+  PinSelect,
+  AdvisorSelect
 }
