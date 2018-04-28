@@ -1,181 +1,15 @@
 <template>
   <div class="animated fadeIn">
     <b-row>
-      <b-col cols="12" v-show="!showValidate && !pinValidate">
-        <b-card>
-          <div slot="header">
-            <i className="fa fa-align-justify"></i><strong>选课工作区</strong>
-          </div>
-          <h2 class="mt-3">
-            <a style="color:blue;" href="#" @click="showValidate=true">点击这里</a>输入识别码。
-          </h2>
-        </b-card>
-      </b-col>
-      <div v-show="pinValidate">
-        <b-row>
-          <b-col cols="3">
-            <b-card>
-              <div slot="header">
-                <i className="fa fa-align-justify"></i><strong>选课工作区</strong>
-                <small>详情</small>
-              </div>
-              <h3>你的选课学分信息：</h3>
-              <p class="card-text mt-2">
-                学分上限: {{tol_credits}}
-                已用学分: {{use_credits}}<br>
-                <strong>可用学分: {{ava_credits}}</strong>
-              </p>
-              <hr/>
-              <h3>你的已选课程：</h3>
-              <b-list-group>
-                <b-list-group-item href="#" style="cursor: default" class="flex-column align-items-start"
-                                   v-for="(item, index) in crnList">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{item.name}}</h5>
-                    <small class="text-muted">授课老师：{{item.faculty}}</small>
-                  </div>
-                  <p class="mb-1">
-                    课程CRN:{{item.crn}} <br>
-                    课程学分：{{item.credits}}
-                  </p>
-                  <button class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>
-                </b-list-group-item>
-              </b-list-group>
-              <hr/>
-              <b-row>
-                <b-col cols="6" md="6">
-                  <b-button style="width:150px;" class="btn btn-success" @click="turnIn">
-                    提交
-                  </b-button>
-                </b-col>
-                <b-col cols="6" md="6">
-                  <b-button style="width:150px;" class="btn btn-danger"
-                            id="reset" @click="reset">
-                    重置当前
-                  </b-button>
-                </b-col>
-              </b-row>
-            </b-card>
-
-          </b-col>
-          <b-col cols="9">
-            <b-card>
-              <div slot="header">
-                <i className="fa fa-align-justify"></i><strong>新学期课程列表</strong>
-              </div>
-              <b-container fluid>
-                <!-- User Interface controls -->
-                <b-row>
-                  <b-col md="6" class="my-1">
-                    <b-form-group horizontal label="每页显示条数：" class="mb-0">
-                      <b-form-select :options="pageOptions" v-model="perPage"/>
-                    </b-form-group>
-                  </b-col>
-                  <b-col md="6" class="my-1">
-                    <b-form-group horizontal label="模糊查询：" class="mb-0">
-                      <b-input-group>
-                        <b-form-input v-model="filter"/>
-                        <b-input-group-button>
-                          <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
-                        </b-input-group-button>
-                      </b-input-group>
-                    </b-form-group>
-                  </b-col>
-                </b-row>
-
-                <!-- Main table element -->
-                <b-table show-empty
-                         ref="courseTable"
-                         :hover=true
-                         :items="courseTable"
-                         :fields="field"
-                         :current-page="currentPage"
-                         :per-page="perPage"
-                         :filter="filter"
-                         :sort-by.sync="sortBy"
-                         :sort-desc.sync="sortDesc"
-                         :isBusy="false"
-                         @filtered="onFiltered"
-                         :fixed="true"
-                >
-                  <template slot="status" slot-scope="row">
-                    <p v-if="row.value === 1" style="color:blue;">未开始</p>
-                    <p v-if="row.value === 0" style="color:green;">进行中</p>
-                    <p v-if="row.value === -1" style="color:red;">已结课</p>
-                  </template>
-                  <template slot="operations" slot-scope="row">
-                    <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
-                    <i style="cursor: pointer; margin-top:5px; color: green;" class="fa fa-plus" title="添入工作表"
-                       @click.stop="addToWorkSheet(row.item.crn, row.item.credits, row.item.name, row.item.faculty)"></i>
-                  </template>
-                  <template slot="actions" slot-scope="row">
-                    <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
-                    <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
-                      {{row.detailsShowing ? '隐藏' : '展示' }}详情
-                    </b-button>
-                  </template>
-                  <template slot="row-details" slot-scope="row">
-                    <b-card>
-                      <ul>
-                        <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value}}</li>
-                      </ul>
-                    </b-card>
-                  </template>
-                </b-table>
-                <b-col md="6" class="my-1">
-                  <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
-                                class="my-0"/>
-                </b-col>
-              </b-container>
-            </b-card>
-          </b-col>
-        </b-row>
-      </div>
+      <CAdvisorTable/>
     </b-row>
-
-    <b-modal title="识别码验证" header-bg-variant="info"
-             centered hide-footer
-             :no-close-on-backdrop="true"
-             :no-close-on-esc="true"
-             v-model="showValidate">
-      <b-input-group class="mb-6">
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <a href="#" v-b-tooltip title="填写6位数字识别码，识别码请在导师处获取。">*请输入6位识别码:</a>
-          </span>
-        </div>
-        <input class="form-control" name="pin" v-model="pin"
-               v-validate="'required|numeric|min:6|max:6'"
-               :class="{'is-invalid': errors.has('pin')}">
-        <div v-show="errors.has('pin')" class="invalid-tooltip">{{ errors.first('pin') }}</div>
-      </b-input-group>
-      <b-btn class="mt-3" variant="outline-success" block @click="validate">验证识别码</b-btn>
-    </b-modal>
-
-    <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
-      <div class="d-block text-center">
-        <h3>{{msg}}</h3>
-        <b-list-group>
-          <b-list-group-item href="#" style="cursor: default" class="flex-column align-items-start"
-                             v-for="(item, index) in failList">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">课程注册失败详情</h5>
-              <small>{{index + 1}}</small>
-            </div>
-            <p class="mb-1">
-              {{item}}
-            </p>
-          </b-list-group-item>
-        </b-list-group>
-      </div>
-    </b-modal>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
   import decode from 'jwt-decode'
-  import auth0 from 'auth0-js'
+  import CAdvisorTable from '../../components/tables/AdvisorTable'
 
   const items = []
   const field = [
@@ -194,6 +28,7 @@
 
   export default {
     name: 'Advise',
+    components: {CAdvisorTable},
     data () {
       return {
         pinObject: '',

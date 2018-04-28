@@ -22,6 +22,7 @@ import Credit from '@/views/teach/Credit'
 import Pin from '@/views/teach/Pin'
 import TranscriptManage from '@/views/teach/TranscriptManage'
 import Advise from '@/views/teach/Advise'
+import Advisor from '@/views/teach/Advisor'
 
 import Role from '@/views/system/Role'
 import Monitor from '@/views/system/Monitor'
@@ -262,7 +263,7 @@ const router = new Router({
             {
               path: 'advisor',
               name: '导师管理',
-              component: Advise,
+              component: Advisor,
               meta : {
                 requireAuth: true,
                 role: ['2']

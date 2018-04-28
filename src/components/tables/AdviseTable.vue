@@ -12,6 +12,7 @@
         <CInfoSelect v-on:pass="passInfo"/>
       </b-col>
       <b-col md="3" class="my-1">
+        <CAdvisorSelect v-on:pass="passAdvisor"/>
       </b-col>
     </b-row>
 
@@ -180,10 +181,17 @@
         msg: '',
         headerBgVariant: '',
         advisor: '',
+        student: '',
       }
     },
     watch: {
       info: function(){
+        this.initTable()
+      },
+      student: function(){
+        this.initTable()
+      },
+      advisor: function(){
         this.initTable()
       }
     },
@@ -213,8 +221,8 @@
         let url = '/advise?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
         if (this.isNotEmpty(this.info))
           url += '&info=' + this.info.value
-        if (this.isNotEmpty(this.faculty))
-          url += '&facultyId=' + this.faculty.value
+        if (this.isNotEmpty(this.student))
+          url += '&studentId=' + this.student.value
         if (this.isNotEmpty(ctx.filter))
           url += '&search=' + ctx.filter
         if (ctx.sortDesc)

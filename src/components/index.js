@@ -15,6 +15,7 @@ import AdvisorSelect from './selects/AdvisorSelect.vue'
 import AddStudentTable from './tables/AddStudentTable.vue'
 import StudentInCourseTable from './tables/StudentInCourseTable.vue'
 import TranscriptEdit from './parts/TranscriptEdit.vue'
+import AdvisorTable from './tables/AdvisorTable.vue'
 
 export {
   Aside,
@@ -33,5 +34,6 @@ export {
   UserSelect,
   TranscriptEdit,
   PinSelect,
-  AdvisorSelect
+  AdvisorSelect,
+  AdvisorTable,
 }
