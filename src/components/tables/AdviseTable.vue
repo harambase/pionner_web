@@ -9,7 +9,7 @@
         <CStudentSelect v-on:pass="passStudent"/>
       </b-col>
       <b-col md="3" class="my-1">
-        <!--<CStudentSelect v-on:pass="passAdvisor"/>-->
+        <CInfoSelect v-on:pass="passInfo"/>
       </b-col>
       <b-col md="3" class="my-1">
       </b-col>
@@ -146,6 +146,7 @@
   import axios from 'axios'
   import CStudentSelect from '../selects/StudentSelect'
   import CAdvisorSelect from '../selects/AdvisorSelect'
+  import CInfoSelect from '../selects/InfoSelect'
 
   const items = []
   const field = [
@@ -160,7 +161,7 @@
 
   export default {
     name: 'c-adviseTable',
-    components: {CAdvisorSelect, CStudentSelect},
+    components: {CInfoSelect, CAdvisorSelect, CStudentSelect},
     data () {
       return {
         field: field,
@@ -178,10 +179,14 @@
         advise: '',
         msg: '',
         headerBgVariant: '',
-        advisor: ''
+        advisor: '',
       }
     },
-    watch: {},
+    watch: {
+      info: function(){
+        this.initTable()
+      }
+    },
     computed: {
       sortOptions () {
         // Create an options list from our field
@@ -196,6 +201,9 @@
       },
       passStudent (val) {
         this.student = val
+      },
+      passInfo(val){
+        this.info = val
       },
       initTable () {
         this.$refs.adviseTable.refresh()
