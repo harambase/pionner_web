@@ -63,15 +63,11 @@
           </b-col>
         </b-row>
       </template>
-
-      <template slot="name" slot-scope="row">
-        {{row.item.lastName}}, {{row.item.firstName}}
-      </template>
       <template slot="actions" slot-scope="row">
         <b-button size="sm" class="btn btn-danger" @click.stop="showDeleteOne(row.item.userId)">
           取消导师资格
         </b-button>
-        <b-button size="sm" class="btn btn-danger" @click.stop="showAdvise(row.item.userId)">
+        <b-button size="sm" class="btn btn-primary" @click.stop="showAdvise(row.item.userId)">
           查看辅导学生
         </b-button>
       </template>
@@ -87,6 +83,29 @@
           totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
       </b-col>
     </b-row>
+
+    <b-modal v-model="showDeleteModal"
+             size="sm"
+             header-bg-variant='danger'
+             @ok="deleteOne"
+             centered
+             title="不可逆操作警告！">
+      <div class="d-block text-center">
+        <h3>确认删除该辅导关系？</h3>
+      </div>
+    </b-modal>
+
+    <b-modal v-model="showModal"
+             size="sm"
+             :header-bg-variant="headerBgVariant"
+             ok-only
+             ok-title="关闭"
+             centered
+             title="消息">
+      <div class="d-block text-center">
+        <h4>{{msg}}</h4>
+      </div>
+    </b-modal>
   </b-container>
 </template>
 
@@ -97,10 +116,9 @@
   const items = []
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
-    {key: 'userId', label: '导师用户ID', sortable: true, 'class': 'text-center'},
-    {key: 'name', label: '导师姓名', sortable: true},
-    {key: 'numOfStudent', label: '辅导学生个数', sortable: true},
-    {key: 'updateTime', label: '更新时间', sortable: true},
+    {key: 'userId', label: '导师用户信息', sortable: true},
+    {key: 'name', label: '姓名', sortable: true},
+    {key: 'numStudent', label: '辅导学生数', sortable: true, class: 'text-center'},
     {key: 'actions', label: '操作'}
   ]
 
@@ -123,6 +141,7 @@
         userId: '',
         msg: '',
         headerBgVariant: '',
+        basePath: basePath
       }
     },
     computed: {
@@ -136,6 +155,9 @@
     methods: {
       initTable () {
         this.$refs.advisorTable.refresh()
+      },
+      showAdvise(userId){
+
       },
       advisorTable (ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
