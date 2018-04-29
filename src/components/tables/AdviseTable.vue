@@ -67,7 +67,7 @@
           <b-btn size="sm" class="btn btn-info" @click.stop="row.toggleDetails">
             课程和成绩查看
           </b-btn>
-          <b-btn size="sm" class="btn btn-success" @click.stop="downloadTranscript(row.item.userId)">
+          <b-btn size="sm" class="btn btn-success" @click.stop="downloadTranscript(row.item.studentId)">
             成绩单下载
           </b-btn>
         </div>
@@ -307,7 +307,7 @@
         })
       },
       downloadTranscript(studentId){
-        window.open(basePath + '/transcript/report?studentId=' + studentId + '&token=' + window.localStorage.getItem('access_token'))
+        window.open(basePath + '/transcript/report/' + studentId + '?token=' + window.localStorage.getItem('access_token'))
       }
     }
   }
