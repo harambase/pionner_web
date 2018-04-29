@@ -143,28 +143,38 @@ export default {
       },
     },
     {
-      name: '辅导关系管理',
+      name: '辅导关系',
       url: '/teach/advise',
-      icon: 'icon-book-open',
+      icon: 'icon-pencil',
       meta: {
         role: ['2']
       },
-    },
-    {
-      name: '辅导关系申请管理',
-      url: '/teach/advise/request',
-      icon: 'icon-book-open',
-      meta: {
-        role: ['2']
-      },
-    },
-    {
-      name: '导师管理',
-      url: '/teach/advisor',
-      icon: 'icon-book-open',
-      meta: {
-        role: ['2']
-      },
+      children: [
+        {
+          name: '辅导关系管理',
+          url: '/teach/advise',
+          icon: 'icon-book-open',
+          meta: {
+            role: ['2']
+          },
+        },
+        {
+          name: '辅导关系申请管理',
+          url: '/teach/advise/request',
+          icon: 'icon-book-open',
+          meta: {
+            role: ['2']
+          },
+        },
+        {
+          name: '导师管理',
+          url: '/teach/advisor',
+          icon: 'icon-book-open',
+          meta: {
+            role: ['2']
+          },
+        },
+      ]
     },
     {
       title: true,
@@ -212,20 +222,33 @@ export default {
     },
     {
       title: true,
-      name: '后勤管理',
+      name: '导师系统',
       class: '',
       wrapper: {
         element: '',
         attributes: {},
       },
-      badge: {
-        variant: 'primary',
-        text: '即将上线'
-      },
       meta: {
-        role: ['3']
+        role: ['7']
       },
     },
+    {
+      name: '辅导关系查看',
+      url: '/advise/course',
+      icon: 'icon-book-open',
+      meta: {
+        role: ['7']
+      },
+    },
+    {
+      name: 'ONENOTE',
+      url: '/advise/course',
+      icon: 'icon-book-open',
+      meta: {
+        role: ['7']
+      },
+    },
+
     {
       name: 'Base',
       url: '/base',

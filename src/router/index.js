@@ -252,55 +252,56 @@ const router = new Router({
               },
             },
             {
-              path: 'advise',
-              name: '辅导关系管理',
-              component: Advise,
-              meta : {
-                requireAuth: true,
-                role: ['2']
+              path: 'new',
+              redirect: '/teach/advise',
+              name: '辅导关系',
+              component: {
+                render (c) { return c('router-view') }
               },
-            },
-            {
-              path: 'advisor',
-              name: '导师管理',
-              component: Advisor,
-              meta : {
-                requireAuth: true,
-                role: ['2']
-              },
+              children: [
+                {
+                  path: 'advise',
+                  name: '辅导关系管理',
+                  component: Advise,
+                  meta : {
+                    requireAuth: true,
+                    role: ['2']
+                  },
+                },
+                {
+                  path: 'advisor',
+                  name: '导师管理',
+                  component: Advisor,
+                  meta : {
+                    requireAuth: true,
+                    role: ['2']
+                  },
+                },
+                {
+                  path: 'advise/request',
+                  name: '导师管理',
+                  component: Advisor,
+                  meta : {
+                    requireAuth: true,
+                    role: ['2']
+                  },
+                },
+              ]
             },
           ]
         },
         {
           path: 'advise',
-          redirect: '/advise/info',
-          name: '导师模块',
+          redirect: '/advise/view',
+          name: '导师系统',
           component: {
             render (c) { return c('router-view') }
           },
           children: [
             {
-              path: 'info',
-              name: '导师关系管理',
-              component: Course,
-              meta : {
-                requireAuth: true,
-                role: ['2']
-              },
-            },
-            {
-              path: 'choose/faculty',
-              name: '导师选择',
-              component: Choose,
-              meta : {
-                requireAuth: true,
-                role: ['5']
-              },
-            },
-            {
-              path: 'choose/student',
-              name: '学生选择',
-              component: Choose,
+              path: 'view',
+              name: '辅导关系查看',
+              component: Advise,
               meta : {
                 requireAuth: true,
                 role: ['7']

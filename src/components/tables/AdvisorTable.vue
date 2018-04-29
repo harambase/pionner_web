@@ -64,13 +64,23 @@
         </b-row>
       </template>
       <template slot="actions" slot-scope="row">
-        <b-button size="sm" class="btn btn-danger" @click.stop="showDeleteOne(row.item.userId)">
+        <b-button size="sm" class="btn btn-danger" @click.stop="showDeleteOne(row.item)">
           取消导师资格
         </b-button>
-        <b-button size="sm" class="btn btn-primary" @click.stop="showAdvise(row.item.userId)">
+        <b-button size="sm" class="btn btn-primary" @click.stop="row.toggleDetails">
           查看辅导学生
         </b-button>
       </template>
+      <template slot="row-details" slot-scope="row">
+        <b-card>
+          <b-list-group>
+            <b-list-group-item class="flex-column align-items-start">
+              <CAdviseTable ref="CAdviseTable" showAdvisor="0" :fromAdvisor="row.item"/>
+            </b-list-group-item>
+          </b-list-group>
+        </b-card>
+      </template>
+
     </b-table>
     <b-row>
       <b-col md="6" class="my-1">
@@ -91,7 +101,7 @@
              centered
              title="不可逆操作警告！">
       <div class="d-block text-center">
-        <h3>确认删除该辅导关系？</h3>
+        <h3>确认取消{{advisor.name}}的导师资格？</h3>
       </div>
     </b-modal>
 
@@ -111,7 +121,7 @@
 
 <script>
   import axios from 'axios'
-  import CInfoSelect from '../../components/selects/InfoSelect'
+  import CAdviseTable from './AdviseTable'
 
   const items = []
   const field = [
@@ -124,6 +134,7 @@
 
   export default {
     name: 'c-advisorTable',
+    components: {CAdviseTable},
     data () {
       return {
         field: field,
@@ -138,7 +149,7 @@
         info: '',
         showDeleteModal: false,
         showModal: false,
-        userId: '',
+        advisor: '',
         msg: '',
         headerBgVariant: '',
         basePath: basePath
@@ -155,9 +166,6 @@
     methods: {
       initTable () {
         this.$refs.advisorTable.refresh()
-      },
-      showAdvise(userId){
-
       },
       advisorTable (ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
@@ -200,12 +208,12 @@
       isNotEmpty (value) {
         return value !== '' && value !== undefined && value !== null
       },
-      showDeleteOne (userId) {
-        this.userId = userId
+      showDeleteOne (advisor) {
+        this.advisor = advisor
         this.showDeleteModal = true
       },
       deleteOne () {
-        axios.put('/advise/' + this.advisor).then((response) => {
+        axios.delete('/advise/advisor/' + this.advisor.userId).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '删除成功！'
             this.showModal = true

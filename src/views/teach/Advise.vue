@@ -8,7 +8,7 @@
           <div slot="header">
             <i className="fa fa-align-justify"></i><strong>辅导关系列表</strong>
           </div>
-          <CAdviseTable/>
+          <CAdviseTable showAdvisor="1"/>
         </b-card>
       </b-col>
       <b-col cols="12">
@@ -65,9 +65,10 @@
     components: {CInfoSelect, CAdviseTable},
     data () {
       return {
-        info: ''
+        info: '',
       }
     },
+
     methods: {
       passInfo (val) {
         this.info = val

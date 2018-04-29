@@ -12,7 +12,7 @@
         <CInfoSelect v-on:pass="passInfo"/>
       </b-col>
       <b-col md="3" class="my-1">
-        <CAdvisorSelect v-on:pass="passAdvisor"/>
+        <CAdvisorSelect v-on:pass="passAdvisor" v-if="showAdvisor == 1"/>
       </b-col>
     </b-row>
 
@@ -102,7 +102,6 @@
           </b-list-group>
         </b-card>
       </template>
-
     </b-table>
 
     <b-row>
@@ -163,6 +162,7 @@
   export default {
     name: 'c-adviseTable',
     components: {CInfoSelect, CAdvisorSelect, CStudentSelect},
+    props: ['showAdvisor', 'fromAdvisor'],
     data () {
       return {
         field: field,
@@ -178,20 +178,28 @@
         showDeleteModal: false,
         showModal: false,
         advise: '',
+        advisor: '',
         msg: '',
         headerBgVariant: '',
-        advisor: '',
         student: '',
       }
     },
+    mounted () {
+      if (isNotEmpty(this.fromAdvisor)) {
+        this.advisor = {
+          value: this.fromAdvisor.userId,
+          label: this.fromAdvisor.name
+        }
+      }
+    },
     watch: {
-      info: function(){
+      info: function () {
         this.initTable()
       },
-      student: function(){
+      student: function () {
         this.initTable()
       },
-      advisor: function(){
+      advisor: function () {
         this.initTable()
       }
     },
@@ -210,7 +218,7 @@
       passStudent (val) {
         this.student = val
       },
-      passInfo(val){
+      passInfo (val) {
         this.info = val
       },
       initTable () {
@@ -223,6 +231,8 @@
           url += '&info=' + this.info.value
         if (this.isNotEmpty(this.student))
           url += '&studentId=' + this.student.value
+        if (this.isNotEmpty(this.advisor))
+          url += '&facultyId=' + this.advisor.value
         if (this.isNotEmpty(ctx.filter))
           url += '&search=' + ctx.filter
         if (ctx.sortDesc)
