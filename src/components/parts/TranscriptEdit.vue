@@ -20,7 +20,7 @@
             <dd class="col-sm-1">
               <input placeholder="可使用Letter Grade或百分制" name="grade"
                      :class="{'form-control': true, 'is-invalid': errors.has('grade')}"
-                     v-model="row.item.grade"
+                     v-model="row.item.grade" :disabled="mode==='faculty'"
                      v-validate="'required'">
               <div v-show="errors.has('grade')" class="invalid-tooltip">{{ errors.first('grade')}}</div>
             </dd>
@@ -32,7 +32,7 @@
                   <div class="custom-control custom-radio">
                     <input type="radio" id="complete" name="complete"
                            value="1" class="custom-control-input"
-                           v-model="row.item.complete">
+                           v-model="row.item.complete" :disabled="mode==='faculty'">
                     <label class="custom-control-label" for="complete">完成</label>
                   </div>
                 </b-col>
@@ -40,7 +40,7 @@
                   <div class="custom-control custom-radio">
                     <input type="radio" id="process" name="complete"
                            value="0" class="custom-control-input"
-                           v-model="row.item.complete">
+                           v-model="row.item.complete" :disabled="mode==='faculty'">
                     <label class="custom-control-label" for="process">正在进行</label>
                   </div>
                 </b-col>
@@ -48,14 +48,14 @@
                   <div class="custom-control custom-radio">
                     <input type="radio" id="nComplete" name="nComplete"
                            value="-1" class="custom-control-input"
-                           v-model="row.item.complete">
+                           v-model="row.item.complete" :disabled="mode==='faculty'">
                     <label class="custom-control-label" for="nComplete">未完成</label>
                   </div>
                 </b-col>
               </b-row>
             </dd>
           </dl>
-          <dl class="row">
+          <dl class="row" v-if="mode!=='faculty'">
             <dt class="col-sm-1">*操作密码:</dt>
             <dd class="col-sm-3">
               <input type="password" v-validate="'required'" name="adminPwd"
@@ -64,7 +64,7 @@
               </div>
             </dd>
           </dl>
-          <dl class="row">
+          <dl class="row" v-if="mode!=='faculty'">
             <dt class="col-sm-1">操作:</dt>
             <dd class="col-sm-5">
               <b-button size="sm" variant="success"
@@ -104,7 +104,7 @@
 <script>
   export default {
     name: 'c-transcriptEdit',
-    props: ['row'],
+    props: ['row', 'mode'],
     data() {
       return{
         msg: '',

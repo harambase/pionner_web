@@ -63,16 +63,30 @@
       </template>
 
       <template slot="actions" slot-scope="row">
-        <b-btn size="sm" class="btn btn-danger" style="width: 50%" @click.stop="showDeleteOne(row.item)">
-          删除辅导关系
-        </b-btn>
-        <b-btn size="sm" class="btn btn-info" style="width: 45%" @click.stop="row.toggleDetails">
-          修改辅导关系
-        </b-btn>
+        <div v-if="mode==='faculty'">
+          <b-btn size="sm" class="btn btn-info" @click.stop="row.toggleDetails">
+            课程和成绩查看
+          </b-btn>
+          <b-btn size="sm" class="btn btn-success" @click.stop="downloadTranscript(row.item.userId)">
+            成绩单下载
+          </b-btn>
+        </div>
+        <div v-else>
+          <b-btn size="sm" class="btn btn-danger" style="width: 50%" @click.stop="showDeleteOne(row.item)">
+            删除辅导关系
+          </b-btn>
+          <b-btn size="sm" class="btn btn-info" style="width: 45%" @click.stop="row.toggleDetails">
+            修改辅导关系
+          </b-btn>
+        </div>
       </template>
 
       <template slot="row-details" slot-scope="row">
-        <b-card>
+        <div v-if="mode==='faculty'">
+          <CStudentInCourseTable mode="faculty" :studentId="row.item.studentId"/>
+        </div>
+        <div v-else>
+          <b-card>
           <b-list-group>
             <b-list-group-item title="编辑用户" class="flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
@@ -101,6 +115,7 @@
             </b-list-group-item>
           </b-list-group>
         </b-card>
+        </div>
       </template>
     </b-table>
 
@@ -147,6 +162,7 @@
   import CStudentSelect from '../selects/StudentSelect'
   import CAdvisorSelect from '../selects/AdvisorSelect'
   import CInfoSelect from '../selects/InfoSelect'
+  import CStudentInCourseTable from './StudentInCourseTable'
 
   const items = []
   const field = [
@@ -161,8 +177,8 @@
 
   export default {
     name: 'c-adviseTable',
-    components: {CInfoSelect, CAdvisorSelect, CStudentSelect},
-    props: ['showAdvisor', 'fromAdvisor'],
+    components: {CStudentInCourseTable, CInfoSelect, CAdvisorSelect, CStudentSelect},
+    props: ['showAdvisor', 'fromAdvisor', 'mode'],
     data () {
       return {
         field: field,
@@ -233,6 +249,8 @@
           url += '&studentId=' + this.student.value
         if (this.isNotEmpty(this.advisor))
           url += '&facultyId=' + this.advisor.value
+        if (this.isNotEmpty(this.mode))
+          url += '&mode=' + this.mode
         if (this.isNotEmpty(ctx.filter))
           url += '&search=' + ctx.filter
         if (ctx.sortDesc)
@@ -288,6 +306,9 @@
           }
         })
       },
+      downloadTranscript(studentId){
+        window.open(basePath + '/transcript/report?studentId=' + studentId + '&token=' + window.localStorage.getItem('access_token'))
+      }
     }
   }
 </script>

@@ -39,26 +39,9 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import decode from 'jwt-decode'
-  import auth0 from 'auth0-js'
+
   import CAdviseTable from '../../components/tables/AdviseTable'
   import CInfoSelect from '../../components/selects/InfoSelect'
-
-  const items = []
-  const field = [
-    {key: 'operations', label: '操作'},
-    {key: 'crn', label: '编号', sortable: true},
-    {key: 'name', label: '课程名', sortable: true, 'class': 'text-center'},
-    {key: 'capacity', label: '容量', sortable: true},
-    {key: 'remain', label: '剩余', sortable: true},
-    {key: 'status', label: '状态', sortable: true},
-    {key: 'date', label: '起止时间', sortable: true},
-    {key: 'time', label: '上课时间', sortable: true},
-    {key: 'day', label: '星期', sortable: true},
-    {key: 'faculty', label: '授课老师', sortable: true},
-    {key: 'actions', label: '查看详情'}
-  ]
 
   export default {
     name: 'Advise',

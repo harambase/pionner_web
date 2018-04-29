@@ -144,7 +144,7 @@ export default {
     },
     {
       name: '辅导关系',
-      url: '/teach/advise',
+      url: '/teach',
       icon: 'icon-pencil',
       meta: {
         role: ['2']
@@ -152,7 +152,7 @@ export default {
       children: [
         {
           name: '辅导关系管理',
-          url: '/teach/advise',
+          url: '/teach/advise/manage',
           icon: 'icon-book-open',
           meta: {
             role: ['2']
@@ -168,7 +168,7 @@ export default {
         },
         {
           name: '导师管理',
-          url: '/teach/advisor',
+          url: '/teach/advise/advisor',
           icon: 'icon-book-open',
           meta: {
             role: ['2']
@@ -234,7 +234,7 @@ export default {
     },
     {
       name: '辅导关系查看',
-      url: '/advise/course',
+      url: '/advise/view',
       icon: 'icon-book-open',
       meta: {
         role: ['7']
@@ -242,7 +242,9 @@ export default {
     },
     {
       name: 'ONENOTE',
-      url: '/advise/course',
+      redirect: to => {
+        window.open("https://login.partner.microsoftonline.cn/login");
+      },
       icon: 'icon-book-open',
       meta: {
         role: ['7']

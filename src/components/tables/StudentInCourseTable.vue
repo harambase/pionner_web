@@ -60,8 +60,13 @@
           修改成绩
         </b-button>
       </template>
+      <template slot="actions" slot-scope="row" v-if="mode=='faculty'">
+        <b-button size="sm" class="btn btn-danger" @click.stop="row.toggleDetails">
+          学生学分和成绩查看
+        </b-button>
+      </template>
       <template slot="row-details" slot-scope="row">
-        <CTranscriptEdit :row="row"/>
+        <CTranscriptEdit :row="row" :mode="mode"/>
       </template>
 
     </b-table>
@@ -95,6 +100,7 @@
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
     {key: 'id', label: '序号', sortable: true},
+    {key: 'cname', label: '课程名', sortable: true},
     {key: 'studentId', label: '学生ID', sortable: true},
     {key: 'sname', label: '学生名', sortable: true},
     {key: 'grade', label: '学生成绩', sortable: true},
@@ -105,7 +111,7 @@
   export default {
     name: 'c-studentInCourseTable',
     components: {CTranscriptEdit},
-    props: ['mode', 'crn', 'cname', 'credit'],
+    props: ['mode', 'crn', 'cname', 'credit', 'studentId'],
     data () {
       return {
         msg: '',
@@ -145,6 +151,8 @@
         let url = '/transcript/course/student?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
         if (this.isNotEmpty(this.crn))
           url += '&crn=' + this.crn
+        if (this.isNotEmpty(this.studentId))
+          url += '&studentId=' + this.studentId
         if (this.isNotEmpty(ctx.filter))
           url += '&search=' + ctx.filter
         if (ctx.sortDesc)

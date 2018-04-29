@@ -30,7 +30,7 @@ import User from '@/views/system/User'
 import UserForm from '@/views/system/UserForm'
 import Reg from '@/views/system/Reg'
 
-import Record from '@/views/advise/Record'
+import AdviseView from '@/views/advise/AdviseView'
 
 // Views - Components
 import Cards from '@/views/base/Cards'
@@ -252,15 +252,15 @@ const router = new Router({
               },
             },
             {
-              path: 'new',
-              redirect: '/teach/advise',
+              path: 'advise',
+              redirect: '/teach/advise/manage',
               name: '辅导关系',
               component: {
                 render (c) { return c('router-view') }
               },
               children: [
                 {
-                  path: 'advise',
+                  path: 'manage',
                   name: '辅导关系管理',
                   component: Advise,
                   meta : {
@@ -278,7 +278,7 @@ const router = new Router({
                   },
                 },
                 {
-                  path: 'advise/request',
+                  path: 'request',
                   name: '导师管理',
                   component: Advisor,
                   meta : {
@@ -301,15 +301,17 @@ const router = new Router({
             {
               path: 'view',
               name: '辅导关系查看',
-              component: Advise,
+              component: AdviseView,
               meta : {
                 requireAuth: true,
                 role: ['7']
               },
             },
             {
-              // href: 'https://login.partner.microsoftonline.cn/login',
               path: '',
+              redirect: to => {
+                window.open("https://login.partner.microsoftonline.cn/login");
+              },
               name: 'ONENOTE',
             },
           ]
