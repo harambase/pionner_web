@@ -19,19 +19,46 @@
                 <i className="fa fa-align-justify"></i><strong>导师选择工作区</strong>
                 <small>最多选择三位导师</small>
               </div>
-              <hr/>
-              <h3>你的导师选择：</h3>
+              <h4>你的导师选择：</h4>
               <b-list-group>
                 <b-list-group-item href="#" style="cursor: default" class="flex-column align-items-start"
                                    v-for="(item,index) in advisorList" :key="item.userId">
                   <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">第{{index + 1}} 选择 {{item.name}}</h5>
+                    <h5 class="mb-1">第 {{index + 1}} 选择 {{item.name}}</h5>
                     <small class="text-muted">导师ID：{{item.userId}}</small>
                   </div>
-                  <p class="mb-1">
+                  <b-row>
+                    <b-col md="3">
+                      <img v-if="isNotEmpty(item.profile)"
+                           :src="basePath + '/pioneer' + JSON.parse(item.profile).path"
+                           style="width: 45px;height: 45px"
+                           class="img-avatar">
+                      <img v-else
+                           :src="basePath + '/pioneer/image/profile/logo.png'"
+                           style="width: 45px;height: 45px"
+                           class="img-avatar">
+                    </b-col>
+                    <b-col md="9">
+                      <b-row>
+                        <b-col>
+                          <b-btn class="btn btn-success" size="sm" style="width:50px;" @click="moveUp(index)"
+                                 v-if="index!=0"><i
+                            class="fa fa-arrow-up" title="上移"></i>
+                          </b-btn>
+                          <b-btn class="btn btn-success" size="sm" style="width:50px;" @click="moveDown(index)"
+                                 v-if="index!=2 && advisorList.length > 1"><i
+                            class="fa fa-arrow-down" title="下移"></i>
+                          </b-btn>
+                        </b-col>
+                        <b-col>
+                          <b-btn class="btn btn-danger" size="sm" style="width:50px;" @click="remove(index)"><i
+                            class="fa fa-close" title="下移"></i>
+                          </b-btn>
+                        </b-col>
+                      </b-row>
+                    </b-col>
+                  </b-row>
 
-                  </p>
-                  <button class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>
                 </b-list-group-item>
               </b-list-group>
               <hr/>
@@ -43,7 +70,7 @@
                 </b-col>
                 <b-col cols="6" md="6">
                   <b-button style="width:150px;" class="btn btn-danger"
-                            id="reset" @click="">
+                            id="reset" @click="reset">
                     重置当前
                   </b-button>
                 </b-col>
@@ -97,6 +124,7 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import axios from 'axios'
   import CAdvisorTable from '../../components/tables/AdvisorTable'
 
@@ -109,13 +137,13 @@
         pin: '',
         pinValidate: false,
         showValidate: true,
-        worksheet: '',
         msg: '',
         currentPage: 1,
         showModal: false,
         headerBgVariant: '',
         faculty: '',
-        advisorList: []
+        advisorList: [],
+        basePath: basePath
       }
     },
     mounted: function () {
@@ -125,26 +153,42 @@
       this.showValidate = false
       this.pinValidate = true
     },
-    watch:{
-      faculty: function(val){
+    watch: {
+      faculty: function (val) {
         for (let i = 0; i < this.advisorList.length; i++) {
-          if (val.userId === this.advisorList[i].userId){
+          if (val.userId === this.advisorList[i].userId) {
             this.showModal = true
-            this.msg = "不可重复选择！"
+            this.msg = '不可重复选择！'
             this.headerBgVariant = 'danger'
             return
           }
         }
-        if(this.advisorList.length === 3){
+        if (this.advisorList.length === 3) {
           this.showModal = true
-          this.msg = "已达到选择上限！"
+          this.msg = '已达到选择上限！'
           this.headerBgVariant = 'danger'
           return
         }
         this.advisorList.push(val)
+      },
+      advisorList: function () {
+        this.$forceUpdate()
       }
     },
     methods: {
+      moveUp (index) {
+        let temp = this.advisorList[index - 1]
+        Vue.set(this.advisorList, index - 1, this.advisorList[index])
+        Vue.set(this.advisorList, index, temp)
+      },
+      moveDown (index) {
+        let temp = this.advisorList[index + 1]
+        Vue.set(this.advisorList, index + 1, this.advisorList[index])
+        Vue.set(this.advisorList, index, temp)
+      },
+      remove (index) {
+        this.advisorList.splice(index, 1)
+      },
       passFaculty (val) {
         this.faculty = val
       },
@@ -168,6 +212,9 @@
       },
       isNotEmpty (value) {
         return value !== '' && value !== undefined && value !== null
+      },
+      reset(){
+        this.advisorList = []
       }
     }
 
