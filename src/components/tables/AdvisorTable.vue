@@ -64,12 +64,19 @@
         </b-row>
       </template>
       <template slot="actions" slot-scope="row">
-        <b-button size="sm" class="btn btn-danger" @click.stop="showDeleteOne(row.item)">
-          取消导师资格
-        </b-button>
-        <b-button size="sm" class="btn btn-primary" @click.stop="row.toggleDetails">
-          查看辅导学生
-        </b-button>
+        <div v-if="mode !== 'choose'">
+          <b-button size="sm" class="btn btn-danger" @click.stop="showDeleteOne(row.item)">
+            取消导师资格
+          </b-button>
+          <b-button size="sm" class="btn btn-primary" @click.stop="row.toggleDetails">
+            查看辅导学生
+          </b-button>
+        </div>
+        <div v-else>
+          <b-button size="sm" class="btn btn-danger" @click.stop="choose(row.item)">
+            选择该导师
+          </b-button>
+        </div>
       </template>
       <template slot="row-details" slot-scope="row">
         <b-card>
@@ -126,15 +133,16 @@
   const items = []
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
-    {key: 'userId', label: '导师用户信息', sortable: true},
+    {key: 'userId', label: '导师信息', sortable: true},
     {key: 'name', label: '姓名', sortable: true},
-    {key: 'numStudent', label: '辅导学生数', sortable: true, class: 'text-center'},
+    {key: 'numStudent', label: '当前辅导学生数', sortable: true, class: 'text-center'},
     {key: 'actions', label: '操作'}
   ]
 
   export default {
     name: 'c-advisorTable',
     components: {CAdviseTable},
+    props: ['mode'],
     data () {
       return {
         field: field,
@@ -164,6 +172,9 @@
       }
     },
     methods: {
+      choose (val) {
+        this.$emit('pass', val)
+      },
       initTable () {
         this.$refs.advisorTable.refresh()
       },

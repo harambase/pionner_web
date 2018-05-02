@@ -261,7 +261,7 @@
         window.open(basePath + '/transcript/report/' + this.reportStudent.value + '?token=' + window.localStorage.getItem('access_token'))
       },
       downloadAllReport () {
-        window.open(basePath + '/transcript/all/report?info=' + this.reportInfo.value + '&token=' + window.localStorage.getItem('access_token'))
+        window.open(basePath + '/transcript/report/all?info=' + this.reportInfo.value + '&token=' + window.localStorage.getItem('access_token'))
       }
     }
   }

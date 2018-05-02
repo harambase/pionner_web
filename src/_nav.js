@@ -83,6 +83,14 @@ export default {
       },
     },
     {
+      name: '新学期导师选择',
+      url: '/course/advisor/choose',
+      icon: 'icon-book-open',
+      meta : {
+        role: ['5']
+      },
+    },
+    {
       name: '成绩录入',
       url: '/course/grade',
       icon: 'icon-book-open',

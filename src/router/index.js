@@ -16,6 +16,8 @@ import ViewCourse from '@/views/course/Course'
 import Choose from '@/views/course/Choose'
 import Grade from '@/views/course/Grade'
 import Transcript from '@/views/course/Transcript'
+import Advisor_Choose from '@/views/course/Advisor'
+
 import TempCourse from '@/views/teach/TempCourse'
 import Course from '@/views/teach/Course'
 import Credit from '@/views/teach/Credit'
@@ -176,8 +178,17 @@ const router = new Router({
               },
             },
             {
+              path: 'advisor/choose',
+              name: '新学期导师选择',
+              component: Advisor_Choose,
+              meta : {
+                requireAuth: true,
+                role: ['5']
+              },
+            },
+            {
               path: 'grade',
-              name: '新学期选课',
+              name: '成绩录入',
               component: Grade,
               meta : {
                 requireAuth: true,
@@ -279,7 +290,7 @@ const router = new Router({
                 },
                 {
                   path: 'request',
-                  name: '导师管理',
+                  name: '辅导关系申请管理',
                   component: Advisor,
                   meta : {
                     requireAuth: true,
