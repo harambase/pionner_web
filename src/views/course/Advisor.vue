@@ -187,6 +187,7 @@
       }
       this.showValidate = false
       this.pinValidate = true
+
     },
     watch: {
       faculty: function (val) {
@@ -234,8 +235,7 @@
           axios.get('/pin/' + this.pin).then((response) => {
             if (response.data.code === 2001) {
               this.pinObject = response.data.data
-              this.pinValidate = true
-              this.showValidate = false
+              this.init()
             }
             else {
               this.msg = '识别码验证失败！  '
@@ -245,6 +245,19 @@
           })
         })
       },
+      init () {
+        axios.get('/request/advise/' + this.pinObject.studentId).then((response) => {
+          let facultyIds = response.data.data.facultyIds.split('/')
+          for (let i = 0; i < facultyIds.length; i++) {
+            if (this.isNotEmpty(facultyIds[i]))
+              axios.get('/advise/advisor/' + facultyIds[i]).then((result) => {
+                this.advisorList.push(result.data.data)
+              })
+          }
+        })
+        this.pinValidate = true
+        this.showValidate = false
+      },
       isNotEmpty (value) {
         return value !== '' && value !== undefined && value !== null
       },
@@ -252,9 +265,9 @@
         this.advisorList = []
       },
       showSubmit () {
-        if(this.advisorList.length > 0)
+        if (this.advisorList.length > 0)
           this.showSubmitModal = true
-        else{
+        else {
           this.msg = '未选择导师!'
           this.headerBgVariant = 'danger'
           this.showModal = true
