@@ -25,6 +25,7 @@ import Pin from '@/views/teach/Pin'
 import TranscriptManage from '@/views/teach/TranscriptManage'
 import Advise from '@/views/teach/Advise'
 import Advisor from '@/views/teach/Advisor'
+import RequestAdvise from '@/views/teach/RequestAdvise'
 
 import Role from '@/views/system/Role'
 import Monitor from '@/views/system/Monitor'
@@ -291,7 +292,7 @@ const router = new Router({
                 {
                   path: 'request',
                   name: '辅导关系申请管理',
-                  component: Advisor,
+                  component: RequestAdvise,
                   meta : {
                     requireAuth: true,
                     role: ['2']

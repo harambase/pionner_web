@@ -199,7 +199,7 @@ export default {
     {
       name: '用户管理',
       url: '/system/user?mode=table',
-      icon: 'icon-book-open',
+      icon: 'icon-list',
       meta: {
         role: ['5']
       },
@@ -207,7 +207,7 @@ export default {
     {
       name: '新用户申请管理',
       url: '/system/registration',
-      icon: 'icon-book-open',
+      icon: 'icon-people',
       meta: {
         role: ['5']
       },
