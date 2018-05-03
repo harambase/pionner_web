@@ -64,7 +64,7 @@
               <hr/>
               <b-row>
                 <b-col cols="6" md="6">
-                  <b-button style="width:150px;" class="btn btn-success" @click="">
+                  <b-button style="width:150px;" class="btn btn-success" @click="showSubmit">
                     提交
                   </b-button>
                 </b-col>
@@ -109,6 +109,40 @@
       <b-btn class="mt-3" variant="outline-success" block @click="validate">验证识别码</b-btn>
     </b-modal>
 
+    <b-modal v-model="showSubmitModal"
+             size="lg"
+             header-bg-variant='info'
+             @ok="submit"
+             ok-title="提交"
+             cancel-title="关闭"
+             centered
+             title="操作信息">
+      <div class="d-block text-center">
+        <h4>确认下述提交信息准确？</h4>
+        <b-list-group>
+          <b-list-group-item href="#" style="cursor: default" class="flex-column align-items-start"
+                             v-for="(item,index) in advisorList" :key="item.userId">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">第 {{index + 1}} 选择 {{item.name}}</h5>
+              <small class="text-muted">导师ID：{{item.userId}}</small>
+            </div>
+            <b-row>
+              <b-col md="3">
+                <img v-if="isNotEmpty(item.profile)"
+                     :src="basePath + '/pioneer' + JSON.parse(item.profile).path"
+                     style="width: 45px;height: 45px"
+                     class="img-avatar">
+                <img v-else
+                     :src="basePath + '/pioneer/image/profile/logo.png'"
+                     style="width: 45px;height: 45px"
+                     class="img-avatar">
+              </b-col>
+            </b-row>
+          </b-list-group-item>
+        </b-list-group>
+      </div>
+    </b-modal>
+
     <b-modal v-model="showModal"
              size="sm"
              :header-bg-variant="headerBgVariant"
@@ -140,6 +174,7 @@
         msg: '',
         currentPage: 1,
         showModal: false,
+        showSubmitModal: false,
         headerBgVariant: '',
         faculty: '',
         advisorList: [],
@@ -213,8 +248,31 @@
       isNotEmpty (value) {
         return value !== '' && value !== undefined && value !== null
       },
-      reset(){
+      reset () {
         this.advisorList = []
+      },
+      showSubmit () {
+        if(this.advisorList.length > 0)
+          this.showSubmitModal = true
+        else{
+          this.msg = '未选择导师!'
+          this.headerBgVariant = 'danger'
+          this.showModal = true
+        }
+      },
+      submit () {
+
+        axios.post('/request/advise/' + this.pinObject.studentId, this.advisorList).then((response) => {
+          if (response.data.code === 2001) {
+            this.msg = '提交成功！'
+            this.headerBgVariant = 'success'
+            this.showModal = true
+          } else {
+            this.msg = '提交失败！'
+            this.headerBgVariant = 'danger'
+            this.showModal = true
+          }
+        })
       }
     }
 
