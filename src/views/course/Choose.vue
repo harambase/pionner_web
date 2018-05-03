@@ -36,7 +36,7 @@
               <h3>你的已选课程：</h3>
               <b-list-group>
                 <b-list-group-item href="#" style="cursor: default" class="flex-column align-items-start"
-                                   v-for="(item, index) in crnList">
+                                   v-for="(item, index) in crnList" :key="item.crn">
                   <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{item.name}}</h5>
                     <small class="text-muted">授课老师：{{item.faculty}}</small>
@@ -208,7 +208,8 @@
                                   class="my-0"/>
                   </b-col>
                   <b-col md="6" class="my-1">
-                    <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) * perPage + perPage) <=
+                    <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至
+                      {{((currentPage-1) * perPage + perPage) <=
                       totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
                   </b-col>
                 </b-row>
@@ -260,8 +261,6 @@
 
 <script>
   import axios from 'axios'
-  import decode from 'jwt-decode'
-  import auth0 from 'auth0-js'
   import { FacultySelect } from '../../components/'
 
   const items = []
@@ -295,7 +294,6 @@
         counter: 0,
         crnList: [],
         failList: [],
-        worksheet: '',
         msg: '',
         field: field,
         currentPage: 1,
@@ -321,31 +319,18 @@
       },
     },
     watch: {
-      faculty: function () {
+      faculty () {
         this.initTable()
       }
     },
 
-    mounted: function () {
+    mounted () {
       if (this.pinObject === null || this.pinObject === '') {
         return
       }
       this.showValidate = false
       this.pinValidate = true
       this.initStudentInfo()
-      if (window.localStorage.getItem('chooseVue') !== undefined
-        && window.localStorage.getItem('chooseVue') !== null
-        && window.localStorage.getItem('chooseVue') !== '') {
-        let data = JSON.parse(window.localStorage.getItem('chooseVue'))
-        this.pin = data.pin
-        this.tol_credits = data.tol_credits
-        this.use_credits = data.use_credits
-        this.ava_credits = data.ava_credits
-        this.counter = data.counter
-        this.crnList = data.crnList
-        this.worksheet = data.worksheet
-        window.localStorage.removeItem('chooseVue')
-      }
     },
     methods: {
       passFaculty (val) {
@@ -355,7 +340,7 @@
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      courseTable: function (ctx) {
+      courseTable (ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
         if (this.isNotEmpty(this.faculty))
@@ -398,15 +383,13 @@
         })
       },
       initStudentInfo () {
-        const decoded_token = decode(window.localStorage.getItem('access_token'))
-        const studentId = decoded_token.sub
-        const pin_info = this.pinObject.info
-        this.initTable();
-        axios.get('/student/' + studentId + '/available/credit?info=' + pin_info).then((response) => {
+        axios.get('/student/' + this.pinObject.studentId + '/available/credit?info=' + this.pinObject.info).then((response) => {
           if (response.data.code === 2001) {
             this.tol_credits = response.data.data.tol_credits
             this.use_credits = response.data.data.use_credits
             this.ava_credits = response.data.data.ava_credits
+            this.initTable()
+            this.initWorkSheet()
           } else {
             this.msg = response.data.msg
             this.headerBgVariant = 'danger'
@@ -414,11 +397,17 @@
           }
         })
       },
-
+      initWorkSheet () {
+        axios.get('/transcript/list?start=0&length=100&studentId=' + this.pinObject.studentId + '&info=' + this.pinObject.info).then((response) => {
+          for (let i = 0; i < response.data.data.length; i++) {
+            let transcript = response.data.data[i]
+            this.addToWorkSheet(transcript.crn, transcript.credits, transcript.cname, transcript.fname)
+          }
+        })
+      },
       isAvaCreditsEnough (credits) {
         return (this.tol_credits - this.use_credits - credits) >= 0
       },
-
       isSelectAgain (crn) {
         for (let i = 0; i < this.crnList.length; i++) {
           if (crn === this.crnList[i].crn)
@@ -446,7 +435,6 @@
           name: name,
           faculty: faculty
         })
-
         this.use_credits += parseInt(credits)
         this.ava_credits = this.tol_credits - this.use_credits
       },
@@ -456,15 +444,11 @@
         this.ava_credits = this.tol_credits - this.use_credits
         this.$delete(this.crnList, index)
       },
-      toCourse (crn) {
-        window.localStorage.setItem('chooseVue', JSON.stringify(this))
-        window.location.href = '/course/choose/detail?pageMode=view&crn=' + crn
-      },
-      reset: function () {
+      reset () {
         this.crnList = []
         this.initStudentInfo()
       },
-      turnIn: function () {
+      turnIn () {
         let choiceList = []
         if (this.crnList.length === 0) {
           this.msg = '没有选择任何课程!'

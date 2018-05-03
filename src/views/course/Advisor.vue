@@ -223,7 +223,7 @@
         Vue.set(this.advisorList, index, temp)
       },
       remove (index) {
-        this.advisorList.splice(index, 1)
+        this.$delete(this.advisorList, index)
       },
       passFaculty (val) {
         this.faculty = val
