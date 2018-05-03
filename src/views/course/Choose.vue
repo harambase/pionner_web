@@ -323,7 +323,6 @@
         this.initTable()
       }
     },
-
     mounted () {
       if (this.pinObject === null || this.pinObject === '') {
         return
@@ -449,32 +448,24 @@
         this.initStudentInfo()
       },
       turnIn () {
-        let choiceList = []
         if (this.crnList.length === 0) {
           this.msg = '没有选择任何课程!'
           this.showModal = true
           this.headerBgVariant = 'danger'
           return
         }
-        for (let i = 0; i < this.crnList.length; i++) {
-          choiceList.push(this.crnList[i].crn)
-        }
-        axios.post('/course/choose', {
-          choiceList: choiceList
-        }).then((response) => {
+        axios.post('/course/choose', this.crnList).then((response) => {
           this.failList = response.data.data.failList
           this.crnList = []
-          this.showModal = true
           this.initStudentInfo()
           if (this.failList.length === 0) {
             this.msg = '全部注册成功!'
             this.headerBgVariant = 'success'
-            this.initStudentInfo()
           } else {
-            this.headerBgVariant = 'danger'
             this.msg = '有课程失败！'
-            this.initStudentInfo()
+            this.headerBgVariant = 'danger'
           }
+          this.showModal = true
         })
       },
       isNotEmpty (value) {
