@@ -1,10 +1,10 @@
 {
-  "name": "@coreui/vue",
+  "name": "@pioneer/vue",
   "version": "1.0.8",
-  "description": "Open Source Bootstrap Admin Template",
-  "author": "Łukasz Holeczek",
-  "homepage": "http://coreui.io",
-  "copyright": "Copyright 2017 creativeLabs Łukasz Holeczek",
+  "description": "Pioneer Education Administration",
+  "author": "Shilei Lin",
+  "homepage": "http://s1lin.github.io",
+  "copyright": "Copyright 2018 Shilei Lin",
   "license": "MIT",
   "private": true,
   "scripts": {
