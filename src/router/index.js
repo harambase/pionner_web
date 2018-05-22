@@ -7,8 +7,6 @@ import Full from '@/containers/Full'
 // Views
 import Dashboard from '@/views/Dashboard'
 import Message from '@/views/Message'
-import Typography from '@/views/theme/Typography'
-import Widgets from '@/views/Widgets'
 
 import ViewCourse from '@/views/course/Course'
 import Choose from '@/views/course/Choose'
@@ -32,23 +30,6 @@ import UserForm from '@/views/system/UserForm'
 import Reg from '@/views/system/Reg'
 
 import AdviseView from '@/views/advise/AdviseView'
-
-// Views - Components
-import Cards from '@/views/base/Cards'
-import Forms from '@/views/base/Forms'
-import Switches from '@/views/base/Switches'
-import Tables from '@/views/base/Tables'
-import Breadcrumbs from '@/views/base/Breadcrumbs'
-import Carousels from '@/views/base/Carousels'
-import Collapses from '@/views/base/Collapses'
-import Jumbotrons from '@/views/base/Jumbotrons'
-import ListGroups from '@/views/base/ListGroups'
-import Navs from '@/views/base/Navs'
-import Navbars from '@/views/base/Navbars'
-import Paginations from '@/views/base/Paginations'
-import Popovers from '@/views/base/Popovers'
-import ProgressBars from '@/views/base/ProgressBars'
-import Tooltips from '@/views/base/Tooltips'
 
 // Views - Pages
 import Page404 from '@/views/pages/Page404'
