@@ -8,7 +8,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <b-navbar-nav class="d-md-down-none">
-      <strong>先锋教育教务系统</strong>  <small>PIONEER Educational Administration System</small>
+      <strong>先锋教育教务系统</strong><small>&nbsp; PIONEER Educational Administration System</small>
     </b-navbar-nav>
     <b-navbar-nav class="ml-auto">
       <b-nav-item class="d-md-down-none">

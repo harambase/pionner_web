@@ -181,7 +181,7 @@
 
           axios.post('/request/user/register', regUser).then((response) => {
             if (response.data.code === 2001) {
-              this.msg = '申请成功！请等待管理员审核通过。'
+              this.msg = '申请成功！请等待后台通过。'
               this.headerBgVariant = 'success'
               this.showModal = true
 
