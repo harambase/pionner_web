@@ -1,6 +1,3 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import App from './App'
@@ -9,12 +6,12 @@ import VeeValidate from 'vee-validate'
 import vSelect from 'vue-select'
 import axios from 'axios'
 
-Vue.use(BootstrapVue)
-Vue.use(VeeValidate, {fieldsBagName: 'formFields'})
-Vue.component('v-select', vSelect)
+Vue.use(BootstrapVue);
+Vue.use(VeeValidate, {fieldsBagName: 'formFields'});
+Vue.component('v-select', vSelect);
 
-token = window.localStorage.getItem('access_token')
-axios.defaults.baseURL = basePath
+token = window.localStorage.getItem('access_token');
+axios.defaults.baseURL = basePath;
 
 axios.interceptors.request.use(
   config => {
@@ -26,7 +23,7 @@ axios.interceptors.request.use(
   },
   err => {
     return Promise.reject(err)
-  })
+  });
 
 axios.interceptors.response.use(
   response => {
@@ -41,24 +38,24 @@ axios.interceptors.response.use(
           router.replace({
             path: '/',
             query: {redirect: router.currentRoute.fullPath}
-          })
-          break
+          });
+          break;
         case 404:
           router.replace({
             path: '/404',
             query: {redirect: router.currentRoute.fullPath}
-          })
-          break
+          });
+          break;
         case 500:
           router.replace({
             path: '/500',
             query: {redirect: router.currentRoute.fullPath}
-          })
+          });
           break
       }
     }
     return Promise.reject(error.response.data)   // 返回接口返回的错误信息
-  })
+  });
 
 VeeValidate.Validator.extend('verify_password', {
   getMessage: field => `密码必须包含： 至少一个大写字母，一个小写字母，一个数字，和一个特殊字符 (E.g. , . _ & ? etc)`,
@@ -66,7 +63,7 @@ VeeValidate.Validator.extend('verify_password', {
     let strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})')
     return strongRegex.test(value)
   }
-})
+});
 
 /* eslint-disable no-new */
 new Vue({
@@ -76,4 +73,4 @@ new Vue({
   components: {
     App
   }
-})
+});

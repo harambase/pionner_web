@@ -98,9 +98,8 @@
 
 <script>
   import axios from 'axios'
-  import fileDownload from 'js-file-download'
 
-  const items = []
+  const items = [];
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
     {key: 'studentId', label: '学生ID', sortable: true},

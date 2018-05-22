@@ -397,11 +397,11 @@ router.beforeEach((to,from,next) => {
   if(to.meta.requireAuth){
     //登录成功
     if (isNotEmpty(window.localStorage.getItem("access_token"))){
-      const token = decode(window.localStorage.getItem('access_token'))
+      const token = decode(window.localStorage.getItem('access_token'));
       for(let i = 0; i < to.meta.role.length; i++)
         for(let j = 0; j < token.rol.length; j++){
           if(token.rol[j] == '1' || to.meta.role[i] == token.rol[j]) {
-            next()
+            next();
             return
           }
         }

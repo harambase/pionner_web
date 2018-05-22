@@ -261,7 +261,7 @@
 
 <script>
   import axios from 'axios'
-  import { FacultySelect } from '../../components/'
+  import {FacultySelect} from '../../components/'
 
   const items = []
   const field = [
@@ -282,7 +282,7 @@
   export default {
     name: 'Choose',
     components: {FacultySelect},
-    data () {
+    data() {
       return {
         pinObject: '',
         pin: '',
@@ -311,19 +311,21 @@
       }
     },
     computed: {
-      sortOptions () {
+      sortOptions() {
         // Create an options list from our field
         return this.field
           .filter(f => f.sortable)
-          .map(f => { return {text: f.label, value: f.key} })
+          .map(f => {
+            return {text: f.label, value: f.key}
+          })
       },
     },
     watch: {
-      faculty () {
+      faculty() {
         this.initTable()
       }
     },
-    mounted () {
+    mounted() {
       if (this.pinObject === null || this.pinObject === '') {
         return
       }
@@ -332,14 +334,14 @@
       this.initStudentInfo()
     },
     methods: {
-      passFaculty (val) {
+      passFaculty(val) {
         this.faculty = val
       },
-      onFiltered (filteredItems) {
+      onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      courseTable (ctx) {
+      courseTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
         if (this.isNotEmpty(this.faculty))
@@ -359,10 +361,10 @@
           return (items || [])
         })
       },
-      initTable () {
+      initTable() {
         this.$refs.courseTable.refresh()
       },
-      validate () {
+      validate() {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
@@ -381,7 +383,7 @@
           })
         })
       },
-      initStudentInfo () {
+      initStudentInfo() {
         axios.get('/student/' + this.pinObject.studentId + '/available/credit?info=' + this.pinObject.info).then((response) => {
           if (response.data.code === 2001) {
             this.tol_credits = response.data.data.tol_credits
@@ -396,7 +398,7 @@
           }
         })
       },
-      initWorkSheet () {
+      initWorkSheet() {
         axios.get('/transcript/list?start=0&length=100&studentId=' + this.pinObject.studentId + '&info=' + this.pinObject.info).then((response) => {
           for (let i = 0; i < response.data.data.length; i++) {
             let transcript = response.data.data[i]
@@ -404,17 +406,17 @@
           }
         })
       },
-      isAvaCreditsEnough (credits) {
+      isAvaCreditsEnough(credits) {
         return (this.tol_credits - this.use_credits - credits) >= 0
       },
-      isSelectAgain (crn) {
+      isSelectAgain(crn) {
         for (let i = 0; i < this.crnList.length; i++) {
           if (crn === this.crnList[i].crn)
             return true
         }
         return false
       },
-      addToWorkSheet (crn, credits, name, faculty) {
+      addToWorkSheet(crn, credits, name, faculty) {
         if (!this.isAvaCreditsEnough(credits)) {
           this.msg = '学分不足!'
           this.headerBgVariant = 'danger'
@@ -437,17 +439,17 @@
         this.use_credits += parseInt(credits)
         this.ava_credits = this.tol_credits - this.use_credits
       },
-      removeFromWorkSheet (index) {
+      removeFromWorkSheet(index) {
         const credits = this.crnList[index].credits
         this.use_credits -= parseInt(credits)
         this.ava_credits = this.tol_credits - this.use_credits
         this.$delete(this.crnList, index)
       },
-      reset () {
+      reset() {
         this.crnList = []
         this.initStudentInfo()
       },
-      turnIn () {
+      turnIn() {
         if (this.crnList.length === 0) {
           this.msg = '没有选择任何课程!'
           this.showModal = true
@@ -468,7 +470,7 @@
           this.showModal = true
         })
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       }
     }

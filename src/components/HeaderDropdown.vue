@@ -17,7 +17,6 @@
 <script>
   import axios from 'axios'
   import decode from 'jwt-decode'
-  import auth0 from 'auth0-js'
 
   export default {
     name: 'header-dropdown',

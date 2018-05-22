@@ -12,7 +12,7 @@
             <div class="lessons-item js-lessons-item g-clearfix">
               <a :href="'/course/detail?pageMode=student&crn=' + course.crn">
                 <div class="lessons-pic">
-                  <img width="200" height="200" src="/static/img/logo-symbol.png">
+                  <img width="200" height="200" src="/static/img/logo.png">
                 </div>
                 <div class="lessons-info">
                   <h3 class="info-tile">{{course.name}}
@@ -52,7 +52,7 @@
                  v-if="course.status !== -1">
               <a :href="'/course/detail?pageMode=faculty&crn=' + course.crn">
                 <div class="lessons-pic">
-                  <img width="200" height="200" src="/static/img/logo-symbol.png">
+                  <img width="200" height="200" src="/static/img/logo.png">
                 </div>
                 <div class="lessons-info">
                   <h3 class="info-tile">{{course.name}}
@@ -64,10 +64,10 @@
                     <span class="">课程星期：{{course.day}}</span>
                   </div>
                   <div class="lessons-complete">
-                           <span class="space">学生人数：
-                               <span
-                                 class="js-lesson-complete">{{course.capacity - course.remain}}</span>
-                           </span>
+                    <span class="space">学生人数：
+                      <span
+                        class="js-lesson-complete">{{course.capacity - course.remain}}</span>
+                    </span>
                     <span class="space">剩余：<span class="js-lesson-rate">{{course.remain}}</span></span>
                     <span>教室：<span class="js-lesson-record">{{course.classroom}}</span></span>
                   </div>
