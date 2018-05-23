@@ -6,6 +6,7 @@
           <b-card-group>
             <b-card no-body class='p-4' id='user'>
               <b-card-body>
+
                 <h1>登录 Login</h1>
                 <p class='text-muted'>Log in via Pioneer Network Account:</p>
                 <div v-if="loginError">

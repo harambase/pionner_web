@@ -244,7 +244,7 @@
         <h3>{{msg}}</h3>
         <b-list-group>
           <b-list-group-item href="#" style="cursor: default" class="flex-column align-items-start"
-                             v-for="(item, index) in failList">
+                             v-for="(item, index) in failList" :key="item.crn">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">课程注册失败详情</h5>
               <small>{{index + 1}}</small>

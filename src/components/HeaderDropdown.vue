@@ -3,7 +3,7 @@
     <template slot="button-content">
       <img :src="profilePath" class="img-avatar">
     </template>
-    <b-dropdown-header tag="div" class="text-center"><strong>{{lastName}},{{firstName}}欢迎回来！</strong>
+    <b-dropdown-header tag="div" class="text-center"><strong>{{user.lastName}},{{user.firstName}}欢迎回来！</strong>
     </b-dropdown-header>
     <b-dropdown-item><i class="fa fa-bell-o"></i> 更新
       <b-badge variant="info">{{itemsCount}}</b-badge>
@@ -49,18 +49,18 @@
       }
     },
     mounted: function () {
-      const decoded_token = decode(window.localStorage.getItem('access_token'))
+      const decoded_token = decode(window.localStorage.getItem('access_token'));
       axios.get('/user/' + decoded_token.sub).then((response) => {
-        this.user = response.data.data
+        this.user = response.data.data;
         if (isNotEmpty(this.user.profile)) {
-          this.user.profile = JSON.parse(this.user.profile)
+          this.user.profile = JSON.parse(this.user.profile);
           this.profilePath = basePath + '/pioneer' + this.user.profile.path
         }
       })
     },
     methods: {
       logout() {
-        window.localStorage.clear()
+        window.localStorage.clear();
         this.$router.push({path: "/"})
       }
     }
