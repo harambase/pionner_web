@@ -1,7 +1,7 @@
 <template>
   <div class="animated fadeIn">
     <b-row id="myCoursePage">
-      <b-col cols="12" v-if="courseList.length > 0">
+      <b-col cols="12" >
         <b-card
           header-tag="header"
           footer-tag="footer">
@@ -35,17 +35,12 @@
           </div>
         </b-card>
       </b-col>
-      <b-col cols="12" v-if="teachList.length > 0">
+      <b-col cols="12">
         <b-card
           header-tag="header"
           footer-tag="footer">
           <div slot="header">
             <i className="fa fa-align-justify"></i><strong>我教的课程</strong>
-            <!--<div class="card-actions">-->
-            <!--<a href="https://bootstrap-vue.js.org/docs/components/breadcrumb" target="_blank">-->
-            <!--<small className="text-muted">docs</small>-->
-            <!--</a>-->
-            <!--</div>-->
           </div>
           <div class="firstStep clearfix" v-for="course in teachList">
             <div class="lessons-item js-lessons-item g-clearfix"
@@ -98,7 +93,7 @@
       }
     },
     mounted: function () {
-      this.initTeachList()
+      this.initTeachList();
       this.initCourseList()
     },
     methods: {

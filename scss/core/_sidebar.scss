@@ -347,7 +347,7 @@
       z-index: $zindex-sticky - 1;
 
       .sidebar-nav {
-        overflow: visible;
+        //overflow: visible;
         @include sidebar-width($sidebar-borders, $sidebar-minimized-width);
       }
 

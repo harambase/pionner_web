@@ -1,188 +1,185 @@
 ﻿<template>
   <div class="animated fadeIn">
     <b-row>
-      <b-col md="12" v-if="pageMode === 'table'">
-        <b-col cols="12">
-          <b-card
-            header-tag="header"
-            footer-tag="footer">
-            <div slot="header">
-              <i className="fa fa-align-justify"></i><strong>系统用户列表</strong>
-              <b-button class="btn btn-success"
-                        @click="createUser">
-                <i class="fa fa-plus-square"></i> 新增用户
+      <b-card
+        header-tag="header"
+        footer-tag="footer">
+        <div slot="header">
+          <i className="fa fa-align-justify"></i><strong>系统用户列表</strong>
+          <b-button class="btn btn-success"
+                    @click="createUser">
+            <i class="fa fa-plus-square"></i> 新增用户
+          </b-button>
+        </div>
+        <b-container fluid>
+
+          <!-- User Interface controls -->
+          <b-row>
+            <b-col md="1" class="my-1">
+              <legend class="col-form-legend">每页显示：</legend>
+            </b-col>
+            <b-col md="3" class="my-1">
+              <b-form-group>
+                <b-form-select :options="pageOptions" v-model="perPage"/>
+              </b-form-group>
+            </b-col>
+            <b-col md="4" class="my-1"></b-col>
+            <b-col md="3" class="my-1">
+              <b-form-group>
+                <b-input-group>
+                  <b-input-group-button>
+                    <b-button disabled><i class="fa fa-search"></i></b-button>
+                  </b-input-group-button>
+                  <b-form-input v-model="filter"/>
+                  <b-input-group-button>
+                    <b-button variant="danger" :disabled="!filter" @click="filter = ''">重置</b-button>
+                  </b-input-group-button>
+                </b-input-group>
+              </b-form-group>
+            </b-col>
+          </b-row>
+
+          <!-- Main table element -->
+          <b-table show-empty
+                   stacked="md"
+                   ref="userTable"
+                   :striped=true
+                   :fixed=true
+                   :hover=true
+                   :items="userTable"
+                   :fields="field"
+                   :current-page="currentPage"
+                   :per-page="perPage"
+                   :filter="filter"
+                   :sort-by.sync="sortBy"
+                   :sort-desc.sync="sortDesc"
+                   :isBusy="false"
+                   @filtered="onFiltered"
+          >
+            <template slot="index" slot-scope="row">
+              {{(currentPage-1) * perPage + 1 + row.index}}
+            </template>
+            <template slot="userId" slot-scope="row">
+              <b-row>
+                <b-col md="3">
+                  <img v-if="isNotEmpty(row.item.profile)"
+                       :src="basePath + '/pioneer' + JSON.parse(row.item.profile).path"
+                       style="width: 45px;height: 45px"
+                       class="img-avatar">
+                  <img v-else
+                       :src="basePath + '/pioneer/image/profile/logo.png'"
+                       style="width: 45px;height: 45px"
+                       class="img-avatar">
+                </b-col>
+                <b-col md="9">
+                  {{row.value}}
+                </b-col>
+              </b-row>
+            </template>
+
+            <template slot="status" slot-scope="row">
+              <label class="switch switch-lg switch-text switch-success mb-0">
+                <input type="checkbox" class="switch-input" :checked="row.item.status==='1'"
+                       @change="inverseStatus(row.item.userId, row.item.status)">
+                <span class="switch-label" data-on="启用" data-off="停用"></span>
+                <span class="switch-handle"></span>
+              </label>
+            </template>
+            <template slot="actions" slot-scope="row">
+              <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
+                {{ row.detailsShowing ? '隐藏' : '展示' }}详情
               </b-button>
-            </div>
-            <b-container fluid>
+            </template>
+            <template slot="row-details" slot-scope="row">
+              <b-card>
+                <b-list-group>
+                  <b-list-group-item href="#" title="编辑用户"
+                                     class="flex-column align-items-start"
+                                     :disabled="row.item.status === '0'">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">用户 <strong>{{row.item.lastName}}, {{row.item.firstName}}</strong> 的基本信息</h5>
+                      <small class="text-muted">用户ID：{{row.item.userId}}</small>
+                    </div>
+                    <hr/>
+                    <b-row>
+                      <b-col md="9" class="my-1">
+                        <div class="mr-1">
+                          <dl class="row">
+                            <dt class="col-sm-1">QQ:</dt>
+                            <dd class="col-sm-2">{{row.item.qq}}</dd>
 
-              <!-- User Interface controls -->
-              <b-row>
-                <b-col md="1" class="my-1">
-                  <legend class="col-form-legend">每页显示：</legend>
-                </b-col>
-                <b-col md="3" class="my-1">
-                  <b-form-group>
-                    <b-form-select :options="pageOptions" v-model="perPage"/>
-                  </b-form-group>
-                </b-col>
-                <b-col md="4" class="my-1"></b-col>
-                <b-col md="3" class="my-1">
-                  <b-form-group>
-                    <b-input-group>
-                      <b-input-group-button>
-                        <b-button disabled><i class="fa fa-search"></i></b-button>
-                      </b-input-group-button>
-                      <b-form-input v-model="filter"/>
-                      <b-input-group-button>
-                        <b-button variant="danger" :disabled="!filter" @click="filter = ''">重置</b-button>
-                      </b-input-group-button>
-                    </b-input-group>
-                  </b-form-group>
-                </b-col>
-              </b-row>
+                            <dt class="col-sm-1">电话:</dt>
+                            <dd class="col-sm-2">{{row.item.tel}}</dd>
 
-              <!-- Main table element -->
-              <b-table show-empty
-                       stacked="md"
-                       ref="userTable"
-                       :striped=true
-                       :fixed=true
-                       :hover=true
-                       :items="userTable"
-                       :fields="field"
-                       :current-page="currentPage"
-                       :per-page="perPage"
-                       :filter="filter"
-                       :sort-by.sync="sortBy"
-                       :sort-desc.sync="sortDesc"
-                       :isBusy="false"
-                       @filtered="onFiltered"
-              >
-                <template slot="index" slot-scope="row">
-                  {{(currentPage-1) * perPage + 1 + row.index}}
-                </template>
-                <template slot="userId" slot-scope="row">
-                  <b-row>
-                    <b-col md="3">
-                      <img v-if="isNotEmpty(row.item.profile)"
-                           :src="basePath + '/pioneer' + JSON.parse(row.item.profile).path"
-                           style="width: 45px;height: 45px"
-                           class="img-avatar">
-                      <img v-else
-                           :src="basePath + '/pioneer/image/profile/logo.png'"
-                           style="width: 45px;height: 45px"
-                           class="img-avatar">
-                    </b-col>
-                    <b-col md="9">
-                      {{row.value}}
-                    </b-col>
-                  </b-row>
-                </template>
+                            <dt class="col-sm-1">微信号:</dt>
+                            <dd class="col-sm-2">{{row.item.weChat}}</dd>
 
-                <template slot="status" slot-scope="row">
-                  <label class="switch switch-lg switch-text switch-success mb-0">
-                    <input type="checkbox" class="switch-input" :checked="row.item.status==='1'"
-                           @change="inverseStatus(row.item.userId, row.item.status)">
-                    <span class="switch-label" data-on="启用" data-off="停用"></span>
-                    <span class="switch-handle"></span>
-                  </label>
-                </template>
-                <template slot="actions" slot-scope="row">
-                  <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
-                    {{ row.detailsShowing ? '隐藏' : '展示' }}详情
-                  </b-button>
-                </template>
-                <template slot="row-details" slot-scope="row">
-                  <b-card>
-                    <b-list-group>
-                      <b-list-group-item href="#" title="编辑用户"
-                                         class="flex-column align-items-start"
-                                         :disabled="row.item.status === '0'">
-                        <div class="d-flex w-100 justify-content-between">
-                          <h5 class="mb-1">用户 <strong>{{row.item.lastName}}, {{row.item.firstName}}</strong> 的基本信息</h5>
-                          <small class="text-muted">用户ID：{{row.item.userId}}</small>
+                            <dt class="col-sm-1">性别:</dt>
+                            <dd class="col-sm-2">{{row.item.gender}}</dd>
+                          </dl>
+                          <dl class="row">
+                            <dt class="col-sm-1">邮箱:</dt>
+                            <dd class="col-sm-3">{{row.item.email}}</dd>
+
+                            <dt class="col-sm-1">宿舍号:</dt>
+                            <dd class="col-sm-1">{{row.item.dorm}}</dd>
+
+                            <dt class="col-sm-1">住址:</dt>
+                            <dd class="col-sm-3">{{row.item.address}}</dd>
+
+                          </dl>
+                          <dl class="row">
+                            <dt class="col-sm-2">基本信息表:</dt>
+                            <dd class="col-sm-5"
+                                v-if="isNotEmpty(row.item.userInfo)">
+                              <a href="#" @click="documentDownload(row.item.userId)">{{JSON.parse(row.item.userInfo).name}}</a>
+                            </dd>
+                          </dl>
+                          <dl class="row">
+                            <dt class="col-sm-1">备注:</dt>
+                            <dd class="col-sm-5">{{row.item.comment}}</dd>
+                          </dl>
+                          <hr/>
+                          <dl class="row">
+                            <dt class="col-sm-1">操作:</dt>
+                            <dd class="col-sm-5">
+                              <b-button size="sm" variant="danger"
+                                        @click.stop="showDeleteTempUser(row.item.userId)">
+                                删除该用户
+                              </b-button>
+
+                              <b-button size="sm" variant="primary" @click="userDetail(row.item.userId)">
+                                修改该用户
+                              </b-button>
+                            </dd>
+                          </dl>
                         </div>
-                        <hr/>
-                        <b-row>
-                          <b-col md="9" class="my-1">
-                            <div class="mr-1">
-                              <dl class="row">
-                                <dt class="col-sm-1">QQ:</dt>
-                                <dd class="col-sm-2">{{row.item.qq}}</dd>
-
-                                <dt class="col-sm-1">电话:</dt>
-                                <dd class="col-sm-2">{{row.item.tel}}</dd>
-
-                                <dt class="col-sm-1">微信号:</dt>
-                                <dd class="col-sm-2">{{row.item.weChat}}</dd>
-
-                                <dt class="col-sm-1">性别:</dt>
-                                <dd class="col-sm-2">{{row.item.gender}}</dd>
-                              </dl>
-                              <dl class="row">
-                                <dt class="col-sm-1">邮箱:</dt>
-                                <dd class="col-sm-3">{{row.item.email}}</dd>
-
-                                <dt class="col-sm-1">宿舍号:</dt>
-                                <dd class="col-sm-1">{{row.item.dorm}}</dd>
-
-                                <dt class="col-sm-1">住址:</dt>
-                                <dd class="col-sm-3">{{row.item.address}}</dd>
-
-                              </dl>
-                              <dl class="row">
-                                <dt class="col-sm-2">基本信息表:</dt>
-                                <dd class="col-sm-5"
-                                    v-if="isNotEmpty(row.item.userInfo)">
-                                  <a href="#" @click="documentDownload(row.item.userId)">{{JSON.parse(row.item.userInfo).name}}</a>
-                                </dd>
-                              </dl>
-                              <dl class="row">
-                                <dt class="col-sm-1">备注:</dt>
-                                <dd class="col-sm-5">{{row.item.comment}}</dd>
-                              </dl>
-                              <hr/>
-                              <dl class="row">
-                                <dt class="col-sm-1">操作:</dt>
-                                <dd class="col-sm-5">
-                                  <b-button size="sm" variant="danger"
-                                            @click.stop="showDeleteTempUser(row.item.userId)">
-                                    删除该用户
-                                  </b-button>
-
-                                  <b-button size="sm" variant="primary" @click="userDetail(row.item.userId)">
-                                    修改该用户
-                                  </b-button>
-                                </dd>
-                              </dl>
-                            </div>
-                          </b-col>
-                          <b-col md="3" class="my-1">
-                            <img v-if="isNotEmpty(row.item.profile)"
-                                 :src="basePath + '/pioneer' + JSON.parse(row.item.profile).path"
-                                 style="width: 230px;height: 230px"
-                                 class="img-avatar">
-                          </b-col>
-                        </b-row>
-                      </b-list-group-item>
-                    </b-list-group>
-                  </b-card>
-                </template>
-              </b-table>
-              <b-row>
-                <b-col md="6" class="my-1">
-                  <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
-                                class="my-0"/>
-                </b-col>
-                <b-col md="6" class="my-1">
-                  <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) * perPage + perPage) <=
-                    totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
-                </b-col>
-              </b-row>
-            </b-container>
-          </b-card>
-        </b-col>
-      </b-col>
+                      </b-col>
+                      <b-col md="3" class="my-1">
+                        <img v-if="isNotEmpty(row.item.profile)"
+                             :src="basePath + '/pioneer' + JSON.parse(row.item.profile).path"
+                             style="width: 230px;height: 230px"
+                             class="img-avatar">
+                      </b-col>
+                    </b-row>
+                  </b-list-group-item>
+                </b-list-group>
+              </b-card>
+            </template>
+          </b-table>
+          <b-row>
+            <b-col md="6" class="my-1">
+              <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
+                            class="my-0"/>
+            </b-col>
+            <b-col md="6" class="my-1">
+              <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至
+                {{((currentPage-1) * perPage + perPage) <=
+                totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
+            </b-col>
+          </b-row>
+        </b-container>
+      </b-card>
     </b-row>
 
     <b-modal v-model="showDeleteModal"
@@ -224,7 +221,7 @@
 
   export default {
     name: 'User',
-    data () {
+    data() {
       return {
         profilePath: '',
         pageMode: this.$route.fullPath.split('&')[0].split('=')[1],
@@ -248,11 +245,13 @@
       }
     },
     computed: {
-      sortOptions () {
+      sortOptions() {
         // Create an options list from our field
         return this.field
           .filter(f => f.sortable)
-          .map(f => { return {text: f.label, value: f.key} })
+          .map(f => {
+            return {text: f.label, value: f.key}
+          })
       }
     },
     mounted: function () {
@@ -266,10 +265,10 @@
       })
     },
     methods: {
-      documentDownload (userId) {
+      documentDownload(userId) {
         window.open(basePath + '/user/info/' + userId + '?token=' + window.localStorage.getItem('access_token'))
       },
-      previewImg () {
+      previewImg() {
         let preview = document.getElementById('preview')
         let file = document.querySelector('input[type=file]').files[0]
         let reader = new FileReader()
@@ -282,14 +281,14 @@
           preview.src = reader.result
         }
       },
-      showDeleteTempUser (userId) {
+      showDeleteTempUser(userId) {
         this.showDeleteModal = true
         this.deleteUserId = userId
       },
-      createUser () {
+      createUser() {
         this.$router.push({path: '/system/user/detail?mode=create&userId='})
       },
-      deleteUser () {
+      deleteUser() {
         axios.delete('/user/' + this.deleteUserId).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '删除成功!'
@@ -304,7 +303,7 @@
           }
         })
       },
-      inverseStatus (userId, status) {
+      inverseStatus(userId, status) {
         let newStatus = '1'
         if (status === '1')
           newStatus = '0'
@@ -326,17 +325,17 @@
         })
 
       },
-      userDetail (userId) {
+      userDetail(userId) {
         this.$router.push({path: '/system/user/detail?mode=view&userId=' + userId})
       },
-      onFiltered (filteredItems) {
+      onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      initTable () {
+      initTable() {
         this.$refs.userTable.refresh()
       },
-      userTable (ctx) {
+      userTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/user?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol='
         switch (ctx.sortBy) {
@@ -371,7 +370,7 @@
         })
 
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
     }
