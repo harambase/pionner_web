@@ -6,7 +6,7 @@
           header-tag="header"
           footer-tag="footer">
           <div slot="header">
-            <i className="fa fa-align-justify"></i><strong>我的课程</strong>
+            <strong>我的课程</strong>
           </div>
           <div class="firstStep clearfix" v-for="course in courseList">
             <div class="lessons-item js-lessons-item g-clearfix">
@@ -33,9 +33,19 @@
               </a>
             </div>
           </div>
+          <div class="firstStep clearfix" v-if="courseList.length === 0">
+            <div class="lessons-item js-lessons-item g-clearfix" style="cursor: default">
+                <div class="lessons-pic">
+                  <img width="200" height="200" src="/static/img/logo.png">
+                </div>
+                <div class="lessons-info">
+                  <h3 class="info-tile">无进行中的课程。</h3>
+                </div>
+            </div>
+          </div>
         </b-card>
       </b-col>
-      <b-col cols="12">
+      <b-col cols="12" v-if="(rolList.indexOf('1') || rolList.indexOf('6')) !== -1">
         <b-card
           header-tag="header"
           footer-tag="footer">
@@ -75,6 +85,16 @@
               </a>
             </div>
           </div>
+          <div class="firstStep clearfix" v-if="teachList.length === 0">
+            <div class="lessons-item js-lessons-item g-clearfix" style="cursor: default">
+              <div class="lessons-pic">
+                <img width="200" height="200" src="/static/img/logo.png">
+              </div>
+              <div class="lessons-info">
+                <h3 class="info-tile">无教授的课程。</h3>
+              </div>
+            </div>
+          </div>
         </b-card>
       </b-col>
     </b-row>
@@ -83,18 +103,23 @@
 
 <script>
   import axios from 'axios'
+  import decode from 'jwt-decode'
 
   export default {
     name: 'dashboard',
     data () {
       return {
         courseList: [],
-        teachList: []
+        teachList: [],
+        rolList: [],
       }
     },
     mounted: function () {
+      const token = decode(window.localStorage.getItem('access_token'));
+      this.rolList =  token.rol;
+
       this.initTeachList();
-      this.initCourseList()
+      this.initCourseList();
     },
     methods: {
       initTeachList: function () {

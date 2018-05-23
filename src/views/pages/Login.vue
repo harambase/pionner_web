@@ -1,14 +1,15 @@
 <template>
-  <div class='app flex-row align-items-center'>
+  <div class='app flex-row align-items-center'
+       style="background-image: url('/static/img/download.jpg'); background-size: cover;">
     <div class='container'>
       <b-row class='justify-content-center'>
         <b-col md='8' style="margin-top: -200px;">
-          <b-card-group>
-            <b-card no-body class='p-4' id='user'>
+          <b-card-group id="login" >
+            <b-card no-body class='text-white p-4' id='user'
+                    style="background-color: rgba(0,0,0,0.65); color:white; border: none;">
               <b-card-body>
-
                 <h1>登录 Login</h1>
-                <p class='text-muted'>Log in via Pioneer Network Account:</p>
+                <p>Log in via Pioneer Network Account:</p>
                 <div v-if="loginError">
                   <p class='text-danger'>用户名或者密码不正确!</p>
                 </div>
@@ -36,12 +37,13 @@
                 </b-row>
               </b-card-body>
             </b-card>
-            <b-card no-body class='text-white bg-primary py-5 d-md-down-none' style='width:44%'>
+            <b-card no-body class='text-white py-5 d-md-down-none'
+                    style='background-color: rgba(24, 125, 160, 0.65); color:white; width:44%; border: none;'>
               <b-card-body class='text-center'>
                 <div>
-                  <h1>注册 Sign up</h1>
-                  <p>还没有先锋账号？</p>
-                  <b-button variant='primary' class='active mt-3' @click="goToReg">点击注册!</b-button>
+                  <h1>注册 Sign Up</h1>
+                  <p>没有先锋账号？ Need an Account? </p>
+                  <b-button variant='primary' class='px-4 mt-2' @click="goToReg">点击注册</b-button>
                 </div>
               </b-card-body>
             </b-card>

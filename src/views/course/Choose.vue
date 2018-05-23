@@ -263,7 +263,7 @@
   import axios from 'axios'
   import {FacultySelect} from '../../components/'
 
-  const items = []
+  const items = [];
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
     {key: 'operations', label: '操作'},
