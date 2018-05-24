@@ -4,7 +4,7 @@
     <div class='container'>
       <b-row class='justify-content-center'>
         <b-col md='8' style="margin-top: -200px;">
-          <b-card-group id="login" >
+          <b-card-group id="login">
             <b-card no-body class='text-white p-4' id='user'
                     style="background-color: rgba(0,0,0,0.65); color:white; border: none;">
               <b-card-body>
@@ -50,6 +50,7 @@
           </b-card-group>
         </b-col>
       </b-row>
+
     </div>
   </div>
 </template>
@@ -60,7 +61,7 @@
 
   export default ({
     name: 'Login',
-    data () {
+    data() {
       return {
         user: {
           username: '',
@@ -70,7 +71,7 @@
       }
     },
     methods: {
-      doLogin () {
+      doLogin() {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
@@ -87,10 +88,10 @@
           })
         })
       },
-      goToReg () {
+      goToReg() {
         this.$router.push({path: '/register'})
       },
-      resetPassword () {
+      resetPassword() {
         this.$router.push({path: '/resetPassword'})
       }
     }
