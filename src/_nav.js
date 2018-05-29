@@ -13,7 +13,7 @@ export default {
       }
     },
     {
-      name: '消息中心',
+      name: '系统消息',
       url: '/message',
       icon: 'icon-envelope',
       meta: {

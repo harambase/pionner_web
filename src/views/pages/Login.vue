@@ -44,6 +44,7 @@
                   <h1>注册 Sign Up</h1>
                   <p>没有先锋账号？ Need an Account? </p>
                   <b-button variant='primary' class='px-4 mt-2' @click="goToReg">点击注册</b-button>
+                  <!--<img src="/static/img/weChat.jpg" class="mt-2" width="100" height="100"/>-->
                 </div>
               </b-card-body>
             </b-card>

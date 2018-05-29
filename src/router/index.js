@@ -67,7 +67,7 @@ const router = new Router({
         },
         {
           path: 'message',
-          name: '消息中心',
+          name: '系统消息',
           component: Message,
           meta : {
             requireAuth: true,
