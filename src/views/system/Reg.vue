@@ -119,18 +119,19 @@
                               <dt class="col-sm-1">电话:</dt>
                               <dd class="col-sm-2">{{JSON.parse(row.item.userJson).tel}}</dd>
 
-                              <dt class="col-sm-1">微信号:</dt>
+                              <dt class="col-sm-1">微信:</dt>
                               <dd class="col-sm-2">{{JSON.parse(row.item.userJson).weChat}}</dd>
-
+                            </dl>
+                            <dl class="row">
                               <dt class="col-sm-1">性别:</dt>
                               <dd class="col-sm-2">{{JSON.parse(row.item.userJson).gender}}</dd>
+
+                              <dt class="col-sm-1">宿舍:</dt>
+                              <dd class="col-sm-1">{{JSON.parse(row.item.userJson).dorm}}</dd>
                             </dl>
                             <dl class="row">
                               <dt class="col-sm-1">邮箱:</dt>
                               <dd class="col-sm-3">{{JSON.parse(row.item.userJson).email}}</dd>
-
-                              <dt class="col-sm-1">宿舍号:</dt>
-                              <dd class="col-sm-1">{{JSON.parse(row.item.userJson).dorm}}</dd>
 
                               <dt class="col-sm-1">住址:</dt>
                               <dd class="col-sm-3">{{JSON.parse(row.item.userJson).address}}</dd>

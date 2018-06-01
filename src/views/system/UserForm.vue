@@ -25,7 +25,7 @@
                   <i className="fa fa-align-justify"></i><strong>账户信息</strong>
                 </div>
                 <b-row>
-                  <b-col md="3" class="my-1">
+                  <b-col md="3" class="mt-2">
                     <label class="col-sm-12 control-label">*年份-学期:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
