@@ -233,3 +233,9 @@ legend {
     display: none
   }
 }
+
+@media (max-width: 991.99px) {
+  .d-md-down {
+    display: block !important;
+  }
+}

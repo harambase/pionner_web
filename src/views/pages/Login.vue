@@ -28,10 +28,13 @@
                   <div v-show="errors.has('password')" class="invalid-tooltip">{{ errors.first('password') }}</div>
                 </b-input-group>
                 <b-row>
-                  <b-col cols='6'>
+                  <b-col cols='4'>
                     <b-button variant='primary' class='px-4' @click="doLogin">登录</b-button>
                   </b-col>
-                  <b-col cols='6' class='text-right'>
+                  <b-col cols='4' class='text-right'>
+                    <b-button variant='success' class='px-4 d-md-down' style="display: none;" @click="goToReg">注册</b-button>
+                  </b-col>
+                  <b-col cols='4' class='text-right'>
                     <b-button variant='link' class='px-0' @click="resetPassword">忘记密码?</b-button>
                   </b-col>
                 </b-row>
@@ -43,7 +46,7 @@
                 <div>
                   <h1>注册 Sign Up</h1>
                   <p>没有先锋账号？ Need an Account? </p>
-                  <b-button variant='primary' class='px-4 mt-2' @click="goToReg">点击注册</b-button>
+                  <b-button variant='success' class='px-4 mt-2' @click="goToReg">点击注册</b-button>
                   <!--<img src="/static/img/weChat.jpg" class="mt-2" width="100" height="100"/>-->
                 </div>
               </b-card-body>

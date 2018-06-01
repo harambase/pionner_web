@@ -20,7 +20,7 @@
               <b-col md="4" class="my-1">
                 <FacultySelect v-on:pass="passFaculty"/>
               </b-col>
-              <b-col md="3" class="my-1">
+              <b-col md="4" class="my-1">
               </b-col>
             </b-row>
 
