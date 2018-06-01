@@ -25,7 +25,9 @@
   </header>
 </template>
 <script>
+
   import HeaderDropdown from './HeaderDropdown.vue'
+  import axios from 'axios'
 
   export default {
     name: 'c-header',

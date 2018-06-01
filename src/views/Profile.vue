@@ -363,14 +363,14 @@
 </template>
 
 <script>
-  import md5 from 'js-md5'
+
   import axios from 'axios'
+  import decode from 'jwt-decode'
 
   export default {
-    name: 'UserForm',
+    name: 'Profile',
     data() {
       return {
-        userId: this.$route.fullPath.split('&')[1].split('=')[1],//maybe tempuser id
         user: {
           userId: '',
           createTime: '',
@@ -408,10 +408,11 @@
       }
     },
     mounted: function () {
-      axios.get('/user/' + this.userId).then((response) => {
+      const decoded_token = decode(window.localStorage.getItem('access_token'));
+      axios.get('/user/' + decoded_token.sub).then((response) => {
         this.user = response.data.data;
         this.init()
-      })
+      });
     },
     methods: {
       init() {
@@ -540,10 +541,6 @@
           if (!result)
             return;
           this.postPrepare();
-
-          if (this.passwordReset) {
-            this.user.password = md5('pioneer123456@')
-          }
 
           axios.put('/user/' + this.user.userId, this.user).then((response) => {
             if (response.data.code === 2001) {
