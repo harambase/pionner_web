@@ -392,7 +392,7 @@
              :header-bg-variant="headerBgVariant"
              ok-only
              ok-title="返回"
-             @ok="$router.push({path: '/system/user?mode=table'})"
+             @ok="pageMode !== 'request' ? $router.push({path: '/system/user?mode=table'}) :  $router.push({path: '/system/registration'})"
              centered
              title="消息">
       <div class="d-block text-center">
