@@ -75,13 +75,13 @@
       doLogin() {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return
-          const loginUser = this.user
-          loginUser.password = md5(this.user.password)
+            return;
+          const loginUser = this.user;
+          loginUser.password = md5(this.user.password);
           axios.post('/system/login', loginUser).then((response) => {
             if (response.data.code === 2001) {
-              window.localStorage.setItem('access_token', response.data.data.access_token)
-              token = response.data.data.access_token
+              window.localStorage.setItem('access_token', response.data.data.access_token);
+              token = response.data.data.access_token;
               this.$router.push({path: '/dashboard'})
             } else {
               this.loginError = true

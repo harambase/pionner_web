@@ -25,19 +25,19 @@
                   <i className="fa fa-align-justify"></i><strong>账户信息</strong>
                 </div>
                 <b-row>
-                  <b-col md="2" class="my-1">
+                  <b-col md="3" class="my-1">
                     <label class="col-sm-12 control-label">*年份-学期:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
                     <input :class="{'disabled': true, 'form-control': true, 'is-invalid': errors.has('info')}"
-                           v-model="user.info"
+                           v-model="user.info" placeholder="2018-01"
                            v-validate="'required'" name="info"/>
                     <div v-show="errors.has('info')" class="invalid-tooltip">{{ errors.first('info') }}</div>
                   </b-col>
-                  <b-col md="2" class="my-1">
+                  <b-col md="3" class="my-1" v-if="pageMode !== 'create'">
                     <label class="col-sm-12 control-label">*用户ID:</label>
                   </b-col>
-                  <b-col md="3" class="my-1">
+                  <b-col md="3" class="my-1" v-if="pageMode !== 'create'">
                     <input :class="{'disabled': true, 'form-control': true, 'is-invalid': errors.has('userId')}"
                            v-model="user.userId"
                            v-validate="'required'" name="userId"/>
@@ -45,7 +45,7 @@
                   </b-col>
                 </b-row>
                 <b-row v-if="pageMode==='view' || pageMode === 'profile'">
-                  <b-col md="2" class="my-1">
+                  <b-col md="3" class="my-1">
                     <label class="col-sm-12 control-label">*用户名:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
@@ -56,7 +56,7 @@
                 </b-row>
                 <hr/>
                 <b-row>
-                  <b-col md="2" class="my-1">
+                  <b-col md="3" class="my-1">
                     <label class="col-sm-12 control-label">*姓:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
@@ -65,7 +65,7 @@
                            v-validate="'required|min:1|max:20'" name="lastName"/>
                     <div v-show="errors.has('lastName')" class="invalid-tooltip">{{ errors.first('lastName') }}</div>
                   </b-col>
-                  <b-col md="2" class="my-1">
+                  <b-col md="3" class="my-1">
                     <label class="col-sm-12 control-label">*名:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
@@ -76,7 +76,7 @@
                   </b-col>
                 </b-row>
                 <b-row>
-                  <b-col md="2" class="my-1">
+                  <b-col md="3" class="my-1">
                     <label class="col-sm-12 control-label">*生日:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
@@ -85,7 +85,7 @@
                            v-validate="'required|min:10|max:10'" name="birthday"/>
                     <div v-show="errors.has('birthday')" class="invalid-tooltip">{{ errors.first('birthday') }}</div>
                   </b-col>
-                  <b-col md="2" class="my-1">
+                  <b-col md="3" class="my-1">
                     <label class="col-sm-12 control-label">*邮箱:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
@@ -96,7 +96,7 @@
                   </b-col>
                 </b-row>
                 <b-row>
-                  <b-col md="2" class="my-1">
+                  <b-col md="3" class="my-1">
                     <label class="col-sm-12 control-label">*电话号:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
@@ -105,7 +105,7 @@
                            v-validate="'required|min:8|max:11'" name="tel"/>
                     <div v-show="errors.has('tel')" class="invalid-tooltip">{{ errors.first('tel') }}</div>
                   </b-col>
-                  <b-col md="2" class="my-1">
+                  <b-col md="3" class="my-1">
                     <label class="col-sm-12 control-label">宿舍号:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
@@ -116,7 +116,7 @@
                   </b-col>
                 </b-row>
                 <b-row>
-                  <b-col md="2" class="my-1">
+                  <b-col md="3" class="my-1">
                     <label class="col-sm-12 control-label">*QQ号:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
@@ -125,7 +125,7 @@
                            v-validate="'required|min:8|max:20'" name="qq"/>
                     <div v-show="errors.has('qq')" class="invalid-tooltip">{{ errors.first('qq') }}</div>
                   </b-col>
-                  <b-col md="2" class="my-1">
+                  <b-col md="3" class="my-1">
                     <label class="col-sm-12 control-label">微信号:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
@@ -137,10 +137,10 @@
                 </b-row>
                 <hr/>
                 <b-row>
-                  <b-col md="2" class="my-1">
+                  <b-col md="3" class="my-1">
                     <label class="col-sm-12 control-label">家庭住址:</label>
                   </b-col>
-                  <b-col md="8" class="my-1">
+                  <b-col md="9" class="my-1">
                     <input :class="{'form-control': true, 'is-invalid': errors.has('address')}"
                            v-model="user.address" v-validate="'max:50'" name="address"/>
                     <div v-show="errors.has('address')" class="invalid-tooltip">{{ errors.first('address') }}</div>
@@ -164,7 +164,7 @@
                     <input type="file" id="profile" accept="image/*" @change="previewImg">
 
 
-                    <img id="preview" style="width: 237px; height: 237px">
+                    <img id="preview" style="width: 200px; height: 200px">
                     <b-button style="width: 82%"
                               class="btn btn-success"
                               @click="profileUpload">
@@ -174,7 +174,7 @@
                   <b-col md="6">
                     <p>当前头像：</p>
                     <img id="current" :src="profilePath"
-                         style="width: 230px;height: 230px" class="profile" v-if="showProfile">
+                         style="width: 200px; height: 200px" class="profile" v-if="showProfile">
                   </b-col>
                 </b-row>
                 <div slot="footer">
@@ -211,6 +211,8 @@
                       <label class="custom-control-label" for="admin">系统管理员</label>
                     </div>
                   </b-col>
+                </b-row>
+                <b-row>
                   <b-col md="2" class="my-1">
                     <label class="col-sm-12 control-label">*账户启停:</label>
                   </b-col>
@@ -233,7 +235,7 @@
                   <b-col md="2" class="my-1">
                     <label class="col-sm-12 control-label">*高级权限:</label>
                   </b-col>
-                  <b-col md="4" class="my-1">
+                  <b-col md="5" class="my-1">
                     <div class="custom-control custom-checkbox custom-control-inline">
                       <input type="checkbox" value="1" class="custom-control-input"
                              name="role" v-model="userRole" id="systemAdmin">
@@ -260,8 +262,10 @@
                       <label class="custom-control-label" for="advisor">导师</label>
                     </div>
                   </b-col>
+                </b-row>
+                <b-row>
                   <b-col md="2" class="my-1" v-if="pageMode === 'view'">
-                    <label class="col-sm-12 control-label">密码重置(不选不会重置):</label>
+                    <label class="col-sm-12 control-label">密码重置:</label>
                   </b-col>
                   <b-col md="3" class="my-1" v-if="pageMode === 'view'">
                     <div class="custom-control custom-checkbox custom-control-inline">
@@ -271,20 +275,8 @@
                     </div>
                   </b-col>
                 </b-row>
-                <b-row v-if="pageMode === 'create'">
-                  <b-col md="2">
-                    <label class="col-sm-12 control-label">密码:</label>
-                  </b-col>
-                  <b-col md="3">
-                    <input type="password" class="form-control" placeholder="密码" name="password"
-                           v-validate="'required|min:6|verify_password'"
-                           :class="{'form-control': true, 'is-invalid': errors.has('password')}"
-                           v-model="user.password">
-                    <div v-show="errors.has('password')" class="invalid-tooltip">{{ errors.first('password') }}</div>
-                  </b-col>
-                </b-row>
                 <div slot="footer">
-                  <i className="fa fa-align-justify"></i><strong>注意：1.此处为角色，为用户的属性，非权限。2.用户禁用后将无法登录，但数据不会删除。3.密码重置后，用户登录将要求修改密码。</strong>
+                  <i className="fa fa-align-justify"></i><strong>注意：1.角色是账户的属性包含基础访问和课程权限。2.用户禁用后将无法登录，但数据不会删除。3.密码重置后，用户登录将要求修改密码。</strong>
                 </div>
               </b-card>
             </b-col>
@@ -302,7 +294,7 @@
                     <input type="file" id="document">
                   </b-col>
                   <b-col md="2">
-                    <b-button style="width: 100%" class="btn btn-info" @click="documentUpload">
+                    <b-button style="width: 100%" class="btn btn-info my-1" @click="documentUpload">
                       上传
                     </b-button>
                   </b-col>
@@ -337,11 +329,11 @@
               <b-card header-tag="header"
                       footer-tag="footer">
                 <div slot="header">
-                  <i className="fa fa-align-justify"></i><strong>*请确认上述信息正确无误:</strong>
+                  <i className="fa fa-align-justify"></i><strong>确认上述信息</strong>
                 </div>
                 <b-row>
-                  <b-col md="2" class="my-1">
-                    <label class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
+                  <b-col md="3" class="my-1">
+                    <label class="col-sm-12 control-label">*上述信息正确无误:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
                     <div class="custom-control custom-checkbox custom-control-inline">
@@ -352,37 +344,30 @@
                       <div v-show="errors.has('confirm')" class="invalid-tooltip">{{ errors.first('confirm') }}</div>
                     </div>
                   </b-col>
-                  <b-col md="2" class="my-1">
-                    <label class="col-sm-12 control-label">*管理员操作密码:</label>
+                  <b-col md="1" class="my-1">
+                    <label class="col-sm-12 control-label">操作:</label>
                   </b-col>
-                  <b-col md="3" class="my-1">
-                    <input type="password" v-validate="'required'" name="adminPwd"
-                           :class="{'form-control': true, 'is-invalid': errors.has('adminPwd')}"/>
-                    <div v-show="errors.has('adminPwd')" class="invalid-tooltip">{{ errors.first('adminPwd') }}</div>
-                  </b-col>
-                </b-row>
-                <div slot="footer">
-                  <b-col md="6" class="my-1">
-                    <b-button style="width:150px;" class="btn btn-success"
+                  <b-col md="3">
+                    <b-button variant="success" style="width:150px"
                               v-if="pageMode === 'view'"
                               @click="update">更新
                     </b-button>
-                    <b-button style="width:150px;" class="btn btn-success"
+                    <b-button variant="success" style="width:150px"
                               v-if="pageMode === 'create'"
                               @click="create">创建
                     </b-button>
-                    <b-button style="width:150px;" class="btn btn-success"
+                    <b-button variant="success" style="width:150px"
                               v-if="pageMode === 'request'"
                               :disabled="regTempUser.status!=='0'"
                               @click="approve">批准申请
                     </b-button>
-                    <b-button style="width:150px;" class="btn btn-danger"
+                    <b-button variant="danger" style="width:150px"
                               v-if="pageMode === 'request'"
                               :disabled="regTempUser.status!=='0'"
                               @click="decline">拒绝申请
                     </b-button>
                   </b-col>
-                </div>
+                </b-row>
               </b-card>
             </b-col>
           </b-row>
@@ -400,12 +385,12 @@
 </template>
 
 <script>
-  import User from '@/views/system/User'
+  import md5 from 'js-md5'
   import axios from 'axios'
 
   export default {
     name: 'UserForm',
-    data () {
+    data() {
       return {
         userId: this.$route.fullPath.split('&')[1].split('=')[1],//maybe tempuser id
         user: {
@@ -451,86 +436,78 @@
         showModal: false,
         showDeleteModal: false,
         headerBgVariant: '',
-        confirm: false,
+        confirm: false
       }
     },
     mounted: function () {
       if (this.pageMode === 'profile' || this.pageMode === 'view') {
         axios.get('/user/' + this.userId).then((response) => {
-          this.user = response.data.data
+          this.user = response.data.data;
           this.init()
         })
       }
-      else {
+      else if (this.pageMode !== 'create') {
         axios.get('/request/user/' + this.userId).then((response) => {
-          this.regTempUser = response.data.data
-          this.user = JSON.parse(this.regTempUser.userJson)
-          this.user.userId = this.regTempUser.userId
+          this.regTempUser = response.data.data;
+          this.user = JSON.parse(this.regTempUser.userJson);
+          this.user.userId = this.regTempUser.userId;
           this.init()
         })
       }
-      laydate.render({
-        elem: '#birthday',
-        theme: '#393D49',
-        showBottom: false,
-        done: (value) => {
-          this.user.birthday = value
-        }
-      })
     },
     methods: {
-      init () {
+      init() {
         if (isNotEmpty(this.user.type))
-          this.userType = this.user.type.split('/')
+          this.userType = this.user.type.split('/');
         if (isNotEmpty(this.user.roleId))
-          this.userRole = this.user.roleId.split('/')
+          this.userRole = this.user.roleId.split('/');
 
         if (isNotEmpty(this.user.profile)) {
-          this.profile = JSON.parse(this.user.profile)
-          this.profilePath = basePath + '/pioneer' + this.profile.path
+          this.profile = JSON.parse(this.user.profile);
+          this.profilePath = basePath + '/pioneer' + this.profile.path;
           this.showProfile = true
         }
 
         if (isNotEmpty(this.user.userInfo)) {
-          this.userInfo = JSON.parse(this.user.userInfo)
+          this.userInfo = JSON.parse(this.user.userInfo);
           this.showDocument = true
         }
       },
-      documentUpload () {
-        let formData = new FormData()
-        formData.append('file', document.getElementById('document').files[0])
+      documentUpload() {
+        let formData = new FormData();
+        formData.append('file', document.getElementById('document').files[0]);
 
-        let url = '/user/info/' + this.user.userId
+        let url = '/user/info/' + this.user.userId;
         if (this.pageMode === 'request') {
           url = '/request/user/info/' + this.userId
         }
         if (formData !== null && formData !== undefined) {
           axios.put(url, formData).then((response) => {
             if (response.data.code === 2001) {
-              this.msg = response.data.msg
-              this.showModal = true
-              this.headerBgVariant = 'success'
-              this.showDocument = true
-              this.user.userInfo = JSON.stringify(response.data.data)
+              this.msg = response.data.msg;
+              this.showModal = true;
+              this.headerBgVariant = 'success';
+              this.showDocument = true;
+              this.user.userInfo = JSON.stringify(response.data.data);
               this.userInfo = response.data.data
             } else {
-              this.msg = response.data.msg
-              this.showModal = true
+              this.msg = response.data.msg;
+              this.showModal = true;
               this.headerBgVariant = 'danger'
             }
           })
         }
       },
-      documentDownload () {
+      documentDownload() {
         if (this.pageMode === 'request')
-          window.open(basePath + '/request/user/info/' + this.userId + '?token=' + window.localStorage.getItem('access_token'))
+          window.open(basePath + '/request/user/info/' + this.userId + '?token=' + window.localStorage.getItem('access_token'));
         else
-          window.open(basePath + '/user/info/' + this.user.userId + '?token=' + window.localStorage.getItem('access_token'))
+          window.open(basePath + '/user/info/' + this.user.userId + '?token=' + window.localStorage.getItem('access_token'));
       },
-      previewImg () {
-        let preview = document.getElementById('preview')
-        let file = document.querySelector('input[type=file]').files[0]
-        let reader = new FileReader()
+      previewImg() {
+        let preview = document.getElementById('preview');
+        let file = document.querySelector('input[type=file]').files[0];
+        let reader = new FileReader();
         if (file) {
           reader.readAsDataURL(file)
         } else {
@@ -540,11 +517,11 @@
           preview.src = reader.result
         }
       },
-      profileUpload () {
-        let formData = new FormData()
-        formData.append('file', document.getElementById('profile').files[0])
+      profileUpload() {
+        let formData = new FormData();
+        formData.append('file', document.getElementById('profile').files[0]);
 
-        let url = '/user/profile/' + this.user.userId
+        let url = '/user/profile/' + this.user.userId;
         if (this.pageMode === 'request') {
           url = '/request/user/profile/' + this.userId
         }
@@ -552,16 +529,16 @@
           axios.put(url, formData).then((response) => {
             if (response.data.code === 2001) {
 
-              this.msg = response.data.msg
-              this.showModal = true
-              this.headerBgVariant = 'success'
+              this.msg = response.data.msg;
+              this.showModal = true;
+              this.headerBgVariant = 'success';
 
-              this.user.profile = response.data.data
-              this.profilePath = basePath + '/pioneer' + this.user.profile.path
-              this.showProfile = true
-              let file = document.querySelector('input[type=file]').files[0]
-              let current = document.getElementById('current')
-              let reader = new FileReader()
+              this.user.profile = response.data.data;
+              this.profilePath = basePath + '/pioneer' + this.user.profile.path;
+              this.showProfile = true;
+              let file = document.querySelector('input[type=file]').files[0];
+              let current = document.getElementById('current');
+              let reader = new FileReader();
 
               if (file) {
                 reader.readAsDataURL(file)
@@ -573,78 +550,78 @@
               }
 
             } else {
-              this.msg = response.data.msg
-              this.showModal = true
+              this.msg = response.data.msg;
+              this.showModal = true;
               this.headerBgVariant = 'danger'
             }
           })
         }
       },
-      showUserTable () {
+      showUserTable() {
         this.$router.push({path: '/system/user?mode=table'})
       },
-      showTempUserTable () {
+      showTempUserTable() {
         this.$router.push({path: '/system/registration'})
       },
-      postPrepare () {
-        let type = ''
-        let roleId = ''
+      postPrepare() {
+        let type = '';
+        let roleId = '';
         for (let i = 0; i < this.userType.length; i++)
           if (this.userType[i] !== '')
-            type += this.userType[i] + '/'
+            type += this.userType[i] + '/';
         for (let i = 0; i < this.userRole.length; i++)
           if (this.userRole[i] !== '')
-            roleId += this.userRole[i] + '/'
+            roleId += this.userRole[i] + '/';
 
         if (type.indexOf('s') !== -1)
-          roleId += '5/'
+          roleId += '5/';
         if (type.indexOf('f') !== -1)
-          roleId += '6/7/'
+          roleId += '6/7/';
 
-        this.user.type = type
+        this.user.type = type;
         this.user.roleId = roleId
       },
-      update () {
+      update() {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return
-          this.postPrepare()
+            return;
+          this.postPrepare();
 
           if (this.passwordReset) {
-            this.user.password = hex_md5('pioneer123456')
+            this.user.password = md5('pioneer123456@')
           }
 
           axios.put('/user/' + this.user.userId, this.user).then((response) => {
             if (response.data.code === 2001) {
-              this.msg = '修改成功！'
-              this.showModal = true
+              this.msg = '修改成功！';
+              this.showModal = true;
               this.headerBgVariant = 'success'
             }
             else {
-              this.msg = response.data.msg
-              this.showModal = true
+              this.msg = response.data.msg;
+              this.showModal = true;
               this.headerBgVariant = 'danger'
             }
           })
         })
       },
-      create () {
+      create() {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return
-          this.postPrepare()
-          this.user.password = hex_md5('pioneer123456')
+            return;
+          this.postPrepare();
+          this.user.password = md5('pioneer123456@');
 
           axios.post('/user', this.user).then((response) => {
             if (response.data.code === 2001) {
-              this.msg = '创建成功！'
-              this.showModal = true
-              this.headerBgVariant = 'success'
+              this.msg = '创建成功！';
+              this.showModal = true;
+              this.headerBgVariant = 'success';
               this.goTo = '/system/user?mode=table'
             }
             else {
-              this.msg = response.data.msg
-              this.showModal = true
+              this.msg = response.data.msg;
+              this.showModal = true;
               this.headerBgVariant = 'danger'
             }
           })
@@ -653,20 +630,20 @@
       approve: function () {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return
-          this.postPrepare()
-          this.regTempUser.status = '1'
-          this.regTempUser.userJson = JSON.stringify(this.user)
+            return;
+          this.postPrepare();
+          this.regTempUser.status = '1';
+          this.regTempUser.userJson = JSON.stringify(this.user);
           this.tempUserUpdate()
         })
       },
       decline: function () {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return
+            return;
           if (isNotEmpty(this.user.comment)) {
-            this.regTempUser.status = '-1'
-            this.regTempUser.userJson = JSON.stringify(this.user)
+            this.regTempUser.status = '-1';
+            this.regTempUser.userJson = JSON.stringify(this.user);
             this.tempUserUpdate()
           } else {
             this.msg = '必须填写备注！'
@@ -675,7 +652,7 @@
           }
         })
       },
-      tempUserUpdate () {
+      tempUserUpdate() {
         axios.put('/request/user/' + this.regTempUser.id, this.regTempUser).then((response) => {
           if (response.data.code === 2001) {
             this.msg = response.data.msg
@@ -689,7 +666,7 @@
           }
         })
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
     }

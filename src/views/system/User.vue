@@ -15,7 +15,7 @@
 
           <!-- User Interface controls -->
           <b-row>
-            <b-col md="1" class="my-1">
+            <b-col md="1" class="mt-2">
               <legend class="col-form-legend">每页显示：</legend>
             </b-col>
             <b-col md="3" class="my-1">
@@ -64,14 +64,14 @@
                 <b-col md="3">
                   <img v-if="isNotEmpty(row.item.profile)"
                        :src="basePath + '/pioneer' + JSON.parse(row.item.profile).path"
-                       style="width: 45px;height: 45px"
+                       style="width: 30px;height: 30px"
                        class="img-avatar">
                   <img v-else
                        :src="basePath + '/pioneer/image/profile/logo.png'"
-                       style="width: 45px;height: 45px"
+                       style="width: 30px;height: 30px"
                        class="img-avatar">
                 </b-col>
-                <b-col md="9">
+                <b-col md="9" class="mt-1" style="font-size: 11px;">
                   {{row.value}}
                 </b-col>
               </b-row>
@@ -206,10 +206,10 @@
 <script>
   import axios from 'axios'
 
-  const items = []
+  const items = [];
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
-    {key: 'userId', label: '用户ID', sortable: true, 'class': 'text-center'},
+    {key: 'userId', label: '用户ID', sortable: true},
     {key: 'username', label: '用户名', sortable: true},
     {key: 'lastName', label: '姓', sortable: true},
     {key: 'firstName', label: '名', sortable: true},
@@ -217,7 +217,7 @@
     {key: 'status', label: '启停状态', sortable: true},
     {key: 'updateTime', label: '更新时间', sortable: true},
     {key: 'actions', label: '操作'}
-  ]
+  ];
 
   export default {
     name: 'User',
