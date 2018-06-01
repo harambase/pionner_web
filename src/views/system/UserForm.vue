@@ -391,7 +391,7 @@
              size="sm"
              :header-bg-variant="headerBgVariant"
              ok-only
-             ok-title="返回"
+             ok-title="返回列表"
              @ok="pageMode !== 'request' ? $router.push({path: '/system/user?mode=table'}) :  $router.push({path: '/system/registration'})"
              centered
              title="消息">
