@@ -140,10 +140,10 @@
 <script>
   import axios from 'axios'
 
-  const items = []
+  const items = [];
   const field = [
     {key: 'actions', label: '消息列表'}
-  ]
+  ];
 
   export default {
     name: 'message',
@@ -198,13 +198,6 @@
           this.unread = response.data.data
         })
       },
-
-      initDraft () {
-        axios.get('/message/count?status=saved&box=draft').then((response) => {
-          this.saved = response.data.data
-        })
-      },
-
       initTrash () {
         axios.get('/message/count?status=trashed&box=trash').then((response) => {
           this.trashed = response.data.data
