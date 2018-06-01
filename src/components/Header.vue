@@ -8,24 +8,20 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <b-navbar-nav class="d-md-down-none">
-      <strong>先锋教育教务系统</strong><small>&nbsp; PIONEER Educational Administration System</small>
+      <strong>先锋教育教务系统</strong>
+      <small class="mt-1">&nbsp; PIONEER Educational Administration System</small>
     </b-navbar-nav>
     <b-navbar-nav class="ml-auto">
       <b-nav-item class="d-md-down-none">
+      </b-nav-item>
+      <b-nav-item class="d-md-down-none">
+      </b-nav-item>
+      <b-nav-item class="d-md-down-none" @click="asideToggle">
         <i class="icon-bell"></i>
-        <b-badge pill variant="danger">5</b-badge>
-      </b-nav-item>
-      <b-nav-item class="d-md-down-none">
-        <i class="icon-list"></i>
-      </b-nav-item>
-      <b-nav-item class="d-md-down-none">
-        <i class="icon-location-pin"></i>
+        <b-badge pill variant="danger">{{unread}}</b-badge>
       </b-nav-item>
       <HeaderDropdown/>
     </b-navbar-nav>
-    <button class="navbar-toggler aside-menu-toggler d-md-down-none" type="button" @click="asideToggle">
-      <span class="navbar-toggler-icon"></span>
-    </button>
   </header>
 </template>
 <script>
@@ -36,21 +32,31 @@
     components: {
       HeaderDropdown
     },
+    data(){
+      return {
+        unread: 0,
+      }
+    },
+    mounted() {
+      axios.get('/message/count?status=unread&box=inbox').then((response) => {
+        this.unread = response.data.data
+      })
+    },
     methods: {
-      sidebarToggle (e) {
-        e.preventDefault()
+      sidebarToggle(e) {
+        e.preventDefault();
         document.body.classList.toggle('sidebar-hidden')
       },
-      sidebarMinimize (e) {
-        e.preventDefault()
+      sidebarMinimize(e) {
+        e.preventDefault();
         document.body.classList.toggle('sidebar-minimized')
       },
-      mobileSidebarToggle (e) {
-        e.preventDefault()
+      mobileSidebarToggle(e) {
+        e.preventDefault();
         document.body.classList.toggle('sidebar-mobile-show')
       },
-      asideToggle (e) {
-        e.preventDefault()
+      asideToggle(e) {
+        e.preventDefault();
         document.body.classList.toggle('aside-menu-hidden')
       }
     }

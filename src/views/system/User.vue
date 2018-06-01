@@ -69,8 +69,8 @@
                        style="width: 30px;height: 30px"
                        class="img-avatar">
                   <img v-else
-                       :src="basePath + '/pioneer/image/profile/logo.png'"
-                       style="width: 30px;height: 30px"
+                       src="/static/img/logo-symbol.png"
+                       style="width: 40px;height: 40px"
                        class="img-avatar">
                 </b-col>
                 <b-col md="9" class="mt-1" style="font-size: 11px;">
@@ -162,9 +162,13 @@
                         </div>
                       </b-col>
                       <b-col md="3" class="my-1">
-                        <img v-if="isNotEmpty(row.item.profile)"
-                             :src="basePath + '/pioneer' + JSON.parse(row.item.profile).path"
-                             style="width: 230px;height: 230px"
+                        <img v-if="isNotEmpty(row.item.pic)"
+                             :src="basePath + '/pioneer' + JSON.parse(row.item.pic).path"
+                             style="width: 40px;height: 40px"
+                             class="img-avatar">
+                        <img v-else
+                             src="/static/img/logo-symbol.png"
+                             style="width: 40px;height: 40px"
                              class="img-avatar">
                       </b-col>
                     </b-row>

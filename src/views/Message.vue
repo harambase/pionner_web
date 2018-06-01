@@ -80,7 +80,7 @@
                           <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1"><strong>{{row.item.title}}</strong> {{row.item.subject}}</h5>
                             <small>发送时间：{{row.item.date}}</small>
-                            <b-badge variant="danger" pill v-if="row.item.status=='unread'">未读</b-badge>
+                            <b-badge variant="danger" pill v-if="row.item.labels=='重要'">重要</b-badge>
                             <b-badge variant="primary" pill v-if="row.item.status=='unread'">未读</b-badge>
                           </div>
                           <hr/>
@@ -91,7 +91,7 @@
                                    style="width: 40px;height: 40px"
                                    class="img-avatar">
                               <img v-else
-                                   :src="basePath + '/pioneer/image/profile/logo.png'"
+                                   src="/static/img/logo-symbol.png"
                                    style="width: 40px;height: 40px"
                                    class="img-avatar">
                               {{row.item.sender}}
