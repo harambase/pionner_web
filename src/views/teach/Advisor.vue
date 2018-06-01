@@ -10,14 +10,14 @@
           </div>
           <b-container fluid>
             <b-row>
-              <b-col md="1" class="my-1">
+              <b-col md="1" class="mt-1">
                 <legend class="col-form-legend">选择老师：</legend>
               </b-col>
-              <b-col md="3" class="my-1">
+              <b-col md="4" class="my-1">
                 <CFacultySelect v-on:pass="passFaculty"/>
               </b-col>
-              <b-col md="3" class="my-1">
-                <b-button size="sm" variant="success" @click="addAdvisor" :disabled="!isNotEmpty(faculty)">添加导师
+              <b-col md="4" class="my-1">
+                <b-button style="width:150px;" variant="success" @click="addAdvisor" :disabled="!isNotEmpty(faculty)">添加导师
                 </b-button>
               </b-col>
             </b-row>
@@ -77,13 +77,13 @@
       addAdvisor () {
         axios.put('/advise/advisor/' + this.faculty.value).then((response) => {
           if (response.data.code) {
-            this.msg = '添加成功！'
-            this.showModal = true
-            this.headerBgVariant = 'success'
+            this.msg = '添加成功！';
+            this.showModal = true;
+            this.headerBgVariant = 'success';
             this.$refs.CAdvisorTable.initTable();
           } else {
-            this.msg = response.data.msg
-            this.showModal = true
+            this.msg = response.data.msg;
+            this.showModal = true;
             this.headerBgVariant = 'danger'
           }
         })
