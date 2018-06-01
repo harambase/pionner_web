@@ -166,11 +166,15 @@
       </b-col>
     </b-row>
 
-    <b-modal v-model="showModal" size="sm"
+    <b-modal v-model="showModal"
+             size="sm"
              :header-bg-variant="headerBgVariant"
-             ok-only centered title="消息">
+             ok-only
+             ok-title="关闭"
+             centered
+             title="消息">
       <div class="d-block text-center">
-        <h3>{{msg}}</h3>
+        <h4>{{msg}}</h4>
       </div>
     </b-modal>
   </b-container>

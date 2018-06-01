@@ -76,7 +76,11 @@
                 </b-col>
               </b-row>
             </template>
-
+            <template slot="updateTime" slot-scope="row">
+              <p style="font-size: 11px;" class="mt-1">
+                {{row.value}}
+              </p>
+            </template>
             <template slot="status" slot-scope="row">
               <label class="switch switch-lg switch-text switch-success mb-0">
                 <input type="checkbox" class="switch-input" :checked="row.item.status==='1'"
@@ -111,22 +115,22 @@
                             <dt class="col-sm-1">电话:</dt>
                             <dd class="col-sm-2">{{row.item.tel}}</dd>
 
-                            <dt class="col-sm-1">微信号:</dt>
+                            <dt class="col-sm-1">微信:</dt>
                             <dd class="col-sm-2">{{row.item.weChat}}</dd>
-
+                          </dl>
+                          <dl class="row">
                             <dt class="col-sm-1">性别:</dt>
                             <dd class="col-sm-2">{{row.item.gender}}</dd>
+
+                            <dt class="col-sm-1">宿舍:</dt>
+                            <dd class="col-sm-2">{{row.item.dorm}}</dd>
                           </dl>
                           <dl class="row">
                             <dt class="col-sm-1">邮箱:</dt>
                             <dd class="col-sm-3">{{row.item.email}}</dd>
 
-                            <dt class="col-sm-1">宿舍号:</dt>
-                            <dd class="col-sm-1">{{row.item.dorm}}</dd>
-
                             <dt class="col-sm-1">住址:</dt>
                             <dd class="col-sm-3">{{row.item.address}}</dd>
-
                           </dl>
                           <dl class="row">
                             <dt class="col-sm-2">基本信息表:</dt>
@@ -215,7 +219,7 @@
     {key: 'firstName', label: '名', sortable: true},
     {key: 'type', label: '账户类型', sortable: true},
     {key: 'status', label: '启停状态', sortable: true},
-    {key: 'updateTime', label: '更新时间', sortable: true},
+    {key: 'updateTime', label: '上次更新时间', sortable: true},
     {key: 'actions', label: '操作'}
   ];
 

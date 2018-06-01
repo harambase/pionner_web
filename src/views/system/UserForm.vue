@@ -135,6 +135,19 @@
                     <div v-show="errors.has('weChat')" class="invalid-tooltip">{{ errors.first('weChat') }}</div>
                   </b-col>
                 </b-row>
+                <b-row>
+                  <b-col md="3" class="my-1">
+                    <label class="col-sm-12 control-label">*性别:</label>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <b-form-select id="year1" v-model="user.gender"
+                                   :plain="true" name="gender" v-validate="'required'"
+                                   :options="[{text: '男', value: 'male' },{text: '女', value: 'female' }, {text: '未指定', value: 'undetermined' }]"
+                                   :class="{'form-control': true, 'is-invalid': errors.has('gender')}">
+                    </b-form-select>
+                    <div v-show="errors.has('gender')" class="invalid-tooltip">{{ errors.first('gender') }}</div>
+                  </b-col>
+                </b-row>
                 <hr/>
                 <b-row>
                   <b-col md="3" class="my-1">
@@ -374,11 +387,16 @@
         </b-card>
       </b-col>
     </b-row>
-    <b-modal v-model="showModal" size="sm"
+    <b-modal v-model="showModal"
+             size="sm"
              :header-bg-variant="headerBgVariant"
-             ok-only centered title="消息">
+             ok-only
+             ok-title="返回"
+             @ok="$router.push({path: '/system/user?mode=table'})"
+             centered
+             title="消息">
       <div class="d-block text-center">
-        <h3>{{msg}}</h3>
+        <h4>{{msg}}</h4>
       </div>
     </b-modal>
   </div>
@@ -565,7 +583,7 @@
       },
       postPrepare() {
         let type = '';
-        let roleId = '';
+        let roleId = '0/';
         for (let i = 0; i < this.userType.length; i++)
           if (this.userType[i] !== '')
             type += this.userType[i] + '/';
@@ -646,8 +664,8 @@
             this.regTempUser.userJson = JSON.stringify(this.user);
             this.tempUserUpdate()
           } else {
-            this.msg = '必须填写备注！'
-            this.showModal = true
+            this.msg = '必须填写备注！';
+            this.showModal = true;
             this.headerBgVariant = 'danger'
           }
         })
@@ -655,14 +673,14 @@
       tempUserUpdate() {
         axios.put('/request/user/' + this.regTempUser.id, this.regTempUser).then((response) => {
           if (response.data.code === 2001) {
-            this.msg = response.data.msg
-            this.showModal = true
+            this.msg = response.data.msg;
+            this.showModal = true;
             this.headerBgVariant = 'success'
           }
           else {
-            this.msg = response.data.msg
-            this.showModal = true
-            this.headerBgVariant = 'danger'
+            this.msg = response.data.msg;
+            this.showModal = true;
+            this.headerBgVariant = 'danger';
           }
         })
       },
