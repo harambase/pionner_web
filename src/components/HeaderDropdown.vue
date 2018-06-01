@@ -38,6 +38,9 @@
       logout() {
         window.localStorage.clear();
         this.$router.push({path: "/"})
+      },
+      viewProfile(){
+        this.$router.push({path: "/profile"})
       }
     }
   }

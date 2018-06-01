@@ -7,6 +7,7 @@ import Full from '@/containers/Full'
 // Views
 import Dashboard from '@/views/Dashboard'
 import Message from '@/views/Message'
+import Profile from '@/views/Profile'
 
 import ViewCourse from '@/views/course/Course'
 import Choose from '@/views/course/Choose'
@@ -69,6 +70,15 @@ const router = new Router({
           path: 'message',
           name: '系统消息',
           component: Message,
+          meta : {
+            requireAuth: true,
+            role: ['0']
+          },
+        },
+        {
+          path: 'profile',
+          name: '个人资料',
+          component: Profile,
           meta : {
             requireAuth: true,
             role: ['0']
