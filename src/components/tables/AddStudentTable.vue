@@ -11,11 +11,13 @@
         </b-form-group>
       </b-col>
       <b-col md="4" class="my-1"></b-col>
-      <b-col md="3" class="my-1">
+      <b-col md="4" class="my-1">
         <b-form-group>
           <b-input-group>
             <b-input-group-button>
-              <b-button disabled><i class="fa fa-search"></i></b-button>
+              <div class="mt-2">
+                搜索：
+              </div>
             </b-input-group-button>
             <b-form-input v-model="filter"/>
             <b-input-group-button>

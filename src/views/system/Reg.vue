@@ -44,17 +44,26 @@
           <b-container fluid>
             <!-- User Interface controls -->
             <b-row>
-              <b-col md="6" class="my-1">
-                <b-form-group horizontal label="每页显示条数：" class="mb-0">
+              <b-col md="1" class="my-1">
+                <legend class="col-form-legend">每页显示：</legend>
+              </b-col>
+              <b-col md="3" class="my-1">
+                <b-form-group>
                   <b-form-select :options="pageOptions" v-model="perPage"/>
                 </b-form-group>
               </b-col>
-              <b-col md="6" class="my-1">
-                <b-form-group horizontal label="模糊查询：" class="mb-0">
+              <b-col md="4" class="my-1"></b-col>
+              <b-col md="4" class="my-1">
+                <b-form-group>
                   <b-input-group>
+                    <b-input-group-button>
+                      <div class="mt-2">
+                        搜索：
+                      </div>
+                    </b-input-group-button>
                     <b-form-input v-model="filter"/>
                     <b-input-group-button>
-                      <b-button :disabled="!filter" @click="filter = ''">重置</b-button>
+                      <b-button variant="danger" :disabled="!filter" @click="filter = ''">重置</b-button>
                     </b-input-group-button>
                   </b-input-group>
                 </b-form-group>

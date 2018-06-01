@@ -1,5 +1,7 @@
 <template>
   <b-container fluid>
+
+    <!-- User Interface controls -->
     <b-row>
       <b-col md="1" class="my-1">
         <legend class="col-form-legend">每页显示：</legend>
@@ -10,11 +12,13 @@
         </b-form-group>
       </b-col>
       <b-col md="4" class="my-1"></b-col>
-      <b-col md="3" class="my-1">
+      <b-col md="4" class="my-1">
         <b-form-group>
           <b-input-group>
             <b-input-group-button>
-              <b-button disabled><i class="fa fa-search"></i></b-button>
+              <div class="mt-2">
+                搜索：
+              </div>
             </b-input-group-button>
             <b-form-input v-model="filter"/>
             <b-input-group-button>
@@ -24,7 +28,6 @@
         </b-form-group>
       </b-col>
     </b-row>
-
     <!-- Main table element -->
     <b-table show-empty
              stacked="md"
