@@ -41,11 +41,11 @@
         nav.items.forEach(item => {
           for (let i = 0; i < token.rol.length; i++) {
             if (token.rol[i] == '1' || item.meta.role == token.rol[i]) {
-              navItems.push(item)
+              navItems.push(item);
               break
             }
           }
-        })
+        });
         return navItems
       },
       name () {

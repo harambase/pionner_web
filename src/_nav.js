@@ -29,7 +29,7 @@ export default {
         attributes: {}
       },
       meta: {
-        role: ['2','5','6']
+        role: ['2', '5', '6']
       }
     },
     {
@@ -37,7 +37,7 @@ export default {
       url: '/course/view?mode=view',
       icon: 'icon-list',
       meta: {
-        role: ['2','5','6']
+        role: ['2', '5', '6']
       }
     },
     {
@@ -45,7 +45,7 @@ export default {
       url: '/course/new',
       icon: 'icon-pencil',
       meta: {
-        role: ['2','6']
+        role: ['2', '6']
       },
       children: [
         {
@@ -53,7 +53,7 @@ export default {
           url: '/course/new/create?mode=request&id=',
           icon: 'icon-bell',
           meta: {
-            role: ['2','6']
+            role: ['2', '6']
           },
         },
         {
@@ -61,7 +61,7 @@ export default {
           url: '/course/new/request?mode=faculty',
           icon: 'icon-bell',
           meta: {
-            role: ['2','6']
+            role: ['2', '6']
           },
         },
       ]
@@ -86,7 +86,7 @@ export default {
       name: '新学期导师选择',
       url: '/course/advisor/choose',
       icon: 'icon-book-open',
-      meta : {
+      meta: {
         role: ['5']
       },
     },
@@ -250,9 +250,7 @@ export default {
     },
     {
       name: 'ONENOTE',
-      redirect: to => {
-        window.open("https://login.partner.microsoftonline.cn/login");
-      },
+      url: 'https://login.partner.microsoftonline.cn/login.srf',
       icon: 'icon-book-open',
       meta: {
         role: ['7']

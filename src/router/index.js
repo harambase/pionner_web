@@ -54,23 +54,23 @@ const router = new Router({
       component: Full,
       meta: {
         requiresAuth: true,
-        role:[]
+        role: []
       },
       children: [
         {
           path: 'dashboard',
           name: '主页',
           component: Dashboard,
-          meta : {
+          meta: {
             requireAuth: true,
-            role:['0']
+            role: ['0']
           },
         },
         {
           path: 'message',
           name: '系统消息',
           component: Message,
-          meta : {
+          meta: {
             requireAuth: true,
             role: ['0']
           },
@@ -79,7 +79,7 @@ const router = new Router({
           path: 'profile',
           name: '个人资料',
           component: Profile,
-          meta : {
+          meta: {
             requireAuth: true,
             role: ['0']
           },
@@ -89,20 +89,22 @@ const router = new Router({
           redirect: '/course/view',
           name: '教学系统',
           component: {
-            render (c) { return c('router-view') }
+            render(c) {
+              return c('router-view')
+            }
           },
-          meta : {
+          meta: {
             requireAuth: true,
-            role: ['2','5','6']
+            role: ['2', '5', '6']
           },
           children: [
             {
               path: 'view',
               name: '所有课程',
               component: ViewCourse,
-              meta : {
+              meta: {
                 requireAuth: true,
-                role: ['2','5','6']
+                role: ['2', '5', '6']
               },
             },
             {
@@ -110,25 +112,27 @@ const router = new Router({
               redirect: '/course/new/create',
               name: '新课程',
               component: {
-                render (c) { return c('router-view') }
+                render(c) {
+                  return c('router-view')
+                }
               },
               children: [
                 {
                   path: 'create',
                   name: '新课程申请',
                   component: Course,
-                  meta : {
+                  meta: {
                     requireAuth: true,
-                    role: ['2','6']
+                    role: ['2', '6']
                   },
                 },
                 {
                   path: 'request',
                   name: '你的申请',
                   component: TempCourse,
-                  meta : {
+                  meta: {
                     requireAuth: true,
-                    role: ['2','6']
+                    role: ['2', '6']
                   },
                 },
               ]
@@ -137,7 +141,7 @@ const router = new Router({
               path: 'transcript',
               name: '个人成绩单',
               component: Transcript,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['5']
               },
@@ -146,7 +150,7 @@ const router = new Router({
               path: 'choose',
               name: '新学期选课',
               component: Choose,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['5']
               },
@@ -155,7 +159,7 @@ const router = new Router({
               path: 'advisor/choose',
               name: '新学期导师选择',
               component: Advisor_Choose,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['5']
               },
@@ -164,7 +168,7 @@ const router = new Router({
               path: 'grade',
               name: '成绩录入',
               component: Grade,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['6']
               },
@@ -176,9 +180,11 @@ const router = new Router({
           redirect: '/teach/curriculum',
           name: '教务管理',
           component: {
-            render (c) { return c('router-view') }
+            render(c) {
+              return c('router-view')
+            }
           },
-          meta : {
+          meta: {
             requireAuth: true,
           },
           children: [
@@ -186,7 +192,7 @@ const router = new Router({
               path: 'curriculum',
               name: '课程管理',
               component: ViewCourse,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['2']
               },
@@ -195,7 +201,7 @@ const router = new Router({
               path: 'request',
               name: '课程申请管理',
               component: TempCourse,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['2']
               },
@@ -204,7 +210,7 @@ const router = new Router({
               path: 'curriculum/detail',
               name: '课程详情',
               component: Course,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['2', '5', '6']
               },
@@ -213,7 +219,7 @@ const router = new Router({
               path: 'transcript',
               name: '成绩单管理',
               component: TranscriptManage,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['2']
               },
@@ -222,7 +228,7 @@ const router = new Router({
               path: 'credit',
               name: '学分管理',
               component: Credit,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['2']
               },
@@ -231,7 +237,7 @@ const router = new Router({
               path: 'pin',
               name: '识别码管理',
               component: Pin,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['2']
               },
@@ -241,14 +247,16 @@ const router = new Router({
               redirect: '/teach/advise/manage',
               name: '辅导关系',
               component: {
-                render (c) { return c('router-view') }
+                render(c) {
+                  return c('router-view')
+                }
               },
               children: [
                 {
                   path: 'manage',
                   name: '辅导关系管理',
                   component: Advise,
-                  meta : {
+                  meta: {
                     requireAuth: true,
                     role: ['2']
                   },
@@ -257,7 +265,7 @@ const router = new Router({
                   path: 'advisor',
                   name: '导师管理',
                   component: Advisor,
-                  meta : {
+                  meta: {
                     requireAuth: true,
                     role: ['2']
                   },
@@ -266,7 +274,7 @@ const router = new Router({
                   path: 'request',
                   name: '辅导关系申请管理',
                   component: RequestAdvise,
-                  meta : {
+                  meta: {
                     requireAuth: true,
                     role: ['2']
                   },
@@ -280,23 +288,22 @@ const router = new Router({
           redirect: '/advise/view',
           name: '导师系统',
           component: {
-            render (c) { return c('router-view') }
+            render(c) {
+              return c('router-view')
+            }
           },
           children: [
             {
               path: 'view',
               name: '辅导关系查看',
               component: AdviseView,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['7']
               },
             },
             {
-              path: '',
-              redirect: to => {
-                window.open("https://login.partner.microsoftonline.cn/login");
-              },
+              path: 'office',
               name: 'ONENOTE',
             },
           ]
@@ -306,14 +313,16 @@ const router = new Router({
           redirect: '/system/user',
           name: '系统管理',
           component: {
-            render (c) { return c('router-view') }
+            render(c) {
+              return c('router-view')
+            }
           },
           children: [
             {
               path: 'user',
               name: '用户管理',
               component: User,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['4']
               },
@@ -322,7 +331,7 @@ const router = new Router({
               path: 'user/detail',
               name: '新用户申请管理',
               component: UserForm,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['0', '4']
               },
@@ -331,7 +340,7 @@ const router = new Router({
               path: 'role',
               name: '角色与权限',
               component: Role,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['4']
               },
@@ -340,7 +349,7 @@ const router = new Router({
               path: 'registration',
               name: '用户注册',
               component: Reg,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['4']
               },
@@ -349,7 +358,7 @@ const router = new Router({
               path: 'monitor',
               name: '系统监控',
               component: Monitor,
-              meta : {
+              meta: {
                 requireAuth: true,
                 role: ['4']
               },
@@ -363,7 +372,9 @@ const router = new Router({
       redirect: '/404',
       name: '功能',
       component: {
-        render (c) { return c('router-view') }
+        render(c) {
+          return c('router-view')
+        }
       },
       children: [
         {
@@ -402,31 +413,31 @@ const router = new Router({
 })
 import decode from 'jwt-decode'
 
-router.beforeEach((to,from,next) => {
+router.beforeEach((to, from, next) => {
   // 这里的meta就是我们刚刚在路由里面配置的meta
-  if(to.meta.requireAuth){
+  if (to.meta.requireAuth) {
     //登录成功
-    if (isNotEmpty(window.localStorage.getItem("access_token"))){
+    if (isNotEmpty(window.localStorage.getItem("access_token"))) {
       const token = decode(window.localStorage.getItem('access_token'));
-      for(let i = 0; i < to.meta.role.length; i++)
-        for(let j = 0; j < token.rol.length; j++){
-          if(token.rol[j] == '1' || to.meta.role[i] == token.rol[j]) {
+      for (let i = 0; i < to.meta.role.length; i++)
+        for (let j = 0; j < token.rol.length; j++) {
+          if (token.rol[j] == '1' || to.meta.role[i] == token.rol[j]) {
             next();
             return
           }
         }
       next({
-        path : '/403',
-        query : {redirect : to.fullPath}
+        path: '/403',
+        query: {redirect: to.fullPath}
       })
-    }else {
+    } else {
       // 没有登录跳转到登录页面，登录成功之后再返回到之前请求的页面
       next({
-        path : '/',
-        query : {redirect : to.fullPath}
+        path: '/',
+        query: {redirect: to.fullPath}
       })
     }
-  }else {
+  } else {
     // 不需要登录的，可以继续访问
     next()
   }
