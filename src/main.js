@@ -58,9 +58,9 @@ axios.interceptors.response.use(
   });
 
 VeeValidate.Validator.extend('verify_password', {
-  getMessage: field => `密码必须包含： 至少一个大写字母，一个小写字母，一个数字，和一个特殊字符 (E.g. , . _ & ? etc)`,
+  getMessage: field => `密码必须包含： 至少一个大写字母，一个小写字母，和一个数字`,
   validate: value => {
-    let strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})')
+    let strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})');
     return strongRegex.test(value)
   }
 });
