@@ -59,12 +59,10 @@
                   type="date"
                   class="form-control"
                   size="mini"
-                  name="birthday"
                   prefix-icon="none"
                   format="yyyy-MM-dd"
                   placeholder="选择生日">
                 </el-date-picker>
-                {{regUser.birthday}}
               </b-input-group>
 
               <b-input-group class="mb-3">
@@ -122,9 +120,16 @@
           </b-card>
         </b-col>
       </b-row>
-      <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
+      <b-modal v-model="showModal"
+               size="sm"
+               :header-bg-variant="headerBgVariant"
+               ok-only
+               ok-title="关闭"
+               @ok="$router.push({path:'/login'})"
+               centered
+               title="消息">
         <div class="d-block text-center">
-          <h3>{{msg}}</h3>
+          <h4>{{msg}}</h4>
         </div>
       </b-modal>
     </div>

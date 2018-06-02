@@ -203,11 +203,16 @@
       </div>
     </b-modal>
 
-    <b-modal v-model="showModal" size="sm"
+    <b-modal v-model="showModal"
+             size="sm"
              :header-bg-variant="headerBgVariant"
-             ok-only centered title="消息">
+             ok-only
+             ok-title="关闭"
+             @ok="initTable"
+             centered
+             title="消息">
       <div class="d-block text-center">
-        <h3>{{msg}}</h3>
+        <h4>{{msg}}</h4>
       </div>
     </b-modal>
   </div>
@@ -264,24 +269,14 @@
           })
       }
     },
-    mounted: function () {
-      laydate.render({
-        elem: '#birthday',
-        theme: '#393D49',
-        showBottom: false,
-        done: (value) => {
-          this.user.birthday = value
-        }
-      })
-    },
     methods: {
       documentDownload(userId) {
         window.open(basePath + '/user/info/' + userId + '?token=' + window.localStorage.getItem('access_token'))
       },
       previewImg() {
-        let preview = document.getElementById('preview')
-        let file = document.querySelector('input[type=file]').files[0]
-        let reader = new FileReader()
+        let preview = document.getElementById('preview');
+        let file = document.querySelector('input[type=file]').files[0];
+        let reader = new FileReader();
         if (file) {
           reader.readAsDataURL(file)
         } else {
@@ -301,14 +296,14 @@
       deleteUser() {
         axios.delete('/user/' + this.deleteUserId).then((response) => {
           if (response.data.code === 2001) {
-            this.msg = '删除成功!'
-            this.showModal = true
-            this.headerBgVariant = 'success'
+            this.msg = '删除成功!';
+            this.showModal = true;
+            this.headerBgVariant = 'success';
             this.initTable()
           }
           else {
-            this.msg = response.data.msg
-            this.showModal = true
+            this.msg = response.data.msg;
+            this.showModal = true;
             this.headerBgVariant = 'danger'
           }
         })

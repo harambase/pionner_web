@@ -145,49 +145,48 @@
             </b-row>
             <b-row>
               <b-col md="2" class="my-1">
-                <label for="startdate"
-                       class="col-sm-12 control-label">*开始日期:</label>
+                <label class="col-sm-12 control-label">*课程周期:</label>
               </b-col>
               <b-col md="3" class="my-1">
-                <input id="startdate" :class="{'form-control': true, 'is-invalid': errors.has('startdate')}"
-                       v-validate="'required'" v-model="course.startDate" name="startdate"
-                       :disabled="tempCourse.status!=='0'"/>
-                <div v-show="errors.has('startdate')" class="invalid-tooltip">{{ errors.first('startdate') }}</div>
+                <el-date-picker
+                  v-model="courseDate"
+                  type="daterange"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  class="form-control"
+                  size="mini"
+                  style="height: 35px; width: 100%; padding: 8px;"
+                  :disabled="tempCourse.status!=='0'"
+                >
+                </el-date-picker>
+                <!--<input id="startdate" :class="{'form-control': true, 'is-invalid': errors.has('startdate')}"-->
+                <!--v-validate="'required'" v-model="course.startDate" name="startdate"-->
+                <!--:disabled="tempCourse.status!=='0'"/>-->
+                <!--<div v-show="errors.has('startdate')" class="invalid-tooltip">{{ errors.first('startdate') }}</div>-->
               </b-col>
               <b-col md="2" class="my-1">
-                <label for="enddate"
-                       class="col-sm-12 control-label">*结束日期:</label>
+                <label class="col-sm-12 control-label">*课程时间:</label>
               </b-col>
               <b-col md="3" class="my-1">
-                <input id="enddate" :class="{'form-control': true, 'is-invalid': errors.has('enddate')}"
-                       v-validate="'required'" name="enddate"
-                       v-model="course.endDate"
-                       :disabled="tempCourse.status!=='0'"/>
-                <div v-show="errors.has('enddate')" class="invalid-tooltip">{{ errors.first('enddate') }}</div>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col md="2" class="my-1">
-                <label for="starttime"
-                       class="col-sm-12 control-label">*开始时间:</label>
-              </b-col>
-              <b-col md="3" class="my-1">
-                <input id="starttime" :class="{'form-control': true, 'is-invalid': errors.has('startTime')}"
-                       name="startTime"
-                       v-model="course.startTime" v-validate="'required'"
-                       :disabled="tempCourse.status!=='0'"/>
-                <div v-show="errors.has('startTime')" class="invalid-tooltip">{{ errors.first('startTime') }}</div>
-              </b-col>
-              <b-col md="2" class="my-1">
-                <label for="endtime"
-                       class="col-sm-12 control-label">*结束时间:</label>
-              </b-col>
-              <b-col md="3" class="my-1">
-                <input id="endtime" :class="{'form-control': true, 'is-invalid': errors.has('endTime')}"
-                       v-validate="'required'" name="endTime"
-                       v-model="course.endTime"
-                       :disabled="tempCourse.status!=='0'"/>
-                <div v-show="errors.has('endTime')" class="invalid-tooltip">{{ errors.first('endTime') }}</div>
+                <el-time-picker
+                  is-range
+                  v-model="courseTime"
+                  range-separator="至"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
+                  placeholder="选择时间范围"
+                  class="form-control"
+                  size="mini"
+                  style="height: 35px; width: 100%; padding: 8px;"
+                  :disabled="tempCourse.status!=='0'"
+                >
+                </el-time-picker>
+                <!--<input id="starttime" :class="{'form-control': true, 'is-invalid': errors.has('startTime')}"-->
+                <!--name="startTime"-->
+                <!--v-model="course.startTime" v-validate="'required'"-->
+                <!--:disabled="tempCourse.status!=='0'"/>-->
+                <!--<div v-show="errors.has('startTime')" class="invalid-tooltip">{{ errors.first('startTime') }}</div>-->
               </b-col>
             </b-row>
             <b-row>
@@ -398,7 +397,7 @@
   export default {
     name: 'ViewCourse',
     components: {CStudentInCourseTable, CAddStudentTable},
-    data () {
+    data() {
       return {
         course: {
           crn: '',
@@ -430,6 +429,8 @@
           facultyId: '',
           courseJson: '',
         },
+        courseTime: '',
+        courseDate: '',
         courseDay: [],
         showDocument: false,
         confirm: false,
@@ -456,7 +457,7 @@
         goToUrl: '',
       }
     },
-    mounted () {
+    mounted() {
       console.log(this.pageMode)
       //学期信息
       axios.get('/course/info?search=').then((response) => {
@@ -503,69 +504,31 @@
             break
         }
       }
-
-      //执行一个laydate实例
-      laydate.render({
-        elem: '#startdate',
-        theme: '#393D49',
-        showBottom: false,
-        done: (value) => {
-          this.course.startDate = value
-        }
-      })
-      laydate.render({
-        elem: '#enddate',
-        theme: '#393D49',
-        showBottom: false,
-        done: (value) => {
-          this.course.endDate = value
-        }
-      })
-      laydate.render({
-        elem: '#starttime',
-        theme: '#393D49',
-        type: 'time',
-        min: '06:00:00',
-        max: '22:00:00',
-        showBottom: ['clear', 'confirm'],
-        done: (value) => {
-          this.course.startTime = value
-        }
-      })
-      laydate.render({
-        elem: '#endtime',
-        theme: '#393D49',
-        type: 'time',
-        min: '06:00:00',
-        max: '22:00:00',
-        showBottom: ['clear', 'confirm'],
-        done: (value) => {
-          this.course.endTime = value
-        }
-      })
     },
     computed: {
-      sortOptions () {
+      sortOptions() {
         // Create an options list from our field
         return this.field
           .filter(f => f.sortable)
-          .map(f => { return {text: f.label, value: f.key} })
+          .map(f => {
+            return {text: f.label, value: f.key}
+          })
       }
     },
     methods: {
-      goTo () {
+      goTo() {
         if (isNotEmpty(this.goToUrl)) {
           this.$router.push({path: this.goToUrl})
         }
       },
-      backToTempCourseTable () {
+      backToTempCourseTable() {
         if (this.pageMode === 'create') {
           this.$router.push({path: '/teach/request?mode=manage'})
         } else {
           this.$router.push({path: '/course/new/request?mode=faculty'})
         }
       },
-      initRequest (id) {
+      initRequest(id) {
         if (isNotEmpty(id)) {
           axios.get('/request/course/' + id).then((response) => {
             this.tempCourse = response.data.data
@@ -575,7 +538,7 @@
           })
         }
       },
-      initCourseExtend () {
+      initCourseExtend() {
         let preList = this.course.precrn.split('/')
         this.courseDay = this.course.day.split('/')
 
@@ -606,7 +569,7 @@
         this.facultyId = this.course.facultyId
       },
 
-      showCourseDetail (crn) {
+      showCourseDetail(crn) {
         if (isNotEmpty(crn)) {
           axios.get('/course/' + crn).then((response) => {
             this.course = response.data.data
@@ -615,13 +578,13 @@
         }
       },
 
-      showStudentDetail (crn, credits) {
+      showStudentDetail(crn, credits) {
         this.transcript.crn = crn
         this.transcript.credits = credits
         this.initStudentTable()
       },
 
-      infoList (search, loading) {
+      infoList(search, loading) {
         loading(true)
         this.infoOptions = []
         axios.get('/course/info?search=' + search).then((response) => {
@@ -635,7 +598,7 @@
         })
         loading(false)
       },
-      facultyList (search, loading) {
+      facultyList(search, loading) {
         loading(true)
         this.facultyOptions = []
         axios.get('/user/search?status=1&type=f&search=' + search).then((response) => {
@@ -651,7 +614,7 @@
         })
         loading(false)
       },
-      preCourseList (search, loading) {
+      preCourseList(search, loading) {
         loading(true)
         this.courseOptions = []
         axios.get('/course/search?search=' + search).then((response) => {
@@ -666,16 +629,16 @@
         loading(false)
       },
 
-      onFiltered (filteredItems) {
+      onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
 
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
 
-      prepare () {
+      prepare() {
         let day = '', precrn = ''
 
         if (isNotEmpty(this.courseDay))
@@ -701,12 +664,12 @@
         if (isNotEmpty(this.course.courseInfo))
           this.course.courseInfo = JSON.stringify(this.course.courseInfo)
       },
-      showTable () {
+      showTable() {
         this.$router.push({path: '/teach/curriculum?mode=manage'})
       },
 
       //临时课程创建
-      tempCourseCreate () {
+      tempCourseCreate() {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
@@ -731,7 +694,7 @@
         })
       },
       //临时课程修改
-      tempCourseUpdate () {
+      tempCourseUpdate() {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
@@ -756,7 +719,7 @@
           })
         })
       },
-      tempCourseApprove () {
+      tempCourseApprove() {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
@@ -772,7 +735,7 @@
         })
 
       },
-      tempCourseDecline () {
+      tempCourseDecline() {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
@@ -790,7 +753,7 @@
 
       },
 
-      courseUpdate () {
+      courseUpdate() {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
@@ -810,12 +773,12 @@
           })
         })
       },
-      transcriptReset () {
+      transcriptReset() {
         this.transcript.complete = ''
         this.transcript.studentId = ''
         this.transcript.grade = ''
       },
-      transcriptUpdate () {
+      transcriptUpdate() {
         axios.put('/transcript/' + this.transcript.id, this.transcript).then(function (response) {
           if (response.data.code === 2001)
             Showbo.Msg.alert(response.data.msg, function () {
@@ -829,14 +792,14 @@
         })
       },
 
-      addStudentReset () {
+      addStudentReset() {
         this.addStudent.studentId = ''
         this.addStudent.option.capacity = false
         this.addStudent.option.prereq = false
         this.addStudent.option.time = false
       },
 
-      update (id, tempCourse) {
+      update(id, tempCourse) {
         axios.put('/request/course/' + id, tempCourse).then((response) => {
           if (response.data.code === 2001) {
             this.msg = response.data.msg
@@ -851,7 +814,7 @@
           }
         })
       },
-      documentUpload (key) {
+      documentUpload(key) {
         if (this.showDocument)
           return
 
@@ -889,7 +852,7 @@
         })
       },
 
-      documentDownload () {
+      documentDownload() {
         if (isNotEmpty(this.id))//申请中的下载
           window.open(basePath + '/request/course/info/' + this.id + '?token=' + window.localStorage.getItem('access_token'))
         else {//查看下载

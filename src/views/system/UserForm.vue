@@ -80,15 +80,15 @@
                     <label class="col-sm-12 control-label">*生日:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
-                    <date-picker v-model="user.birthday"
-                                 lang="zh"
-                                 input-name="birthday"
-                                 type="date"
-                                 placeholder="生日"
-                                 style="flex: 1 1 auto"
-                                 format="yyyy-MM-dd"
-                                 confirm>
-                    </date-picker>
+                    <el-date-picker
+                      v-model="user.birthday"
+                      type="date"
+                      class="form-control"
+                      size="mini"
+                      prefix-icon="none"
+                      format="yyyy-MM-dd"
+                      placeholder="选择生日">
+                    </el-date-picker>
                   </b-col>
                   <b-col md="3" class="my-1">
                     <label class="col-sm-12 control-label">*邮箱:</label>
@@ -432,7 +432,7 @@
           weChat: '',
           qq: '',
           tel: '',
-          birthday: new Date(),
+          birthday: '',
           gender: '',
           comment: '',
           profile: '',

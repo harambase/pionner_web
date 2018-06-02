@@ -241,7 +241,7 @@ legend {
 }
 
 .el-input--mini .el-input__inner{
-  height: 15px;
+  height: 18px;
   flex: 1;
   border-radius: 0;
   border-color: white;
@@ -258,4 +258,8 @@ legend {
 .el-input--mini .el-input__inner::placeholder {
   color: black;
   opacity: 1;
+}
+
+.el-input--mini.el-date-editor.el-input{
+  width:100%;
 }
