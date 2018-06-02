@@ -19,12 +19,12 @@
       return {
         faculty: {
           label: '---选择教师---',
-          profile: basePath + '/pioneer/image/profile/logo.png',
+          profile: basePath + '/pioneer/img/logo.png',
           value: ''
         },
         facultyOptions: [{
           label: '---选择教师---',
-          profile: basePath + '/pioneer/image/profile/logo.png',
+          profile: '/static/images/logo.png',
           value: ''
         }],
       }
@@ -37,10 +37,10 @@
     mounted () {
       axios.get('/user/search?status=1&type=f&search=').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
-          let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-          let profilePath = basePath + '/pioneer/image/profile/logo.png'
+          let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName;
+          let profilePath = '/static/img/logo.png';
           if (isNotEmpty(response.data.data[i].profile)) {
-            let profile = JSON.parse(response.data.data[i].profile)
+            let profile = JSON.parse(response.data.data[i].profile);
             profilePath = basePath + '/pioneer' + profile.path
           }
           let item = {

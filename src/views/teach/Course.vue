@@ -151,12 +151,12 @@
                 <el-date-picker
                   v-model="courseDate"
                   type="daterange"
-                  range-separator="至"
+                  range-separator="-"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                   class="form-control"
                   size="mini"
-                  style="height: 34px; width: 100%; padding: 12px;"
+                  style="height: 34px; width: 100%; padding: 5px 12px;"
                   :disabled="tempCourse.status!=='0'"
                 >
                 </el-date-picker>
@@ -172,13 +172,13 @@
                 <el-time-picker
                   is-range
                   v-model="courseTime"
-                  range-separator="至"
+                  range-separator="-"
                   start-placeholder="开始时间"
                   end-placeholder="结束时间"
                   placeholder="选择时间范围"
                   class="form-control"
                   size="mini"
-                  style="height: 34px; width: 100%; padding: 12px;"
+                  style="height: 34px; width: 100%; padding: 5px 12px;"
                   :disabled="tempCourse.status!=='0'"
                 >
                 </el-time-picker>
@@ -491,8 +491,15 @@
         }
       },
       initCourseExtend() {
+
         let preList = this.course.precrn.split('/');
         this.courseDay = this.course.day.split('/');
+
+        this.courseDate.push(this.course.startDate);
+        this.courseDate.push(this.course.endDate);
+
+        this.courseTime.push(this.course.startTime);
+        this.courseTime.push(this.course.endTime);
 
         if (isNotEmpty(this.course.courseInfo)) {
           this.course.courseInfo = JSON.parse(this.course.courseInfo);
@@ -574,6 +581,10 @@
 
         this.course.day = day;
         this.course.precrn = precrn;
+        this.course.startDate = this.courseDate[0];
+        this.course.endDate = this.courseDate[1];
+        this.course.startTime = this.courseTime[0];
+        this.course.endTime = this.courseTime[1];
 
         if (this.pageMode === 'request' && this.id === '') {
           this.course.facultyId = ''
@@ -595,7 +606,7 @@
           if (!result)
             return;
 
-          this.prepare()
+          this.prepare();
 
           axios.post('/request/course/register', this.course).then((response) => {
             if (response.data.code === 2001) {
@@ -607,8 +618,8 @@
               this.goToUrl = '/course/request?mode=faculty'
             }
             else {
-              this.msg = response.data.msg
-              this.showModal = true
+              this.msg = response.data.msg;
+              this.showModal = true;
               this.headerBgVariant = 'danger'
             }
           })
