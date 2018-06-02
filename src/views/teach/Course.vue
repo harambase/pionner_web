@@ -156,7 +156,7 @@
                   end-placeholder="结束日期"
                   class="form-control"
                   size="mini"
-                  style="height: 35px; width: 100%; padding: 8px;"
+                  style="height: 34px; width: 100%; padding: 12px;"
                   :disabled="tempCourse.status!=='0'"
                 >
                 </el-date-picker>
@@ -178,7 +178,7 @@
                   placeholder="选择时间范围"
                   class="form-control"
                   size="mini"
-                  style="height: 35px; width: 100%; padding: 8px;"
+                  style="height: 34px; width: 100%; padding: 12px;"
                   :disabled="tempCourse.status!=='0'"
                 >
                 </el-time-picker>
@@ -255,12 +255,7 @@
                 <label class="col-sm-12 control-label">*分配教师:</label>
               </b-col>
               <b-col md="6" class="my-1">
-                <v-select name="faculty" v-validate="'required'"
-                          v-model="faculty" :filterable="false" :options="facultyOptions"
-                          :disabled="tempCourse.status!=='0'"
-                          :class="{'is-invalid': errors.has('faculty')}"
-                          @search="facultyList"></v-select>
-                <div v-show="errors.has('faculty')" class="invalid-tooltip">{{ errors.first('faculty') }}</div>
+                <CFacultySelect class="col-sm-12" v-on:pass="passFaculty"/>
               </b-col>
             </b-row>
 
@@ -324,30 +319,30 @@
                            :disabled="tempCourse.status!=='0'">
                  </textarea>
               </b-col>
-              <b-col md="2" class="my-1">
-                <label class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
+            </b-row>
+          </b-card>
+          <b-card header-tag="header"
+                  footer-tag="footer">
+            <div slot="header">
+              <i className="fa fa-align-justify"></i><strong>确认上述信息</strong>
+            </div>
+            <b-row>
+              <b-col md="3" class="my-1">
+                <label class="col-sm-12 control-label">*上述信息正确无误:</label>
               </b-col>
               <b-col md="3" class="my-1">
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="yes"
+                <div class="custom-control custom-checkbox custom-control-inline">
+                  <input type="checkbox" id="confirm" name="confirm" v-validate="'required'"
                          :class="{'custom-control-input': true, 'is-invalid': errors.has('confirm')}"
-                         name="confirm" v-model="confirm"
-                         :disabled="tempCourse.status!=='0'">
-                  <label class="custom-control-label" for="yes">确认</label>
+                         v-model="confirm">
+                  <label class="custom-control-label" for="confirm">确认</label>
                   <div v-show="errors.has('confirm')" class="invalid-tooltip">{{ errors.first('confirm') }}</div>
                 </div>
               </b-col>
-
-              <b-col md="2" class="my-1" v-show="pageMode === 'manage' || pageMode === 'create'">
-                <label class="col-sm-12 control-label">*管理员操作密码:</label>
+              <b-col md="1" class="my-1">
+                <label class="col-sm-12 control-label">操作:</label>
               </b-col>
-              <b-col md="3" class="my-1" v-show="pageMode === 'manage' || pageMode === 'create'">
-                <input type="password" v-validate="'required'" name="adminPwd"
-                       :class="{'form-control': true, 'is-invalid': errors.has('adminPwd')}"
-                       :disabled="tempCourse.status!=='0'"/>
-              </b-col>
-
-              <b-col md="2" class="my-1">
+              <b-col md="3">
                 <b-button style="width:150px;" class="btn btn-success"
                           v-if="pageMode === 'manage'"
                           @click="courseUpdate">修改课程
@@ -362,11 +357,11 @@
                           @click="tempCourseDecline"
                           :disabled="tempCourse.status!=='0'">拒绝申请
                 </b-button>
-                <b-button style="margin-left: 32%; width:150px;" class="btn btn-primary"
+                <b-button style="margin-left: 32%; width:150px;" class="btn btn-success"
                           v-if="pageMode === 'request' && id === ''"
                           @click="tempCourseCreate">提交申请
                 </b-button>
-                <b-button style="margin-left: 32%; width:150px;" class="btn btn-danger"
+                <b-button style="margin-left: 32%; width:150px;" class="btn btn-success"
                           v-if="pageMode === 'request' && id !== '' && tempCourse.status === '0'"
                           @click="tempCourseUpdate">修改申请
                 </b-button>
@@ -393,12 +388,16 @@
   import axios from 'axios'
   import CAddStudentTable from '../../components/tables/AddStudentTable'
   import CStudentInCourseTable from '../../components/tables/StudentInCourseTable'
+  import CFacultySelect from "../../components/selects/FacultySelect";
 
   export default {
     name: 'ViewCourse',
-    components: {CStudentInCourseTable, CAddStudentTable},
+    components: {CFacultySelect, CStudentInCourseTable, CAddStudentTable},
     data() {
       return {
+        pageMode: this.$route.fullPath.split('&')[0].split('=')[1],
+        id: this.$route.fullPath.split('&')[1].split('=')[1],//maybe CRN
+        url: this.$route.fullPath,
         course: {
           crn: '',
           info: '',
@@ -418,7 +417,6 @@
           facultyId: '',
           courseInfo: ''
         },
-        showAside: false,
         tempCourse: {
           id: '',
           crn: '',
@@ -434,85 +432,39 @@
         courseDay: [],
         showDocument: false,
         confirm: false,
-        pageMode: this.$route.fullPath.split('&')[0].split('=')[1],
-        id: this.$route.fullPath.split('&')[1].split('=')[1],//maybe CRN
-        url: this.$route.fullPath,
-        currentPage: 1,
-        perPage: 10,
-        totalRows: 0,
-        pageOptions: [5, 10, 15],
-        infoOptions: [],
-        facultyOptions: [],
         courseOptions: [],
-        sortBy: 'crn',
-        sortDesc: false,
-        filter: null,
-        isBusy: false,
         msg: '',
         showModal: false,
         headerBgVariant: '',
-        info: '',
         faculty: '',
         preList: '',
         goToUrl: '',
       }
     },
     mounted() {
-      console.log(this.pageMode)
-      //学期信息
-      axios.get('/course/info?search=').then((response) => {
-        for (let i = 0; i < response.data.data.length; i++) {
-          let item = {
-            label: response.data.data[i],
-            value: response.data.data[i]
-          }
-          this.infoOptions.push(item)
-        }
-      })
-      //教师
-      axios.get('/user/search?status=1&type=f&search=').then((response) => {
-        for (let i = 0; i < response.data.data.length; i++) {
-          let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-          let item = {
-            label: name,
-            value: response.data.data[i].userId
-          }
-          this.facultyOptions.push(item)
-        }
-      })
-      //课程
+      //PRE课程
       axios.get('/course/search').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
           let item = {
             label: response.data.data[i].name,
             value: response.data.data[i].crn
-          }
+          };
           this.courseOptions.push(item)
         }
-      })
+      });
 
       if (isNotEmpty(this.id)) {
         switch (this.pageMode) {
           case 'manage':
-            this.showCourseDetail(this.id)
-            break
+            this.showCourseDetail(this.id);
+            break;
           case 'student':
-            this.showStudentDetail(this.id)
-            break
+            this.showStudentDetail(this.id);
+            break;
           default:
-            this.initRequest(this.id)
+            this.initRequest(this.id);
             break
         }
-      }
-    },
-    computed: {
-      sortOptions() {
-        // Create an options list from our field
-        return this.field
-          .filter(f => f.sortable)
-          .map(f => {
-            return {text: f.label, value: f.key}
-          })
       }
     },
     methods: {
@@ -531,26 +483,26 @@
       initRequest(id) {
         if (isNotEmpty(id)) {
           axios.get('/request/course/' + id).then((response) => {
-            this.tempCourse = response.data.data
-            this.course = JSON.parse(response.data.data.courseJson)
-            this.course.facultyId = response.data.data.facultyId
+            this.tempCourse = response.data.data;
+            this.course = JSON.parse(response.data.data.courseJson);
+            this.course.facultyId = response.data.data.facultyId;
             this.initCourseExtend()
           })
         }
       },
       initCourseExtend() {
-        let preList = this.course.precrn.split('/')
-        this.courseDay = this.course.day.split('/')
+        let preList = this.course.precrn.split('/');
+        this.courseDay = this.course.day.split('/');
 
         if (isNotEmpty(this.course.courseInfo)) {
-          this.course.courseInfo = JSON.parse(this.course.courseInfo)
+          this.course.courseInfo = JSON.parse(this.course.courseInfo);
           this.showDocument = true
         }
 
         for (let i = 0; i < preList.length; i++) {
           if (isNotEmpty(preList[i])) {
             axios.get('/course/' + preList[i]).then((response) => {
-              this.preList = []
+              this.preList = [];
               this.preList.push({
                 label: response.data.data.name,
                 value: response.data.data.crn
@@ -565,72 +517,41 @@
             label: name,
             value: response.data.data.userId
           }
-        })
+        });
         this.facultyId = this.course.facultyId
       },
 
       showCourseDetail(crn) {
         if (isNotEmpty(crn)) {
           axios.get('/course/' + crn).then((response) => {
-            this.course = response.data.data
+            this.course = response.data.data;
             this.initCourseExtend()
           })
         }
       },
 
       showStudentDetail(crn, credits) {
-        this.transcript.crn = crn
-        this.transcript.credits = credits
-        this.initStudentTable()
+        this.transcript.crn = crn;
+        this.transcript.credits = credits;
       },
 
-      infoList(search, loading) {
-        loading(true)
-        this.infoOptions = []
-        axios.get('/course/info?search=' + search).then((response) => {
-          for (let i = 0; i < response.data.data.length; i++) {
-            let item = {
-              label: response.data.data[i],
-              value: response.data.data[i]
-            }
-            this.infoOptions.push(item)
-          }
-        })
-        loading(false)
-      },
-      facultyList(search, loading) {
-        loading(true)
-        this.facultyOptions = []
-        axios.get('/user/search?status=1&type=f&search=' + search).then((response) => {
-          for (let i = 0; i < response.data.data.length; i++) {
-            let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-            let item = {
-              label: name,
-              value: response.data.data[i].userId
-            }
-            this.facultyOptions.push(item)
-
-          }
-        })
-        loading(false)
-      },
       preCourseList(search, loading) {
-        loading(true)
-        this.courseOptions = []
+        loading(true);
+        this.courseOptions = [];
         axios.get('/course/search?search=' + search).then((response) => {
           for (let i = 0; i < response.data.data.length; i++) {
             let item = {
               label: response.data.data[i].name,
               value: response.data.data[i].crn
-            }
+            };
             this.courseOptions.push(item)
           }
-        })
+        });
         loading(false)
       },
 
       onFiltered(filteredItems) {
-        this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
+        this.totalRows = filteredItems.length; // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
 
@@ -644,15 +565,15 @@
         if (isNotEmpty(this.courseDay))
           for (let i = 0; i < this.courseDay.length; i++)
             if (isNotEmpty(this.courseDay[i]))
-              day += this.courseDay[i] + '/'
+              day += this.courseDay[i] + '/';
 
         if (isNotEmpty(this.preList))
           for (let i = 0; i < this.preList.length; i++)
             if (isNotEmpty(this.preList[i]))
-              precrn += this.preList[i].value + '/'
+              precrn += this.preList[i].value + '/';
 
-        this.course.day = day
-        this.course.precrn = precrn
+        this.course.day = day;
+        this.course.precrn = precrn;
 
         if (this.pageMode === 'request' && this.id === '') {
           this.course.facultyId = ''
@@ -672,17 +593,17 @@
       tempCourseCreate() {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return
+            return;
 
           this.prepare()
 
           axios.post('/request/course/register', this.course).then((response) => {
             if (response.data.code === 2001) {
-              this.msg = '申请成功，等待教务答复!'
-              this.showModal = true
-              this.headerBgVariant = 'success'
-              let id = response.data.data.id
-              this.documentUpload(id)
+              this.msg = '申请成功，等待教务答复!';
+              this.showModal = true;
+              this.headerBgVariant = 'success';
+              let id = response.data.data.id;
+              this.documentUpload(id);
               this.goToUrl = '/course/request?mode=faculty'
             }
             else {
@@ -697,23 +618,23 @@
       tempCourseUpdate() {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return
+            return;
 
-          this.prepare()
+          this.prepare();
 
-          this.tempCourse.courseJson = JSON.stringify(this.course)
+          this.tempCourse.courseJson = JSON.stringify(this.course);
 
           axios.put('/request/course/' + this.id, this.tempCourse).then((response) => {
             if (response.data.code === 2001) {
               this.documentUpload(this.id)
-              this.msg = '修改成功，请等待答复!'
-              this.showModal = true
-              this.headerBgVariant = 'success'
+              this.msg = '修改成功，请等待答复!';
+              this.showModal = true;
+              this.headerBgVariant = 'success';
               this.goToUrl = '/course/new/request?mode=faculty'
             }
             else {
-              this.msg = response.data.msg
-              this.showModal = true
+              this.msg = response.data.msg;
+              this.showModal = true;
               this.headerBgVariant = 'danger'
             }
           })
@@ -721,16 +642,16 @@
       },
       tempCourseApprove() {
         this.$validator.validateAll().then((result) => {
-          if (!result)
-            return
+          if (!result) ;
+          return
 
-          this.prepare()
+          this.prepare();
 
-          this.tempCourse.status = '1'
-          this.tempCourse.courseJson = JSON.stringify(this.course)
+          this.tempCourse.status = '1';
+          this.tempCourse.courseJson = JSON.stringify(this.course);
 
           if (!this.showDocument)
-            this.documentUpload(this.id)
+            this.documentUpload(this.id);
           this.update(this.id, this.tempCourse)
         })
 
@@ -738,15 +659,15 @@
       tempCourseDecline() {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return
+            return;
 
           if (isNotEmpty(this.course.comment)) {
-            this.tempCourse.status = '-1'
-            this.tempCourse.courseJson = JSON.stringify(this.course)
+            this.tempCourse.status = '-1';
+            this.tempCourse.courseJson = JSON.stringify(this.course);
             this.update(this.id, this.tempCourse)
           } else {
-            this.msg = '必须填写备注！'
-            this.showModal = true
+            this.msg = '必须填写备注！';
+            this.showModal = true;
             this.headerBgVariant = 'danger'
           }
         })
@@ -756,60 +677,35 @@
       courseUpdate() {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return
+            return;
 
-          this.prepare()
+          this.prepare();
           axios.put('/course/' + this.course.crn, this.course).then((response) => {
-            if (response.data.code === 2001)
-              Showbo.Msg.alert('修改成功!', function () {
-                documentUpload()
-                window.location.reload()
-              })
+            if (response.data.code === 2001) {
+              this.msg = '更新成功！';
+              this.showModal = true;
+              this.headerBgVariant = 'success'
+            }
             else {
-              this.msg = response.data.msg
-              this.showModal = true
+              this.msg = response.data.msg;
+              this.showModal = true;
               this.headerBgVariant = 'danger'
             }
           })
         })
       },
-      transcriptReset() {
-        this.transcript.complete = ''
-        this.transcript.studentId = ''
-        this.transcript.grade = ''
-      },
-      transcriptUpdate() {
-        axios.put('/transcript/' + this.transcript.id, this.transcript).then(function (response) {
-          if (response.data.code === 2001)
-            Showbo.Msg.alert(response.data.msg, function () {
-              studentInCourse.draw()
-            })
-          else {
-            this.msg = response.data.msg
-            this.showModal = true
-            this.headerBgVariant = 'danger'
-          }
-        })
-      },
-
-      addStudentReset() {
-        this.addStudent.studentId = ''
-        this.addStudent.option.capacity = false
-        this.addStudent.option.prereq = false
-        this.addStudent.option.time = false
-      },
 
       update(id, tempCourse) {
         axios.put('/request/course/' + id, tempCourse).then((response) => {
           if (response.data.code === 2001) {
-            this.msg = response.data.msg
-            this.showModal = true
-            this.headerBgVariant = 'success'
+            this.msg = response.data.msg;
+            this.showModal = true;
+            this.headerBgVariant = 'success';
             this.goToUrl = '/teach/request?mode=manage'
           }
           else {
-            this.msg = response.data.msg
-            this.showModal = true
+            this.msg = response.data.msg;
+            this.showModal = true;
             this.headerBgVariant = 'danger'
           }
         })
@@ -821,32 +717,32 @@
         if (!isNotEmpty(document.getElementById('document').files))
           return
 
-        let requestUrl = '/request/course/info/'
-        let updateUrl = '/course/info/'
-        let formData = new FormData()
+        let requestUrl = '/request/course/info/';
+        let updateUrl = '/course/info/';
+        let formData = new FormData();
 
-        formData.append('file', document.getElementById('document').files[0])
-        let url
+        formData.append('file', document.getElementById('document').files[0]);
+        let url;
 
         if (this.url.indexOf('course') !== -1 && this.pageMode !== 'manage') {
           if (isNotEmpty(key))
-            url = requestUrl + key
+            url = requestUrl + key;
           else
             url = requestUrl + this.id
         } else {
           if (isNotEmpty(key))
-            url = updateUrl + key
+            url = updateUrl + key;
           else
             url = updateUrl + this.course.crn
         }
 
         axios.put(url, formData).then((response) => {
           if (response.data.code === 2001) {
-            this.course.courseInfo = response.data.data
+            this.course.courseInfo = response.data.data;
             this.showDocument = true
           } else {
-            this.msg = response.data.msg
-            this.showModal = true
+            this.msg = response.data.msg;
+            this.showModal = true;
             this.headerBgVariant = 'danger'
           }
         })
@@ -854,10 +750,14 @@
 
       documentDownload() {
         if (isNotEmpty(this.id))//申请中的下载
-          window.open(basePath + '/request/course/info/' + this.id + '?token=' + window.localStorage.getItem('access_token'))
+          window.open(basePath + '/request/course/info/' + this.id + '?token=' + window.localStorage.getItem('access_token'));
         else {//查看下载
           window.open(basePath + '/course/info/' + this.course.crn + '?token=' + window.localStorage.getItem('access_token'))
         }
+      },
+
+      passFaculty(val) {
+        this.faculty = val
       },
     }
   }
