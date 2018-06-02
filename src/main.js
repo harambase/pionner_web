@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
 import VeeValidate from 'vee-validate'
@@ -7,7 +9,9 @@ import vSelect from 'vue-select'
 import axios from 'axios'
 
 Vue.use(BootstrapVue);
+Vue.use(ElementUI);
 Vue.use(VeeValidate, {fieldsBagName: 'formFields'});
+
 Vue.component('v-select', vSelect);
 
 token = window.localStorage.getItem('access_token');

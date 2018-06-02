@@ -80,10 +80,15 @@
                     <label class="col-sm-12 control-label">*生日:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
-                    <input :class="{'form-control': true, 'is-invalid': errors.has('birthday')}"
-                           v-model="user.birthday"
-                           v-validate="'required|min:10|max:10'" name="birthday"/>
-                    <div v-show="errors.has('birthday')" class="invalid-tooltip">{{ errors.first('birthday') }}</div>
+                    <date-picker v-model="user.birthday"
+                                 lang="zh"
+                                 input-name="birthday"
+                                 type="date"
+                                 placeholder="生日"
+                                 style="flex: 1 1 auto"
+                                 format="yyyy-MM-dd"
+                                 confirm>
+                    </date-picker>
                   </b-col>
                   <b-col md="3" class="my-1">
                     <label class="col-sm-12 control-label">*邮箱:</label>
@@ -427,7 +432,7 @@
           weChat: '',
           qq: '',
           tel: '',
-          birthday: '',
+          birthday: new Date(),
           gender: '',
           comment: '',
           profile: '',

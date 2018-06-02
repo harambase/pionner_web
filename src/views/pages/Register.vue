@@ -54,10 +54,16 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="icon-calendar"></i></span>
                 </div>
-                <input id="birthday" type="text" name="birthday" class="form-control" placeholder="*生日"
-                       v-validate="'required'" :class="{'form-control': true, 'is-invalid': errors.has('birthday')}"
-                       v-model="regUser.birthday" required>
-                <div v-show="errors.has('birthday')" class="invalid-tooltip">{{ errors.first('birthday') }}</div>
+                <date-picker v-model="regUser.birthday"
+                             lang="zh"
+                             input-name="birthday"
+                             type="datetime"
+                             placeholder="生日"
+                             style="flex: 1 1 auto"
+                             format="yyyy-MM-dd"
+                             confirm>
+                </date-picker>
+                {{regUser.birthday}}
               </b-input-group>
 
               <b-input-group class="mb-3">
@@ -127,9 +133,11 @@
 <script>
   import axios from 'axios'
   import md5 from 'js-md5'
+  import DatePicker from 'vue2-datepicker'
 
   export default {
-    name: '',
+    name: 'Register',
+    components: { DatePicker },
     data () {
       return {
         regUser: {
@@ -158,36 +166,26 @@
         headerBgVariant: '',
       }
     },
-    mounted: function () {
-      laydate.render({
-        elem: '#birthday',
-        theme: '#393D49',
-        showBottom: false,
-        done: (value) => {
-          this.regUser.birthday = value
-        }
-      })
-    },
     methods: {
       doReg: function () {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return
-          let regUser = this.regUser
-          let info = this.info.year + '-' + this.info.semester
+            return;
+          let regUser = this.regUser;
+          let info = this.info.year + '-' + this.info.semester;
 
-          regUser.password = md5(this.regUser.password)
-          regUser.info = info
+          regUser.password = md5(this.regUser.password);
+          regUser.info = info;
 
           axios.post('/request/user/register', regUser).then((response) => {
             if (response.data.code === 2001) {
-              this.msg = '申请成功！请等待后台通过。'
-              this.headerBgVariant = 'success'
+              this.msg = '申请成功！请等待审核通过。';
+              this.headerBgVariant = 'success';
               this.showModal = true
 
             } else {
-              this.msg = response.data.msg
-              this.headerBgVariant = 'danger'
+              this.msg = response.data.msg;
+              this.headerBgVariant = 'danger';
               this.showModal = true
             }
           })
