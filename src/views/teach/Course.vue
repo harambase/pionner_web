@@ -160,7 +160,6 @@
                   :disabled="tempCourse.status!=='0'"
                 >
                 </el-date-picker>
-                {{courseDate}}
                 <!--<input id="startdate" :class="{'form-control': true, 'is-invalid': errors.has('startdate')}"-->
                 <!--v-validate="'required'" v-model="course.startDate" name="startdate"-->
                 <!--:disabled="tempCourse.status!=='0'"/>-->
@@ -183,7 +182,6 @@
                   :disabled="tempCourse.status!=='0'"
                 >
                 </el-time-picker>
-                {{courseTime}}
                 <!--<input id="starttime" :class="{'form-control': true, 'is-invalid': errors.has('startTime')}"-->
                 <!--name="startTime"-->
                 <!--v-model="course.startTime" v-validate="'required'"-->
@@ -284,6 +282,19 @@
                 <label class="col-sm-12 control-label">上传课程大纲:</label>
               </b-col>
               <b-col md="6" class="my-1" v-if="!showDocument">
+                <!--<el-upload-->
+                  <!--class="upload-demo"-->
+                  <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+                  <!--:on-preview="handlePreview"-->
+                  <!--:on-remove="handleRemove"-->
+                  <!--:before-remove="beforeRemove"-->
+                  <!--multiple-->
+                  <!--:limit="3"-->
+                  <!--:on-exceed="handleExceed"-->
+                  <!--:file-list="fileList">-->
+                  <!--<el-button size="small" type="primary">点击上传</el-button>-->
+                  <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+                <!--</el-upload>-->
                 <input type="file" id="document"
                        :disabled="tempCourse.status!=='0'">
               </b-col>
@@ -368,7 +379,6 @@
                           v-if="pageMode === 'request' && id !== '' && tempCourse.status === '0'"
                           @click="tempCourseUpdate">修改申请
                 </b-button>
-                {{course}}
               </b-col>
             </b-row>
           </b-card>
@@ -377,12 +387,16 @@
 
     </b-row>
 
-    <b-modal v-model="showModal" size="sm"
+    <b-modal v-model="showModal"
+             size="sm"
              :header-bg-variant="headerBgVariant"
+             ok-only
+             ok-title="关闭"
              @ok="goTo"
-             ok-only centered title="消息">
+             centered
+             title="消息">
       <div class="d-block text-center">
-        <h3>{{msg}}</h3>
+        <h4>{{msg}}</h4>
       </div>
     </b-modal>
   </div>

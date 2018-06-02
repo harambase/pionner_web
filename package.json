@@ -19,7 +19,6 @@
   "dependencies": {
     "bootstrap": "4.0.0-beta.3",
     "bootstrap-vue": "1.4.0",
-    "flag-icon-css": "2.9.0",
     "font-awesome": "^4.7.0",
     "glyphicons-halflings": "1.9.1",
     "simple-line-icons": "^2.4.1",
