@@ -160,6 +160,7 @@
                   :disabled="tempCourse.status!=='0'"
                 >
                 </el-date-picker>
+                {{courseDate}}
                 <!--<input id="startdate" :class="{'form-control': true, 'is-invalid': errors.has('startdate')}"-->
                 <!--v-validate="'required'" v-model="course.startDate" name="startdate"-->
                 <!--:disabled="tempCourse.status!=='0'"/>-->
@@ -182,6 +183,7 @@
                   :disabled="tempCourse.status!=='0'"
                 >
                 </el-time-picker>
+                {{courseTime}}
                 <!--<input id="starttime" :class="{'form-control': true, 'is-invalid': errors.has('startTime')}"-->
                 <!--name="startTime"-->
                 <!--v-model="course.startTime" v-validate="'required'"-->
@@ -359,12 +361,14 @@
                 </b-button>
                 <b-button style="margin-left: 32%; width:150px;" class="btn btn-success"
                           v-if="pageMode === 'request' && id === ''"
-                          @click="tempCourseCreate">提交申请
+                          @click="prepare">提交申请
+                          <!--@click="tempCourseCreate">提交申请-->
                 </b-button>
                 <b-button style="margin-left: 32%; width:150px;" class="btn btn-success"
                           v-if="pageMode === 'request' && id !== '' && tempCourse.status === '0'"
                           @click="tempCourseUpdate">修改申请
                 </b-button>
+                {{course}}
               </b-col>
             </b-row>
           </b-card>
@@ -566,6 +570,8 @@
         return value !== '' && value !== undefined && value !== null
       },
 
+
+
       prepare() {
         let day = '', precrn = ''
 
@@ -581,10 +587,11 @@
 
         this.course.day = day;
         this.course.precrn = precrn;
-        this.course.startDate = this.courseDate[0];
-        this.course.endDate = this.courseDate[1];
-        this.course.startTime = this.courseTime[0];
-        this.course.endTime = this.courseTime[1];
+
+        this.course.startDate = date2Str(this.courseDate[0], "yyyy-MM-dd");
+        this.course.endDate = date2Str(this.courseDate[1], "yyyy-MM-dd");
+        this.course.startTime = date2Str(this.courseTime[1], "hh:mm:ss");
+        this.course.endTime = date2Str(this.courseTime[1], "hh:mm:ss");
 
         if (this.pageMode === 'request' && this.id === '') {
           this.course.facultyId = ''
