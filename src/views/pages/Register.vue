@@ -54,15 +54,16 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="icon-calendar"></i></span>
                 </div>
-                <date-picker v-model="regUser.birthday"
-                             lang="zh"
-                             input-name="birthday"
-                             type="datetime"
-                             placeholder="生日"
-                             style="flex: 1 1 auto"
-                             format="yyyy-MM-dd"
-                             confirm>
-                </date-picker>
+                <el-date-picker
+                  v-model="regUser.birthday"
+                  type="date"
+                  class="form-control"
+                  size="mini"
+                  name="birthday"
+                  prefix-icon="none"
+                  format="yyyy-MM-dd"
+                  placeholder="选择生日">
+                </el-date-picker>
                 {{regUser.birthday}}
               </b-input-group>
 

@@ -239,3 +239,23 @@ legend {
     display: block !important;
   }
 }
+
+.el-input--mini .el-input__inner{
+  height: 15px;
+  flex: 1;
+  border-radius: 0;
+  border-color: white;
+  box-sizing: border-box;
+  color: #333333;
+  display: inline-block;
+  font-size: inherit;
+  outline: 0;
+  padding: 0 0;
+  transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  width: 100%;
+}
+
+.el-input--mini .el-input__inner::placeholder {
+  color: black;
+  opacity: 1;
+}
