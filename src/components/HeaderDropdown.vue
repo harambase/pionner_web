@@ -30,7 +30,7 @@
         this.user = response.data.data;
         if (isNotEmpty(this.user.profile)) {
           this.profile = JSON.parse(this.user.profile);
-          this.profilePath = basePath + '/pioneer' + this.profile.path
+          this.profilePath = basePath + '/static' + this.profile.path
         }
       })
     },

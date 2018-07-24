@@ -423,7 +423,7 @@
 
         if (isNotEmpty(this.user.profile)) {
           this.profile = JSON.parse(this.user.profile);
-          this.profilePath = basePath + '/pioneer' + this.profile.path;
+          this.profilePath = basePath + '/static' + this.profile.path;
           this.showProfile = true
         }
 
@@ -494,7 +494,7 @@
               this.headerBgVariant = 'success';
 
               this.user.profile = response.data.data;
-              this.profilePath = basePath + '/pioneer' + this.user.profile.path;
+              this.profilePath = basePath  + this.user.profile.path;
               this.showProfile = true;
               let file = document.querySelector('input[type=file]').files[0];
               let current = document.getElementById('current');

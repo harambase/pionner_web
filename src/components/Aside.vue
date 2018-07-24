@@ -8,7 +8,7 @@
               <div class="py-3 mr-3 float-left">
                 <div class="avatar">
                   <img v-if="isNotEmpty(item.pic)"
-                       :src="basePath + '/pioneer' + JSON.parse(item.pic).path"
+                       :src="basePath + '/static' + JSON.parse(item.pic).path"
                        style="width: 40px;height: 40px"
                        class="img-avatar">
                   <img v-else
