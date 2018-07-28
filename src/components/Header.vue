@@ -8,8 +8,8 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <b-navbar-nav class="d-md-down-none">
-      <strong>先锋教育教务系统</strong>
-      <small class="mt-1">&nbsp; PIONEER Educational Administration System</small>
+      <strong>教育管理系统 EAS</strong>
+      <small class="mt-1">&nbsp; Educational Administration System</small>
     </b-navbar-nav>
     <b-navbar-nav class="ml-auto">
       <b-nav-item class="d-md-down-none">

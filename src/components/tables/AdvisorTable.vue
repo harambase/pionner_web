@@ -52,11 +52,11 @@
         <b-row>
           <b-col md="3">
             <img v-if="isNotEmpty(row.item.profile)"
-                 :src="basePath + '/pioneer' + JSON.parse(row.item.profile).path"
+                 :src="basePath + '/static' + JSON.parse(row.item.profile).path"
                  style="width: 45px;height: 45px"
                  class="img-avatar">
             <img v-else
-                 :src="basePath + '/pioneer/image/profile/logo.png'"
+                 :src="basePath + '/static/img/logo.png'"
                  style="width: 45px;height: 45px"
                  class="img-avatar">
           </b-col>

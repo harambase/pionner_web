@@ -65,7 +65,7 @@
               <b-row>
                 <b-col md="3">
                   <img v-if="isNotEmpty(row.item.profile)"
-                       :src="basePath + '/pioneer' + JSON.parse(row.item.profile).path"
+                       :src="basePath + '/static' + JSON.parse(row.item.profile).path"
                        style="width: 30px;height: 30px"
                        class="img-avatar">
                   <img v-else
@@ -163,7 +163,7 @@
                       </b-col>
                       <b-col md="3" class="my-1">
                         <img v-if="isNotEmpty(row.item.pic)"
-                             :src="basePath + '/pioneer' + JSON.parse(row.item.pic).path"
+                             :src="basePath + '/static' + JSON.parse(row.item.pic).path"
                              style="width: 40px;height: 40px"
                              class="img-avatar">
                         <img v-else

@@ -19,7 +19,7 @@
       return {
         faculty: {
           label: '---选择教师---',
-          profile: basePath + '/pioneer/img/logo.png',
+          profile: basePath + '/static/img/logo.png',
           value: ''
         },
         facultyOptions: [{
@@ -41,7 +41,7 @@
           let profilePath = '/static/img/logo.png';
           if (isNotEmpty(response.data.data[i].profile)) {
             let profile = JSON.parse(response.data.data[i].profile);
-            profilePath = basePath + '/pioneer' + profile.path
+            profilePath = basePath + '/static' + profile.path
           }
           let item = {
             label: name,
@@ -62,7 +62,7 @@
             let profilePath = ''
             if (isNotEmpty(response.data.data[i].profile)) {
               let profile = JSON.parse(response.data.data[i].profile)
-              profilePath = basePath + '/pioneer' + profile.path
+              profilePath = basePath + '/static' + profile.path
             }
             let item = {
               label: name,

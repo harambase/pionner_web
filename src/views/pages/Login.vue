@@ -7,8 +7,8 @@
             <b-card no-body class='text-white p-4' id='user'
                     style="background-color: rgba(0,0,0,0.65); color:white; border: none;">
               <b-card-body>
-                <h1>登录 Login</h1>
-                <p>Log in via Pioneer Network Account:</p>
+                <h1>登录 | LOG IN</h1>
+                <p>Educational Administration System (EAS)</p>
                 <div v-if="loginError">
                   <p class='text-danger'>用户名或者密码不正确!</p>
                 </div>
@@ -30,7 +30,7 @@
                 </b-input-group>
                 <b-row>
                   <b-col cols='4'>
-                    <b-button variant='primary' class='px-4' @click="doLogin">登录</b-button>
+                    <b-button variant='primary' class='px-4' @click="doLogin">登录 LOG IN</b-button>
                   </b-col>
                   <b-col cols='4' class='text-right'>
                     <b-button variant='success' class='px-4 d-md-down' style="display: none;" @click="goToReg">注册
@@ -46,9 +46,9 @@
                     style='background-color: rgba(24, 125, 160, 0.65); color:white; width:44%; border: none;'>
               <b-card-body class='text-center'>
                 <div>
-                  <h1>注册 Sign Up</h1>
-                  <p>没有先锋账号？ Need an Account? </p>
-                  <b-button variant='success' class='px-4 mt-2' @click="goToReg">点击注册</b-button>
+                  <h1>注册 | SIGN UP</h1>
+                  <p>没有EAS账号？ Need an EAS Account? </p>
+                  <b-button variant='success' class='px-4 mt-2' @click="goToReg">点击注册 SIGN UP</b-button>
                   <!--<img src="/static/img/weChat.jpg" class="mt-2" width="100" height="100"/>-->
                 </div>
               </b-card-body>

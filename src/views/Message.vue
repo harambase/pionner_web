@@ -87,7 +87,7 @@
                           <b-row>
                             <b-col md="2" class="my-1">
                               <img v-if="isNotEmpty(row.item.pic)"
-                                   :src="basePath + '/pioneer' + JSON.parse(row.item.pic).path"
+                                   :src="basePath + '/static' + JSON.parse(row.item.pic).path"
                                    style="width: 40px;height: 40px"
                                    class="img-avatar">
                               <img v-else

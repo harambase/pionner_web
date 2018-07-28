@@ -54,7 +54,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="icon-calendar"></i></span>
                 </div>
-                <el-date-picker
+                <el-date-picker style="width:80%"
                   v-model="regUser.birthday"
                   type="date"
                   class="form-control"

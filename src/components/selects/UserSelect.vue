@@ -20,12 +20,12 @@
       return {
         user: {
           label: '---选择用户---',
-          profile: basePath + '/pioneer/image/profile/logo.png',
+          profile: basePath + '/static/img/logo.png',
           value: ''
         },
         userOptions: [{
           label: '---选择用户---',
-          profile: basePath + '/pioneer/image/profile/logo.png',
+          profile: basePath + '/static/img/logo.png',
           value: ''
         }],
       }
@@ -39,10 +39,10 @@
       axios.get('/user/search?status=1&search=').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
           let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-          let profilePath = basePath + '/pioneer/image/profile/logo.png'
+          let profilePath = basePath + '/static/img/logo.png'
           if (isNotEmpty(response.data.data[i].profile)) {
             let profile = JSON.parse(response.data.data[i].profile)
-            profilePath = basePath + '/pioneer' + profile.path
+            profilePath = basePath + '/static' + profile.path
           }
           let item = {
             label: name,
@@ -60,10 +60,10 @@
         axios.get('/user/search?status=1&search=' + search).then((response) => {
           for (let i = 0; i < response.data.data.length; i++) {
             let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
-            let profilePath = basePath + '/pioneer/image/profile/logo.png'
+            let profilePath = basePath + '/static/img/logo.png'
             if (isNotEmpty(response.data.data[i].profile)) {
               let profile = JSON.parse(response.data.data[i].profile)
-              profilePath = basePath + '/pioneer' + profile.path
+              profilePath = basePath + '/static' + profile.path
             }
             let item = {
               label: name,
