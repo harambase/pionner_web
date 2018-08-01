@@ -3,6 +3,7 @@
     <template slot="button-content">
       <small> 欢迎回来 {{user.lastName}}, {{user.firstName}}</small> <img :src="profilePath" class="img-avatar">
     </template>
+
     <b-dropdown-header tag="div" class="text-center"><strong>用户 {{user.userId}}</strong>
     </b-dropdown-header>
     <b-dropdown-item @click="viewProfile"><i class="fa fa-user"></i> 个人资料</b-dropdown-item>

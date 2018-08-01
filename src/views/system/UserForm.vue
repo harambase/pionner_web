@@ -29,8 +29,8 @@
                     <label class="col-sm-12 control-label">*年份-学期:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
-                    <input :class="{'disabled': true, 'form-control': true, 'is-invalid': errors.has('info')}"
-                           v-model="user.info" placeholder="2018-01"
+                    <input :class="{'form-control': true, 'is-invalid': errors.has('info')}"
+                           v-model="user.info" placeholder="2018-01" disabled
                            v-validate="'required'" name="info"/>
                     <div v-show="errors.has('info')" class="invalid-tooltip">{{ errors.first('info') }}</div>
                   </b-col>
@@ -38,8 +38,8 @@
                     <label class="col-sm-12 control-label">*用户ID:</label>
                   </b-col>
                   <b-col md="3" class="my-1" v-if="pageMode !== 'create'">
-                    <input :class="{'disabled': true, 'form-control': true, 'is-invalid': errors.has('userId')}"
-                           v-model="user.userId"
+                    <input :class="{'form-control': true, 'is-invalid': errors.has('userId')}"
+                           v-model="user.userId" disabled
                            v-validate="'required'" name="userId"/>
                     <div v-show="errors.has('userId')" class="invalid-tooltip">{{ errors.first('userId') }}</div>
                   </b-col>
@@ -339,6 +339,7 @@
                   <b-col md="8">
                      <textarea style="resize: none;" class="form-control" rows="3"
                                v-model="user.comment"></textarea>
+                    {{user}}
                   </b-col>
                 </b-row>
               </b-card>
@@ -485,6 +486,7 @@
         if (isNotEmpty(this.user.roleId))
           this.userRole = this.user.roleId.split('/');
 
+        console.log(this.user.profile)
         if (isNotEmpty(this.user.profile)) {
           this.profile = JSON.parse(this.user.profile);
           this.profilePath = basePath + '/static' + this.profile.path;

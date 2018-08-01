@@ -7,6 +7,7 @@ import router from './router'
 import VeeValidate from 'vee-validate'
 import vSelect from 'vue-select'
 import axios from 'axios'
+import { Loading } from 'element-ui';
 
 Vue.use(BootstrapVue);
 Vue.use(ElementUI);
@@ -15,30 +16,36 @@ Vue.use(VeeValidate, {fieldsBagName: 'formFields'});
 Vue.component('v-select', vSelect);
 
 token = window.localStorage.getItem('access_token');
-axios.defaults.baseURL = basePath;
 
+let loading;
+
+axios.defaults.baseURL = basePath;
 axios.interceptors.request.use(
   config => {
     // 判断是否存在token，如果存在的话，则每个http header都加上token
+    loading = Loading.service({ fullscreen: true });
     if (token !== null && token !== undefined) {
       config.headers.Authorization = 'Bearer ' + token
     }
     return config
   },
   err => {
+    loading.close();
     return Promise.reject(err)
   });
 
 axios.interceptors.response.use(
   response => {
+    loading.close();
     return response
   },
   error => {
+    loading.close();
     if (error.response) {
       switch (error.response.status) {
         case 401:
           // 返回 401 清除token信息并跳转到登录页面
-          window.localStorage.removeItem('access_token')
+          window.localStorage.removeItem('access_token');
           router.replace({
             path: '/',
             query: {redirect: router.currentRoute.fullPath}

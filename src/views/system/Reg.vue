@@ -181,7 +181,7 @@
                         </b-col>
                         <b-col md="3" class="my-1">
                           <img v-if="isNotEmpty(JSON.parse(row.item.userJson).profile)"
-                               :src="basePath + '/pioneer' + JSON.parse(row.item.userJson).profile.path"
+                               :src="basePath + '/static' + JSON.parse(JSON.parse(row.item.userJson).profile).path"
                                style="width: 230px;height: 230px"
                                class="img-avatar">
                         </b-col>
@@ -285,19 +285,6 @@
       showDeleteTempUser (id) {
         this.showDeleteModal = true
         this.deleteId = id
-      },
-      previewImg () {
-        let preview = document.getElementById('preview')
-        let file = document.querySelector('input[type=file]').files[0]
-        let reader = new FileReader()
-        if (file) {
-          reader.readAsDataURL(file)
-        } else {
-          preview.src = ''
-        }
-        reader.onloadend = function () {
-          preview.src = reader.result
-        }
       },
       tempUserDetail (id) {
         this.$router.push({path: '/system/user/detail?mode=request&id=' + id})

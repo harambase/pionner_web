@@ -68,9 +68,15 @@
                     <label class="col-sm-12 control-label">*生日:</label>
                   </b-col>
                   <b-col md="3" class="my-1">
-                    <input :class="{'form-control': true, 'is-invalid': errors.has('birthday')}"
-                           v-model="user.birthday"
-                           v-validate="'required|min:10|max:10'" name="birthday"/>
+                    <el-date-picker
+                      v-model="user.birthday"
+                      type="date"
+                      class="form-control"
+                      size="mini"
+                      prefix-icon="none"
+                      format="yyyy-MM-dd"
+                      placeholder="选择生日">
+                    </el-date-picker>
                     <div v-show="errors.has('birthday')" class="invalid-tooltip">{{ errors.first('birthday') }}</div>
                   </b-col>
                   <b-col md="3" class="my-1">
