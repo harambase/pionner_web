@@ -485,7 +485,6 @@
         if (isNotEmpty(this.user.roleId))
           this.userRole = this.user.roleId.split('/');
 
-        console.log(this.user.profile)
         if (isNotEmpty(this.user.profile)) {
           this.profile = JSON.parse(this.user.profile);
           this.profilePath = basePath + '/static' + this.profile.path;
@@ -589,7 +588,7 @@
       },
       postPrepare() {
         let type = '';
-        let roleId = '0/';
+        let roleId = '';
         for (let i = 0; i < this.userType.length; i++)
           if (this.userType[i] !== '')
             type += this.userType[i] + '/';
@@ -597,9 +596,11 @@
           if (this.userRole[i] !== '')
             roleId += this.userRole[i] + '/';
 
-        if (type.indexOf('s') !== -1)
+        if(roleId.indexOf('0/') === -1)
+          roleId += '0/';
+        if (type.indexOf('s') !== -1 && roleId.indexOf('5/') === -1)
           roleId += '5/';
-        if (type.indexOf('f') !== -1)
+        if (type.indexOf('f') !== -1 && roleId.indexOf('6/7/') === -1)
           roleId += '6/7/';
 
         this.user.type = type;

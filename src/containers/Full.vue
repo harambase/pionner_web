@@ -18,7 +18,7 @@
 <script>
   import nav from '../_nav'
   import decode from 'jwt-decode'
-  import { Header as AppHeader, Sidebar, Aside as AppAside, Footer as AppFooter, Breadcrumb } from '../components/'
+  import {Header as AppHeader, Sidebar, Aside as AppAside, Footer as AppFooter, Breadcrumb} from '../components/'
 
   export default {
     name: 'full',
@@ -29,29 +29,39 @@
       AppFooter,
       Breadcrumb
     },
-    data () {
+    data() {
       return {
         nav: nav.items
       }
     },
     computed: {
-      itemFilter () {
-        let navItems = []
-        const token = decode(window.localStorage.getItem('access_token'))
+      itemFilter() {
+        let navItems = [];
+        const token = decode(window.localStorage.getItem('access_token'));
+
         nav.items.forEach(item => {
           for (let i = 0; i < token.rol.length; i++) {
-            if (token.rol[i] == '1' || item.meta.role == token.rol[i]) {
+            if (token.rol[i] == '1') {
               navItems.push(item);
               break
+            } else {
+              for (let j = 0; j < item.meta.role.length; j++) {
+                if (item.meta.role[j] == token.rol[i]) {
+                  navItems.push(item);
+                  i = token.rol.length;
+                  break
+                }
+              }
             }
           }
+
         });
         return navItems
       },
-      name () {
+      name() {
         return this.$route.name
       },
-      list () {
+      list() {
         return this.$route.matched
       }
     }
