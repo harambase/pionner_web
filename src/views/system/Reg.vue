@@ -119,7 +119,7 @@
                       </div>
                       <hr/>
                       <b-row>
-                        <b-col md="9" class="my-1">
+                        <b-col md="12" class="my-1">
                           <div class="mr-1">
                             <dl class="row">
                               <dt class="col-sm-1">QQ:</dt>
@@ -178,12 +178,6 @@
                               </dd>
                             </dl>
                           </div>
-                        </b-col>
-                        <b-col md="3" class="my-1">
-                          <img v-if="isNotEmpty(JSON.parse(row.item.userJson).profile)"
-                               :src="basePath + '/static' + JSON.parse(JSON.parse(row.item.userJson).profile).path"
-                               style="width: 230px;height: 230px"
-                               class="img-avatar">
                         </b-col>
                       </b-row>
                     </b-list-group-item>

@@ -339,7 +339,6 @@
                   <b-col md="8">
                      <textarea style="resize: none;" class="form-control" rows="3"
                                v-model="user.comment"></textarea>
-                    {{user}}
                   </b-col>
                 </b-row>
               </b-card>

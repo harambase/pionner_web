@@ -162,13 +162,13 @@
                         </div>
                       </b-col>
                       <b-col md="3" class="my-1">
-                        <img v-if="isNotEmpty(row.item.pic)"
-                             :src="basePath + '/static' + JSON.parse(row.item.pic).path"
-                             style="width: 40px;height: 40px"
+                        <img v-if="isNotEmpty(row.item.profile)"
+                             :src="basePath + '/static' + JSON.parse(row.item.profile).path"
+                             style="width: 70%"
                              class="img-avatar">
                         <img v-else
                              src="/static/img/logo-symbol.png"
-                             style="width: 40px;height: 40px"
+                             style="width: 70%"
                              class="img-avatar">
                       </b-col>
                     </b-row>
