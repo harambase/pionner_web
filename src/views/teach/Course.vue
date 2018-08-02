@@ -221,6 +221,11 @@
                   size="mini"
                   style="height: 34px; width: 100%; padding: 5px 12px;"
                   :disabled="tempCourse.status!=='0'"
+                  :picker-options="{
+                    start: '08:30',
+                    step: '00:15',
+                    end: '18:30'
+                  }"
                 >
                 </el-time-picker>
                 <!--<input id="starttime" :class="{'form-control': true, 'is-invalid': errors.has('startTime')}"-->
@@ -282,7 +287,8 @@
               </b-col>
             </b-row>
             <div slot="footer">
-              <i className="fa fa-align-justify"></i><strong>*为必填！</strong>
+              <i className="fa fa-align-justify"></i><strong>*为必填！ 注意，如果上课时间不是重复时间段，请再创建一个新课程，命名为 XX课程
+              第二时段，并且学分填写为0学分。</strong>
             </div>
           </b-card>
           <b-card
@@ -299,7 +305,7 @@
                 <label class="col-sm-12 control-label">*分配教师:</label>
               </b-col>
               <b-col md="6" class="my-1">
-                <CFacultySelect class="col-sm-12" v-on:pass="passFaculty"/>
+                <CFacultySelect class="col-sm-12" v-on:pass="passFaculty" :parentFaculty="faculty"/>
               </b-col>
             </b-row>
 
@@ -314,6 +320,9 @@
                 </v-select>
               </b-col>
             </b-row>
+            <div slot="footer">
+              <i className="fa fa-align-justify"></i><strong>对于一节课有多个老师的话，请在此处仅填写主要的负责老师，并在备注中写出参与课程的老师名字。</strong>
+            </div>
           </b-card>
           <b-card
             header-tag="header"
@@ -415,7 +424,7 @@
         </b-card>
       </b-col>
     </b-row>
-
+    {{faculty}}
     <b-modal v-model="showModal"
              size="sm"
              :header-bg-variant="headerBgVariant"
@@ -478,8 +487,8 @@
           facultyId: '',
           courseJson: '',
         },
-        courseTime: '',
-        courseDate: '',
+        courseTime: [new Date(2016, 9, 10, 9, 0), new Date(2016, 9, 10, 11, 0)],
+        courseDate: [],
         courseDay: [],
         showDocument: false,
         confirm: false,
@@ -536,31 +545,36 @@
           axios.get('/request/course/' + id).then((response) => {
             this.tempCourse = response.data.data;
             this.course = JSON.parse(response.data.data.courseJson);
-            this.course.facultyId = response.data.data.facultyId;
+            console.log(this.course);
             this.initCourseExtend()
           })
         }
       },
       initCourseExtend() {
 
+        //init INFO
         let info = this.course.info.split("-");
         this.info.year = info[0];
         this.info.semester = info[1];
 
-        let preList = this.course.precrn.split('/');
+        //init DAYS and times
         this.courseDay = this.course.day.split('/');
-
         this.courseDate.push(this.course.startDate);
         this.courseDate.push(this.course.endDate);
 
-        this.courseTime.push(this.course.startTime);
-        this.courseTime.push(this.course.endTime);
+        this.courseTime = [
+          new Date(2018, 8, 3, parseInt(this.course.startTime.split(":")[0]), parseInt(this.course.startTime.split(":")[1])),
+          new Date(2018, 8, 3, parseInt(this.course.endTime.split(":")[0]), parseInt(this.course.endTime.split(":")[1]))
+        ];
 
+        //init documents
         if (isNotEmpty(this.course.courseInfo)) {
           this.course.courseInfo = JSON.parse(this.course.courseInfo);
           this.showDocument = true
         }
 
+        //init PRECOURSE
+        let preList = this.course.precrn.split('/');
         for (let i = 0; i < preList.length; i++) {
           if (isNotEmpty(preList[i])) {
             axios.get('/course/' + preList[i]).then((response) => {
@@ -574,10 +588,16 @@
         }
 
         axios.get('/user/' + this.course.facultyId).then((response) => {
-          let name = response.data.data.lastName + ', ' + response.data.data.firstName
+          let name = response.data.data.lastName + ', ' + response.data.data.firstName;
+          let profilePath = '/static/img/logo.png';
+          if (isNotEmpty(response.data.data.profile)) {
+            let profile = JSON.parse(response.data.data.profile);
+            profilePath = basePath + '/static' + profile.path
+          }
           this.faculty = {
             label: name,
-            value: response.data.data.userId
+            value: response.data.data.userId,
+            profile: profilePath
           }
         });
         this.facultyId = this.course.facultyId
@@ -642,12 +662,11 @@
 
         this.course.startDate = date2Str(this.courseDate[0], "yyyy-MM-dd");
         this.course.endDate = date2Str(this.courseDate[1], "yyyy-MM-dd");
-        this.course.startTime = date2Str(this.courseTime[1], "hh:mm:ss");
+        this.course.startTime = date2Str(this.courseTime[0], "hh:mm:ss");
         this.course.endTime = date2Str(this.courseTime[1], "hh:mm:ss");
 
-        if (this.pageMode === 'request' && this.id === '') {
-          this.course.facultyId = ''
-        }
+        if (this.pageMode === 'request' && this.id === '')
+          this.course.facultyId = '';
         else {
           this.course.facultyId = this.faculty.value
         }

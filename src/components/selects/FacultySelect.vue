@@ -15,6 +15,7 @@
 
   export default {
     name: 'c-facultySelect',
+    props: ['parentFaculty'],
     data () {
       return {
         faculty: {
@@ -32,6 +33,9 @@
     watch: {
       faculty: function (val) {
         this.$emit('pass', val)
+      },
+      parentFaculty: function (val) {
+        this.faculty = this.parentFaculty;
       }
     },
     mounted () {
