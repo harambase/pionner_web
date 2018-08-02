@@ -207,7 +207,7 @@ const router = new Router({
               },
             },
             {
-              path: 'curriculum/detail',
+              path: 'detail',
               name: '课程详情',
               component: Course,
               meta: {

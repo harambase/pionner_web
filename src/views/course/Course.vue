@@ -86,9 +86,8 @@
               <template slot="row-details" slot-scope="row">
                 <b-card>
                   <b-list-group>
-                    <b-list-group-item href="#" title="查看课程"
-                                       class="flex-column align-items-start"
-                                       :disabled="row.item.status !== '0'" @click="detail(row.item.id)">
+                    <b-list-group-item title="查看课程" class="flex-column align-items-start"
+                                       :disabled="row.item.status !== '0'">
                       <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">课程 <strong>{{row.item.name}}</strong> 的信息</h5>
                         <small class="text-muted">授课老师ID：{{row.item.facultyId}}</small>
@@ -283,10 +282,12 @@
         this.showDeleteModal = true
       },
       showDetailCourse (crn) {
-        this.$router.push({path: '/teach/curriculum/detail?mode=manage&crn=' + crn})
+        let url = '/teach/detail?mode=manage&crn=' + crn
+        this.$router.push({path: url})
       },
       showCourseStudent (crn) {
-        this.$router.push({path: '/teach/curriculum/detail?mode=student&crn=' + crn})
+        let url = '/teach/detail?mode=student&crn=' + crn
+        this.$router.push({path: url})
       },
       download (crn) {
         window.open(basePath + '/course/info/' + crn + '?token=' + window.localStorage.getItem('access_token'))

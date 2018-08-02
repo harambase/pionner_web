@@ -338,6 +338,11 @@
                 <input type="file" id="document"
                        :disabled="tempCourse.status!=='0'">
               </b-col>
+              <b-col md="2" class="my-1" v-if="!showDocument">
+                <b-button style="width: 100%" class="btn btn-info my-1" @click="documentUpload">
+                  上传
+                </b-button>
+              </b-col>
               <b-col md="2" class="my-1" v-if="!showDocument && isNotEmpty(course.courseInfo)">
                 <b-button style="width: 100%" class="btn btn-success"
                           @click="showDocument = true">
@@ -424,7 +429,7 @@
         </b-card>
       </b-col>
     </b-row>
-    {{faculty}}
+
     <b-modal v-model="showModal"
              size="sm"
              :header-bg-variant="headerBgVariant"
@@ -537,7 +542,7 @@
         if (this.pageMode === 'create') {
           this.$router.push({path: '/teach/request?mode=manage'})
         } else {
-          this.$router.push({path: '/course/new/request?mode=faculty'})
+          this.$router.push({path: '/course/curriculum/request?mode=faculty'})
         }
       },
       initRequest(id) {
@@ -559,8 +564,7 @@
 
         //init DAYS and times
         this.courseDay = this.course.day.split('/');
-        this.courseDate.push(this.course.startDate);
-        this.courseDate.push(this.course.endDate);
+        this.courseDate = [new Date(this.course.startDate), new Date(this.course.endDate)];
 
         this.courseTime = [
           new Date(2018, 8, 3, parseInt(this.course.startTime.split(":")[0]), parseInt(this.course.startTime.split(":")[1])),
@@ -731,16 +735,14 @@
       },
       tempCourseApprove() {
         this.$validator.validateAll().then((result) => {
-          if (!result) ;
-          return
+          if (!result)
+            return;
 
           this.prepare();
 
           this.tempCourse.status = '1';
           this.tempCourse.courseJson = JSON.stringify(this.course);
 
-          if (!this.showDocument)
-            this.documentUpload(this.id);
           this.update(this.id, this.tempCourse)
         })
 

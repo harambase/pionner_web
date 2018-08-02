@@ -331,9 +331,9 @@
         return value !== '' && value !== undefined && value !== null
       },
       detail (id) {
-        let url = '/course/curriculum/detail?mode=request&id=' + id
+        let url = '/course/detail?mode=request&id=' + id
         if (this.pageMode === 'manage') {
-          url = '/teach/curriculum/detail?mode=create&id=' + id
+          url = '/teach/detail?mode=create&id=' + id
         }
         this.$router.push({path: url})
       }
