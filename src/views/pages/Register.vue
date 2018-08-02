@@ -33,7 +33,7 @@
                 </b-form-select>
                 <b-form-select id="info" style="width: 40%"
                                :plain="true"
-                               :options="[{ text: '春季入学', value: '01' },{ text: '秋季入学', value: '02' }, { text: '夏季入学', value: '03' }]"
+                               :options="[{ text: '春季加入先锋', value: '01' },{ text: '秋季加入先锋', value: '02' }, { text: '夏季加入先锋', value: '03' }]"
                                v-model="info.semester">
                 </b-form-select>
               </b-input-group>

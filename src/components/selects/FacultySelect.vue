@@ -24,7 +24,7 @@
         },
         facultyOptions: [{
           label: '---选择教师---',
-          profile: '/static/images/logo.png',
+          profile: '/static/img/logo.png',
           value: ''
         }],
       }

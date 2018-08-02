@@ -245,7 +245,7 @@
                       <input type="radio" value="0" id="disable"
                              :class="{'custom-control-input': true, 'is-invalid': errors.has('status')}"
                              name="status" v-model="user.status">
-                      <label class="custom-control-label" for="disable">禁用</label>
+                      <label class="custom-control-label" for="disable">停用</label>
                     </div>
                   </b-col>
                 </b-row>

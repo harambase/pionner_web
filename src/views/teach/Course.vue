@@ -61,9 +61,21 @@
                 <label class="col-sm-12 control-label">*年份-学期(YYYY-XX):</label>
               </b-col>
               <b-col md="3" class="my-1">
-                <input :class="{'form-control': true, 'is-invalid': errors.has('info')}" v-model="course.info"
-                       v-validate="'required'" name="info"
-                       :disabled="tempCourse.status!=='0'"/>
+                <b-form-select id="year" style="width: 50%; float:left;" v-validate="'required'" name="info"
+                               :disabled="tempCourse.status!=='0'"
+                               :class="{'form-control': true, 'is-invalid': errors.has('info')}"
+                               :plain="true"
+                               :options="[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]"
+                               v-model="info.year">
+                </b-form-select>
+
+                <b-form-select id="info" style="width: 50%" v-validate="'required'" name="info"
+                               :class="{'form-control': true, 'is-invalid': errors.has('info')}"
+                               :disabled="tempCourse.status!=='0'"
+                               :plain="true"
+                               :options="[{ text: '春季课程', value: '01' },{ text: '秋季课程', value: '02' }, { text: '夏季课程', value: '03' }]"
+                               v-model="info.semester">
+                </b-form-select>
                 <div v-show="errors.has('info')" class="invalid-tooltip">{{ errors.first('info') }}</div>
               </b-col>
             </b-row>
@@ -86,26 +98,59 @@
                 <div v-show="errors.has('name')" class="invalid-tooltip">{{ errors.first('name') }}</div>
               </b-col>
               <b-col md="2" class="my-1">
-                <label class="col-sm-12 control-label">*课程等级:</label>
+                <label class="col-sm-12 control-label">*等级:</label>
               </b-col>
               <b-col md="3" class="my-1">
-                <input :class="{'form-control': true, 'is-invalid': errors.has('level')}" placeholder="请输入数字从100到400的数字"
-                       v-validate="'required|numeric|min:3|max:3'"
-                       v-model="course.level" name="level"
-                       :disabled="tempCourse.status!=='0'"/>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" value="100" id="intro" :disabled="tempCourse.status!=='0'"
+                         :class="{'custom-control-input': true, 'is-invalid': errors.has('level')}"
+                         name="level" v-model="course.level" v-validate="'required'">
+                  <label class="custom-control-label" for="intro">普及级</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" value="200" id="median" :disabled="tempCourse.status!=='0'"
+                         :class="{'custom-control-input': true, 'is-invalid': errors.has('level')}"
+                         name="level" v-model="course.level" v-validate="'required'">
+                  <label class="custom-control-label" for="median">进阶级</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" value="300" id="advance" :disabled="tempCourse.status!=='0'"
+                         :class="{'custom-control-input': true, 'is-invalid': errors.has('level')}"
+                         name="level" v-model="course.level" v-validate="'required'">
+                  <label class="custom-control-label" for="advance">高级</label>
+                </div>
                 <div v-show="errors.has('level')" class="invalid-tooltip">{{ errors.first('level') }}</div>
               </b-col>
             </b-row>
             <b-row>
               <b-col md="2" class="my-1">
-                <label class="col-sm-12 control-label">*课程班级:</label>
+                <label class="col-sm-12 control-label">*类型:</label>
               </b-col>
               <b-col md="3" class="my-1">
-                <input :class="{'form-control': true, 'is-invalid': errors.has('section')}" name="section"
-                       placeholder="请输入数字（例如：01,02,03...）"
-                       v-validate="'required|numeric|min:2|max:2'"
-                       v-model="course.section"
-                       :disabled="tempCourse.status!=='0'"/>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" value="课程" id="course" :disabled="tempCourse.status!=='0'"
+                         :class="{'custom-control-input': true, 'is-invalid': errors.has('section')}"
+                         name="section" v-model="course.section" v-validate="'required'">
+                  <label class="custom-control-label" for="course">课程</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" value="预约课程" id="app" :disabled="tempCourse.status!=='0'"
+                         :class="{'custom-control-input': true, 'is-invalid': errors.has('section')}"
+                         name="section" v-model="course.section" v-validate="'required'">
+                  <label class="custom-control-label" for="app">预约课程</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" value="项目" id="project" :disabled="tempCourse.status!=='0'"
+                         :class="{'custom-control-input': true, 'is-invalid': errors.has('section')}"
+                         name="section" v-model="course.section" v-validate="'required'">
+                  <label class="custom-control-label" for="project">项目</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" value="兴趣小组" id="curious" :disabled="tempCourse.status!=='0'"
+                         :class="{'custom-control-input': true, 'is-invalid': errors.has('section')}"
+                         name="section" v-model="course.section" v-validate="'required'">
+                  <label class="custom-control-label" for="curious">兴趣小组</label>
+                </div>
                 <div v-show="errors.has('section')" class="invalid-tooltip">{{ errors.first('section') }}</div>
               </b-col>
               <b-col md="2" class="my-1">
@@ -122,7 +167,7 @@
             </b-row>
             <b-row>
               <b-col md="2" class="my-1">
-                <label class="col-sm-12 control-label">*课程容量:</label>
+                <label class="col-sm-12 control-label">*容量:</label>
               </b-col>
               <b-col md="3" class="my-1">
                 <input isDigits="true"
@@ -145,7 +190,7 @@
             </b-row>
             <b-row>
               <b-col md="2" class="my-1">
-                <label class="col-sm-12 control-label">*课程周期:</label>
+                <label class="col-sm-12 control-label">*周期:</label>
               </b-col>
               <b-col md="3" class="my-1">
                 <el-date-picker
@@ -160,13 +205,9 @@
                   :disabled="tempCourse.status!=='0'"
                 >
                 </el-date-picker>
-                <!--<input id="startdate" :class="{'form-control': true, 'is-invalid': errors.has('startdate')}"-->
-                <!--v-validate="'required'" v-model="course.startDate" name="startdate"-->
-                <!--:disabled="tempCourse.status!=='0'"/>-->
-                <!--<div v-show="errors.has('startdate')" class="invalid-tooltip">{{ errors.first('startdate') }}</div>-->
               </b-col>
               <b-col md="2" class="my-1">
-                <label class="col-sm-12 control-label">*课程时间:</label>
+                <label class="col-sm-12 control-label">时间:</label>
               </b-col>
               <b-col md="3" class="my-1">
                 <el-time-picker
@@ -191,7 +232,7 @@
             </b-row>
             <b-row>
               <b-col md="2" class="my-1">
-                <label class="col-sm-12 control-label">*选择上课日:</label>
+                <label class="col-sm-12 control-label">选择上课日:</label>
               </b-col>
               <b-col md="8" class="my-1">
                 <b-form-checkbox-group id="basicInlineCustomCheckboxes">
@@ -240,6 +281,9 @@
                 </b-form-checkbox-group>
               </b-col>
             </b-row>
+            <div slot="footer">
+              <i className="fa fa-align-justify"></i><strong>*为必填！</strong>
+            </div>
           </b-card>
           <b-card
             header-tag="header"
@@ -282,19 +326,6 @@
                 <label class="col-sm-12 control-label">上传课程大纲:</label>
               </b-col>
               <b-col md="6" class="my-1" v-if="!showDocument">
-                <!--<el-upload-->
-                  <!--class="upload-demo"-->
-                  <!--action="https://jsonplaceholder.typicode.com/posts/"-->
-                  <!--:on-preview="handlePreview"-->
-                  <!--:on-remove="handleRemove"-->
-                  <!--:before-remove="beforeRemove"-->
-                  <!--multiple-->
-                  <!--:limit="3"-->
-                  <!--:on-exceed="handleExceed"-->
-                  <!--:file-list="fileList">-->
-                  <!--<el-button size="small" type="primary">点击上传</el-button>-->
-                  <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
-                <!--</el-upload>-->
                 <input type="file" id="document"
                        :disabled="tempCourse.status!=='0'">
               </b-col>
@@ -372,8 +403,7 @@
                 </b-button>
                 <b-button style="margin-left: 32%; width:150px;" class="btn btn-success"
                           v-if="pageMode === 'request' && id === ''"
-                          @click="prepare">提交申请
-                          <!--@click="tempCourseCreate">提交申请-->
+                          @click="tempCourseCreate"> 提交申请
                 </b-button>
                 <b-button style="margin-left: 32%; width:150px;" class="btn btn-success"
                           v-if="pageMode === 'request' && id !== '' && tempCourse.status === '0'"
@@ -384,7 +414,6 @@
           </b-card>
         </b-card>
       </b-col>
-
     </b-row>
 
     <b-modal v-model="showModal"
@@ -416,6 +445,10 @@
         pageMode: this.$route.fullPath.split('&')[0].split('=')[1],
         id: this.$route.fullPath.split('&')[1].split('=')[1],//maybe CRN
         url: this.$route.fullPath,
+        info: {
+          year: '2018',
+          semester: '01'
+        },
         course: {
           crn: '',
           info: '',
@@ -510,6 +543,10 @@
       },
       initCourseExtend() {
 
+        let info = this.course.info.split("-");
+        this.info.year = info[0];
+        this.info.semester = info[1];
+
         let preList = this.course.precrn.split('/');
         this.courseDay = this.course.day.split('/');
 
@@ -585,9 +622,9 @@
       },
 
 
-
       prepare() {
-        let day = '', precrn = ''
+
+        let day = '', precrn = '';
 
         if (isNotEmpty(this.courseDay))
           for (let i = 0; i < this.courseDay.length; i++)
@@ -601,6 +638,7 @@
 
         this.course.day = day;
         this.course.precrn = precrn;
+        this.course.info = this.info.year + "-" + this.info.semester;
 
         this.course.startDate = date2Str(this.courseDate[0], "yyyy-MM-dd");
         this.course.endDate = date2Str(this.courseDate[1], "yyyy-MM-dd");

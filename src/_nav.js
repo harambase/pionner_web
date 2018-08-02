@@ -152,7 +152,7 @@ export default {
     },
     {
       name: '辅导关系',
-      url: '/teach',
+      url: '/teach/advise',
       icon: 'icon-pencil',
       meta: {
         role: ['2']
@@ -193,7 +193,7 @@ export default {
         attributes: {}
       },
       meta: {
-        role: ['5']
+        role: ['4']
       },
     },
     {
@@ -201,7 +201,7 @@ export default {
       url: '/system/user?mode=table',
       icon: 'icon-list',
       meta: {
-        role: ['5']
+        role: ['4']
       },
     },
     {
@@ -209,7 +209,7 @@ export default {
       url: '/system/registration',
       icon: 'icon-people',
       meta: {
-        role: ['5']
+        role: ['4']
       },
     },
     {
@@ -217,7 +217,7 @@ export default {
       url: '/system/role',
       icon: 'icon-book-open',
       meta: {
-        role: ['5']
+        role: ['4']
       },
     },
     {
@@ -225,7 +225,7 @@ export default {
       url: '/system/monitor',
       icon: 'icon-book-open',
       meta: {
-        role: ['5']
+        role: ['4']
       },
     },
     {
