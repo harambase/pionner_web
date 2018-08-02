@@ -587,24 +587,36 @@
         this.$router.push({path: '/system/registration'})
       },
       postPrepare() {
-        let type = '';
-        let roleId = '';
-        for (let i = 0; i < this.userType.length; i++)
-          if (this.userType[i] !== '')
-            type += this.userType[i] + '/';
-        for (let i = 0; i < this.userRole.length; i++)
-          if (this.userRole[i] !== '')
-            roleId += this.userRole[i] + '/';
 
-        if(roleId.indexOf('0/') === -1)
-          roleId += '0/';
-        if (type.indexOf('s') !== -1 && roleId.indexOf('5/') === -1)
+        let type = '';
+        let roleId = '0/';
+
+        for (let i = 0; i < this.userType.length; i++) {
+          if (this.userType[i] !== '') {
+            type += this.userType[i] + '/';
+
+          }
+        }
+
+        if (type.indexOf('s') !== -1)
           roleId += '5/';
-        if (type.indexOf('f') !== -1 && roleId.indexOf('6/7/') === -1)
-          roleId += '6/7/';
+
+        if (type.indexOf('f') !== -1)
+          roleId += '6/';
+
+        if (type.indexOf('a') !== -1)
+          roleId += '1/4/';
+
+        for (let i = 0; i < this.userRole.length; i++) {
+          let role = this.userRole[i];
+          if (role === '2' || role === '7') {
+            roleId += this.userRole[i] + '/';
+          }
+        }
 
         this.user.type = type;
         this.user.roleId = roleId
+
       },
       update() {
         this.$validator.validateAll().then((result) => {

@@ -674,7 +674,7 @@
               this.headerBgVariant = 'success';
               let id = response.data.data.id;
               this.documentUpload(id);
-              this.goToUrl = '/course/request?mode=faculty'
+              this.goToUrl = '/course/new/request?mode=faculty'
             }
             else {
               this.msg = response.data.msg;
