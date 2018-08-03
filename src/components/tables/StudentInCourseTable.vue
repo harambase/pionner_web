@@ -1,6 +1,5 @@
 <template>
   <b-container fluid>
-    {{mode + 'mode'}}
     <!-- User Interface controls -->
     <b-row>
       <b-col md="1" class="my-1">
@@ -208,7 +207,7 @@
             this.msg = response.data.msg;
             this.showModal = true;
             this.headerBgVariant = 'success';
-            initTable()
+            this.initTable()
           } else {
             this.msg = response.data.msg;
             this.showModal = true;

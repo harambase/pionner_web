@@ -76,6 +76,16 @@ VeeValidate.Validator.extend('verify_password', {
   }
 });
 
+VeeValidate.Validator.extend('verify_credit', {
+  getMessage: field => '获得学分数必须小于课程学分!',
+  validate: (value, obj) => {
+    return parseFloat(value) <= parseFloat(obj[0])
+  }
+});
+
+
+VeeValidate.Validator.e
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

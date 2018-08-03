@@ -84,7 +84,6 @@
                 </b-button>
               </template>
               <template slot="row-details" slot-scope="row">
-
                 <CTranscriptEdit :row="row"/>
               </template>
             </b-table>
@@ -162,6 +161,7 @@
     {key: 'sname', label: '姓名', sortable: true},
     {key: 'grade', label: '学生成绩', sortable: true},
     {key: 'complete', label: '完成情况', sortable: true},
+    {key: 'credit', label: '获得学分', sortable: true},
     {key: 'crn', label: '课码', sortable: true},
     {key: 'cname', label: '课名', sortable: true},
     {key: 'actions', label: '操作'}
