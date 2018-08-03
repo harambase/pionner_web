@@ -54,13 +54,12 @@
                 </b-col>
               </b-row>
             </dd>
-          </dl>
-          <dl class="row" v-if="mode!=='faculty'">
-            <dt class="col-sm-1">*操作密码:</dt>
+            <dt class="col-sm-1">*获得学分:</dt>
             <dd class="col-sm-3">
-              <input type="password" v-validate="'required'" name="adminPwd"
-                     :class="{'form-control': true, 'is-invalid': errors.has('adminPwd')}"/>
-              <div v-show="errors.has('adminPwd')" class="invalid-tooltip">{{ errors.first('adminPwd')}}
+              <input type="text" v-validate="'required|numeric|min:1|max:1'" name="credit"
+                     :class="{'form-control': true, 'is-invalid': errors.has('credit')}"
+                     v-model="row.item.credit" :disabled="mode==='faculty'"/>
+              <div v-show="errors.has('credit')" class="invalid-tooltip">{{ errors.first('credit')}}
               </div>
             </dd>
           </dl>

@@ -186,7 +186,14 @@
         <h3>确认删除该课程？</h3>
       </div>
     </b-modal>
-    <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
+
+    <b-modal v-model="showModal"
+             size="sm"
+             :header-bg-variant="headerBgVariant"
+             ok-only
+             ok-title="关闭"
+             centered
+             title="消息">
       <div class="d-block text-center">
         <h3>{{msg}}</h3>
       </div>
@@ -278,7 +285,7 @@
         })
       },
       showDeleteCourse (crn) {
-        this.crn = crn
+        this.crn = crn;
         this.showDeleteModal = true
       },
       showDetailCourse (crn) {

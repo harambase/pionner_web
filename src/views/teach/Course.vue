@@ -17,14 +17,14 @@
             <div slot="header">
               <i className="fa fa-align-justify"></i><strong>学生列表</strong>
             </div>
-            <CStudentInCourseTable v-bind:crn="id"/>
+            <CStudentInCourseTable v-bind:crn="id" :mode="pageMode"/>
           </b-card>
         </b-card>
         <b-card header-tag="header" footer-tag="footer">
           <div slot="header">
             <i className="fa fa-align-justify"></i><strong>添加学生</strong>
           </div>
-          <CAddStudentTable mode="addStudent" v-bind:crn="id"/>
+          <CAddStudentTable mode="addStudent" v-bind:crn="id" :mode="pageMode"/>
         </b-card>
       </b-col>
     </b-row>
@@ -523,8 +523,10 @@
           case 'manage':
             this.showCourseDetail(this.id);
             break;
-          case 'student':
+          case 'transcript':
             this.showStudentDetail(this.id);
+            break;
+          case 'student':
             break;
           default:
             this.initRequest(this.id);

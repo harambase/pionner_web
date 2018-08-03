@@ -53,7 +53,7 @@
         <b-button v-if="mode==='credit'" size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
           修改学分上限
         </b-button>
-        <b-button v-if="mode==='addStudent'" size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
+        <b-button v-if="mode==='student'" size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
           添加该学生
         </b-button>
 
@@ -103,9 +103,9 @@
             </b-list-group-item>
           </b-list-group>
         </b-card>
-        <b-card v-if="mode==='addStudent'">
+        <b-card v-if="mode==='student'">
           <b-list-group>
-            <b-list-group-item title="添加该学生" class="flex-column align-items-start" disabled>
+              <b-list-group-item title="添加该学生" class="flex-column align-items-start" disabled>
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">添加学生 <strong>{{row.item.sname}}</strong> 进入 <strong>{{cname}}</strong> 课程</h5>
                 <small class="text-muted">学生ID：{{row.item.studentId}}</small>
@@ -114,6 +114,14 @@
               <div class="mr-1">
                 <h5 class="mb-1">添加选项:</h5>
                 <dl class="row">
+                  <dt class="col-sm-2">添加此学生，无视任何冲突:</dt>
+                  <dd class="col-sm-1">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" value="s" class="custom-control-input" id="override"
+                             name="type" v-model="option.override">
+                      <label class="custom-control-label" for="override">是</label>
+                    </div>
+                  </dd>
                   <dt class="col-sm-2">添加此学生，即使未完成预选课程:</dt>
                   <dd class="col-sm-1">
                     <div class="custom-control custom-checkbox custom-control-inline">
@@ -174,7 +182,8 @@
              ok-only
              ok-title="关闭"
              centered
-             title="消息">
+             title="消息"
+             @ok="handleOk">
       <div class="d-block text-center">
         <h4>{{msg}}</h4>
       </div>
@@ -220,6 +229,7 @@
           prereq: false,
           time: false,
           capacity: false,
+          override: false,
         },
       }
     },
@@ -232,7 +242,10 @@
       }
     },
     methods: {
-
+      handleOk (evt){
+        evt.preventDefault();
+        this.$router.go(0)
+      },
       onFiltered (filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1

@@ -1,6 +1,6 @@
 <template>
   <b-container fluid>
-
+    {{mode + 'mode'}}
     <!-- User Interface controls -->
     <b-row>
       <b-col md="1" class="my-1">
@@ -53,21 +53,21 @@
         <p v-if="row.value === '0'" style="color:blue;">进行中</p>
         <p v-if="row.value === '-1'" style="color:red;">挂科</p>
       </template>
-      <template slot="actions" slot-scope="row" v-if="mode!='transcript'">
-        <b-button size="sm" class="btn btn-danger" @click.stop="removeStuFromCourse(row.item.userId)">
+
+      <template slot="actions" slot-scope="row">
+        <b-button v-if="mode=='student'" size="sm" class="btn btn-danger"
+                  @click.stop="showDeleteStudent(row.item.studentId, row.item.crn)">
           移除该学生
         </b-button>
-      </template>
-      <template slot="actions" slot-scope="row" v-if="mode=='transcript'">
-        <b-button size="sm" class="btn btn-danger" @click.stop="row.toggleDetails">
+        <b-button v-if="mode=='transcript'" size="sm" class="btn btn-danger" @click.stop="row.toggleDetails">
           修改成绩
         </b-button>
-      </template>
-      <template slot="actions" slot-scope="row" v-if="mode=='faculty'">
-        <b-button size="sm" class="btn btn-danger" @click.stop="row.toggleDetails">
+        <b-button v-if="mode=='faculty'" size="sm" class="btn btn-danger" @click.stop="row.toggleDetails">
           学生学分和成绩查看
         </b-button>
+
       </template>
+
       <template slot="row-details" slot-scope="row">
         <CTranscriptEdit :row="row" :mode="mode"/>
       </template>
@@ -84,6 +84,7 @@
           totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
       </b-col>
     </b-row>
+
     <b-modal v-model="showModal"
              size="sm"
              :header-bg-variant="headerBgVariant"
@@ -95,6 +96,19 @@
         <h4>{{msg}}</h4>
       </div>
     </b-modal>
+
+    <b-modal v-model="showDeleteModal"
+             size="sm"
+             header-bg-variant='danger'
+             ok-title="确认"
+             @ok="removeStuFromCourse"
+             centered
+             title="不可逆操作警告！">
+      <div class="d-block text-center">
+        <h4>确认删除该学生？</h4>
+      </div>
+    </b-modal>
+
   </b-container>
 
 </template>
@@ -103,23 +117,23 @@
   import axios from 'axios'
   import CTranscriptEdit from '../parts/TranscriptEdit'
 
-  const items = []
+  const items = [];
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
-    {key: 'id', label: '序号', sortable: true},
     {key: 'cname', label: '课程名', sortable: true},
     {key: 'studentId', label: '学生ID', sortable: true},
     {key: 'sname', label: '学生名', sortable: true},
     {key: 'grade', label: '学生成绩', sortable: true},
     {key: 'complete', label: '完成情况', sortable: true},
+    {key: 'credit', label: '获得学分', sortable: true},
     {key: 'actions', label: '操作'}
-  ]
+  ];
 
   export default {
     name: 'c-studentInCourseTable',
     components: {CTranscriptEdit},
     props: ['mode', 'crn', 'cname', 'credit', 'studentId'],
-    data () {
+    data() {
       return {
         msg: '',
         showModal: false,
@@ -134,26 +148,31 @@
         sortDesc: false,
         filter: null,
         items: items,
+        showDeleteModal: false,
+        deleteStudentId: "",
+        deleteCRN: ''
       }
     },
     computed: {
-      sortOptions () {
+      sortOptions() {
         // Create an options list from our field
         return this.field
           .filter(f => f.sortable)
-          .map(f => { return {text: f.label, value: f.key} })
+          .map(f => {
+            return {text: f.label, value: f.key}
+          })
       }
     },
     methods: {
 
-      onFiltered (filteredItems) {
-        this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
+      onFiltered(filteredItems) {
+        this.totalRows = filteredItems.length; // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      initTable () {
+      initTable() {
         this.$refs.studentInCourseTable.refresh()
       },
-      studentInCourseTable (ctx) {
+      studentInCourseTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/transcript/course/student?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
         if (this.isNotEmpty(this.crn))
@@ -169,32 +188,34 @@
 
         return axios.get(url).then((response) => {
           let items = response.data.data
-          this.totalRows = response.data.recordsTotal
+          this.totalRows = response.data.recordsTotal;
           return (items || [])
         })
 
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
-      removeStuFromCourse (studentId, crn) {
-        Showbo.Msg.confirm('确认从课程中删除该学生？', function () {
-          if ($('.btnfocus').val() !== '取消') {
-            axios.delete('/course/' + crn + '/student/' + studentId).then(function (response) {
-              if (response.data.code === 2001) {
-                Showbo.Msg.alert('删除成功!', function () {
-                  studentInCourse.draw()
-                })
-              } else {
-                this.msg = response.data.msg
-                this.showModal = true
-                this.headerBgVariant = 'danger'
-              }
-            })
+      showDeleteStudent(studentId, crn) {
+        this.deleteStudentId = studentId;
+        this.deleteCRN = crn;
+        this.showDeleteModal = true;
+      },
+
+      removeStuFromCourse() {
+        axios.delete('/course/' + this.deleteCRN + '/student/' + this.deleteStudentId).then(response => {
+          if (response.data.code === 2001) {
+            this.msg = response.data.msg;
+            this.showModal = true;
+            this.headerBgVariant = 'success';
+            initTable()
+          } else {
+            this.msg = response.data.msg;
+            this.showModal = true;
+            this.headerBgVariant = 'danger'
           }
         })
-      },
+      }
     }
   }
-
 </script>
