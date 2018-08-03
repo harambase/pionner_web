@@ -316,18 +316,23 @@
                       上传
                     </b-button>
                   </b-col>
+                  <b-col md="2" class="my-1" v-if="isNotEmpty(userInfo)">
+                    <b-button style="width: 100%" class="btn btn-success"
+                              @click="showDocument = true">
+                      取消替换
+                    </b-button>
+                  </b-col>
                 </b-row>
                 <b-row v-if="showDocument">
                   <b-col md="2">
                     <label class="col-sm-12 control-label">个人信息文件:</label>
                   </b-col>
                   <b-col md="4">
-                    下载文件： <a @click="documentDownload" style="cursor: pointer;"
-                             class="control-label">{{userInfo.name}}</a>
+                    点击下载-> <a @click="documentDownload" style="cursor: pointer;" class="control-label">{{userInfo.name}}</a>
                   </b-col>
                   <b-col md="2">
                     <b-button style="width: 100%" class="btn btn-danger"
-                              v-on:click="showDocument = false">
+                              @click="showDocument = false">
                       替换
                     </b-button>
                   </b-col>

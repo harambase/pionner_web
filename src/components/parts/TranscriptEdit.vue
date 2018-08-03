@@ -64,6 +64,13 @@
               </div>
             </dd>
           </dl>
+          <dl class="row">
+            <dt class="col-sm-1">评语:</dt>
+            <dd class="col-sm-7">
+                <textarea style="resize: none;" class="form-control" rows="7"
+                          v-model="row.item.remark"></textarea>
+            </dd>
+          </dl>
           <dl class="row" v-if="mode!=='faculty'">
             <dt class="col-sm-1">操作:</dt>
             <dd class="col-sm-5">
@@ -114,15 +121,15 @@
     name: 'c-transcriptEdit',
     props: ['row', 'mode'],
     data() {
-      return{
+      return {
         msg: '',
         showModal: false,
-        showDeleteModal:false,
+        showDeleteModal: false,
         headerBgVariant: '',
       }
     },
-    methods:{
-      updateTranscript (transcript) {
+    methods: {
+      updateTranscript(transcript) {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
@@ -140,7 +147,7 @@
           })
         })
       },
-      showDeleteTranscript (id) {
+      showDeleteTranscript(id) {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
@@ -149,7 +156,7 @@
           this.deleteId = id
         })
       },
-      deleteTranscript () {
+      deleteTranscript() {
         if (!result)
           return
 

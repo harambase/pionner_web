@@ -83,6 +83,11 @@
                 {{row.value}}
               </p>
             </template>
+            <template slot="lastLoginTime" slot-scope="row">
+              <p style="font-size: 11px;" class="mt-1">
+                {{row.value}}
+              </p>
+            </template>
             <template slot="status" slot-scope="row">
               <label class="switch switch-lg switch-text switch-success mb-0">
                 <input type="checkbox" class="switch-input" :checked="row.item.status==='1'"
@@ -230,7 +235,8 @@
     {key: 'firstName', label: '名', sortable: true},
     {key: 'type', label: '账户类型', sortable: true},
     {key: 'status', label: '启停状态', sortable: true},
-    {key: 'updateTime', label: '上次更新时间', sortable: true},
+    {key: 'updateTime', label: '最近更新时间', sortable: true},
+    {key: 'lastLoginTime', label: '上次登录时间', sortable: true},
     {key: 'actions', label: '操作'}
   ];
 
@@ -355,6 +361,9 @@
             break
           case 'updateTime':
             url += 'update_time'
+            break
+          case 'lastLoginTime':
+            url += 'last_login_time'
             break
           default:
             url += ctx.sortBy

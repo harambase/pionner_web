@@ -330,15 +330,14 @@
             <div slot="header">
               <i className="fa fa-align-justify"></i><strong>更多信息</strong>
             </div>
-            <b-row>
-              <b-col md="2" class="my-1" v-if="!showDocument">
+            <b-row v-if="!showDocument">
+              <b-col md="2" class="my-1">
                 <label class="col-sm-12 control-label">上传课程大纲:</label>
               </b-col>
-              <b-col md="6" class="my-1" v-if="!showDocument">
-                <input type="file" id="document"
-                       :disabled="tempCourse.status!=='0'">
+              <b-col md="6" class="my-1">
+                <input type="file" id="document" :disabled="tempCourse.status!=='0'">
               </b-col>
-              <b-col md="2" class="my-1" v-if="!showDocument">
+              <b-col md="2" class="my-1" v-if="pageMode == 'manage' || showUpload">
                 <b-button style="width: 100%" class="btn btn-info my-1" @click="documentUpload">
                   上传
                 </b-button>
@@ -349,13 +348,15 @@
                   取消替换
                 </b-button>
               </b-col>
-              <b-col md="2" class="my-1" v-if="showDocument">
+            </b-row>
+            <b-row v-if="showDocument">
+              <b-col md="2" class="my-1">
                 <label class="col-sm-12 control-label">课程大纲:</label>
               </b-col>
-              <b-col md="6" class="my-1" v-if="showDocument">
+              <b-col md="6" class="my-1">
                 <b-row>
                   <b-col md="6">
-                    <a href="#" @click="documentDownload">{{course.courseInfo.name}}</a>
+                    点击下载-> <a href="#" style="cursor: pointer;" @click="documentDownload">{{course.courseInfo.name}}</a>
                   </b-col>
                   <b-col md="3">
                     <b-button style="width: 100%" class="btn btn-danger"
@@ -504,6 +505,7 @@
         faculty: '',
         preList: '',
         goToUrl: '',
+        showUpload: false,
       }
     },
     mounted() {
@@ -552,13 +554,12 @@
           axios.get('/request/course/' + id).then((response) => {
             this.tempCourse = response.data.data;
             this.course = JSON.parse(response.data.data.courseJson);
-            console.log(this.course);
+            this.showUpload = true;
             this.initCourseExtend()
           })
         }
       },
       initCourseExtend() {
-
         //init INFO
         let info = this.course.info.split("-");
         this.info.year = info[0];
@@ -721,7 +722,7 @@
 
           axios.put('/request/course/' + this.id, this.tempCourse).then((response) => {
             if (response.data.code === 2001) {
-              this.documentUpload(this.id)
+              this.documentUpload(this.id);
               this.msg = '修改成功，请等待答复!';
               this.showModal = true;
               this.headerBgVariant = 'success';
@@ -804,29 +805,26 @@
         })
       },
       documentUpload(key) {
-        if (this.showDocument)
-          return
 
         if (!isNotEmpty(document.getElementById('document').files))
-          return
+          return;
 
         let requestUrl = '/request/course/info/';
         let updateUrl = '/course/info/';
-        let formData = new FormData();
 
+        let formData = new FormData();
         formData.append('file', document.getElementById('document').files[0]);
+
         let url;
 
-        if (this.url.indexOf('course') !== -1 && this.pageMode !== 'manage') {
-          if (isNotEmpty(key))
-            url = requestUrl + key;
+        if (this.pageMode === 'manage') {
+          url = updateUrl + this.course.crn;
+        }
+        else if(this.pageMode === 'create') {
+          if(this.showUpload)
+            url = requestUrl + this.id;
           else
-            url = requestUrl + this.id
-        } else {
-          if (isNotEmpty(key))
-            url = updateUrl + key;
-          else
-            url = updateUrl + this.course.crn
+            url = requestUrl + key
         }
 
         axios.put(url, formData).then((response) => {
@@ -842,7 +840,7 @@
       },
 
       documentDownload() {
-        if (isNotEmpty(this.id))//申请中的下载
+        if (this.pageMode == 'create')//申请中的下载
           window.open(basePath + '/request/course/info/' + this.id + '?token=' + window.localStorage.getItem('access_token'));
         else {//查看下载
           window.open(basePath + '/course/info/' + this.course.crn + '?token=' + window.localStorage.getItem('access_token'))

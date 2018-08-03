@@ -58,11 +58,39 @@
               <template slot="index" slot-scope="row">
                 {{(currentPage-1) * perPage + 1 + row.index}}
               </template>
+
               <template slot="complete" slot-scope="row">
                 <p v-if="row.value === '1'" style="color:blue;">完成</p>
                 <p v-if="row.value === '0'" style="color:green;">进行中</p>
                 <p v-if="row.value === '-1'" style="color:red;">挂科</p>
               </template>
+
+              <template slot="actions" slot-scope="row">
+                <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
+                  查看评语
+                </b-button>
+              </template>
+
+              <template slot="row-details" slot-scope="row">
+                <b-card>
+                  <b-list-group>
+                    <b-list-group-item title="课程评语" class="flex-column align-items-start">
+                      <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">你的课程 <strong>{{row.item.cname}}</strong> 的老师评语信息</h5>
+                        <small class="text-muted">授课老师：{{row.item.fname}}</small>
+                      </div>
+                      <hr/>
+                      <div class="mr-1">
+                        <dl class="row">
+                          <dt class="col-sm-1">评语:</dt>
+                          <dd class="col-sm-11">{{row.item.remark}}</dd>
+                        </dl>
+                      </div>
+                    </b-list-group-item>
+                  </b-list-group>
+                </b-card>
+              </template>
+
             </b-table>
             <b-row>
               <b-col md="6" class="my-1">
@@ -77,23 +105,23 @@
           </b-container>
         </b-card>
       </b-col>
-      <b-col cols="12">
-        <b-card
-          header-tag="header"
-          footer-tag="footer">
-          <div slot="header">
-            <i className="fa fa-align-justify"></i><strong>下载成绩单</strong>
-          </div>
-          <b-container fluid>
-            <b-row>
-              <h5 style="float: left">官方个人成绩单报告：</h5>
-              <b-input-group-button>
-                <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="download">下载</b-button>
-              </b-input-group-button>
-            </b-row>
-          </b-container>
-        </b-card>
-      </b-col>
+      <!--<b-col cols="12">-->
+        <!--<b-card-->
+          <!--header-tag="header"-->
+          <!--footer-tag="footer">-->
+          <!--<div slot="header">-->
+            <!--<i className="fa fa-align-justify"></i><strong>下载成绩单</strong>-->
+          <!--</div>-->
+          <!--<b-container fluid>-->
+            <!--<b-row>-->
+              <!--<h5 style="float: left">官方个人成绩单报告：</h5>-->
+              <!--<b-input-group-button>-->
+                <!--<b-button class="mb-4 btn btn-success" style="width: 150px;" @click="download">下载</b-button>-->
+              <!--</b-input-group-button>-->
+            <!--</b-row>-->
+          <!--</b-container>-->
+        <!--</b-card>-->
+      <!--</b-col>-->
     </b-row>
   </div>
 </template>
@@ -111,7 +139,9 @@
     {key: 'fname', label: '授课人', sortable: true},
     {key: 'grade', label: '成绩', sortable: true},
     {key: 'complete', label: '完成情况', sortable: true},
+    {key: 'credit', label: '完成学分', sortable: true},
     {key: 'assignTime', label: '提交时间', sortable: true},
+    {key: 'actions', label: '操作', sortable: true},
   ]
 
   export default {
