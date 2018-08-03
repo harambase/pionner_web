@@ -83,6 +83,24 @@
                   修改成绩
                 </b-button>
               </template>
+
+              <template slot="studentId" slot-scope="row">
+                <b-row>
+                  <b-col md="3">
+                    <img v-if="isNotEmpty(row.item.sprofile)"
+                         :src="basePath + '/static' + JSON.parse(row.item.sprofile).path"
+                         style="width: 30px;height: 30px"
+                         class="img-avatar">
+                    <img v-else
+                         src="/static/img/logo.png"
+                         style="width: 40px;height: 40px"
+                         class="img-avatar">
+                  </b-col>
+                  <b-col md="9" class="mt-1" style="font-size: 11px;">
+                    {{row.value}}
+                  </b-col>
+                </b-row>
+              </template>
               <template slot="row-details" slot-scope="row">
                 <CTranscriptEdit :row="row"/>
               </template>
@@ -189,7 +207,8 @@
         student: '',
         course: '',
         reportStudent: '',
-        reportInfo:''
+        reportInfo:'',
+        basePath: basePath
       }
     },
     watch:{
@@ -237,7 +256,7 @@
       transcriptTable (ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/transcript/list?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
-        console.log(this.info)
+
         if (this.isNotEmpty(this.info))
           url += '&info=' + this.info.value
         if (this.isNotEmpty(this.student))

@@ -76,13 +76,32 @@
                 <p v-if="row.value === 0" style="color:green;">进行中</p>
                 <p v-if="row.value === -1" style="color:red;">已结课</p>
               </template>
-              <template slot="actions" slot-scope="row">
 
+              <template slot="faculty" slot-scope="row">
+                <b-row>
+                  <b-col md="3">
+                    <img v-if="isNotEmpty(row.item.profile)"
+                         :src="basePath + '/static' + JSON.parse(row.item.profile).path"
+                         style="width: 30px;height: 30px"
+                         class="img-avatar">
+                    <img v-else
+                         src="/static/img/logo.png"
+                         style="width: 40px;height: 40px"
+                         class="img-avatar">
+                  </b-col>
+                  <b-col md="9" class="mt-1" style="font-size: 11px;">
+                    {{row.value}}
+                  </b-col>
+                </b-row>
+              </template>
+
+
+              <template slot="actions" slot-scope="row">
                 <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
                   {{ row.detailsShowing ? '隐藏' : '展示' }}详情
                 </b-button>
-
               </template>
+
               <template slot="row-details" slot-scope="row">
                 <b-card>
                   <b-list-group>
@@ -94,67 +113,83 @@
                       </div>
                       <hr/>
                       <div class="mr-1">
-                        <dl class="row">
-                          <dt class="col-sm-1">课程CRN:</dt>
-                          <dd class="col-sm-1">{{row.item.crn}}</dd>
+                        <b-row>
+                          <b-col md="9">
+                            <dl class="row">
+                              <dt class="col-sm-1">课程CRN:</dt>
+                              <dd class="col-sm-1">{{row.item.crn}}</dd>
 
-                          <dt class="col-sm-1">课程学期:</dt>
-                          <dd class="col-sm-1">{{row.item.info}}</dd>
+                              <dt class="col-sm-1">课程学期:</dt>
+                              <dd class="col-sm-1">{{row.item.info}}</dd>
 
-                          <dt class="col-sm-1">课程学分:</dt>
-                          <dd class="col-sm-1">{{row.item.credits}}</dd>
+                              <dt class="col-sm-1">课程学分:</dt>
+                              <dd class="col-sm-1">{{row.item.credits}}</dd>
 
-                          <dt class="col-sm-1">课程等级:</dt>
-                          <dd class="col-sm-1">{{row.item.level}}</dd>
+                              <dt class="col-sm-1">课程等级:</dt>
+                              <dd class="col-sm-1">{{row.item.level}}</dd>
 
-                          <dt class="col-sm-1">课程班级:</dt>
-                          <dd class="col-sm-1">{{row.item.section}}</dd>
+                              <dt class="col-sm-1">授课类型:</dt>
+                              <dd class="col-sm-1">{{row.item.section}}</dd>
 
-                        </dl>
-                        <dl class="row">
+                            </dl>
+                            <dl class="row">
 
-                          <dt class="col-sm-1">上课时间:</dt>
-                          <dd class="col-sm-3">{{row.item.startTime}} to {{row.item.endTime}}， 每周 {{row.item.day}}</dd>
+                              <dt class="col-sm-1">上课时间:</dt>
+                              <dd class="col-sm-3">{{row.item.startTime}} to {{row.item.endTime}}， 每周 {{row.item.day}}</dd>
 
-                          <dt class="col-sm-1">上课周期:</dt>
-                          <dd class="col-sm-3">{{row.item.startDate}} to {{row.item.endDate}}</dd>
+                              <dt class="col-sm-1">上课周期:</dt>
+                              <dd class="col-sm-3">{{row.item.startDate}} to {{row.item.endDate}}</dd>
 
-                          <dt class="col-sm-1">预选课程:</dt>
-                          <dd class="col-sm-3">{{row.item.precrn}}</dd>
+                              <dt class="col-sm-1">预选课程:</dt>
+                              <dd class="col-sm-3">{{row.item.precrn}}</dd>
 
-                        </dl>
-                        <dl class="row">
-                          <dt class="col-sm-1">课程大纲下载:</dt>
-                          <dd class="col-sm-5"
-                              v-if="row.item.courseInfo !== '' &&
-                                    row.item.courseInfo !== undefined &&
-                                    row.item.courseInfo !== null ">
-                            <a href="#" @click="download(row.item.crn)">{{JSON.parse(row.item.courseInfo).name}}</a>
-                          </dd>
-                        </dl>
-                        <dl class="row">
-                          <dt class="col-sm-1">备注:</dt>
-                          <dd class="col-sm-5"><p style="color:red">{{row.item.comment}}</p></dd>
-                        </dl>
-
-                        <dl class="row" v-if="pageMode === 'manage'">
-                          <dt class="col-sm-1">操作:</dt>
-                          <dd class="col-sm-5">
-                            <b-button size="sm"
-                                      class="btn btn-danger"
-                                      @click.stop="showDeleteCourse(row.item.crn)">
-                              删除该课程
-                            </b-button>
-                            <b-button size="sm" variant="primary"
-                                      @click.stop="showDetailCourse(row.item.crn)">
-                              修改该课程
-                            </b-button>
-                            <b-button size="sm" variant="success"
-                                      @click.stop="showCourseStudent(row.item.crn)">
-                              课程中的学生
-                            </b-button>
-                          </dd>
-                        </dl>
+                            </dl>
+                            <dl class="row">
+                              <dt class="col-sm-2">课程大纲下载:</dt>
+                              <dd class="col-sm-5"
+                                  v-if="isNotEmpty(row.item.courseInfo)">
+                                <a href="#" @click="download(row.item.crn)">{{JSON.parse(row.item.courseInfo).name}}</a>
+                              </dd>
+                            </dl>
+                            <dl class="row">
+                              <dt class="col-sm-1">备注:</dt>
+                              <dd class="col-sm-5"><p style="color:red">{{row.item.comment}}</p></dd>
+                            </dl>
+                            <dl class="row" v-if="pageMode === 'manage'">
+                              <dt class="col-sm-1">操作:</dt>
+                              <dd class="col-sm-5">
+                                <b-button size="sm"
+                                          class="btn btn-danger"
+                                          @click.stop="showDeleteCourse(row.item.crn)">
+                                  删除该课程
+                                </b-button>
+                                <b-button size="sm" variant="primary"
+                                          @click.stop="showDetailCourse(row.item.crn)">
+                                  修改该课程
+                                </b-button>
+                                <b-button size="sm" variant="success"
+                                          @click.stop="showCourseStudent(row.item.crn)">
+                                  课程中的学生
+                                </b-button>
+                              </dd>
+                            </dl>
+                          </b-col>
+                          <b-col md="3">
+                            <dl class="row">
+                              <dt class="col-sm-4">授课老师：</dt>
+                              <dd class="col-sm-8">
+                                  <img v-if="isNotEmpty(row.item.profile)"
+                                       :src="basePath + '/static' + JSON.parse(row.item.profile).path"
+                                       style="width: 70%"
+                                       class="img-avatar">
+                                  <img v-else
+                                       src="/static/img/logo.png"
+                                       style="width: 70%"
+                                       class="img-avatar">
+                              </dd>
+                            </dl>
+                          </b-col>
+                        </b-row>
                       </div>
                     </b-list-group-item>
                   </b-list-group>
@@ -210,13 +245,13 @@
     {key: 'index', label: '序号', class: 'text-center'},
     {key: 'crn', label: '编号', sortable: true},
     {key: 'name', label: '课程名', sortable: true, 'class': 'text-center'},
+    {key: 'faculty', label: '授课老师', sortable: true},
     {key: 'capacity', label: '容量', sortable: true},
     {key: 'remain', label: '剩余', sortable: true},
     {key: 'status', label: '状态', sortable: true},
     {key: 'date', label: '起止时间', sortable: true},
     {key: 'time', label: '上课时间', sortable: true},
     {key: 'day', label: '星期', sortable: true},
-    {key: 'faculty', label: '授课老师', sortable: true},
     {key: 'actions', label: '查看详情'}
   ]
 
@@ -242,7 +277,8 @@
         msg: '',
         headerBgVariant: '',
         info: '',
-        faculty: ''
+        faculty: '',
+        basePath: basePath
       }
     },
     computed: {

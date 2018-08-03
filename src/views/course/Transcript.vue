@@ -9,7 +9,16 @@
             <i className="fa fa-align-justify"></i><strong>成绩单</strong>
           </div>
           <b-container fluid>
-
+            <b-row>
+              <b-col md="1" class="my-1">
+                <legend class="col-form-legend">检索条件：</legend>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col md="4" class="my-1">
+                <InfoSelect v-on:pass="passInfo"/>
+              </b-col>
+            </b-row>
             <!-- User Interface controls -->
             <b-row>
               <b-col md="1" class="my-1">
@@ -128,6 +137,7 @@
 
 <script>
   import axios from 'axios'
+  import { InfoSelect } from '../../components/'
 
   const items = [];
   const field = [
@@ -146,6 +156,7 @@
 
   export default {
     name: 'Transcript',
+    components: {InfoSelect},
     data () {
       return {
         field: field,
@@ -162,6 +173,11 @@
         faculty: '',
       }
     },
+    watch:{
+      info: function(){
+        this.initTable();
+      },
+    },
     computed: {
       sortOptions () {
         // Create an options list from our field
@@ -171,6 +187,9 @@
       }
     },
     methods: {
+      passInfo (val) {
+        this.info = val
+      },
       onFiltered (filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1

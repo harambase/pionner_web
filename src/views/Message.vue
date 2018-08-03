@@ -91,7 +91,7 @@
                                    style="width: 40px;height: 40px"
                                    class="img-avatar">
                               <img v-else
-                                   src="/static/img/logo-symbol.png"
+                                   src="/static/img/logo.png"
                                    style="width: 40px;height: 40px"
                                    class="img-avatar">
                               {{row.item.sender}}

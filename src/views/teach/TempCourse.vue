@@ -331,7 +331,7 @@
         return value !== '' && value !== undefined && value !== null
       },
       detail (id) {
-        let url = '/course/detail?mode=request&id=' + id
+        let url = '/course/new/create?mode=request&id=' + id
         if (this.pageMode === 'manage') {
           url = '/teach/detail?mode=create&id=' + id
         }

@@ -49,7 +49,6 @@
                   <h1>注册 | SIGN UP</h1>
                   <p>没有EAS账号？ Need an EAS Account? </p>
                   <b-button variant='success' class='px-4 mt-2' @click="goToReg">点击注册 SIGN UP</b-button>
-                  <!--<img src="/static/img/weChat.jpg" class="mt-2" width="100" height="100"/>-->
                 </div>
               </b-card-body>
             </b-card>
@@ -64,17 +63,7 @@
 <style>
   .app.flex-row.align-items-center {
     animation-duration: 2s;
-    background-image: url("/static/img/1.jpg");
-    background-size: cover;
-  }
-
-  .el-carousel__item:nth-child(2) {
-    background-image: url("/static/img/2.jpg");
-    background-size: cover;
-  }
-
-  .el-carousel__item:nth-child(3) {
-    background-image: url("/static/img/3.jpg");
+    background-image: url("/static/img/background.jpg");
     background-size: cover;
   }
 </style>
@@ -92,11 +81,6 @@
           password: ''
         },
         loginError: false,
-        backgroudItems: [
-          '/static/img/1.jpg',
-          '/static/img/2.jpg',
-          '/static/img/3.jpg'
-        ]
       }
     },
     methods: {

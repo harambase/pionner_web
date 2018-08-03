@@ -1,5 +1,11 @@
 // Here you can add other styles
 
+.app.flex-row.align-items-center {
+  animation-duration: 2s;
+  background-image: url("/static/img/background.jpg");
+  background-size: cover;
+}
+
 .badge {
   line-height: 1.5;
 }

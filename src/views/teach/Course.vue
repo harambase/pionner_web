@@ -546,7 +546,7 @@
         if (this.pageMode === 'create') {
           this.$router.push({path: '/teach/request?mode=manage'})
         } else {
-          this.$router.push({path: '/course/curriculum/request?mode=faculty'})
+          this.$router.push({path: '/course/new/request?mode=faculty'})
         }
       },
       initRequest(id) {
@@ -648,7 +648,6 @@
         return value !== '' && value !== undefined && value !== null
       },
 
-
       prepare() {
 
         let day = '', precrn = '';
@@ -672,11 +671,7 @@
         this.course.startTime = date2Str(this.courseTime[0], "hh:mm:ss");
         this.course.endTime = date2Str(this.courseTime[1], "hh:mm:ss");
 
-        if (this.pageMode === 'request' && this.id === '')
-          this.course.facultyId = '';
-        else {
-          this.course.facultyId = this.faculty.value
-        }
+        this.course.facultyId = this.faculty.value;
 
         if (isNotEmpty(this.course.courseInfo))
           this.course.courseInfo = JSON.stringify(this.course.courseInfo)
@@ -722,7 +717,6 @@
 
           axios.put('/request/course/' + this.id, this.tempCourse).then((response) => {
             if (response.data.code === 2001) {
-              this.documentUpload(this.id);
               this.msg = '修改成功，请等待答复!';
               this.showModal = true;
               this.headerBgVariant = 'success';
@@ -820,8 +814,8 @@
         if (this.pageMode === 'manage') {
           url = updateUrl + this.course.crn;
         }
-        else if(this.pageMode === 'create') {
-          if(this.showUpload)
+        else if (this.pageMode === 'create' || this.pageMode === 'request') {
+          if (this.showUpload)
             url = requestUrl + this.id;
           else
             url = requestUrl + key
@@ -829,8 +823,13 @@
 
         axios.put(url, formData).then((response) => {
           if (response.data.code === 2001) {
-            this.course.courseInfo = response.data.data;
-            this.showDocument = true
+            this.showDocument = true;
+            if (this.showUpload) {
+              this.course.courseInfo = response.data.data;
+              this.msg = response.data.msg;
+              this.headerBgVariant = 'success';
+              this.showModal = true;
+            }
           } else {
             this.msg = response.data.msg;
             this.showModal = true;

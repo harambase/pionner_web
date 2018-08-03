@@ -10,7 +10,7 @@
 
   export default {
     name: 'c-infoSelect',
-    data () {
+    data() {
       return {
         info: {
           label: '---选择学期---',
@@ -24,11 +24,26 @@
         ],
       }
     },
-    mounted () {
+    mounted() {
       axios.get('/course/info?search=').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
+          let label = response.data.data[i].split("-");
+          let semester = "";
+
+          switch (label[1]) {
+            case '01':
+              semester = '-春季';
+              break;
+            case '02':
+              semester = '-秋季';
+              break;
+            case '03':
+              semester = '-秋季';
+              break;
+          }
+
           let item = {
-            label: response.data.data[i],
+            label: label[0] + semester,
             value: response.data.data[i]
           }
           this.infoOptions.push(item)
@@ -41,7 +56,7 @@
       }
     },
     methods: {
-      infoList (search, loading) {
+      infoList(search, loading) {
         loading(true)
         this.infoOptions = []
         axios.get('/course/info?search=' + search).then((response) => {
