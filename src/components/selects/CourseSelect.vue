@@ -10,6 +10,7 @@
 
   export default {
     name: 'c-courseSelect',
+    props: ['info'],
     data () {
       return {
         course: {
@@ -28,7 +29,7 @@
       }
     },
     mounted() {
-      axios.get('/course/search?search=').then((response) => {
+      axios.get('/course/search?info=' + this.info.value + '&search=').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
           let item = {
             label: response.data.data[i].name,

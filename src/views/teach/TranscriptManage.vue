@@ -12,21 +12,23 @@
             <!-- User Interface controls -->
             <b-row>
               <b-col md="1" class="my-1">
-                <legend class="col-form-legend">检索条件：</legend>
+                <legend class="col-form-legend">管理学期：</legend>
               </b-col>
-            </b-row>
-            <b-row>
-              <b-col md="4" class="my-1">
+              <b-col md="3" class="my-1">
                 <InfoSelect v-on:pass="passInfo"/>
               </b-col>
-              <b-col md="4" class="my-1">
+            </b-row>
+            <b-row v-if="isNotEmpty(info) && isNotEmpty(info.value)">
+              <b-col md="1" class="my-1">
+                <legend class="col-form-legend">检索条件：</legend>
+              </b-col>
+              <b-col md="3" class="my-1">
                 <StudentSelect v-on:pass="passStudent"/>
               </b-col>
-              <b-col md="4" class="my-1">
-                <CourseSelect v-on:pass="passCourse"/>
+              <b-col md="3" class="my-1">
+                <CourseSelect v-on:pass="passCourse" :info="info"/>
               </b-col>
             </b-row>
-
             <b-row>
               <b-col md="1" class="my-1">
                 <legend class="col-form-legend">每页显示：</legend>
@@ -111,7 +113,8 @@
                               class="my-0"/>
               </b-col>
               <b-col md="6" class="my-1">
-                <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) * perPage + perPage) <=
+                <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至
+                  {{((currentPage-1) * perPage + perPage) <=
                   totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
               </b-col>
             </b-row>
@@ -169,7 +172,7 @@
 
 <script>
   import axios from 'axios'
-  import { InfoSelect, StudentSelect, CourseSelect } from '../../components/'
+  import {InfoSelect, StudentSelect, CourseSelect} from '../../components/'
   import CTranscriptEdit from '../../components/parts/TranscriptEdit'
 
   const items = []
@@ -188,7 +191,7 @@
   export default {
     name: 'TranscriptManage',
     components: {CTranscriptEdit, InfoSelect, StudentSelect, CourseSelect},
-    data () {
+    data() {
       return {
         msg: '',
         showModal: false,
@@ -207,53 +210,55 @@
         student: '',
         course: '',
         reportStudent: '',
-        reportInfo:'',
+        reportInfo: '',
         basePath: basePath
       }
     },
-    watch:{
-      info: function(){
+    watch: {
+      info: function () {
         this.initTable();
       },
-      student: function(){
+      student: function () {
         this.initTable();
       },
-      course: function(){
+      course: function () {
         this.initTable();
       }
     },
     computed: {
-      sortOptions () {
+      sortOptions() {
         // Create an options list from our field
         return this.field
           .filter(f => f.sortable)
-          .map(f => { return {text: f.label, value: f.key} })
+          .map(f => {
+            return {text: f.label, value: f.key}
+          })
       }
     },
     methods: {
-      passInfo (val) {
+      passInfo(val) {
         this.info = val
       },
-      passStudent (val) {
+      passStudent(val) {
         this.student = val
       },
-      passCourse(val){
+      passCourse(val) {
         this.course = val
       },
-      passReportStudent(val){
+      passReportStudent(val) {
         this.reportStudent = val
       },
-      passReportInfo(val){
+      passReportInfo(val) {
         this.reportInfo = val
       },
-      onFiltered (filteredItems) {
+      onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      initTable () {
+      initTable() {
         this.$refs.transcriptTable.refresh()
       },
-      transcriptTable (ctx) {
+      transcriptTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/transcript/list?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
 
@@ -277,13 +282,13 @@
         })
 
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
-      downloadReport () {
+      downloadReport() {
         window.open(basePath + '/transcript/report/' + this.reportStudent.value + '?token=' + window.localStorage.getItem('access_token'))
       },
-      downloadAllReport () {
+      downloadAllReport() {
         window.open(basePath + '/transcript/report/all?info=' + this.reportInfo.value + '&token=' + window.localStorage.getItem('access_token'))
       }
     }
