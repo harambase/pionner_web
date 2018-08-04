@@ -1,170 +1,166 @@
 ﻿<template>
   <div class="animated fadeIn">
-    <b-row>
-      <b-col cols="12">
-        <b-card
-          header-tag="header"
-          footer-tag="footer">
-          <div slot="header">
-            <i className="fa fa-align-justify"></i><strong>新课程申请</strong>
-            <small>分类查看</small>
-          </div>
-          <b-container fluid>
-            <el-tabs type="border-card" v-model="activeName">
-              <el-tab-pane label="查看所有申请" name="first"></el-tab-pane>
-              <el-tab-pane label="只查看申请中" name="second"></el-tab-pane>
-              <el-tab-pane label="只查看已批准" name="third"></el-tab-pane>
-              <el-tab-pane label="只查看已拒绝" name="fourth"></el-tab-pane>
 
-              <b-row class="ml-1">
-                <b-col md="12">
-                  <!-- User Interface controls -->
-                  <b-row>
-                    <b-col md="1" class="my-1">
-                      <legend class="col-form-legend">每页显示：</legend>
-                    </b-col>
-                    <b-col md="3" class="my-1">
-                      <b-form-group>
-                        <b-form-select :options="pageOptions" v-model="perPage"/>
-                      </b-form-group>
-                    </b-col>
-                    <b-col md="4" class="my-1"></b-col>
-                    <b-col md="4" class="my-1">
-                      <b-form-group>
-                        <b-input-group>
-                          <b-input-group-button>
-                            <div class="mt-2">
-                              搜索：
-                            </div>
-                          </b-input-group-button>
-                          <b-form-input v-model="filter"/>
-                          <b-input-group-button>
-                            <b-button variant="danger" :disabled="!filter" @click="filter = ''">重置</b-button>
-                          </b-input-group-button>
-                        </b-input-group>
-                      </b-form-group>
-                    </b-col>
-                  </b-row>
+    <el-tabs type="border-card" v-model="activeName">
+      <el-tab-pane label="查看所有申请" name="first"></el-tab-pane>
+      <el-tab-pane label="只查看申请中" name="second"></el-tab-pane>
+      <el-tab-pane label="只查看已批准" name="third"></el-tab-pane>
+      <el-tab-pane label="只查看已拒绝" name="fourth"></el-tab-pane>
 
-                  <!-- Main table element -->
-                  <b-table show-empty
-                           stacked="md"
-                           ref="tempCourseTable"
-                           :striped=true
-                           :fixed=true
-                           :hover=true
-                           :items="tempCourseTable"
-                           :fields="field"
-                           :current-page="currentPage"
-                           :per-page="perPage"
-                           :filter="filter"
-                           :sort-by.sync="sortBy"
-                           :sort-desc.sync="sortDesc"
-                           :isBusy="false"
-                           @filtered="onFiltered"
-                  >
-                    <template slot="index" slot-scope="row">
-                      {{(currentPage-1) * perPage + 1 + row.index}}
-                    </template>
-                    <template slot="status" slot-scope="row">
-                      <p v-if="row.value === '1'" style="color:green;">已批准</p>
-                      <p v-if="row.value === '0'" style="color:blue;">申请中</p>
-                      <p v-if="row.value === '-1'" style="color:red;">已拒绝</p>
-                    </template>
-                    <template slot="courseJson" slot-scope="row">
-                      {{JSON.parse(row.value).name}}
-                    </template>
-                    <template slot="actions" slot-scope="row">
-
-                      <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
-                        {{ row.detailsShowing ? '隐藏' : '展示' }}详情
-                      </b-button>
-
-                      <b-button size="sm"
-                                class="btn btn-danger"
-                                @click.stop="showDeleteTempCourse(row.item.id)">
-                        删除该申请
-                      </b-button>
-                    </template>
-
-                    <template slot="row-details" slot-scope="row">
-                      <b-card>
-                        <b-list-group>
-                          <b-list-group-item title="编辑课程" class="flex-column align-items-start" href="#"
-                                             :disabled="row.item.status !== '0'" @click="detail(row.item.id)">
-                            <div class="d-flex w-100 justify-content-between">
-                              <h5 class="mb-1">你的临时课程 <strong>{{JSON.parse(row.item.courseJson).name}}</strong> 的信息</h5>
-                              <small class="text-muted">授课老师ID：{{row.item.facultyId}}</small>
-                            </div>
-                            <hr/>
-                            <div class="mr-1">
-                              <dl class="row">
-                                <dt class="col-sm-1">课程临时CRN:</dt>
-                                <dd class="col-sm-1">{{row.item.crn}}</dd>
-
-                                <dt class="col-sm-1">课程学期:</dt>
-                                <dd class="col-sm-1">{{JSON.parse(row.item.courseJson).info}}</dd>
-
-                                <dt class="col-sm-1">课程容量:</dt>
-                                <dd class="col-sm-1">{{JSON.parse(row.item.courseJson).capacity}}</dd>
-
-                                <dt class="col-sm-1">课程学分:</dt>
-                                <dd class="col-sm-1">{{JSON.parse(row.item.courseJson).credits}}</dd>
-
-                                <dt class="col-sm-1">课程等级:</dt>
-                                <dd class="col-sm-1">{{JSON.parse(row.item.courseJson).level}}</dd>
-
-                                <dt class="col-sm-1">课程班级:</dt>
-                                <dd class="col-sm-1">{{JSON.parse(row.item.courseJson).section}}</dd>
-                              </dl>
-                              <dl class="row">
-                                <dt class="col-sm-1">上课时间:</dt>
-                                <dd class="col-sm-3">{{JSON.parse(row.item.courseJson).startTime}} to
-                                  {{JSON.parse(row.item.courseJson).endTime}}， 每周 {{JSON.parse(row.item.courseJson).day}}
-                                </dd>
-
-                                <dt class="col-sm-1">上课周期:</dt>
-                                <dd class="col-sm-3">{{JSON.parse(row.item.courseJson).startDate}} to
-                                  {{JSON.parse(row.item.courseJson).endDate}}
-                                </dd>
-
-                              </dl>
-                              <dl class="row">
-                                <dt class="col-sm-1">操作人:</dt>
-                                <dd class="col-sm-5" style="color:red">{{row.item.operatorId}}</dd>
-                              </dl>
-                              <dl class="row">
-                                <dt class="col-sm-1">备注:</dt>
-                                <dd class="col-sm-5" style="color:red">{{JSON.parse(row.item.courseJson).comment}}</dd>
-                              </dl>
-
-                            </div>
-                            <!--<button class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>-->
-                          </b-list-group-item>
-                        </b-list-group>
-                      </b-card>
-                    </template>
-                  </b-table>
-                  <b-row>
-                    <b-col md="6" class="my-1">
-                      <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
-                                    class="my-0"/>
-                    </b-col>
-                    <b-col md="6" class="my-1">
-                      <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至
-                        {{((currentPage-1) * perPage + perPage) <=
-                        totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
-                    </b-col>
-                  </b-row>
+      <b-card
+        header-tag="header"
+        footer-tag="footer">
+        <div slot="header">
+          <i className="fa fa-align-justify"></i><strong>新课程申请</strong>
+          <small>分类查看</small>
+        </div>
+        <b-container fluid>
+          <b-row class="ml-1">
+            <b-col md="12">
+              <!-- User Interface controls -->
+              <b-row>
+                <b-col md="1" class="my-1">
+                  <legend class="col-form-legend">每页显示：</legend>
+                </b-col>
+                <b-col md="3" class="my-1">
+                  <b-form-group>
+                    <b-form-select :options="pageOptions" v-model="perPage"/>
+                  </b-form-group>
+                </b-col>
+                <b-col md="4" class="my-1"></b-col>
+                <b-col md="4" class="my-1">
+                  <b-form-group>
+                    <b-input-group>
+                      <b-input-group-button>
+                        <div class="mt-2">
+                          搜索：
+                        </div>
+                      </b-input-group-button>
+                      <b-form-input v-model="filter"/>
+                      <b-input-group-button>
+                        <b-button variant="danger" :disabled="!filter" @click="filter = ''">重置</b-button>
+                      </b-input-group-button>
+                    </b-input-group>
+                  </b-form-group>
                 </b-col>
               </b-row>
 
-            </el-tabs>
+              <!-- Main table element -->
+              <b-table show-empty
+                       stacked="md"
+                       ref="tempCourseTable"
+                       :striped=true
+                       :fixed=true
+                       :hover=true
+                       :items="tempCourseTable"
+                       :fields="field"
+                       :current-page="currentPage"
+                       :per-page="perPage"
+                       :filter="filter"
+                       :sort-by.sync="sortBy"
+                       :sort-desc.sync="sortDesc"
+                       :isBusy="false"
+                       @filtered="onFiltered"
+              >
+                <template slot="index" slot-scope="row">
+                  {{(currentPage-1) * perPage + 1 + row.index}}
+                </template>
+                <template slot="status" slot-scope="row">
+                  <p v-if="row.value === '1'" style="color:green;">已批准</p>
+                  <p v-if="row.value === '0'" style="color:blue;">申请中</p>
+                  <p v-if="row.value === '-1'" style="color:red;">已拒绝</p>
+                </template>
+                <template slot="courseJson" slot-scope="row">
+                  {{JSON.parse(row.value).name}}
+                </template>
+                <template slot="actions" slot-scope="row">
 
-          </b-container>
-        </b-card>
-      </b-col>
-    </b-row>
+                  <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
+                    {{ row.detailsShowing ? '隐藏' : '展示' }}详情
+                  </b-button>
+
+                  <b-button size="sm"
+                            class="btn btn-danger"
+                            @click.stop="showDeleteTempCourse(row.item.id)">
+                    删除该申请
+                  </b-button>
+                </template>
+
+                <template slot="row-details" slot-scope="row">
+                  <b-card>
+                    <b-list-group>
+                      <b-list-group-item title="编辑课程" class="flex-column align-items-start" href="#"
+                                         :disabled="row.item.status !== '0'" @click="detail(row.item.id)">
+                        <div class="d-flex w-100 justify-content-between">
+                          <h5 class="mb-1">你的临时课程 <strong>{{JSON.parse(row.item.courseJson).name}}</strong> 的信息</h5>
+                          <small class="text-muted">授课老师ID：{{row.item.facultyId}}</small>
+                        </div>
+                        <hr/>
+                        <div class="mr-1">
+                          <dl class="row">
+                            <dt class="col-sm-1">课程临时CRN:</dt>
+                            <dd class="col-sm-1">{{row.item.crn}}</dd>
+
+                            <dt class="col-sm-1">课程学期:</dt>
+                            <dd class="col-sm-1">{{JSON.parse(row.item.courseJson).info}}</dd>
+
+                            <dt class="col-sm-1">课程容量:</dt>
+                            <dd class="col-sm-1">{{JSON.parse(row.item.courseJson).capacity}}</dd>
+
+                            <dt class="col-sm-1">课程学分:</dt>
+                            <dd class="col-sm-1">{{JSON.parse(row.item.courseJson).credits}}</dd>
+
+                            <dt class="col-sm-1">课程等级:</dt>
+                            <dd class="col-sm-1">{{JSON.parse(row.item.courseJson).level}}</dd>
+
+                            <dt class="col-sm-1">课程班级:</dt>
+                            <dd class="col-sm-1">{{JSON.parse(row.item.courseJson).section}}</dd>
+                          </dl>
+                          <dl class="row">
+                            <dt class="col-sm-1">上课时间:</dt>
+                            <dd class="col-sm-3">{{JSON.parse(row.item.courseJson).startTime}} to
+                              {{JSON.parse(row.item.courseJson).endTime}}， 每周 {{JSON.parse(row.item.courseJson).day}}
+                            </dd>
+
+                            <dt class="col-sm-1">上课周期:</dt>
+                            <dd class="col-sm-3">{{JSON.parse(row.item.courseJson).startDate}} to
+                              {{JSON.parse(row.item.courseJson).endDate}}
+                            </dd>
+
+                          </dl>
+                          <dl class="row">
+                            <dt class="col-sm-1">操作人:</dt>
+                            <dd class="col-sm-5" style="color:red">{{row.item.operatorId}}</dd>
+                          </dl>
+                          <dl class="row">
+                            <dt class="col-sm-1">备注:</dt>
+                            <dd class="col-sm-5" style="color:red">{{JSON.parse(row.item.courseJson).comment}}</dd>
+                          </dl>
+
+                        </div>
+                        <!--<button class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>-->
+                      </b-list-group-item>
+                    </b-list-group>
+                  </b-card>
+                </template>
+              </b-table>
+              <b-row>
+                <b-col md="6" class="my-1">
+                  <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
+                                class="my-0"/>
+                </b-col>
+                <b-col md="6" class="my-1">
+                  <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至
+                    {{((currentPage-1) * perPage + perPage) <=
+                    totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
+                </b-col>
+              </b-row>
+            </b-col>
+          </b-row>
+        </b-container>
+      </b-card>
+    </el-tabs>
+
     <b-modal v-model="showDeleteModal"
              size="sm"
              header-bg-variant='danger'

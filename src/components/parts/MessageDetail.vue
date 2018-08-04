@@ -4,7 +4,7 @@
       <b-list-group-item :title="row.item.title" class="flex-column align-items-start" disabled
                          style="background:#f4f6f8">
         <div class="d-flex w-100 justify-content-between">
-          <h5>{{row.item.title}}</h5>
+          <h5 style="color:darkblue"><strong>{{row.item.title}} <small>{{row.item.tag}}消息</small></strong></h5>
         </div>
         <hr/>
         <div class="mr-1">
@@ -53,10 +53,10 @@
           <hr/>
           <b-row>
             <b-col md="12">
-              <dl class="row" v-if="mode!=='faculty'">
+              <dl class="row">
                 <dt class="col-sm-1">操作:</dt>
                 <dd class="col-sm-5">
-                  <b-button size="sm" variant="success" v-if="row.item.status!='unread'"
+                  <b-button size="sm" variant="success" v-if="row.item.status=='read'"
                             @click.stop="markAsUnread()">
                     标记为未读
                   </b-button>
@@ -64,9 +64,13 @@
                             @click.stop="markAsRead()">
                     标记为已读
                   </b-button>
-                  <b-button size="sm" variant="danger"
+                  <b-button size="sm" variant="primary" v-if="row.item.status!='trashed'"
                             @click.stop="moveToTrash()">
                     移入垃圾箱
+                  </b-button>
+                  <b-button size="sm" variant="primary" v-if="row.item.status=='trashed'"
+                            @click.stop="moveToInbox()">
+                    移入收件箱
                   </b-button>
                   <b-button size="sm" variant="danger"
                             @click.stop="showDeleteMessage(row.item.id)">
@@ -75,7 +79,6 @@
                   <b-button size="sm" variant="primary" @click.stop="row.toggleDetails">
                     关闭信息
                   </b-button>
-                  {{info}}
                 </dd>
               </dl>
             </b-col>
@@ -144,6 +147,12 @@
         })
       },
       markAsRead(){
+        this.info.unread--;
+        if(this.row.item.labels == '重要')
+          this.info.important--;
+        if(this.row.item.labels == '紧急')
+          this.info.urgent--;
+
         this.row.item.status = 'read';
         axios.put('/message/' + this.row.item.id, this.row.item).then((response) => {
           if (response.data.code !== 2001) {
@@ -154,8 +163,25 @@
         })
       },
       markAsUnread(){
+        this.info.unread++;
+        if(this.row.item.labels == '重要')
+          this.info.important++;
+        if(this.row.item.labels == '紧急')
+          this.info.urgent++;
+
         this.row.item.status = 'unread';
         axios.put('/message/' + this.row.item.id, this.row.item).then((response) => {
+          if (response.data.code !== 2001) {
+            this.msg = response.data.msg;
+            this.showModal = true;
+            this.headerBgVariant = 'danger';
+          }
+        })
+      },
+      moveToInbox(){
+        this.row.item.status = 'read';
+        axios.put('/message/' + this.row.item.id, this.row.item).then((response) => {
+          this.$router.go(0)
           if (response.data.code !== 2001) {
             this.msg = response.data.msg;
             this.showModal = true;
@@ -166,6 +192,7 @@
       moveToTrash(){
         this.row.item.status = 'trashed';
         axios.put('/message/' + this.row.item.id, this.row.item).then((response) => {
+          this.$router.go(0)
           if (response.data.code !== 2001) {
             this.msg = response.data.msg;
             this.showModal = true;

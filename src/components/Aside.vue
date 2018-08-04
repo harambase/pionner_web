@@ -3,8 +3,8 @@
     <b-tabs>
       <b-tab title="<i class='icon-speech'></i>">
         <div class="p-3">
-          <div v-for="item in items">
-            <div class="message">
+          <div v-for="item in items" :key="item.id">
+            <div class="message" style="cursor:pointer;" @click="goTo(item.id)">
               <div class="py-3 mr-3 float-left">
                 <div class="avatar">
                   <img v-if="isNotEmpty(item.pic)"
@@ -30,7 +30,6 @@
             <hr>
           </div>
         </div>
-
       </b-tab>
     </b-tabs>
   </aside>
@@ -49,7 +48,7 @@
       }
     },
     mounted() {
-      let url = '/message/list?start=1&length=5&orderCol=date&box=unread&order=desc';
+      let url = '/message/list?start=1&length=5&orderCol=date&box=inbox&order=desc';
       axios.get(url).then((response) => {
         this.items = response.data.data;
       })
@@ -58,6 +57,9 @@
       isNotEmpty (value) {
         return value !== '' && value !== undefined && value !== null
       },
+      goTo(id){
+        this.$router.push({path:"/message?id=" + id});
+      }
     }
   }
 </script>

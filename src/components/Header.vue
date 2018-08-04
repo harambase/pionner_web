@@ -18,7 +18,7 @@
       </b-nav-item>
       <b-nav-item class="d-md-down-none" @click="asideToggle">
         <i class="icon-envelope"></i>
-        <b-badge pill variant="danger">{{unread}}</b-badge>
+        <b-badge pill variant="danger">*</b-badge>
       </b-nav-item>
       <HeaderDropdown/>
     </b-navbar-nav>
