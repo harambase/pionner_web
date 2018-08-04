@@ -175,10 +175,8 @@
         })
       },
       deleteTranscript() {
-        if (!result)
-          return
 
-        axios.delete('/transcript' + this.deleteId).then((response) => {
+        axios.delete('/transcript/' + this.deleteId).then((response) => {
           if (response.data.code === 2001) {
             this.msg = response.data.msg
             this.showModal = true
