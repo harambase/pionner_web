@@ -92,22 +92,19 @@
       <template slot="actions" slot-scope="row">
         <b-nav pills>
           <b-nav-item-dropdown text="操作">
-            <b-dropdown-item>
-              <i style="cursor: pointer; margin-top:5px; color: red;"
-                 class="fa fa-trash" title="删除该PIN"
-                 @click.stop="showDeleteOne(row.item.pin)">
+            <b-dropdown-item @click.stop="showDeleteOne(row.item.pin)">
+              <i style="color: red;"
+                 class="fa fa-trash" title="删除该PIN">
               </i>删除该PIN
             </b-dropdown-item>
-            <b-dropdown-item>
-              <i style="cursor: pointer; color: red;"
-                 class="fa fa-envelope" title="删除该PIN"
-                 @click.stop="resendPin(row.item)">
+            <b-dropdown-item @click.stop="resendPin(row.item)">
+              <i style="color: red;"
+                 class="fa fa-envelope" title="删除该PIN">
               </i>重新发送PIN
             </b-dropdown-item>
             <b-dropdown-item @click.stop="row.toggleDetails">
-              <i style="cursor: pointer; margin-top:5px; color: red;"
-                 class="fa fa-pencil" title="删除该PIN"
-                 >
+              <i style="color: red;"
+                 class="fa fa-pencil" title="删除该PIN">
               </i>修改时效
             </b-dropdown-item>
           </b-nav-item-dropdown>
@@ -155,8 +152,11 @@
                       <dt class="col-sm-1">操作:</dt>
                       <dd class="col-sm-5">
                         <b-button size="sm" variant="danger"
-                                  @click.stop="updateOne(row.item)">
+                                  @click.stop="updateOne(row.item, row)">
                           修改时效
+                        </b-button>
+                        <b-button size="sm" variant="primary" @click.stop="row.toggleDetails">
+                          取消修改
                         </b-button>
                       </dd>
                     </dl>
@@ -169,6 +169,18 @@
       </template>
 
     </b-table>
+    <b-modal v-model="showModal"
+             size="sm"
+             :header-bg-variant="headerBgVariant"
+             ok-only
+             ok-title="关闭"
+             centered
+             title="消息">
+      <div class="d-block text-center">
+        <h4>{{msg}}</h4>
+      </div>
+    </b-modal>
+
     <b-row>
       <b-col md="6" class="my-1">
         <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
@@ -210,19 +222,6 @@
         <h4>确认后请按发送键。</h4>
       </div>
     </b-modal>
-
-    <b-modal v-model="showModal"
-             size="sm"
-             :header-bg-variant="headerBgVariant"
-             ok-only
-             ok-title="关闭"
-             centered
-             title="消息">
-      <div class="d-block text-center">
-        <h4>{{msg}}</h4>
-      </div>
-    </b-modal>
-
   </b-container>
 </template>
 
@@ -369,6 +368,7 @@
               this.msg = '修改成功！'
               this.showModal = true
               this.headerBgVariant = 'success'
+
             } else {
               this.msg = response.data.msg
               this.showModal = true
