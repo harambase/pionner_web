@@ -6,29 +6,21 @@
           header-tag="header"
           footer-tag="footer">
           <div slot="header">
-            <i className="fa fa-align-justify"></i><strong>识别码列表（按学期）</strong>
+            <i className="fa fa-align-justify"></i><strong>识别码管理</strong>
           </div>
-          <b-col cols="12">
-            <b-card
-              header-tag="header"
-              footer-tag="footer">
-              <div slot="header">
-                <i className="fa fa-align-justify"></i><strong>识别码列表</strong>
-              </div>
-              <CPinTable/>
-            </b-card>
-          </b-col>
-        </b-card>
-      </b-col>
-      <b-col md="12">
-        <b-card
-          header-tag="header"
-          footer-tag="footer">
-          <div slot="header">
-            <i className="fa fa-align-justify"></i><strong>识别码(PIN)管理</strong>
-          </div>
-          <b-row>
-            <b-col md="12">
+
+          <el-tabs type="border-card" v-model="activeName">
+            <el-tab-pane label="识别码列表" name="first">
+              <b-card
+                header-tag="header"
+                footer-tag="footer">
+                <div slot="header">
+                  <i className="fa fa-align-justify"></i><strong>识别码列表</strong>
+                </div>
+                <CPinTable/>
+              </b-card>
+            </el-tab-pane>
+            <el-tab-pane label="识别码(PIN)生成" name="second">
               <b-card header-tag="header"
                       footer-tag="footer">
                 <div slot="header">
@@ -36,96 +28,103 @@
                   <small>生成规则信息</small>
                 </div>
                 <b-row>
-                  <b-col md="2" class="mt-1">
-                    <label for="info" class="col-sm-12 control-label">*年份-学期(YYYY-XX):</label>
+                  <b-col md="2">
+                    <label class="col-sm-12 control-label">*年份-学期(YYYY-XX):</label>
                   </b-col>
-                  <b-col md="3" class="mt-1">
-                    <input v-validate="'min:7|max:7|required'" name="info"
-                           :class="{'form-control': true, 'is-invalid': errors.has('info')}"
-                           v-model="info" id="info"/>
+                  <b-col md="3">
+                    <b-form-select id="year" style="width: 50%; float:left;" v-validate="'required'" name="info"
+                                   :class="{'form-control': true, 'is-invalid': errors.has('info')}"
+                                   :plain="true"
+                                   :options="[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]"
+                                   v-model="pinInfo.year">
+                    </b-form-select>
+                    <b-form-select id="info" style="width: 50%" v-validate="'required'" name="info"
+                                   :class="{'form-control': true, 'is-invalid': errors.has('info')}"
+                                   :plain="true"
+                                   :options="[{ text: '春季课程', value: '01' },{ text: '秋季课程', value: '02' }, { text: '夏季课程', value: '03' }]"
+                                   v-model="pinInfo.semester">
+                    </b-form-select>
                     <div v-show="errors.has('info')" class="invalid-tooltip">{{ errors.first('info') }}</div>
                   </b-col>
+                </b-row>
+                <b-row class="mt-2">
                   <b-col md="2">
-                    <label class="col-sm-12 control-label">*是否批量:</label>
+                    <label class="col-sm-12 control-label">*生成方式:</label>
                   </b-col>
                   <b-col md="3">
                     <div class="custom-control custom-radio custom-control-inline">
                       <input type="radio" id="batch" name="mode" v-validate="'required'" class="custom-control-input"
-                             value="2" v-model="mode">
-                      <label class="custom-control-label" for="batch">批量</label>
+                             value="1" v-model="mode">
+                      <label class="custom-control-label" for="batch">单类型</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
                       <input type="radio" id="single" name="mode" v-validate="'required'" class="custom-control-input"
-                             value="1" v-model="mode">
-                      <label class="custom-control-label" for="single">单个</label>
+                             value="2" v-model="mode">
+                      <label class="custom-control-label" for="single">单人</label>
                     </div>
                     <div v-show="errors.has('mode')" class="invalid-tooltip">{{ errors.first('info') }}</div>
                   </b-col>
                 </b-row>
-                <b-row>
-                  <b-col md="2" class="mt-1">
-                    <label class="col-sm-12 control-label">*识别码的所有人:</label>
-                  </b-col>
-                  <b-col md="3" class="mt-1">
-                    <CUserSelect v-on:pass="passUser" :mode="mode"/>
-                  </b-col>
-                </b-row>
-                <b-row>
+                <b-row class="mt-2">
                   <b-col md="2">
-                    <label for="startTime" class="col-sm-12 control-label">*生效时间:</label>
+                    <label class="col-sm-12 control-label">*选择类型:</label>
                   </b-col>
-                  <b-col md="3">
-                    <input id="startTime" v-model="startTime" name="startTime"
-                           v-validate="'required|date_format:YYYY-MM-DD HH:mm:ss'"
-                           :class="{'form-control': true, 'is-invalid': errors.has('startTime')}">
-                    <div v-show="errors.has('startTime')" class="invalid-tooltip">{{ errors.first('startTime') }}</div>
-                  </b-col>
-                  <b-col md="2">
-                    <label for="endTime"
-                           class="col-sm-12 control-label">*失效时间:</label>
-                  </b-col>
-                  <b-col md="3">
-                    <input id="endTime" v-model="endTime" name="endTime"
-                           v-validate="'required|date_format:YYYY-MM-DD HH:mm:ss'"
-                           :class="{'form-control': true, 'is-invalid': errors.has('endTime')}">
-                    <div v-show="errors.has('endTime')" class="invalid-tooltip">{{ errors.first('startTime') }}</div>
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col md="2">
-                    <label class="col-sm-12 control-label">*选择种类（可复选）:</label>
-                  </b-col>
-                  <b-col md="8">
-                    <div class="custom-control custom-checkbox custom-control-inline">
-                      <input type="checkbox" id="course" name="role" v-validate="'required'"
-                             class="custom-control-input"
-                             value="1" v-model="role">
+                  <b-col md="5">
+                    <div class="custom-control custom-radio custom-control-inline">
+                      <input type="radio" id="course" value="1"
+                             :class="{'custom-control-input': true, 'is-invalid': errors.has('role')}"
+                             name="level" v-model="role" v-validate="'required'">
                       <label class="custom-control-label" for="course">选课</label>
                     </div>
-                    <div class="custom-control custom-checkbox custom-control-inline">
-                      <input type="checkbox" id="transcript" name="role" v-validate="'required'"
-                             class="custom-control-input"
-                             value="2" v-model="role">
+                    <div class="custom-control custom-radio custom-control-inline">
+                      <input type="radio" id="transcript" value="2"
+                             :class="{'custom-control-input': true, 'is-invalid': errors.has('role')}"
+                             name="level" v-model="role" v-validate="'required'">
                       <label class="custom-control-label" for="transcript">成绩录入</label>
                     </div>
+                    <div v-show="errors.has('role')" class="invalid-tooltip">{{ errors.first('role') }}</div>
                   </b-col>
                 </b-row>
-                <b-row>
-                  <b-col md="2" class="mt-1">
+                <b-row class="mt-2" v-if="mode == 2 && role != ''">
+                  <b-col md="2">
+                    <label class="col-sm-12 control-label">*识别码的所有人:</label>
+                  </b-col>
+                  <b-col md="3">
+                    <CFacultySelect v-if="role == 2" v-on:pass="passUser"/>
+                    <CStudentSelect v-if="role == 1" v-on:pass="passUser"/>
+                  </b-col>
+                </b-row>
+                <b-row class="mt-2">
+                  <b-col md="2">
+                    <label class="col-sm-12 control-label">*有效期:</label>
+                  </b-col>
+                  <b-col md="3">
+                    <el-date-picker
+                      id="range"
+                      v-model="range"
+                      type="datetimerange"
+                      range-separator="至"
+                      start-placeholder="开始日期"
+                      end-placeholder="结束日期">
+                    </el-date-picker>
+                  </b-col>
+                </b-row>
+                <b-row class="mt-2">
+                  <b-col md="2">
                     <label for="comments"
                            class="col-sm-12 control-label">备注信息:</label>
                   </b-col>
-                  <b-col md="8" class="mt-1">
+                  <b-col md="8">
                   <textarea style="resize: none;" class="form-control"
                             v-model="remark"
                             id="comments" rows="3"></textarea>
                   </b-col>
                 </b-row>
-                <b-row>
-                  <b-col md="2" class="mt-1">
+                <b-row class="mt-2">
+                  <b-col md="2">
                     <label class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
                   </b-col>
-                  <b-col md="3" class="mt-1">
+                  <b-col md="3">
                     <div class="custom-control custom-radio custom-control-inline">
                       <input type="radio" id="yes"
                              :class="{'custom-control-input': true, 'is-invalid': errors.has('confirm')}"
@@ -134,7 +133,7 @@
                       <div v-show="errors.has('confirm')" class="invalid-tooltip">{{ errors.first('confirm') }}</div>
                     </div>
                   </b-col>
-                  <b-col md="2" class="mt-1">
+                  <b-col md="2">
                     <b-button variant="success" @click="generate">生成（并自动发送）
                     </b-button>
                   </b-col>
@@ -143,8 +142,8 @@
                   注意：该处填写规则为注册年份-学期号。学期号规则为：春季是01，秋季是02，其他为03。
                 </div>
               </b-card>
-            </b-col>
-            <b-col md="12">
+            </el-tab-pane>
+            <el-tab-pane label="识别码(PIN)批量清空" name="third">
               <b-card header-tag="header"
                       footer-tag="footer">
                 <div slot="header">
@@ -163,8 +162,8 @@
                   </b-col>
                 </b-row>
               </b-card>
-            </b-col>
-            <b-col md="12">
+            </el-tab-pane>
+            <el-tab-pane label="识别码(PIN)批量发送" name="fourth">
               <b-card header-tag="header"
                       footer-tag="footer">
                 <div slot="header">
@@ -183,13 +182,13 @@
                   </b-col>
                   <b-col md="2">
                     <div class="custom-control custom-checkbox custom-control-inline">
-                      <input id="choose" type="checkbox" name="role2" v-validate="'required'"
+                      <input id="choose" type="checkbox" name="role2"
                              class="custom-control-input"
                              value="1" v-model="sendRole">
                       <label class="custom-control-label" for="choose">选课</label>
                     </div>
                     <div class="custom-control custom-checkbox custom-control-inline">
-                      <input id="grade" type="checkbox" name="role2" v-validate="'required'"
+                      <input id="grade" type="checkbox" name="role2"
                              class="custom-control-input"
                              value="2" v-model="sendRole">
                       <label class="custom-control-label" for="grade">成绩录入</label>
@@ -201,8 +200,8 @@
                   </b-col>
                 </b-row>
               </b-card>
-            </b-col>
-          </b-row>
+            </el-tab-pane>
+          </el-tabs>
         </b-card>
       </b-col>
     </b-row>
@@ -239,15 +238,18 @@
   import CPinTable from '../../components/tables/PinTable'
   import CUserSelect from '../../components/selects/UserSelect'
   import CPinSelect from '../../components/selects/PinSelect'
+  import CFacultySelect from "../../components/selects/FacultySelect";
+  import CStudentSelect from "../../components/selects/StudentSelect";
 
   export default {
     name: 'Pin',
-    components: {CPinSelect, CUserSelect, CPinTable, CInfoSelect},
-    data () {
+    components: {CStudentSelect, CFacultySelect, CPinSelect, CUserSelect, CPinTable, CInfoSelect},
+    data() {
       return {
         startTime: '',
         endTime: '',
-        role: [],
+        range: [],
+        role: '',
         remark: '',
         info: '',
         table: '',
@@ -261,47 +263,32 @@
         headerBgVariant: '',
         pin: '',
         sendRole: [],
-        sendInfo: ''
+        sendInfo: '',
+        activeName: 'second',
+        pinInfo: {
+          year: '2018',
+          semester: '01'
+        },
       }
     },
-    mounted () {
-      laydate.render({
-        elem: '#startTime',
-        theme: '#393D49',
-        type: 'datetime',
-        showBottom: ['clear', 'confirm'],
-        done: (value) => {
-          this.startTime = value
-        }
-      })
-      laydate.render({
-        elem: '#endTime',
-        theme: '#393D49',
-        type: 'datetime',
-        showBottom: ['clear', 'confirm'],
-        done: (value) => {
-          this.endTime = value
-        }
-      })
-    },
     methods: {
-      passUser (val) {
+      passUser(val) {
         this.user = val
       },
-      passInfo (val) {
+      passInfo(val) {
         this.deleteInfo = val
       },
-      passPin (val) {
+      passPin(val) {
         this.pin = val
       },
-      passSendInfo (val) {
+      passSendInfo(val) {
         this.sendInfo = val
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
-      sendPin () {
-        for(let i = 0; i<this.sendRole.length; i++) {
+      sendPin() {
+        for (let i = 0; i < this.sendRole.length; i++) {
           switch (this.sendRole[i]) {
             case '1':
               axios.get('/pin/send/advisor/' + this.sendInfo.value).then((response) => {
@@ -320,18 +307,22 @@
           }
         }
       },
-      generate () {
+      generate() {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
           let url = '/pin'
 
+          this.startTime = date2Str(this.range[0], "yyyy-MM-dd hh:mm:ss");
+          this.endTime = date2Str(this.range[1], "yyyy-MM-dd hh:mm:ss");
+          let info = this.pinInfo.year + '-' + this.pinInfo.semester;
+
           switch (this.mode) {
-            case '2':
+            case '1':
               url += '?startTime=' + this.startTime
                 + '&endTime=' + this.endTime
                 + '&role=' + this.role
-                + '&info=' + this.info
+                + '&info=' + info
                 + '&remark=' + this.remark
               axios.post(url).then((response) => {
                 if (response.data.code === 2001) {
@@ -346,12 +337,12 @@
                 }
               })
               break
-            case '1':
+            case '2':
               url += '/' + this.user.value
                 + '?startTime=' + this.startTime
                 + '&endTime=' + this.endTime
                 + '&role=' + this.role
-                + '&info=' + this.info
+                + '&info=' + info
                 + '&remark=' + this.remark
               axios.post(url).then((response) => {
                 if (response.data.code === 2001) {
@@ -368,10 +359,10 @@
           }
         })
       },
-      showDeleteAll () {
+      showDeleteAll() {
         this.showDeleteModal = true
       },
-      deleteAll () {
+      deleteAll() {
         axios.delete('/pin/' + this.deleteInfo.value + '/all').then((response) => {
           if (response.data.code === 2001) {
             this.msg = '删除成功！'

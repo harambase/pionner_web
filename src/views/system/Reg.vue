@@ -242,7 +242,7 @@
         sortDesc: false,
         filter: null,
         items: items,
-        viewStatus: '',
+        viewStatus: '0',
         isBusy: false,
         profilePath: '',
         basePath: basePath,

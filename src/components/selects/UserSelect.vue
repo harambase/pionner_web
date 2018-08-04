@@ -1,7 +1,7 @@
 <template>
   <b-form-group>
     <v-select v-model="user" :filterable="false" :options="userOptions"
-              @search="userList" :disabled="mode != 1">
+              @search="userList">
       <template slot="option" slot-scope="option">
         <img class="img-avatar" style="width:30px; height: 30px;" :src="option.profile">
         {{ option.label }}

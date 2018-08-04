@@ -5,10 +5,11 @@
       <b-col md="1" class="my-1">
         <legend class="col-form-legend">检索条件：</legend>
       </b-col>
-      <b-col md="4" class="my-1">
+      <b-col md="3" class="my-1">
         <CInfoSelect v-on:pass="passInfo"/>
       </b-col>
       <b-col md="3" class="my-1">
+        <CUserSelect v-on:pass="passUser"/>
       </b-col>
       <b-col md="3" class="my-1">
       </b-col>
@@ -64,21 +65,53 @@
       <template slot="effective" slot-scope="row">
         <p class="text-muted">从{{row.item.startTime}} <br> 至{{row.item.endTime}}</p>
       </template>
+
       <template slot="role" slot-scope="row">
         <p class="text-muted" v-if="row.item.role == 2">教务</p>
         <p class="text-muted" v-else>选课</p>
       </template>
 
+      <template slot="oname" slot-scope="row">
+        <b-row>
+          <b-col md="3">
+            <img v-if="isNotEmpty(row.item.profile)"
+                 :src="basePath + '/static' + JSON.parse(row.item.profile).path"
+                 style="width: 30px;height: 30px"
+                 class="img-avatar">
+            <img v-else
+                 src="/static/img/logo.png"
+                 style="width: 40px;height: 40px"
+                 class="img-avatar">
+          </b-col>
+          <b-col md="9" class="mt-1">
+            {{row.value}}
+          </b-col>
+        </b-row>
+      </template>
+
       <template slot="actions" slot-scope="row">
-        <b-btn size="sm" class="btn btn-danger" style="width: 50%" @click.stop="showDeleteOne(row.item.pin)">
-          删除
-        </b-btn>
-        <b-btn size="sm" class="btn btn-success" style="width: 50%" @click.stop="resendPin(row.item)">
-          重新发送
-        </b-btn>
-        <b-btn size="sm" class="btn btn-info" style="width: 45%" @click.stop="row.toggleDetails">
-          修改时效
-        </b-btn>
+        <b-nav pills>
+          <b-nav-item-dropdown text="操作">
+            <b-dropdown-item>
+              <i style="cursor: pointer; margin-top:5px; color: red;"
+                 class="fa fa-trash" title="删除该PIN"
+                 @click.stop="showDeleteOne(row.item.pin)">
+              </i>删除该PIN
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <i style="cursor: pointer; color: red;"
+                 class="fa fa-envelope" title="删除该PIN"
+                 @click.stop="resendPin(row.item)">
+              </i>重新发送PIN
+            </b-dropdown-item>
+            <b-dropdown-item @click.stop="row.toggleDetails">
+              <i style="cursor: pointer; margin-top:5px; color: red;"
+                 class="fa fa-pencil" title="删除该PIN"
+                 >
+              </i>修改时效
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-nav>
       </template>
 
       <template slot="row-details" slot-scope="row">
@@ -86,7 +119,7 @@
           <b-list-group>
             <b-list-group-item title="编辑识别码" class="flex-column align-items-start">
               <div class="d-flex w-100 ustify-content-between">
-                <h5 class="mb-1"> PIN {{row.item.pin}} ：<strong>{{row.item.owner}}</strong> 的{{pin.role === 1? '选课':
+                <h5 class="mb-1"> PIN {{row.item.pin}} ：<strong>{{row.item.oname}}</strong> 的{{pin.role === 1? '选课':
                   '成绩录入'}}识别码的时效信息</h5>
               </div>
               <hr/>
@@ -142,7 +175,8 @@
                       class="my-0"/>
       </b-col>
       <b-col md="6" class="my-1">
-        <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) * perPage + perPage) <=
+        <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) *
+          perPage + perPage) <=
           totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
       </b-col>
     </b-row>
@@ -195,23 +229,23 @@
 <script>
   import axios from 'axios'
   import CInfoSelect from '../../components/selects/InfoSelect'
+  import CUserSelect from "../selects/UserSelect";
 
-  const items = []
+  const items = [];
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
     {key: 'pin', label: '识别码', sortable: true},
-    {key: 'owner', label: '所有人', sortable: true, 'class': 'text-center'},
+    {key: 'oname', label: '所有人', sortable: true, 'class': 'text-center'},
     {key: 'role', label: '类型', sortable: true, 'class': 'text-center'},
     {key: 'effective', label: '有效时间'},
     {key: 'remark', label: '备注', sortable: true},
-    {key: 'createTime', label: '创建时间', sortable: true},
-    {key: 'actions', label: '操作'}
-  ]
+    {key: 'actions', label: ''}
+  ];
 
   export default {
     name: 'c-pinTable',
-    components: {CInfoSelect},
-    data () {
+    components: {CUserSelect, CInfoSelect},
+    data() {
       return {
         field: field,
         currentPage: 1,
@@ -229,38 +263,45 @@
         pin: '',
         msg: '',
         headerBgVariant: '',
+        basePath: basePath,
+        user:'',
       }
     },
     watch: {
       info: function () {
         this.initTable()
       },
-      user: function() {
-        console.log(this.user)
+      user: function () {
+        this.initTable()
       }
     },
     computed: {
-      sortOptions () {
+      sortOptions() {
         // Create an options list from our field
         return this.field
           .filter(f => f.sortable)
-          .map(f => { return {text: f.label, value: f.key} })
+          .map(f => {
+            return {text: f.label, value: f.key}
+          })
       }
     },
     methods: {
-      passInfo (val) {
+      passInfo(val) {
         this.info = val
       },
-      initTable () {
+      passUser(val) {
+        this.user = val
+      },
+      initTable() {
         this.$refs.pinTable.refresh()
       },
-      pinTable (ctx) {
+      pinTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
-        let url = '/pin?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy + '&mode=student'
+        let url = '/pin?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
         if (this.isNotEmpty(this.info))
           url += '&info=' + this.info.value
-        if (this.isNotEmpty(this.faculty))
-          url += '&facultyId=' + this.faculty.value
+        if (this.isNotEmpty(this.user))
+          url += '&ownerId=' + this.user.value
         if (this.isNotEmpty(ctx.filter))
           url += '&search=' + ctx.filter
         if (ctx.sortDesc)
@@ -275,18 +316,18 @@
         })
 
       },
-      onFiltered (filteredItems) {
+      onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
-      showDeleteOne (pin) {
+      showDeleteOne(pin) {
         this.pin = pin
         this.showDeleteModal = true
       },
-      deleteOne () {
+      deleteOne() {
         axios.delete('/pin/' + this.pin).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '删除成功！'
@@ -301,12 +342,12 @@
           }
         })
       },
-      resendPin (pin) {
+      resendPin(pin) {
         this.pin = pin
         console.log(pin)
         this.showSendModal = true
       },
-      resendOne () {
+      resendOne() {
         axios.post('/pin/send', this.pin).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '发送成功！'
@@ -319,7 +360,7 @@
           }
         })
       },
-      updateOne (pin) {
+      updateOne(pin) {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return

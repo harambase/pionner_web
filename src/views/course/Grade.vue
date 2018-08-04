@@ -83,7 +83,7 @@
 
                   </template>
                   <template slot="row-details" slot-scope="row">
-                    <CStudentInCourseTable :crn="row.item.crn" mode="transcript" disabled/>
+                    <CStudentInCourseTable :crn="row.item.crn" mode="transcript"/>
                   </template>
                 </b-table>
                 <b-row>
@@ -208,7 +208,7 @@
       },
       courseTable (ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
-        let url = '/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy + '&mode=student'
+        let url = '/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy + '&mode=faculty'
         if (this.isNotEmpty(this.pinObject))
           url += '&info=' + this.pinObject.info
         if (this.isNotEmpty(ctx.filter))

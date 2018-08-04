@@ -163,7 +163,7 @@
         totalRows: 0,
         pageOptions: [5, 10, 15],
         sortBy: 'date',
-        sortDesc: false,
+        sortDesc: true,
         filter: null,
         items: items,
         basePath: basePath,
