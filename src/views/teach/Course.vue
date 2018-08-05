@@ -301,19 +301,16 @@
               <i className="fa fa-align-justify"></i><strong>预修课分配</strong>
             </div>
             <b-row>
-              <b-col md="3" class="my-1">
-                <label class="col-sm-12 control-label">*分配教师:</label>
+              <b-col md="2">
+                <label class="control-label">*分配教师:</label>
               </b-col>
-              <b-col md="6" class="my-1">
-                <CFacultySelect class="col-sm-12" v-on:pass="passFaculty" :parentFaculty="faculty"/>
+              <b-col md="3">
+                <CFacultySelect v-on:pass="passFaculty" :parentFaculty="faculty"/>
               </b-col>
-            </b-row>
-
-            <b-row>
-              <b-col md="3" class="my-1">
-                <label class="col-sm-12 control-label">预修课程（可多选，可不选）:</label>
+              <b-col md="2">
+                <label class="control-label">预修课程（可多选，可不选）:</label>
               </b-col>
-              <b-col md="6" class="my-1">
+              <b-col md="3">
                 <v-select v-model="preList" :filterable="false" :options="courseOptions"
                           @search="preCourseList" multiple
                           :disabled="tempCourse.status!=='0'">

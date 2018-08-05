@@ -51,7 +51,7 @@ export default {
         {
           name: '新课程申请',
           url: '/course/new/create?mode=request&id=',
-          icon: 'icon-bell',
+          icon: 'icon-pencil',
           meta: {
             role: ['2', '6']
           },
@@ -59,7 +59,7 @@ export default {
         {
           name: '你的申请',
           url: '/course/new/request?mode=faculty',
-          icon: 'icon-bell',
+          icon: 'icon-pencil',
           meta: {
             role: ['2', '6']
           },
@@ -85,7 +85,7 @@ export default {
     {
       name: '新学期导师选择',
       url: '/course/advisor/choose',
-      icon: 'icon-book-open',
+      icon: 'fa fa-handshake-o',
       meta: {
         role: ['5']
       },
@@ -93,7 +93,7 @@ export default {
     {
       name: '成绩录入',
       url: '/course/grade',
-      icon: 'icon-book-open',
+      icon: 'fa fa-line-chart',
       meta: {
         role: ['6']
       },
@@ -121,7 +121,7 @@ export default {
     {
       name: '课程申请管理',
       url: '/teach/request?mode=manage',
-      icon: 'icon-pencil',
+      icon: 'fa fa-pencil-square-o',
       meta: {
         role: ['2']
       },
@@ -129,7 +129,7 @@ export default {
     {
       name: '成绩单管理',
       url: '/teach/transcript',
-      icon: 'icon-graduation',
+      icon: 'fa fa-university',
       meta: {
         role: ['2']
       },
@@ -137,7 +137,7 @@ export default {
     {
       name: '学分管理',
       url: '/teach/credit',
-      icon: 'icon-book-open',
+      icon: 'fa fa-mortar-board',
       meta: {
         role: ['2']
       },
@@ -145,7 +145,7 @@ export default {
     {
       name: '识别码管理',
       url: '/teach/pin',
-      icon: 'icon-book-open',
+      icon: 'fa fa-wrench',
       meta: {
         role: ['2']
       },
@@ -153,7 +153,7 @@ export default {
     {
       name: '辅导关系',
       url: '/teach/advise',
-      icon: 'icon-pencil',
+      icon: 'fa fa-group',
       meta: {
         role: ['2']
       },
@@ -161,7 +161,7 @@ export default {
         {
           name: '辅导关系管理',
           url: '/teach/advise/manage',
-          icon: 'icon-book-open',
+          icon: 'fa fa-group',
           meta: {
             role: ['2']
           },
@@ -169,7 +169,7 @@ export default {
         {
           name: '辅导关系申请管理',
           url: '/teach/advise/request',
-          icon: 'icon-book-open',
+          icon: 'fa fa-group',
           meta: {
             role: ['2']
           },
@@ -177,7 +177,7 @@ export default {
         {
           name: '导师管理',
           url: '/teach/advise/advisor',
-          icon: 'icon-book-open',
+          icon: 'fa fa-group',
           meta: {
             role: ['2']
           },
@@ -199,7 +199,7 @@ export default {
     {
       name: '用户管理',
       url: '/system/user?mode=table',
-      icon: 'icon-list',
+      icon: 'icon-people',
       meta: {
         role: ['4']
       },
@@ -207,7 +207,7 @@ export default {
     {
       name: '新用户申请管理',
       url: '/system/registration',
-      icon: 'icon-people',
+      icon: 'fa fa-id-badge',
       meta: {
         role: ['4']
       },
@@ -215,7 +215,7 @@ export default {
     {
       name: '角色与权限',
       url: '/system/role',
-      icon: 'icon-book-open',
+      icon: 'fa fa-vcard',
       meta: {
         role: ['4']
       },
@@ -223,7 +223,7 @@ export default {
     {
       name: '系统监控',
       url: '/system/monitor',
-      icon: 'icon-book-open',
+      icon: 'fa fa-thermometer',
       meta: {
         role: ['4']
       },
@@ -243,7 +243,7 @@ export default {
     {
       name: '辅导关系查看',
       url: '/advise/view',
-      icon: 'icon-book-open',
+      icon: 'fa fa-random',
       meta: {
         role: ['7']
       },
@@ -251,7 +251,7 @@ export default {
     {
       name: 'ONENOTE',
       url: 'https://login.partner.microsoftonline.cn/login.srf',
-      icon: 'icon-book-open',
+      icon: 'fa fa-sticky-note',
       meta: {
         role: ['7']
       },
