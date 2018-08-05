@@ -194,10 +194,11 @@
       relation (data, divUrl) {
         const myChart = echarts.init(document.getElementById(divUrl))
         myChart.showLoading()
+        console.log(data)
         if (data !== '') {
           myChart.hideLoading()
 
-          const graph = echarts.dataTool.gexf.parse(data)
+          const graph = gexf.parse(data)
           const categories = [{name: '课程'}, {name: '学生'}, {name: '教师'}]
 
           graph.nodes.forEach(function (node) {

@@ -1,6 +1,6 @@
 <template>
   <div class="animated fadeIn">
-    <b-row id="myCoursePage">
+    <b-row>
       <b-col cols="12" >
         <b-card
           header-tag="header"
