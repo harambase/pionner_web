@@ -53,8 +53,7 @@
             <i className="fa fa-align-justify"></i><strong>我教的课程</strong>
           </div>
           <div class="firstStep clearfix" v-for="course in teachList">
-            <div class="lessons-item js-lessons-item g-clearfix"
-                 v-if="course.status !== -1">
+            <div class="lessons-item js-lessons-item g-clearfix">
               <a :href="'/course/detail?pageMode=faculty&crn=' + course.crn">
                 <div class="lessons-pic">
                   <img width="200" height="200" src="/static/img/logo.png">
@@ -123,7 +122,7 @@
     },
     methods: {
       initTeachList: function () {
-        axios.get('/course?mode=faculty').then((response) => {
+        axios.get('/course?mode=faculty&status=0').then((response) => {
           this.teachList = response.data.data
         })
       },

@@ -1,13 +1,20 @@
 <template>
-  <b-form-group>
-    <v-select v-model="advisor" :filterable="false" :options="advisorOptions"
-              @search="advisorList">
-      <template slot="option" slot-scope="option">
-        <img class="img-avatar" style="width:30px; height: 30px;" :src="option.profile">
-        {{ option.label }}
-      </template>
-    </v-select>
-  </b-form-group>
+  <b-row>
+    <b-col md="2">
+      <div class="input-group-prepend">
+        <span class="input-group-text" style="margin-left: -3px"><i class="fa fa-user-o"></i> 导师:</span>
+      </div>
+    </b-col>
+    <b-col md="10">
+      <v-select v-model="advisor" :filterable="false" :options="advisorOptions" :placeholder="'输入搜索'"
+                @search="advisorList">
+        <template slot="option" slot-scope="option">
+          <img class="img-avatar" style="width:30px; height: 30px;" :src="option.profile">
+          {{ option.label }}
+        </template>
+      </v-select>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
@@ -17,16 +24,8 @@
     name: 'c-advisorSelect',
     data () {
       return {
-        advisor: {
-          label: '---选择导师---',
-          profile: basePath + '/static/img/logo.png',
-          value: ''
-        },
-        advisorOptions: [{
-          label: '---选择导师---',
-          profile: basePath + '/static/img/logo.png',
-          value: ''
-        }],
+        advisor: '',
+        advisorOptions: [],
       }
     },
     watch: {

@@ -5,15 +5,13 @@
       <b-col md="1" class="my-1">
         <legend class="col-form-legend">检索条件：</legend>
       </b-col>
-    </b-row>
-    <b-row>
-      <b-col md="4" class="my-1">
+      <b-col md="3" class="my-1">
         <CStudentSelect v-on:pass="passStudent"/>
       </b-col>
-      <b-col md="4" class="my-1">
+      <b-col md="3" class="my-1">
         <CInfoSelect v-on:pass="passInfo"/>
       </b-col>
-      <b-col md="4" class="my-1">
+      <b-col md="3" class="my-1">
         <CAdvisorSelect v-on:pass="passAdvisor" v-if="showAdvisor == 1"/>
       </b-col>
     </b-row>

@@ -13,10 +13,10 @@
               <b-col md="1" class="mt-1">
                 <legend class="col-form-legend">选择老师：</legend>
               </b-col>
-              <b-col md="4" class="my-1">
+              <b-col md="3" class="my-1">
                 <CFacultySelect v-on:pass="passFaculty"/>
               </b-col>
-              <b-col md="4" class="my-1">
+              <b-col md="3" class="my-1">
                 <b-button style="width:150px;" variant="success" @click="addAdvisor" :disabled="!isNotEmpty(faculty)">添加导师
                 </b-button>
               </b-col>

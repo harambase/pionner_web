@@ -20,7 +20,7 @@
           </div>
           <b-container fluid>
             <b-row>
-              <b-col md="6" class="my-1">
+              <b-col md="3" class="my-1">
                 <CInfoSelect v-on:pass="passInfo"/>
               </b-col>
               <b-col md="6" class="my-1">

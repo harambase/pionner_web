@@ -2,11 +2,12 @@
   <b-row>
     <b-col md="2">
       <div class="input-group-prepend">
-        <span class="input-group-text"><i class="icon-info"></i> 学期:</span>
+        <span class="input-group-text" style="margin-left: -3px"><i class="icon-info"></i> 学期:</span>
       </div>
     </b-col>
     <b-col md="10">
       <v-select v-model="info" :filterable="false"
+                :placeholder="'输入搜索'"
                 :options="infoOptions" @search="infoList"></v-select>
     </b-col>
   </b-row>

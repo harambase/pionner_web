@@ -1,13 +1,20 @@
 <template>
-  <b-form-group>
-    <v-select v-model="user" :filterable="false" :options="userOptions"
-              @search="userList">
-      <template slot="option" slot-scope="option">
-        <img class="img-avatar" style="width:30px; height: 30px;" :src="option.profile">
-        {{ option.label }}
-      </template>
-    </v-select>
-  </b-form-group>
+  <b-row>
+    <b-col md="2">
+      <div class="input-group-prepend">
+        <span class="input-group-text" style="margin-left: -3px"><i class="fa fa-users"></i> 用户:</span>
+      </div>
+    </b-col>
+    <b-col md="10">
+      <v-select v-model="user" :filterable="false" :options="userOptions"
+                @search="userList">
+        <template slot="option" slot-scope="option">
+          <img class="img-avatar" style="width:30px; height: 30px;" :src="option.profile">
+          {{ option.label }}
+        </template>
+      </v-select>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
@@ -18,16 +25,8 @@
     props: ['mode'],
     data () {
       return {
-        user: {
-          label: '---选择用户---',
-          profile: basePath + '/static/img/logo.png',
-          value: ''
-        },
-        userOptions: [{
-          label: '---选择用户---',
-          profile: basePath + '/static/img/logo.png',
-          value: ''
-        }],
+        user: '',
+        userOptions: [],
       }
     },
     watch: {

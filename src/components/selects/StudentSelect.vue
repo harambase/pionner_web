@@ -1,13 +1,20 @@
 <template>
-  <b-form-group>
-    <v-select v-model="student" :filterable="false" :options="studentOptions"
-              @search="studentList">
-      <template slot="option" slot-scope="option">
-        <img class="img-avatar" style="width:30px; height: 30px;" :src="option.profile">
-        {{ option.label }}
-      </template>
-    </v-select>
-  </b-form-group>
+  <b-row>
+    <b-col md="2">
+      <div class="input-group-prepend">
+        <span class="input-group-text" style="margin-left: -3px"><i class="fa fa-user"></i> 学生:</span>
+      </div>
+    </b-col>
+    <b-col md="10">
+      <v-select v-model="student" :filterable="false" :options="studentOptions"
+                @search="studentList" :placeholder="'输入搜索'">
+        <template slot="option" slot-scope="option">
+          <img class="img-avatar" style="width:30px; height: 30px;" :src="option.profile">
+          {{ option.label }}
+        </template>
+      </v-select>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
@@ -17,16 +24,8 @@
     name: 'c-studentSelect',
     data () {
       return {
-        student: {
-          label: '---选择学生---',
-          profile: basePath + '/static/img/logo.png',
-          value: ''
-        },
-        studentOptions: [{
-          label: '---选择学生---',
-          profile: basePath + '/static/img/logo.png',
-          value: ''
-        }],
+        student: '',
+        studentOptions: [],
       }
     },
     watch: {
