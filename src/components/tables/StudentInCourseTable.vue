@@ -64,7 +64,6 @@
         <b-button v-if="mode=='faculty'" size="sm" class="btn btn-danger" @click.stop="row.toggleDetails">
           学生学分和成绩查看
         </b-button>
-
       </template>
 
       <template slot="row-details" slot-scope="row">

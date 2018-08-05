@@ -18,16 +18,8 @@
     props: ['parentFaculty'],
     data () {
       return {
-        faculty: {
-          label: '---选择教师---',
-          profile: basePath + '/static/img/logo.png',
-          value: ''
-        },
-        facultyOptions: [{
-          label: '---选择教师---',
-          profile: '/static/img/logo.png',
-          value: ''
-        }],
+        faculty: '',
+        facultyOptions: [],
       }
     },
     watch: {

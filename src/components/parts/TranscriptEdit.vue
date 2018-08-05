@@ -80,10 +80,6 @@
                             @click.stop="updateTranscript(row.item, row)">
                     修改成绩
                   </b-button>
-                  <b-button size="sm" variant="danger"
-                            @click.stop="showDeleteTranscript(row.item.id)">
-                    删除成绩
-                  </b-button>
                   <b-button size="sm" variant="primary" @click.stop="row.toggleDetails">
                     取消修改
                   </b-button>
@@ -104,16 +100,6 @@
         </div>
       </b-list-group-item>
     </b-list-group>
-    <b-modal v-model="showDeleteModal"
-             size="sm"
-             header-bg-variant='danger'
-             @ok="deleteTranscript"
-             centered
-             title="不可逆操作警告！">
-      <div class="d-block text-center">
-        <h3>确认删除该成绩单？</h3>
-      </div>
-    </b-modal>
     <b-modal v-model="showModal" size="sm"
              :header-bg-variant="headerBgVariant"
              ok-only
@@ -138,7 +124,6 @@
       return {
         msg: '',
         showModal: false,
-        showDeleteModal: false,
         headerBgVariant: '',
         basePath: basePath
       }
@@ -164,30 +149,6 @@
       },
       isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
-      },
-      showDeleteTranscript(id) {
-        this.$validator.validateAll().then((result) => {
-          if (!result)
-            return
-
-          this.showDeleteModal = true
-          this.deleteId = id
-        })
-      },
-      deleteTranscript() {
-
-        axios.delete('/transcript/' + this.deleteId).then((response) => {
-          if (response.data.code === 2001) {
-            this.msg = response.data.msg
-            this.showModal = true
-            this.headerBgVariant = 'success'
-          }
-          else {
-            this.msg = response.data.msg
-            this.showModal = true
-            this.headerBgVariant = 'danger'
-          }
-        })
       },
     }
 

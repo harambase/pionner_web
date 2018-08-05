@@ -1,8 +1,15 @@
 <template>
-  <b-form-group>
-    <v-select v-model="info" :filterable="false"
-              :options="infoOptions" @search="infoList"></v-select>
-  </b-form-group>
+  <b-row>
+    <b-col md="2">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="icon-info"></i> 学期:</span>
+      </div>
+    </b-col>
+    <b-col md="10">
+      <v-select v-model="info" :filterable="false"
+                :options="infoOptions" @search="infoList"></v-select>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
@@ -12,16 +19,8 @@
     name: 'c-infoSelect',
     data() {
       return {
-        info: {
-          label: '---选择学期---',
-          value: ''
-        },
-        infoOptions: [
-          {
-            label: '---选择学期---',
-            value: ''
-          }
-        ],
+        info: '',
+        infoOptions: [],
       }
     },
     mounted() {

@@ -2,7 +2,7 @@
   <div>
     <!-- User Interface controls -->
     <b-row>
-      <b-col md="10">
+      <b-col md="9">
         <b-table show-empty
                  stacked="sm"
                  ref="messageTable"
@@ -16,41 +16,21 @@
                  :sort-by.sync="sortBy"
                  :sort-desc.sync="sortDesc"
                  :isBusy="false"
+                 @row-clicked="showDetail"
                  @filtered="onFiltered"
+                 style="cursor: pointer"
         >
           <template slot="actions" slot-scope="row">
-            <b-list-group>
-              <b-list-group-item href="#" class="flex-column align-items-start"
-                                 @click.stop="row.toggleDetails">
-                <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1">
-                    <i class="el-icon-warning" v-if="row.item.labels=='重要'" style="color:blue"></i>
-                    <i class="el-icon-warning" v-if="row.item.labels=='紧急'" style="color:red"></i>
-                    <strong>{{row.item.title}}</strong> {{row.item.subject}}
-                  </h5>
-                  <small>发送时间：{{row.item.date}}</small>
-                  <span v-if="row.item.status=='unread'" style="color:blue"><i class="el-icon-info"></i> 未读信息</span>
-                </div>
-                <hr/>
-                <b-row>
-                  <b-col md="2" class="my-1">
-                    <img v-if="isNotEmpty(row.item.pic)"
-                         :src="basePath + '/static' + JSON.parse(row.item.pic).path"
-                         style="width: 40px;height: 40px"
-                         class="img-avatar">
-                    <img v-else
-                         src="/static/img/logo.png"
-                         style="width: 40px;height: 40px"
-                         class="img-avatar">
-                    发件人: <strong>{{row.item.sender}}</strong>
-                  </b-col>
-                  <b-col md="10" class="mt-2">
-                    {{row.item.body}}
-                    <small>{{row.item.attachment}}</small>
-                  </b-col>
-                </b-row>
-              </b-list-group-item>
-            </b-list-group>
+            <div class="ml-4">
+              <b-row>
+                <span v-if="row.item.labels=='重要'"><i class="el-icon-warning" style="color:blue"></i> 重要信息</span>
+                <span v-if="row.item.labels=='紧急'"><i class="el-icon-warning" style="color:red"></i> 紧急信息</span>
+              </b-row>
+              <b-row>
+                <span v-if="row.item.status=='unread'"><i class="fa fa-envelope" style="color:orange"></i> 未读信息 </span>
+                <span v-if="row.item.status=='read'"><i class="fa fa-envelope-open"></i> 已读信息</span>
+              </b-row>
+            </div>
           </template>
 
           <template slot="row-details" slot-scope="row">
@@ -58,12 +38,19 @@
           </template>
 
         </b-table>
-        <b-col md="6" class="my-1">
-          <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
-                        class="my-0"/>
-        </b-col>
+        <b-row>
+          <b-col md="6" class="my-1">
+            <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
+                          class="my-0"/>
+          </b-col>
+          <b-col md="6" class="my-1">
+            <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) *
+              perPage + perPage) <=
+              totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
+          </b-col>
+        </b-row>
       </b-col>
-      <b-col md="2" style="background:rgba(228, 229, 230, 0.5)">
+      <b-col md="3" class="">
         <b-row class="mt-4">
           <b-col md="11" class="my-1 ml-1">
             <h5 class="col-form-legend">消息显示控制</h5>
@@ -102,7 +89,7 @@
           </b-col>
         </b-row>
         <b-row>
-          <b-col md="11" class="my-1 ml-1">
+          <b-col md="9" class="my-1 ml-1">
             <b-form-group>
               <b-input-group>
                 <b-form-input v-model="filter"/>
@@ -115,6 +102,7 @@
         </b-row>
       </b-col>
     </b-row>
+
 
     <b-modal v-model="showModal"
              size="sm"
@@ -136,7 +124,10 @@
 
   const items = [];
   const field = [
-    {key: 'actions', label: '消息列表'}
+    {key: 'actions', label: ''},
+    {key: 'sender', label: '发件人'},
+    {key: 'subject', label: '主题'},
+    {key: 'date', label: '发件时间'},
   ];
 
 
@@ -148,7 +139,7 @@
       return {
         field: field,
         currentPage: 1,
-        perPage: 5,
+        perPage: 10,
         totalRows: 0,
         pageOptions: [5, 10, 15],
         sortBy: 'date',
@@ -183,7 +174,7 @@
         }
         this.initTable();
       },
-      id: function(val){
+      id: function (val) {
         this.initTable()
       }
     },
@@ -198,7 +189,9 @@
       }
     },
     methods: {
-
+      showDetail(item) {
+        this.$router.push({path: '/message?id=' + item.id})
+      },
       onFiltered(filteredItems) {
         this.totalRows = filteredItems.length;// Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
@@ -223,9 +216,9 @@
           let items = response.data.data;
           this.totalRows = response.data.recordsTotal;
 
-          if(isNotEmpty(this.id)){
-            for(let i = 0; i<items.length; i++){
-              if(this.id == items[i].id){
+          if (isNotEmpty(this.id)) {
+            for (let i = 0; i < items.length; i++) {
+              if (this.id == items[i].id) {
                 items[i]._showDetails = true;
                 items[i]._rowVariant = 'danger';
                 let temp = items[0];

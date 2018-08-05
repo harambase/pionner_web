@@ -1,39 +1,33 @@
 <template>
   <div class="animated fadeIn">
-    <b-row>
-      <b-card>
-        <b-col cols="12">
-          <b-container fluid>
-            <el-tabs v-model="activeName" tab-position="left">
-              <el-tab-pane name="first">
+
+        <el-tabs v-model="activeName" type="border-card">
+          <el-tab-pane name="first">
                       <span slot="label">
                         <i class="el-icon-message"></i> 收件箱
                         <b-badge v-if="info.unread>0" variant="primary" pill> {{info.unread}}</b-badge>
                       </span>
-              </el-tab-pane>
-              <el-tab-pane name="second">
+          </el-tab-pane>
+          <el-tab-pane name="second">
                       <span slot="label">
                         <i class="el-icon-info"></i> 重要信息
                         <b-badge v-if="info.important>0" variant="primary" pill>{{info.important}}</b-badge>
                       </span>
-              </el-tab-pane>
-              <el-tab-pane name="third">
+          </el-tab-pane>
+          <el-tab-pane name="third">
                       <span slot="label">
                         <i class="el-icon-info"></i> 紧急信息
                         <b-badge v-if="info.urgent>0" variant="danger" pill>{{info.urgent}}</b-badge>
                       </span>
-              </el-tab-pane>
-              <el-tab-pane label="垃圾箱" name="fourth">
+          </el-tab-pane>
+          <el-tab-pane label="垃圾箱" name="fourth">
                       <span slot="label">
                         <i class="el-icon-delete"></i> 已删除
                       </span>
-              </el-tab-pane>
-              <CMessageTable :mode="activeName" :info="info" :id="id"/>
-            </el-tabs>
-          </b-container>
-        </b-col>
-      </b-card>
-    </b-row>
+          </el-tab-pane>
+          <CMessageTable :mode="activeName" :info="info" :id="id"/>
+        </el-tabs>
+
   </div>
 </template>
 
@@ -69,7 +63,7 @@
         this.info.unread = response.data.data
       });
     },
-    watch:{
+    watch: {
       $route(to, from) {
         this.id = this.$route.fullPath.split('&')[0].split('=')[1]//maybe CRN
       }

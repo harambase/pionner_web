@@ -83,7 +83,7 @@
 
                   </template>
                   <template slot="row-details" slot-scope="row">
-                    <CStudentInCourseTable :crn="row.item.crn" mode="transcript"/>
+                    <CStudentInCourseTable :crn="row.item.crn" :mode="transcript"/>
                   </template>
                 </b-table>
                 <b-row>
