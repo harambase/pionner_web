@@ -129,7 +129,7 @@ export default {
     {
       name: '成绩单管理',
       url: '/teach/transcript',
-      icon: 'fa fa-university',
+      icon: 'fa fa-mortar-board',
       meta: {
         role: ['2']
       },
@@ -137,7 +137,7 @@ export default {
     {
       name: '学分管理',
       url: '/teach/credit',
-      icon: 'fa fa-mortar-board',
+      icon: 'fa fa-university',
       meta: {
         role: ['2']
       },
