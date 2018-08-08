@@ -16,7 +16,9 @@ import TranscriptEdit from './parts/TranscriptEdit.vue'
 import AdvisorTable from './tables/AdvisorTable.vue'
 import RequestAdvisorTable from './tables/RequestAdvisorTable.vue'
 import MessageTable from './tables/MessageTable.vue'
+import ContractTable from './tables/ContractTable.vue'
 import MessageDetail from './parts/MessageDetail.vue'
+import ContractForm from './parts/ContractForm.vue'
 
 export {
   Aside,
@@ -37,5 +39,7 @@ export {
   AdvisorTable,
   RequestAdvisorTable,
   MessageTable,
-  MessageDetail
+  MessageDetail,
+  ContractTable,
+  ContractForm
 }
