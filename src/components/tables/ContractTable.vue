@@ -84,23 +84,23 @@
               <b-row>
                 <b-col md="12" class="my-1">
                   <div class="mr-1">
-                    <dl class="row">
-                      <dt class="col-sm-1">QQ:</dt>
-                      <dd class="col-sm-2">{{row.item.qq}}</dd>
+                    <!--<dl class="row">-->
+                      <!--<dt class="col-sm-1">QQ:</dt>-->
+                      <!--<dd class="col-sm-2">{{row.item.qq}}</dd>-->
 
-                      <dt class="col-sm-1">电话:</dt>
-                      <dd class="col-sm-2">{{row.item.tel}}</dd>
+                      <!--<dt class="col-sm-1">电话:</dt>-->
+                      <!--<dd class="col-sm-2">{{row.item.tel}}</dd>-->
 
-                      <dt class="col-sm-1">微信:</dt>
-                      <dd class="col-sm-2">{{row.item.weChat}}</dd>
-                    </dl>
-                    <dl class="row">
-                      <dt class="col-sm-1">性别:</dt>
-                      <dd class="col-sm-2">{{row.item.gender}}</dd>
+                      <!--<dt class="col-sm-1">微信:</dt>-->
+                      <!--<dd class="col-sm-2">{{row.item.weChat}}</dd>-->
+                    <!--</dl>-->
+                    <!--<dl class="row">-->
+                      <!--<dt class="col-sm-1">性别:</dt>-->
+                      <!--<dd class="col-sm-2">{{row.item.gender}}</dd>-->
 
-                      <dt class="col-sm-1">宿舍:</dt>
-                      <dd class="col-sm-2">{{row.item.dorm}}</dd>
-                    </dl>
+                      <!--<dt class="col-sm-1">宿舍:</dt>-->
+                      <!--<dd class="col-sm-2">{{row.item.dorm}}</dd>-->
+                    <!--</dl>-->
                     <dl class="row">
                       <dt class="col-sm-2">电子文本:</dt>
                       <dd class="col-sm-5"
@@ -118,12 +118,11 @@
                       <dt class="col-sm-1">操作:</dt>
                       <dd class="col-sm-5">
                         <b-button size="sm" variant="danger"
-                                  @click.stop="showDeleteTempcontract(row.item.contractId)">
+                                  @click.stop="showDeleteContract(row.item.contractId)">
                           删除该合同
                         </b-button>
-
                         <b-button size="sm" variant="primary" @click="contractDetail(row.item.contractId)">
-                          提交修改
+                          修改该合同
                         </b-button>
                       </dd>
                     </dl>
@@ -227,21 +226,8 @@
       documentDownload(contractId) {
         window.open(basePath + '/contract/info/' + contractId + '?token=' + window.localStorage.getItem('access_token'))
       },
-      previewImg() {
-        let preview = document.getElementById('preview');
-        let file = document.querySelector('input[type=file]').files[0];
-        let reader = new FileReader();
-        if (file) {
-          reader.readAsDataURL(file)
-        } else {
-          preview.src = ''
-        }
-        reader.onloadend = function () {
-          preview.src = reader.result
-        }
-      },
 
-      showDeleteTempcontract(contractId) {
+      showDeleteContract(contractId) {
         this.showDeleteModal = true
         this.deleteContractId = contractId
       },
@@ -263,7 +249,7 @@
       },
 
       contractDetail(contractId) {
-        this.$router.push({path: '/system/contract/detail?mode=view&contractId=' + contractId})
+        this.$router.push({path: '/logistic/contract/detail?mode=view&contractId=' + contractId})
       },
       onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering

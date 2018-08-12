@@ -32,6 +32,8 @@ import Reg from '@/views/system/Reg'
 
 import AdviseView from '@/views/advise/AdviseView'
 
+import Contract from '@/views/logistic/Contract'
+
 // Views - Pages
 import Page404 from '@/views/pages/Page404'
 import Page403 from '@/views/pages/Page403'
@@ -306,6 +308,27 @@ const router = new Router({
               path: 'office',
               name: 'ONENOTE',
             },
+          ]
+        },
+        {
+          path: 'logistic',
+          redirect: '/logistic/contract',
+          name: '后勤行政管理',
+          component: {
+            render(c) {
+              return c('router-view')
+            }
+          },
+          children: [
+            {
+              path: 'contract',
+              name: '合同管理',
+              component: Contract,
+              meta: {
+                requireAuth: true,
+                role: ['3']
+              },
+            }
           ]
         },
         {

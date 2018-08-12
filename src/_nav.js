@@ -186,6 +186,26 @@ export default {
     },
     {
       title: true,
+      name: '后勤行政管理',
+      class: '',
+      wrapper: {
+        element: '',
+        attributes: {}
+      },
+      meta: {
+        role: ['3']
+      },
+    },
+    {
+      name: '合同管理',
+      url: '/logistic/contract',
+      icon: 'icon-people',
+      meta: {
+        role: ['3']
+      },
+    },
+    {
+      title: true,
       name: '系统管理',
       class: '',
       wrapper: {
@@ -256,6 +276,7 @@ export default {
         role: ['7']
       },
     },
+
     {
       divider: true,
       meta: {
