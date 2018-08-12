@@ -22,8 +22,8 @@
 
   export default {
     name: 'c-userSelect',
-    props: ['mode'],
-    data () {
+    props: ['mode', 'passUser'],
+    data() {
       return {
         user: '',
         userOptions: [],
@@ -32,9 +32,12 @@
     watch: {
       user: function (val) {
         this.$emit('pass', val)
+      },
+      passUser: function (val) {
+        this.user = val
       }
     },
-    mounted () {
+    mounted() {
       axios.get('/user/search?status=1&search=').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
           let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName
@@ -53,7 +56,7 @@
       })
     },
     methods: {
-      userList (search, loading) {
+      userList(search, loading) {
         loading(true)
         this.userOptions = []
         axios.get('/user/search?status=1&search=' + search).then((response) => {

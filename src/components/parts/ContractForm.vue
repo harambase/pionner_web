@@ -99,7 +99,7 @@
           <label class="control-label">*所有人:</label>
         </b-col>
         <b-col md="3">
-          <CUserSelect v-on:pass="passUser"/>
+          <CUserSelect v-on:pass="passUser" :passUser="user"/>
         </b-col>
       </b-row>
     </b-card>
@@ -259,7 +259,7 @@
       },
 
       cancel(){
-         this.$router.go('/logistic/contract')
+        this.$emit('pass', '')
       },
       init() {
         axios.get('/contract/' + this.id).then(response => {
@@ -276,9 +276,7 @@
             this.showDocument = true
           }
 
-
           if (isNotEmpty(this.contract.ownerId)){
-            alert(this.contract.ownerId);
             axios.get('/user/' + this.contract.ownerId).then((response) => {
               let name = response.data.data.lastName + ', ' + response.data.data.firstName;
               let profilePath = '/static/img/logo.png';

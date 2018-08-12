@@ -3,10 +3,13 @@
     <b-row>
       <b-col md="12">
         <el-tabs type="border-card" v-model="activeName">
-          <el-tab-pane label="合同列表" name="first">
+          <el-tab-pane label="合同列表" name="first" @click="this.$router.go(0)">
             <CContractTable v-on:pass="passId"/>
           </el-tab-pane>
-          <el-tab-pane label="录入合同" name="second">
+          <el-tab-pane label="录入新合同" name="second">
+            <CContractForm/>
+          </el-tab-pane>
+          <el-tab-pane label="合同详情" name="third" disabled>
             <CContractForm :id="id" v-on:pass="passId"/>
           </el-tab-pane>
         </el-tabs>
@@ -32,7 +35,7 @@
       passId (val){
         this.id = val;
         if (isNotEmpty(val)) {
-          this.activeName = 'second'
+          this.activeName = 'third'
         }else{
           this.activeName = 'first'
         }

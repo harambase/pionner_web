@@ -797,8 +797,9 @@
       },
       documentUpload(key) {
 
-        if (!isNotEmpty(document.getElementById('document').files))
+        if (!isNotEmpty(document.getElementById('document').files)[0]) {
           return;
+        }
 
         let requestUrl = '/request/course/info/';
         let updateUrl = '/course/info/';
