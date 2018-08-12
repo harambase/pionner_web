@@ -9,9 +9,6 @@
           <el-tab-pane label="录入新合同" name="second">
             <CContractForm/>
           </el-tab-pane>
-          <el-tab-pane label="合同详情" name="third" disabled>
-            <CContractForm :id="id" v-on:pass="passId"/>
-          </el-tab-pane>
         </el-tabs>
       </b-col>
     </b-row>
@@ -21,7 +18,6 @@
 <script>
   import CContractTable from "../../components/tables/ContractTable";
   import CContractForm from "../../components/parts/ContractForm";
-
   export default {
     name: 'Contract',
     components: {CContractTable, CContractForm},

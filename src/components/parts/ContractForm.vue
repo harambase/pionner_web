@@ -1,5 +1,5 @@
 ﻿<template>
-  <div>
+<div>
     <b-card
       header-tag="header"
       footer-tag="footer">
@@ -111,10 +111,15 @@
       </div>
       <b-row v-if="!showDocument">
         <b-col md="2" class="my-1">
-          <label class="col-sm-12 control-label">上传合同:</label>
+          <label class="col-sm-12 control-label">上传合同电子版:</label>
         </b-col>
         <b-col md="6" class="my-1">
           <input type="file" id="document">
+        </b-col>
+        <b-col md="2" class="my-1" v-if="isNotEmpty(id) || showUpload">
+          <b-button style="width: 100%" class="btn btn-info my-1" @click="documentUpload">
+            上传
+          </b-button>
         </b-col>
         <b-col md="2" class="my-1" v-if="!showDocument && isNotEmpty(contract.contractInfo)">
           <b-button style="width: 100%" class="btn btn-success"
@@ -125,7 +130,7 @@
       </b-row>
       <b-row v-if="showDocument">
         <b-col md="2" class="my-1">
-          <label class="col-sm-12 control-label">入学大纲:</label>
+          <label class="col-sm-12 control-label">合同电子版:</label>
         </b-col>
         <b-col md="6" class="my-1">
           <b-row>
@@ -151,35 +156,24 @@
                      rows="3" v-model="contract.comment">
            </textarea>
         </b-col>
-      </b-row>
-    </b-card>
-    <b-card header-tag="header"
-            footer-tag="footer">
-      <div slot="header">
-        <i className="fa fa-align-justify"></i><strong>确认上述信息</strong>
-      </div>
-      <b-row>
-        <b-col md="3" class="my-1">
-          <label class="col-sm-12 control-label">*上述信息正确无误:</label>
+        <b-col md="2">
+          <label class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
         </b-col>
-        <b-col md="3" class="my-1">
+        <b-col md="3">
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="confirm" name="confirm" v-validate="'required'"
+            <input type="radio" id="yes"
                    :class="{'custom-control-input': true, 'is-invalid': errors.has('confirm')}"
-                   v-model="confirm">
-            <label class="custom-control-label" for="confirm">确认</label>
+                   name="confirm" v-model="confirm">
+            <label class="custom-control-label" for="yes">确认</label>
             <div v-show="errors.has('confirm')" class="invalid-tooltip">{{ errors.first('confirm') }}</div>
           </div>
         </b-col>
-        <b-col md="1" class="my-1">
+        <b-col md="2" class="my-1">
           <label class="col-sm-12 control-label">操作:</label>
         </b-col>
         <b-col md="3">
           <b-button style="width:200px;" class="btn btn-info" v-if="isNotEmpty(id)"
-                    @click="update">修改合同（同时上传文件）
-          </b-button>
-          <b-button style="width:150px;" class="btn btn-cancel" v-if="isNotEmpty(id)"
-                    @click="cancel">取消修改
+                    @click="update">修改合同
           </b-button>
           <b-button style="width:200px;" class="btn btn-success" v-else
                     @click="create"> 创建合同（同时上传文件）
@@ -200,7 +194,7 @@
         <h4>{{msg}}</h4>
       </div>
     </b-modal>
-  </div>
+</div>
 </template>
 
 <script>
@@ -233,12 +227,13 @@
         },
         contractRange: [],
         showDocument: false,
-        confirm: false,
         msg: '',
         showModal: false,
         headerBgVariant: '',
         goToUrl: '',
-        user: ''
+        user: '',
+        confirm: false,
+        showUpload: false,
       }
     },
     watch: {
@@ -247,15 +242,16 @@
           this.init();
       }
     },
+    mounted(){
+      if (isNotEmpty(this.id))
+        this.init();
+    },
     methods: {
       documentDownload() {
         window.open(basePath + '/contract/info/' + this.contract.id + '?token=' + window.localStorage.getItem('access_token'))
       },
-
-      cancel(){
-        this.$emit('pass', '')
-      },
       init() {
+        this.showUpload = true;
         axios.get('/contract/' + this.id).then(response => {
 
           this.contract = response.data.data;
@@ -269,9 +265,11 @@
           if (isNotEmpty(this.contract.contractInfo)) {
             this.contract.contractInfo = JSON.parse(this.contract.contractInfo);
             this.showDocument = true
+          } else {
+            this.showDocument = false;
           }
 
-          if (isNotEmpty(this.contract.ownerId)){
+          if (isNotEmpty(this.contract.ownerId)) {
             axios.get('/user/' + this.contract.ownerId).then((response) => {
               let name = response.data.data.lastName + ', ' + response.data.data.firstName;
               let profilePath = '/static/img/logo.png';
@@ -285,6 +283,8 @@
                 profile: profilePath
               }
             });
+          } else {
+            this.user = '';
           }
         })
 
@@ -331,13 +331,13 @@
 
           this.prepare();
 
+          this.contract.contractInfo = JSON.stringify(this.contract.contractInfo);
+
           axios.put('/contract/' + this.id, this.contract).then((response) => {
             if (response.data.code === 2001) {
               this.msg = response.data.msg;
               this.headerBgVariant = 'success';
               this.showModal = true;
-              this.contract = response.data.data;
-              this.documentUpload();
             }
             else {
               this.msg = response.data.msg;
@@ -349,16 +349,14 @@
       },
       documentUpload() {
 
-        if (!isNotEmpty(document.getElementById('document').files)[0]) {
+        if (!isNotEmpty(document.getElementById('document').files[0])) {
           return;
         }
 
         let formData = new FormData();
         formData.append('file', document.getElementById('document').files[0]);
 
-        let url = '/contract/info/' + this.contract.id;
-
-        axios.put(url, formData).then((response) => {
+        axios.put('/contract/info/' + this.contract.id, formData).then((response) => {
           if (response.data.code === 2001) {
             this.showDocument = true;
             if (this.showUpload) {

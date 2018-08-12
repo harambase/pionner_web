@@ -504,6 +504,7 @@
       documentUpload() {
         let formData = new FormData();
         formData.append('file', document.getElementById('document').files[0]);
+        console.log(formData)
 
         let url = '/user/info/' + this.user.userId;
         if (this.pageMode === 'request') {

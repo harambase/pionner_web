@@ -797,7 +797,7 @@
       },
       documentUpload(key) {
 
-        if (!isNotEmpty(document.getElementById('document').files)[0]) {
+        if (!isNotEmpty(document.getElementById('document').files[0])) {
           return;
         }
 
@@ -837,7 +837,7 @@
       },
 
       documentDownload() {
-        if (this.pageMode == 'create')//申请中的下载
+        if (this.pageMode == 'create' || this.pageMode == 'request')//申请中的下载
           window.open(basePath + '/request/course/info/' + this.id + '?token=' + window.localStorage.getItem('access_token'));
         else {//查看下载
           window.open(basePath + '/course/info/' + this.course.crn + '?token=' + window.localStorage.getItem('access_token'))

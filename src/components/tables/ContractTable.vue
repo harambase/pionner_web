@@ -64,14 +64,14 @@
       </template>
       <template slot="row-details" slot-scope="row">
         <b-card>
-          <b-list-group>
+          <b-list-group >
             <b-list-group-item class="flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1"><strong>{{row.item.oname}}的{{row.item.type}}</strong> 信息</h5>
                 <small class="text-muted">合同编号：{{row.item.contractId}}</small>
               </div>
               <hr/>
-              <b-row>
+              <b-row v-if="showDetail">
                 <b-col md="12" class="my-1">
                   <div class="mr-1">
                     <dl class="row">
@@ -116,6 +116,10 @@
                   </div>
                 </b-col>
               </b-row>
+              <CContractForm v-else :id="row.item.id"/>
+              <b-button style="width:200px;" class="btn btn-info" v-if="!showDetail" @click="showDetail = true">
+                取消修改
+              </b-button>
             </b-list-group-item>
           </b-list-group>
         </b-card>
@@ -162,6 +166,7 @@
 
 <script>
   import axios from 'axios'
+  import CContractForm from "../parts/ContractForm";
 
   const items = [];
   const field = [
@@ -178,6 +183,7 @@
 
   export default {
     name: 'c-contractTable',
+    components: {CContractForm},
     data() {
       return {
         msg: '',
@@ -195,7 +201,8 @@
         items: items,
         status: '',
         basePath: basePath,
-        deleteContractId: ''
+        deleteContractId: '',
+        showDetail: true,
       }
     },
 
@@ -235,8 +242,8 @@
         })
       },
 
-      contractDetail(id) {
-          this.$emit('pass', id)
+      contractDetail() {
+          this.showDetail = false
       },
 
       onFiltered(filteredItems) {
