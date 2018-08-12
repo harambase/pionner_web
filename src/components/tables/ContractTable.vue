@@ -12,7 +12,14 @@
           <b-form-select :options="pageOptions" v-model="perPage"/>
         </b-form-group>
       </b-col>
-      <b-col md="4" class="my-1"></b-col>
+      <b-col md="1" class="my-1">
+        <legend class="col-form-legend">类型：</legend>
+      </b-col>
+      <b-col md="3" class="my-1">
+        <b-form-group>
+          <b-form-select :options="typeOptions" v-model="type"/>
+        </b-form-group>
+      </b-col>
       <b-col md="4" class="my-1">
         <b-form-group>
           <b-input-group>
@@ -195,6 +202,7 @@
         perPage: 10,
         totalRows: 0,
         pageOptions: [5, 10, 15],
+        typeOptions: ['劳动合同', '入学协议', '志愿者服务协议'],
         sortBy: 'owner_id',
         sortDesc: false,
         filter: null,
@@ -203,6 +211,7 @@
         basePath: basePath,
         deleteContractId: '',
         showDetail: true,
+        type: '劳动合同',
       }
     },
 
@@ -214,6 +223,11 @@
           .map(f => {
             return {text: f.label, value: f.key}
           })
+      }
+    },
+    watch: {
+      type: function(){
+        this.initTable();
       }
     },
     methods: {
@@ -255,7 +269,7 @@
       },
       contractTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
-        let url = '/contract?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol='
+        let url = '/contract?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&type=' + this.type + '&orderCol='
         switch (ctx.sortBy) {
           case 'contractId':
             url += 'contract_id'
