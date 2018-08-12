@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="animated fadeIn">
+  <div>
     <b-card
       header-tag="header"
       footer-tag="footer">
@@ -121,7 +121,7 @@
             上传
           </b-button>
         </b-col>
-        <b-col md="2" class="my-1" v-if="!showDocument && isNotEmpty(contract.courseInfo)">
+        <b-col md="2" class="my-1" v-if="!showDocument && isNotEmpty(contract.contractInfo)">
           <b-button style="width: 100%" class="btn btn-success"
                     @click="showDocument = true">
             取消替换
@@ -135,7 +135,7 @@
         <b-col md="6" class="my-1">
           <b-row>
             <b-col md="6">
-              点击下载-> <a href="#" style="cursor: pointer;" @click="documentDownload">{{contract.courseInfo.name}}</a>
+              点击下载-> <a href="#" style="cursor: pointer;" @click="documentDownload">{{contract.contractInfo.name}}</a>
             </b-col>
             <b-col md="3">
               <b-button style="width: 100%" class="btn btn-danger"
@@ -151,10 +151,10 @@
           <label class="col-sm-12 control-label">备注信息:</label>
         </b-col>
         <b-col md="10" class="my-1">
-                 <textarea style="resize: none;"
-                           :class="{'form-control': true}"
-                           rows="3" v-model="contract.comment">
-                 </textarea>
+           <textarea style="resize: none;"
+                     :class="{'form-control': true}"
+                     rows="3" v-model="contract.comment">
+           </textarea>
         </b-col>
       </b-row>
     </b-card>
@@ -180,10 +180,13 @@
           <label class="col-sm-12 control-label">操作:</label>
         </b-col>
         <b-col md="3">
-          <b-button style="width:150px;" class="btn btn-success"
+          <b-button style="width:150px;" class="btn btn-info" v-if="isNotEmpty(id)"
                     @click="update">修改合同
           </b-button>
-          <b-button style="margin-left: 32%; width:150px;" class="btn btn-success"
+          <b-button style="width:150px;" class="btn btn-cancel" v-if="isNotEmpty(id)"
+                    @click="cancel">取消修改
+          </b-button>
+          <b-button style="margin-left: 32%; width:150px;" class="btn btn-success" v-else
                     @click="create"> 创建合同
           </b-button>
 
@@ -212,6 +215,7 @@
   export default {
     name: 'c-contractForm',
     components: {CUserSelect},
+    props: ['id'],
     data() {
       return {
         url: this.$route.fullPath,
@@ -243,7 +247,55 @@
         user: ''
       }
     },
+    watch: {
+      id: function (val) {
+        if (isNotEmpty(val))
+          this.init();
+      }
+    },
     methods: {
+      documentDownload() {
+        window.open(basePath + '/contract/info/' + this.contract.id + '?token=' + window.localStorage.getItem('access_token'))
+      },
+
+      cancel(){
+         this.$router.go('/logistic/contract')
+      },
+      init() {
+        axios.get('/contract/' + this.id).then(response => {
+          this.contract = response.data.data;
+
+          let info = this.contract.info.split("-");
+          this.info.year = info[0];
+          this.info.semester = info[1];
+
+          this.contractRange = [new Date(this.contract.initDate), new Date(this.contract.expireDate)];
+
+          if (isNotEmpty(this.contract.contractInfo)) {
+            this.contract.contractInfo = JSON.parse(this.contract.contractInfo);
+            this.showDocument = true
+          }
+
+
+          if (isNotEmpty(this.contract.ownerId)){
+            alert(this.contract.ownerId);
+            axios.get('/user/' + this.contract.ownerId).then((response) => {
+              let name = response.data.data.lastName + ', ' + response.data.data.firstName;
+              let profilePath = '/static/img/logo.png';
+              if (isNotEmpty(response.data.data.profile)) {
+                let profile = JSON.parse(response.data.data.profile);
+                profilePath = basePath + '/static' + profile.path
+              }
+              this.user = {
+                label: name,
+                value: response.data.data.userId,
+                profile: profilePath
+              }
+            });
+          }
+        })
+
+      },
       passUser(val) {
         this.user = val;
       },
@@ -304,7 +356,7 @@
       },
       documentUpload() {
 
-        if (!isNotEmpty(document.getElementById('document').files)){
+        if (!isNotEmpty(document.getElementById('document').files)[0]) {
           return;
         }
 

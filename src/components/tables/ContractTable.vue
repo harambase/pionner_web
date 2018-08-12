@@ -67,7 +67,7 @@
           <b-list-group>
             <b-list-group-item class="flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1"> <strong>{{row.item.oname}}的{{row.item.type}}</strong> 信息</h5>
+                <h5 class="mb-1"><strong>{{row.item.oname}}的{{row.item.type}}</strong> 信息</h5>
                 <small class="text-muted">合同编号：{{row.item.contractId}}</small>
               </div>
               <hr/>
@@ -93,7 +93,7 @@
                       <dd class="col-sm-5"
                           v-if="isNotEmpty(row.item.contractInfo)">
                         <a href="#"
-                           @click="documentDownload(row.item.contractId)">{{JSON.parse(row.item.contractInfo).name}}</a>
+                           @click="documentDownload(row.item.id)">{{JSON.parse(row.item.contractInfo).name}}</a>
                       </dd>
                     </dl>
                     <dl class="row">
@@ -108,7 +108,7 @@
                                   @click.stop="showDeleteContract(row.item.id)">
                           删除该合同
                         </b-button>
-                        <b-button size="sm" variant="primary" @click="contractDetail(row.item.id)">
+                        <b-button size="sm" variant="primary" v-on:click="contractDetail(row.item.id)">
                           修改该合同
                         </b-button>
                       </dd>
@@ -168,6 +168,7 @@
     {key: 'index', label: '序号', class: 'text-center'},
     {key: 'contractId', label: '合同编号', sortable: true},
     {key: 'oname', label: '所属人名', sortable: true},
+    {key: 'ownerId', label: '所属人ID', sortable: true},
     {key: 'type', label: '合同类型', sortable: true},
     {key: 'status', label: '合同状态', sortable: true},
     {key: 'opname', label: '录入人', sortable: true},
@@ -177,7 +178,6 @@
 
   export default {
     name: 'c-contractTable',
-    props: ['activeName'],
     data() {
       return {
         msg: '',
@@ -198,6 +198,7 @@
         deleteContractId: ''
       }
     },
+
     computed: {
       sortOptions() {
         // Create an options list from our field
@@ -235,8 +236,9 @@
       },
 
       contractDetail(id) {
-        this.activeName = 'second';
+          this.$emit('pass', id)
       },
+
       onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
