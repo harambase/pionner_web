@@ -50,23 +50,13 @@
       <template slot="index" slot-scope="row">
         {{(currentPage-1) * perPage + 1 + row.index}}
       </template>
-      <template slot="contractId" slot-scope="row">
-        <b-row>
-          <b-col md="3">
-            <img v-if="isNotEmpty(row.item.profile)"
-                 :src="basePath + '/static' + JSON.parse(row.item.profile).path"
-                 style="width: 30px;height: 30px"
-                 class="img-avatar">
-            <img v-else
-                 src="/static/img/logo.png"
-                 style="width: 40px;height: 40px"
-                 class="img-avatar">
-          </b-col>
-          <b-col md="9" class="mt-1" style="font-size: 11px;">
-            {{row.value}}
-          </b-col>
-        </b-row>
+
+      <template slot="status" slot-scope="row">
+        <p v-if="row.value === 1" style="color:blue;">未开始</p>
+        <p v-if="row.value === 0" style="color:green;">正常</p>
+        <p v-if="row.value === -1" style="color:red;">已结束</p>
       </template>
+
       <template slot="actions" slot-scope="row">
         <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
           {{ row.detailsShowing ? '隐藏' : '展示' }}详情
@@ -77,32 +67,29 @@
           <b-list-group>
             <b-list-group-item class="flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">服务合同 <strong>{{row.item.oname}}, {{row.item.contractId}}</strong> 的信息</h5>
-                <small class="text-muted">用户ID：{{row.item.onwerId}}</small>
+                <h5 class="mb-1"> <strong>{{row.item.oname}}的{{row.item.type}}</strong> 信息</h5>
+                <small class="text-muted">合同编号：{{row.item.contractId}}</small>
               </div>
               <hr/>
               <b-row>
                 <b-col md="12" class="my-1">
                   <div class="mr-1">
-                    <!--<dl class="row">-->
-                      <!--<dt class="col-sm-1">QQ:</dt>-->
-                      <!--<dd class="col-sm-2">{{row.item.qq}}</dd>-->
-
-                      <!--<dt class="col-sm-1">电话:</dt>-->
-                      <!--<dd class="col-sm-2">{{row.item.tel}}</dd>-->
-
-                      <!--<dt class="col-sm-1">微信:</dt>-->
-                      <!--<dd class="col-sm-2">{{row.item.weChat}}</dd>-->
-                    <!--</dl>-->
-                    <!--<dl class="row">-->
-                      <!--<dt class="col-sm-1">性别:</dt>-->
-                      <!--<dd class="col-sm-2">{{row.item.gender}}</dd>-->
-
-                      <!--<dt class="col-sm-1">宿舍:</dt>-->
-                      <!--<dd class="col-sm-2">{{row.item.dorm}}</dd>-->
-                    <!--</dl>-->
                     <dl class="row">
-                      <dt class="col-sm-2">电子文本:</dt>
+                      <dt class="col-sm-1">所属人:</dt>
+                      <dd class="col-sm-2">{{row.item.oname}}</dd>
+
+                      <dt class="col-sm-1">合同期限:</dt>
+                      <dd class="col-sm-2">{{row.item.initDate}} 至 {{row.item.expireDate}}</dd>
+                    </dl>
+                    <dl class="row">
+                      <dt class="col-sm-1">录入人:</dt>
+                      <dd class="col-sm-2">{{row.item.opname}}</dd>
+
+                      <dt class="col-sm-1">录入时间:</dt>
+                      <dd class="col-sm-2">{{row.item.createTime}}</dd>
+                    </dl>
+                    <dl class="row">
+                      <dt class="col-sm-2">合同电子档案:</dt>
                       <dd class="col-sm-5"
                           v-if="isNotEmpty(row.item.contractInfo)">
                         <a href="#"
@@ -118,10 +105,10 @@
                       <dt class="col-sm-1">操作:</dt>
                       <dd class="col-sm-5">
                         <b-button size="sm" variant="danger"
-                                  @click.stop="showDeleteContract(row.item.contractId)">
+                                  @click.stop="showDeleteContract(row.item.id)">
                           删除该合同
                         </b-button>
-                        <b-button size="sm" variant="primary" @click="contractDetail(row.item.contractId)">
+                        <b-button size="sm" variant="primary" @click="contractDetail(row.item.id)">
                           修改该合同
                         </b-button>
                       </dd>
@@ -180,10 +167,8 @@
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
     {key: 'contractId', label: '合同编号', sortable: true},
-    {key: 'ownerId', label: '所属人ID', sortable: true},
     {key: 'oname', label: '所属人名', sortable: true},
-    {key: 'initDate', label: '生效时间', sortable: true},
-    {key: 'expireDate', label: '到期时间', sortable: true},
+    {key: 'type', label: '合同类型', sortable: true},
     {key: 'status', label: '合同状态', sortable: true},
     {key: 'opname', label: '录入人', sortable: true},
     {key: 'createTime', label: '录入时间', sortable: true},
@@ -192,6 +177,7 @@
 
   export default {
     name: 'c-contractTable',
+    props: ['activeName'],
     data() {
       return {
         msg: '',
@@ -223,13 +209,13 @@
       }
     },
     methods: {
-      documentDownload(contractId) {
-        window.open(basePath + '/contract/info/' + contractId + '?token=' + window.localStorage.getItem('access_token'))
+      documentDownload(id) {
+        window.open(basePath + '/contract/info/' + id + '?token=' + window.localStorage.getItem('access_token'))
       },
 
-      showDeleteContract(contractId) {
+      showDeleteContract(id) {
         this.showDeleteModal = true
-        this.deleteContractId = contractId
+        this.deleteContractId = id
       },
 
       deleteContract() {
@@ -248,8 +234,8 @@
         })
       },
 
-      contractDetail(contractId) {
-        this.$router.push({path: '/logistic/contract/detail?mode=view&contractId=' + contractId})
+      contractDetail(id) {
+        this.activeName = 'second';
       },
       onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering

@@ -21,7 +21,7 @@
           <b-form-select id="info" style="width: 50%" v-validate="'required'" name="info"
                          :class="{'form-control': true, 'is-invalid': errors.has('info')}"
                          :plain="true"
-                         :options="[{ text: '春季入学', value: '01' },{ text: '秋季入学', value: '02' }, { text: '夏季入学', value: '03' }]"
+                         :options="[{ text: '春季', value: '01' },{ text: '秋季', value: '02' }, { text: '夏季', value: '03' }]"
                          v-model="info.semester">
           </b-form-select>
           <div v-show="errors.has('info')" class="invalid-tooltip">{{ errors.first('info') }}</div>
@@ -49,19 +49,19 @@
         </b-col>
         <b-col md="3" class="my-1">
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" value="100" id="intro"
+            <input type="radio" value="劳动合同" id="intro"
                    :class="{'custom-control-input': true, 'is-invalid': errors.has('type')}"
                    name="type" v-model="contract.type" v-validate="'required'">
             <label class="custom-control-label" for="intro">劳动合同</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" value="200" id="median"
+            <input type="radio" value="入学协议" id="median"
                    :class="{'custom-control-input': true, 'is-invalid': errors.has('type')}"
                    name="type" v-model="contract.type" v-validate="'required'">
             <label class="custom-control-label" for="median">入学协议</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" value="300" id="advance"
+            <input type="radio" value="志愿者服务协议" id="advance"
                    :class="{'custom-control-input': true, 'is-invalid': errors.has('type')}"
                    name="type" v-model="contract.type" v-validate="'required'">
             <label class="custom-control-label" for="advance">志愿者服务协议</label>
@@ -102,7 +102,6 @@
           <CUserSelect v-on:pass="passUser"/>
         </b-col>
       </b-row>
-      >
     </b-card>
     <b-card
       header-tag="header"
@@ -196,6 +195,7 @@
              :header-bg-variant="headerBgVariant"
              ok-only
              ok-title="关闭"
+             @ok="$router.go({path: '/logistic/contract'})"
              centered
              title="消息">
       <div class="d-block text-center">
@@ -220,7 +220,9 @@
           semester: '01'
         },
         contract: {
+          id: '',
           contractId: '',
+          ownerId: '',
           oname: '',
           info: '',
           type: '',
@@ -248,12 +250,85 @@
       isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
-      create(){
-
+      prepare() {
+        this.contract.initDate = date2Str(this.contractRange[0], 'yyyy-MM-dd');
+        this.contract.expireDate = date2Str(this.contractRange[1], 'yyyy-MM-dd');
+        this.contract.info = this.info.year + "-" + this.info.semester;
+        this.contract.ownerId = this.user.value;
       },
-      update(){
+      create() {
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return;
 
-      }
+          this.prepare();
+
+          axios.post('/contract', this.contract).then((response) => {
+            if (response.data.code === 2001) {
+              this.msg = response.data.msg;
+              this.showModal = true;
+              this.headerBgVariant = 'success';
+              this.contract = response.data.data;
+              this.documentUpload();
+            }
+            else {
+              this.msg = response.data.msg;
+              this.showModal = true;
+              this.headerBgVariant = 'danger'
+            }
+          })
+        })
+      },
+      update() {
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return;
+
+          this.prepare();
+
+          axios.put('/contract/' + this.id, this.contract).then((response) => {
+            if (response.data.code === 2001) {
+              this.msg = response.data.msg;
+              this.headerBgVariant = 'success';
+              this.showModal = true;
+              this.contract = response.data.data;
+              this.documentUpload();
+            }
+            else {
+              this.msg = response.data.msg;
+              this.showModal = true;
+              this.headerBgVariant = 'danger'
+            }
+          })
+        })
+      },
+      documentUpload() {
+
+        if (!isNotEmpty(document.getElementById('document').files)){
+          return;
+        }
+
+        let formData = new FormData();
+        formData.append('file', document.getElementById('document').files[0]);
+
+        let url = '/contract/info/' + this.contract.id;
+
+        axios.put(url, formData).then((response) => {
+          if (response.data.code === 2001) {
+            this.showDocument = true;
+            if (this.showUpload) {
+              this.contract.contractInfo = response.data.data;
+              this.msg = response.data.msg;
+              this.headerBgVariant = 'success';
+              this.showModal = true;
+            }
+          } else {
+            this.msg = response.data.msg;
+            this.showModal = true;
+            this.headerBgVariant = 'danger'
+          }
+        })
+      },
     }
   }
 
