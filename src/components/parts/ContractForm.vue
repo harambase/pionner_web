@@ -116,11 +116,6 @@
         <b-col md="6" class="my-1">
           <input type="file" id="document">
         </b-col>
-        <b-col md="2" class="my-1" v-if="showUpload">
-          <b-button style="width: 100%" class="btn btn-info my-1" @click="documentUpload">
-            上传
-          </b-button>
-        </b-col>
         <b-col md="2" class="my-1" v-if="!showDocument && isNotEmpty(contract.contractInfo)">
           <b-button style="width: 100%" class="btn btn-success"
                     @click="showDocument = true">
@@ -168,8 +163,8 @@
           <label class="col-sm-12 control-label">*上述信息正确无误:</label>
         </b-col>
         <b-col md="3" class="my-1">
-          <div class="custom-control custom-checkbox custom-control-inline">
-            <input type="checkbox" id="confirm" name="confirm" v-validate="'required'"
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="confirm" name="confirm" v-validate="'required'"
                    :class="{'custom-control-input': true, 'is-invalid': errors.has('confirm')}"
                    v-model="confirm">
             <label class="custom-control-label" for="confirm">确认</label>
@@ -180,14 +175,14 @@
           <label class="col-sm-12 control-label">操作:</label>
         </b-col>
         <b-col md="3">
-          <b-button style="width:150px;" class="btn btn-info" v-if="isNotEmpty(id)"
-                    @click="update">修改合同
+          <b-button style="width:200px;" class="btn btn-info" v-if="isNotEmpty(id)"
+                    @click="update">修改合同（同时上传文件）
           </b-button>
           <b-button style="width:150px;" class="btn btn-cancel" v-if="isNotEmpty(id)"
                     @click="cancel">取消修改
           </b-button>
-          <b-button style="margin-left: 32%; width:150px;" class="btn btn-success" v-else
-                    @click="create"> 创建合同
+          <b-button style="width:200px;" class="btn btn-success" v-else
+                    @click="create"> 创建合同（同时上传文件）
           </b-button>
 
         </b-col>
@@ -243,7 +238,6 @@
         showModal: false,
         headerBgVariant: '',
         goToUrl: '',
-        showUpload: false,
         user: ''
       }
     },
@@ -263,6 +257,7 @@
       },
       init() {
         axios.get('/contract/' + this.id).then(response => {
+
           this.contract = response.data.data;
 
           let info = this.contract.info.split("-");
