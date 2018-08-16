@@ -55,13 +55,13 @@
                   <span class="input-group-text"><i class="icon-calendar"></i></span>
                 </div>
                 <el-date-picker style="width:80%"
-                  v-model="regUser.birthday"
-                  type="date"
-                  class="form-control"
-                  size="mini"
-                  prefix-icon="none"
-                  format="yyyy-MM-dd"
-                  placeholder="选择生日">
+                                v-model="regUser.birthday"
+                                type="date"
+                                class="form-control"
+                                size="mini"
+                                prefix-icon="none"
+                                format="yyyy-MM-dd"
+                                placeholder="选择生日">
                 </el-date-picker>
               </b-input-group>
 
@@ -143,8 +143,8 @@
 
   export default {
     name: 'Register',
-    components: { DatePicker },
-    data () {
+    components: {DatePicker},
+    data() {
       return {
         regUser: {
           info: '',
@@ -197,7 +197,7 @@
           })
         })
       },
-      goToLogin () {
+      goToLogin() {
         this.$router.push({path: '/'})
       }
     }

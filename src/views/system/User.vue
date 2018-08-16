@@ -23,7 +23,14 @@
                 <b-form-select :options="pageOptions" v-model="perPage"/>
               </b-form-group>
             </b-col>
-            <b-col md="4" class="my-1"></b-col>
+            <b-col md="1" class="my-1">
+              <legend class="col-form-legend">用户类型：</legend>
+            </b-col>
+            <b-col md="3" class="my-1">
+              <b-form-group>
+                <b-form-select :options="typeOptions" v-model="type"/>
+              </b-form-group>
+            </b-col>
             <b-col md="4" class="my-1">
               <b-form-group>
                 <b-input-group>
@@ -256,6 +263,8 @@
         perPage: 10,
         totalRows: 0,
         pageOptions: [5, 10, 15],
+        typeOptions: ['劳动合同', '入学协议', '志愿者服务协议'],
+        type: '',
         sortBy: 'user_id',
         sortDesc: false,
         filter: null,
@@ -273,6 +282,11 @@
           .map(f => {
             return {text: f.label, value: f.key}
           })
+      }
+    },
+    watch: {
+      type: function () {
+        this.initTable();
       }
     },
     methods: {

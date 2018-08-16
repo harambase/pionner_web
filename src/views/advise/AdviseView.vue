@@ -22,16 +22,16 @@
   export default {
     name: 'Advise',
     components: {CInfoSelect, CAdviseTable},
-    data () {
+    data() {
       return {
         info: '',
       }
     },
     methods: {
-      passInfo (val) {
+      passInfo(val) {
         this.info = val
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
     }

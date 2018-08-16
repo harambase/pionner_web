@@ -40,16 +40,14 @@
   export default {
     name: 'Advise',
     components: {CRequestAdvisorTable},
-    data () {
-      return {
-
-      }
+    data() {
+      return {}
     },
     methods: {
-      downloadAdvise () {
+      downloadAdvise() {
         window.open(basePath + '/request/advise/download?token=' + window.localStorage.getItem('access_token'))
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
     }

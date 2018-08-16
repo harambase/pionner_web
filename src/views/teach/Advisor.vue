@@ -17,7 +17,8 @@
                 <CFacultySelect v-on:pass="passFaculty"/>
               </b-col>
               <b-col md="3" class="my-1">
-                <b-button style="width:150px;" variant="success" @click="addAdvisor" :disabled="!isNotEmpty(faculty)">添加导师
+                <b-button style="width:150px;" variant="success" @click="addAdvisor" :disabled="!isNotEmpty(faculty)">
+                  添加导师
                 </b-button>
               </b-col>
             </b-row>
@@ -62,7 +63,7 @@
   export default {
     name: 'Advisor',
     components: {CFacultySelect, CAdvisorTable},
-    data () {
+    data() {
       return {
         faculty: '',
         showModal: false,
@@ -71,10 +72,10 @@
       }
     },
     methods: {
-      passFaculty (val) {
+      passFaculty(val) {
         this.faculty = val
       },
-      addAdvisor () {
+      addAdvisor() {
         axios.put('/advise/advisor/' + this.faculty.value).then((response) => {
           if (response.data.code) {
             this.msg = '添加成功！';
@@ -88,7 +89,7 @@
           }
         })
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
     }

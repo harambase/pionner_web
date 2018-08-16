@@ -13,7 +13,7 @@
         </b-form-group>
       </b-col>
       <b-col md="1" class="my-1">
-        <legend class="col-form-legend">类型：</legend>
+        <legend class="col-form-legend">合同类型：</legend>
       </b-col>
       <b-col md="3" class="my-1">
         <b-form-group>
@@ -71,7 +71,7 @@
       </template>
       <template slot="row-details" slot-scope="row">
         <b-card>
-          <b-list-group >
+          <b-list-group>
             <b-list-group-item class="flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1"><strong>{{row.item.oname}}的{{row.item.type}}</strong> 信息</h5>
@@ -226,7 +226,7 @@
       }
     },
     watch: {
-      type: function(){
+      type: function () {
         this.initTable();
       }
     },
@@ -257,7 +257,7 @@
       },
 
       contractDetail() {
-          this.showDetail = false
+        this.showDetail = false
       },
 
       onFiltered(filteredItems) {

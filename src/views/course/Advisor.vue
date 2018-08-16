@@ -165,7 +165,7 @@
   export default {
     name: 'Advisor-Choose',
     components: {CAdvisorTable},
-    data () {
+    data() {
       return {
         pinObject: '',
         pin: '',
@@ -212,23 +212,23 @@
       }
     },
     methods: {
-      moveUp (index) {
+      moveUp(index) {
         let temp = this.advisorList[index - 1]
         Vue.set(this.advisorList, index - 1, this.advisorList[index])
         Vue.set(this.advisorList, index, temp)
       },
-      moveDown (index) {
+      moveDown(index) {
         let temp = this.advisorList[index + 1]
         Vue.set(this.advisorList, index + 1, this.advisorList[index])
         Vue.set(this.advisorList, index, temp)
       },
-      remove (index) {
+      remove(index) {
         this.$delete(this.advisorList, index)
       },
-      passFaculty (val) {
+      passFaculty(val) {
         this.faculty = val
       },
-      validate () {
+      validate() {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
@@ -245,7 +245,7 @@
           })
         })
       },
-      init () {
+      init() {
         axios.get('/request/advise/' + this.pinObject.studentId).then((response) => {
           let facultyIds = response.data.data.facultyIds.split('/')
           for (let i = 0; i < facultyIds.length; i++) {
@@ -258,13 +258,13 @@
         this.pinValidate = true
         this.showValidate = false
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
-      reset () {
+      reset() {
         this.advisorList = []
       },
-      showSubmit () {
+      showSubmit() {
         if (this.advisorList.length > 0)
           this.showSubmitModal = true
         else {
@@ -273,7 +273,7 @@
           this.showModal = true
         }
       },
-      submit () {
+      submit() {
 
         axios.post('/request/advise/' + this.pinObject.studentId, this.advisorList).then((response) => {
           if (response.data.code === 2001) {

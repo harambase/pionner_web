@@ -1,7 +1,7 @@
 <template>
   <div class="animated fadeIn">
     <b-row>
-      <b-col cols="12" >
+      <b-col cols="12">
         <b-card
           header-tag="header"
           footer-tag="footer">
@@ -35,12 +35,12 @@
           </div>
           <div class="firstStep clearfix" v-if="courseList.length === 0">
             <div class="lessons-item js-lessons-item g-clearfix" style="cursor: default">
-                <div class="lessons-pic">
-                  <img width="200" height="200" src="/static/img/logo.png">
-                </div>
-                <div class="lessons-info">
-                  <h3 class="info-tile">无进行中的课程。</h3>
-                </div>
+              <div class="lessons-pic">
+                <img width="200" height="200" src="/static/img/logo.png">
+              </div>
+              <div class="lessons-info">
+                <h3 class="info-tile">无进行中的课程。</h3>
+              </div>
             </div>
           </div>
         </b-card>
@@ -106,7 +106,7 @@
 
   export default {
     name: 'dashboard',
-    data () {
+    data() {
       return {
         courseList: [],
         teachList: [],
@@ -115,7 +115,7 @@
     },
     mounted: function () {
       const token = decode(window.localStorage.getItem('access_token'));
-      this.rolList =  token.rol;
+      this.rolList = token.rol;
 
       this.initTeachList();
       this.initCourseList();

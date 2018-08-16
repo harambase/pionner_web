@@ -28,7 +28,7 @@
   export default {
     name: 'Page401',
     methods: {
-      backToDashBoard () {
+      backToDashBoard() {
         this.$router.push({path: '/dashboard'})
       }
     }

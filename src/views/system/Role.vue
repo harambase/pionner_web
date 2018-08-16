@@ -35,7 +35,8 @@
                               class="my-0"/>
               </b-col>
               <b-col md="6" class="my-1">
-                <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) * perPage + perPage) <=
+                <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至
+                  {{((currentPage-1) * perPage + perPage) <=
                   totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
               </b-col>
             </b-row>
@@ -59,7 +60,7 @@
 
   export default {
     name: 'Role',
-    data () {
+    data() {
       return {
         field: field,
         currentPage: 1,
@@ -74,22 +75,24 @@
       }
     },
     computed: {
-      sortOptions () {
+      sortOptions() {
         // Create an options list from our field
         return this.field
           .filter(f => f.sortable)
-          .map(f => { return {text: f.label, value: f.key} })
+          .map(f => {
+            return {text: f.label, value: f.key}
+          })
       }
     },
     methods: {
-      onFiltered (filteredItems) {
+      onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      initTable () {
+      initTable() {
         this.$refs.roleTable.refresh()
       },
-      roleTable (ctx) {
+      roleTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/role?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol='
         switch (ctx.sortBy) {
@@ -117,7 +120,7 @@
         })
 
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
     }

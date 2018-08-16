@@ -130,30 +130,35 @@
           </div>
           <b-container fluid>
             <b-row>
+              <b-col md="1" class="my-1">
+                按学生下载：
+              </b-col>
               <b-col md="4" class="my-1">
                 <StudentSelect v-on:pass="passReportStudent"/>
               </b-col>
               <b-col md="3" class="my-1">
-                <b-input-group-button>
-                  <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="downloadReport">下载</b-button>
-                </b-input-group-button>
+                <!--<b-input-group-button>-->
+                <!--<b-button class="mb-4 btn btn-success" style="width: 150px;" @click="downloadReport">下载</b-button>-->
+                <!--</b-input-group-button>-->
+                即将开放！
               </b-col>
             </b-row>
             <b-row>
+              <b-col md="1" class="my-1">
+                按学期下载：
+              </b-col>
               <b-col md="4" class="my-1">
                 <InfoSelect v-on:pass="passReportInfo"/>
               </b-col>
-              <b-col md="2" class="my-1">
-                <label class="col-sm-12 control-label">*管理员操作密码:</label>
+              <b-col md="3" class="my-1">
+                <b-input-group-button v-if="isNotEmpty(reportInfo)">
+                  <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="downloadAllReport(1)">竖版下载（含评语）
+                  </b-button>
+                </b-input-group-button>
               </b-col>
               <b-col md="3" class="my-1">
-                <input type="password" v-validate="'required'" name="adminPwd"
-                       :class="{'form-control': true, 'is-invalid': errors.has('adminPwd')}"/>
-                <div v-show="errors.has('adminPwd')" class="invalid-tooltip">{{ errors.first('adminPwd') }}</div>
-              </b-col>
-              <b-col md="3" class="my-1">
-                <b-input-group-button>
-                  <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="downloadAllReport">下载
+                <b-input-group-button v-if="isNotEmpty(reportInfo)">
+                  <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="downloadAllReport(2)">横板下载（快速查询）
                   </b-button>
                 </b-input-group-button>
               </b-col>
@@ -288,8 +293,8 @@
       downloadReport() {
         window.open(basePath + '/transcript/report/' + this.reportStudent.value + '?token=' + window.localStorage.getItem('access_token'))
       },
-      downloadAllReport() {
-        window.open(basePath + '/transcript/report/all?info=' + this.reportInfo.value + '&token=' + window.localStorage.getItem('access_token'))
+      downloadAllReport(style) {
+        window.open(basePath + '/transcript/report/all?style=' + style + '&info=' + this.reportInfo.value + '&token=' + window.localStorage.getItem('access_token'))
       }
     }
   }

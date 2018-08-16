@@ -87,7 +87,7 @@
 
   export default {
     name: '',
-    data () {
+    data() {
       return {
         regUser: {
           userId: '',
@@ -125,7 +125,7 @@
           })
         })
       },
-      changePassword () {
+      changePassword() {
         let user = this.user
         user.password = md5(this.user.password)
         axios.put('/system/user/reset/password/' + this.user.userId, user).then((response) => {
@@ -140,7 +140,7 @@
           }
         })
       },
-      goToLogin () {
+      goToLogin() {
         this.$router.push({path: '/'})
       }
     }

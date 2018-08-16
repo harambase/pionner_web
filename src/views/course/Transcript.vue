@@ -105,7 +105,8 @@
                               class="my-0"/>
               </b-col>
               <b-col md="6" class="my-1">
-                <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) * perPage + perPage) <=
+                <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至
+                  {{((currentPage-1) * perPage + perPage) <=
                   totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
               </b-col>
             </b-row>
@@ -113,21 +114,21 @@
         </b-card>
       </b-col>
       <!--<b-col cols="12">-->
-        <!--<b-card-->
-          <!--header-tag="header"-->
-          <!--footer-tag="footer">-->
-          <!--<div slot="header">-->
-            <!--<i className="fa fa-align-justify"></i><strong>下载成绩单</strong>-->
-          <!--</div>-->
-          <!--<b-container fluid>-->
-            <!--<b-row>-->
-              <!--<h5 style="float: left">官方个人成绩单报告：</h5>-->
-              <!--<b-input-group-button>-->
-                <!--<b-button class="mb-4 btn btn-success" style="width: 150px;" @click="download">下载</b-button>-->
-              <!--</b-input-group-button>-->
-            <!--</b-row>-->
-          <!--</b-container>-->
-        <!--</b-card>-->
+      <!--<b-card-->
+      <!--header-tag="header"-->
+      <!--footer-tag="footer">-->
+      <!--<div slot="header">-->
+      <!--<i className="fa fa-align-justify"></i><strong>下载成绩单</strong>-->
+      <!--</div>-->
+      <!--<b-container fluid>-->
+      <!--<b-row>-->
+      <!--<h5 style="float: left">官方个人成绩单报告：</h5>-->
+      <!--<b-input-group-button>-->
+      <!--<b-button class="mb-4 btn btn-success" style="width: 150px;" @click="download">下载</b-button>-->
+      <!--</b-input-group-button>-->
+      <!--</b-row>-->
+      <!--</b-container>-->
+      <!--</b-card>-->
       <!--</b-col>-->
     </b-row>
   </div>
@@ -135,7 +136,7 @@
 
 <script>
   import axios from 'axios'
-  import { InfoSelect } from '../../components/'
+  import {InfoSelect} from '../../components/'
 
   const items = [];
   const field = [
@@ -155,7 +156,7 @@
   export default {
     name: 'Transcript',
     components: {InfoSelect},
-    data () {
+    data() {
       return {
         field: field,
         currentPage: 1,
@@ -171,28 +172,30 @@
         faculty: '',
       }
     },
-    watch:{
-      info: function(){
+    watch: {
+      info: function () {
         this.initTable();
       },
     },
     computed: {
-      sortOptions () {
+      sortOptions() {
         // Create an options list from our field
         return this.field
           .filter(f => f.sortable)
-          .map(f => { return {text: f.label, value: f.key} })
+          .map(f => {
+            return {text: f.label, value: f.key}
+          })
       }
     },
     methods: {
-      passInfo (val) {
+      passInfo(val) {
         this.info = val
       },
-      onFiltered (filteredItems) {
+      onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      transTable (ctx) {
+      transTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/transcript?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
         if (this.isNotEmpty(ctx.filter))
@@ -209,10 +212,10 @@
         })
 
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
-      download () {
+      download() {
         window.open(basePath + '/transcript/report?token=' + window.localStorage.getItem('access_token'))
       }
     }

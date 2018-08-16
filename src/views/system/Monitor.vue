@@ -93,7 +93,7 @@
 
   export default {
     name: 'Monitor',
-    data () {
+    data() {
       return {
         studentNum: 0,
         facultyNum: 0,
@@ -121,7 +121,7 @@
       })
     },
     methods: {
-      exampleUserTop (divUrl, data1, data2) {
+      exampleUserTop(divUrl, data1, data2) {
         const myChart = echarts.init(document.getElementById(divUrl))
         const option = {
           // title : {
@@ -191,7 +191,7 @@
         myChart.setOption(option)
         return myChart
       },
-      relation (data, divUrl) {
+      relation(data, divUrl) {
         const myChart = echarts.init(document.getElementById(divUrl))
         myChart.showLoading()
         console.log(data)

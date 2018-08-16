@@ -92,7 +92,8 @@
                                   class="my-0"/>
                   </b-col>
                   <b-col md="6" class="my-1">
-                    <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) * perPage + perPage) <=
+                    <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至
+                      {{((currentPage-1) * perPage + perPage) <=
                       totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
                   </b-col>
                 </b-row>
@@ -127,7 +128,7 @@
 
 <script>
   import axios from 'axios'
-  import { InfoSelect, StudentSelect, CourseSelect } from '../../components/'
+  import {InfoSelect, StudentSelect, CourseSelect} from '../../components/'
   import CStudentInCourseTable from '../../components/tables/StudentInCourseTable'
 
   const items = []
@@ -148,7 +149,7 @@
   export default {
     name: 'grade',
     components: {CStudentInCourseTable, InfoSelect, StudentSelect, CourseSelect},
-    data () {
+    data() {
       return {
         pinObject: '',
         pin: '',
@@ -172,18 +173,20 @@
       }
     },
     computed: {
-      sortOptions () {
+      sortOptions() {
         // Create an options list from our field
         return this.field
           .filter(f => f.sortable)
-          .map(f => { return {text: f.label, value: f.key} })
+          .map(f => {
+            return {text: f.label, value: f.key}
+          })
       },
     },
     watch: {
       student: function () {
         this.initTable()
       },
-      course: function(){
+      course: function () {
         this.initTable()
       }
     },
@@ -196,17 +199,17 @@
       this.pinValidate = true
     },
     methods: {
-      passStudent (val) {
+      passStudent(val) {
         this.student = val
       },
-      passCourse (val) {
+      passCourse(val) {
         this.course = val
       },
-      onFiltered (filteredItems) {
+      onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      courseTable (ctx) {
+      courseTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy + '&mode=faculty'
         if (this.isNotEmpty(this.pinObject))
@@ -225,10 +228,10 @@
         })
 
       },
-      initTable () {
+      initTable() {
         this.$refs.courseTable.refresh()
       },
-      validate () {
+      validate() {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return
@@ -246,7 +249,7 @@
           })
         })
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       }
     }

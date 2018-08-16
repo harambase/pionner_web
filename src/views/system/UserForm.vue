@@ -328,7 +328,8 @@
                     <label class="col-sm-12 control-label">个人信息文件:</label>
                   </b-col>
                   <b-col md="4">
-                    点击下载-> <a @click="documentDownload" style="cursor: pointer;" class="control-label">{{userInfo.name}}</a>
+                    点击下载-> <a @click="documentDownload" style="cursor: pointer;"
+                              class="control-label">{{userInfo.name}}</a>
                   </b-col>
                   <b-col md="2">
                     <b-button style="width: 100%" class="btn btn-danger"

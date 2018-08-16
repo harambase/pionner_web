@@ -18,6 +18,7 @@
 <script>
   import CContractTable from "../../components/tables/ContractTable";
   import CContractForm from "../../components/parts/ContractForm";
+
   export default {
     name: 'Contract',
     components: {CContractTable, CContractForm},
@@ -27,12 +28,12 @@
         activeName: 'first'
       }
     },
-    methods:{
-      passId (val){
+    methods: {
+      passId(val) {
         this.id = val;
         if (isNotEmpty(val)) {
           this.activeName = 'third'
-        }else{
+        } else {
           this.activeName = 'first'
         }
       }

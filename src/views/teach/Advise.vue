@@ -46,20 +46,20 @@
   export default {
     name: 'Advise',
     components: {CInfoSelect, CAdviseTable},
-    data () {
+    data() {
       return {
         info: '',
       }
     },
 
     methods: {
-      passInfo (val) {
+      passInfo(val) {
         this.info = val
       },
-      downloadAdvise () {
+      downloadAdvise() {
         window.open(basePath + '/advise/download/' + this.info.value + '?token=' + window.localStorage.getItem('access_token'))
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
     }
