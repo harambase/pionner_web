@@ -34,7 +34,7 @@
     components: {
       HeaderDropdown
     },
-    data(){
+    data() {
       return {
         unread: 0,
       }

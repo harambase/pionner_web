@@ -54,11 +54,11 @@
       })
     },
     methods: {
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
-      goTo(id){
-        this.$router.push({path:"/message?id=" + id});
+      goTo(id) {
+        this.$router.push({path: "/message?id=" + id});
       }
     }
   }

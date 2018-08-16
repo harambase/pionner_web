@@ -14,18 +14,18 @@
       }
     },
     computed: {
-      classList () {
+      classList() {
         return [
           'nav-item',
           ...this.itemClasses
         ]
       },
-      itemClasses () {
+      itemClasses() {
         return this.classes ? this.classes.split(' ') : ''
       }
     },
     methods: {
-      hideMobile () {
+      hideMobile() {
         if (document.body.classList.contains('sidebar-mobile-show')) {
           document.body.classList.toggle('sidebar-mobile-show')
         }

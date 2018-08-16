@@ -7,7 +7,7 @@
     </b-col>
     <b-col md="10">
       <v-select v-model="student" :filterable="false" :options="studentOptions"
-                @search="studentList" :placeholder="'输入搜索'">
+                @search="studentList" :placeholder="'输入搜索'" multiple>
         <template slot="option" slot-scope="option">
           <img class="img-avatar" style="width:30px; height: 30px;" :src="option.profile">
           {{ option.label }}
@@ -24,7 +24,7 @@
     name: 'c-studentSelect',
     data() {
       return {
-        student: '',
+        student: [],
         studentOptions: [],
       }
     },

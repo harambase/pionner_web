@@ -10,7 +10,7 @@
 
   export default {
     name: 'c-pinSelect',
-    data () {
+    data() {
       return {
         pin: {
           label: '---选择识别码---',
@@ -24,7 +24,7 @@
         ],
       }
     },
-    mounted () {
+    mounted() {
       axios.get('/pin?search=').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
           let item = {
@@ -41,7 +41,7 @@
       }
     },
     methods: {
-      pinList (search, loading) {
+      pinList(search, loading) {
         loading(true)
         this.pinOptions = []
         axios.get('/pin?search=' + search).then((response) => {

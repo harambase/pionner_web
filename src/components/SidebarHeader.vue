@@ -3,7 +3,7 @@
 </template>
 <script>
 
-export default {
-  name: 'sidebar-header'
-}
+  export default {
+    name: 'sidebar-header'
+  }
 </script>

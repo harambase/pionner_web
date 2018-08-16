@@ -25,12 +25,12 @@
           <b-form-select :options="pageOptions" v-model="perPage"/>
         </b-form-group>
       </b-col>
-      <b-col md="4" class="my-1"></b-col>
-      <b-col md="4" class="my-1">
+      <b-col md="3" class="my-1"></b-col>
+      <b-col md="3" class="my-1">
         <b-form-group>
           <b-input-group>
             <b-input-group-button>
-              <div class="mt-2">
+              <div class="mt-1">
                 搜索：
               </div>
             </b-input-group-button>
@@ -89,34 +89,34 @@
         </div>
         <div v-else>
           <b-card>
-          <b-list-group>
-            <b-list-group-item title="编辑用户" class="flex-column align-items-start">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">修改当前辅导关系</h5>
-                <small class="text-danger">注意：只可以修改导师！</small>
-              </div>
-              <hr/>
-              <b-row>
-                <b-col md="12" class="my-1">
-                  <div class="mr-1">
-                    <dl class="row">
-                      <dt class="col-sm-1">请分配新导师:</dt>
-                      <dd class="col-sm-5">
-                        <CAdvisorSelect v-on:pass="passAdvisor"/>
-                      </dd>
-                      <dd class="col-sm-5">
-                        <b-button size="sm" style="width: 150px;" variant="success"
-                                  @click.stop="updateOne(row.item)">
-                          提交
-                        </b-button>
-                      </dd>
-                    </dl>
-                  </div>
-                </b-col>
-              </b-row>
-            </b-list-group-item>
-          </b-list-group>
-        </b-card>
+            <b-list-group>
+              <b-list-group-item title="编辑用户" class="flex-column align-items-start" disabled>
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">修改当前辅导关系</h5>
+                  <small class="text-danger">注意：只可以修改导师！</small>
+                </div>
+                <hr/>
+                <b-row>
+                  <b-col md="12" class="my-1">
+                    <div class="mr-1">
+                      <dl class="row">
+                        <dt class="col-sm-1">请分配新导师:</dt>
+                        <dd class="col-sm-5">
+                          <CNewAdvisorSelect v-on:pass="passNewAdvisor"/>
+                        </dd>
+                        <dd class="col-sm-5">
+                          <b-button size="sm" style="width: 150px;" variant="success"
+                                    @click.stop="updateOne(row.item)">
+                            提交
+                          </b-button>
+                        </dd>
+                      </dl>
+                    </div>
+                  </b-col>
+                </b-row>
+              </b-list-group-item>
+            </b-list-group>
+          </b-card>
         </div>
       </template>
     </b-table>
@@ -163,6 +163,7 @@
   import axios from 'axios'
   import CStudentSelect from '../selects/StudentSelect'
   import CAdvisorSelect from '../selects/AdvisorSelect'
+  import CNewAdvisorSelect from '../selects/AdvisorSelect'
   import CInfoSelect from '../selects/InfoSelect'
   import CStudentInCourseTable from './StudentInCourseTable'
 
@@ -179,9 +180,9 @@
 
   export default {
     name: 'c-adviseTable',
-    components: {CStudentInCourseTable, CInfoSelect, CAdvisorSelect, CStudentSelect},
+    components: {CStudentInCourseTable, CInfoSelect, CNewAdvisorSelect, CAdvisorSelect, CStudentSelect},
     props: ['showAdvisor', 'fromAdvisor', 'mode'],
-    data () {
+    data() {
       return {
         field: field,
         currentPage: 1,
@@ -200,9 +201,10 @@
         msg: '',
         headerBgVariant: '',
         student: '',
+        newAdvisor: '',
       }
     },
-    mounted () {
+    mounted() {
       if (isNotEmpty(this.fromAdvisor)) {
         this.advisor = {
           value: this.fromAdvisor.userId,
@@ -222,27 +224,32 @@
       }
     },
     computed: {
-      sortOptions () {
+      sortOptions() {
         // Create an options list from our field
         return this.field
           .filter(f => f.sortable)
-          .map(f => { return {text: f.label, value: f.key} })
+          .map(f => {
+            return {text: f.label, value: f.key}
+          })
       }
     },
     methods: {
-      passAdvisor (val) {
+      passAdvisor(val) {
         this.advisor = val
       },
-      passStudent (val) {
+      passNewAdvisor(val) {
+        this.newAdvisor = val
+      },
+      passStudent(val) {
         this.student = val
       },
-      passInfo (val) {
+      passInfo(val) {
         this.info = val
       },
-      initTable () {
+      initTable() {
         this.$refs.adviseTable.refresh()
       },
-      adviseTable (ctx) {
+      adviseTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/advise?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
         if (this.isNotEmpty(this.info))
@@ -266,19 +273,19 @@
           return (items || [])
         })
       },
-      onFiltered (filteredItems) {
+      onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
-      showDeleteOne (advise) {
+      showDeleteOne(advise) {
         this.advise = advise
         this.showDeleteModal = true
       },
-      updateOne (advise) {
-        advise.facultyId = this.advisor.value
+      updateOne(advise) {
+        advise.facultyId = this.newAdvisor.value
         axios.put('/advise/' + advise.id, advise).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '更新成功！'
@@ -293,7 +300,7 @@
           }
         })
       },
-      deleteOne () {
+      deleteOne() {
         axios.delete('/advise/' + this.advise.id).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '删除成功！'
@@ -308,7 +315,7 @@
           }
         })
       },
-      downloadTranscript(studentId){
+      downloadTranscript(studentId) {
         window.open(basePath + '/transcript/report/' + studentId + '?token=' + window.localStorage.getItem('access_token'))
       }
     }

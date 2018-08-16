@@ -31,7 +31,8 @@
       },
       badge: {
         type: Object,
-        default: () => {}
+        default: () => {
+        }
       },
       variant: {
         type: String,
@@ -43,20 +44,20 @@
       }
     },
     computed: {
-      classList () {
+      classList() {
         return [
           'nav-link',
           this.linkVariant,
           ...this.itemClasses
         ]
       },
-      linkVariant () {
+      linkVariant() {
         return this.variant ? `nav-link-${this.variant}` : ''
       },
-      itemClasses () {
+      itemClasses() {
         return this.classes ? this.classes.split(' ') : []
       },
-      isExternalLink () {
+      isExternalLink() {
         if (this.url.substring(0, 4) === 'http') {
           return true
         } else {

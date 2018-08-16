@@ -105,7 +105,7 @@
         </b-card>
         <b-card v-if="mode==='student'">
           <b-list-group>
-              <b-list-group-item title="添加该学生" class="flex-column align-items-start" disabled>
+            <b-list-group-item title="添加该学生" class="flex-column align-items-start" disabled>
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">添加学生 <strong>{{row.item.sname}}</strong> 进入 <strong>{{cname}}</strong> 课程</h5>
                 <small class="text-muted">学生ID：{{row.item.studentId}}</small>
@@ -171,7 +171,8 @@
                       class="my-0"/>
       </b-col>
       <b-col md="6" class="my-1">
-        <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) * perPage + perPage) <=
+        <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) *
+          perPage + perPage) <=
           totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
       </b-col>
     </b-row>
@@ -210,7 +211,7 @@
   export default {
     name: 'c-addStudentTable',
     props: ['mode', 'crn', 'cname', 'credit'],
-    data () {
+    data() {
       return {
         msg: '',
         showModal: false,
@@ -234,26 +235,28 @@
       }
     },
     computed: {
-      sortOptions () {
+      sortOptions() {
         // Create an options list from our field
         return this.field
           .filter(f => f.sortable)
-          .map(f => { return {text: f.label, value: f.key} })
+          .map(f => {
+            return {text: f.label, value: f.key}
+          })
       }
     },
     methods: {
-      handleOk (evt){
+      handleOk(evt) {
         evt.preventDefault();
         this.$router.go(0)
       },
-      onFiltered (filteredItems) {
+      onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      initTable () {
+      initTable() {
         this.$refs.addStudentTable.refresh()
       },
-      addStudentTable (ctx) {
+      addStudentTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/student?start=' + ctx.currentPage + '&status=1&length=' + ctx.perPage + '&orderCol='
         switch (ctx.sortBy) {
@@ -281,10 +284,10 @@
         })
 
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
-      addStudent2Course (studentId) {
+      addStudent2Course(studentId) {
         axios.put('/course/' + this.crn + '/student/' + studentId, this.option).then((response) => {
           if (response.data.code === 2001) {
             this.msg = response.data.msg

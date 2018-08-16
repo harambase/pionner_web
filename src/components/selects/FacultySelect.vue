@@ -23,7 +23,7 @@
   export default {
     name: 'c-facultySelect',
     props: ['parentFaculty'],
-    data () {
+    data() {
       return {
         faculty: '',
         facultyOptions: [],
@@ -37,7 +37,7 @@
         this.faculty = this.parentFaculty;
       }
     },
-    mounted () {
+    mounted() {
       axios.get('/user/search?status=1&type=f&search=').then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
           let name = response.data.data[i].lastName + ', ' + response.data.data[i].firstName;
@@ -56,7 +56,7 @@
       })
     },
     methods: {
-      facultyList (search, loading) {
+      facultyList(search, loading) {
         loading(true)
         this.facultyOptions = []
         axios.get('/user/search?type=f&search=' + search).then((response) => {

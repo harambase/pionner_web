@@ -12,13 +12,13 @@
       }
     },
     computed: {
-      classList () {
+      classList() {
         return [
           'divider',
           ...this.itemClasses
         ]
       },
-      itemClasses () {
+      itemClasses() {
         return this.classes ? this.classes.split(' ') : ''
       }
     }

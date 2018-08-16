@@ -145,7 +145,7 @@
     name: 'c-advisorTable',
     components: {CAdviseTable},
     props: ['mode'],
-    data () {
+    data() {
       return {
         field: field,
         currentPage: 1,
@@ -166,21 +166,23 @@
       }
     },
     computed: {
-      sortOptions () {
+      sortOptions() {
         // Create an options list from our field
         return this.field
           .filter(f => f.sortable)
-          .map(f => { return {text: f.label, value: f.key} })
+          .map(f => {
+            return {text: f.label, value: f.key}
+          })
       }
     },
     methods: {
-      choose (val) {
+      choose(val) {
         this.$emit('pass', val)
       },
-      initTable () {
+      initTable() {
         this.$refs.advisorTable.refresh()
       },
-      advisorTable (ctx) {
+      advisorTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/advise/advisor?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol='
         switch (ctx.sortBy) {
@@ -214,18 +216,18 @@
           return (items || [])
         })
       },
-      onFiltered (filteredItems) {
+      onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
-      isNotEmpty (value) {
+      isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
-      showDeleteOne (advisor) {
+      showDeleteOne(advisor) {
         this.advisor = advisor
         this.showDeleteModal = true
       },
-      deleteOne () {
+      deleteOne() {
         axios.delete('/advise/advisor/' + this.advisor.userId).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '删除成功！'
@@ -240,12 +242,12 @@
           }
         })
       },
-      resendPin (advisor) {
+      resendPin(advisor) {
         this.advisor = advisor
         console.log(advisor)
         this.showSendModal = true
       },
-      resendOne () {
+      resendOne() {
         axios.post('/advisor/send', this.advisor).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '发送成功！'
@@ -258,7 +260,7 @@
           }
         })
       },
-      updateOne (advisor) {
+      updateOne(advisor) {
         this.$validator.validateAll().then((result) => {
           if (!result)
             return

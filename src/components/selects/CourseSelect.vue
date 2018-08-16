@@ -18,13 +18,13 @@
   export default {
     name: 'c-courseSelect',
     props: ['info'],
-    data () {
+    data() {
       return {
         course: '',
         courseOptions: [],
       }
     },
-    watch:{
+    watch: {
       course: function (val) {
         this.$emit('pass', val)
       }
@@ -41,7 +41,7 @@
       })
     },
     methods: {
-      courseList (search, loading) {
+      courseList(search, loading) {
         loading(true)
         this.courseOptions = []
         axios.get('/course/search?search=' + search).then((response) => {

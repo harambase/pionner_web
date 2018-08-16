@@ -5,6 +5,7 @@ import Header from './Header.vue'
 import Sidebar from './Sidebar.vue'
 import InfoSelect from './selects/InfoSelect.vue'
 import StudentSelect from './selects/StudentSelect.vue'
+import StudentSelectMultiple from './selects/StudentSelectMultiple'
 import CourseSelect from './selects/CourseSelect.vue'
 import FacultySelect from './selects/FacultySelect.vue'
 import UserSelect from './selects/UserSelect.vue'
@@ -41,5 +42,6 @@ export {
   MessageTable,
   MessageDetail,
   ContractTable,
-  ContractForm
+  ContractForm,
+  StudentSelectMultiple
 }

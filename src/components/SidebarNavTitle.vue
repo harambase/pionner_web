@@ -24,17 +24,18 @@
       },
       wrapper: {
         type: Object,
-        default: () => {}
+        default: () => {
+        }
       }
     },
     computed: {
-      classList () {
+      classList() {
         return [
           'nav-title',
           ...this.itemClasses
         ]
       },
-      itemClasses () {
+      itemClasses() {
         return this.classes ? this.classes.split(' ') : ''
       }
     }

@@ -601,7 +601,6 @@
         for (let i = 0; i < this.userType.length; i++) {
           if (this.userType[i] !== '') {
             type += this.userType[i] + '/';
-
           }
         }
 
@@ -616,11 +615,10 @@
 
         for (let i = 0; i < this.userRole.length; i++) {
           let role = this.userRole[i];
-          if (role === '2' || role === '7') {
+          if (role === '2' || role === '7' || role === '3') {
             roleId += this.userRole[i] + '/';
           }
         }
-
         this.user.type = type;
         this.user.roleId = roleId
 

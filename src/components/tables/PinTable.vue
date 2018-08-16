@@ -263,7 +263,7 @@
         msg: '',
         headerBgVariant: '',
         basePath: basePath,
-        user:'',
+        user: '',
       }
     },
     watch: {

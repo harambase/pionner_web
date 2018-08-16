@@ -1,7 +1,8 @@
 <template>
   <b-nav-item-dropdown right no-caret>
     <template slot="button-content">
-      <small class="d-md-down-none"> 欢迎回来 {{user.lastName}}, {{user.firstName}}</small> <img :src="profilePath" class="img-avatar">
+      <small class="d-md-down-none"> 欢迎回来 {{user.lastName}}, {{user.firstName}}</small>
+      <img :src="profilePath" class="img-avatar">
     </template>
 
     <b-dropdown-header tag="div" class="text-center"><strong>用户 {{user.userId}}</strong>
@@ -40,7 +41,7 @@
         window.localStorage.clear();
         this.$router.push({path: "/"})
       },
-      viewProfile(){
+      viewProfile() {
         this.$router.push({path: "/profile"})
       }
     }

@@ -4,7 +4,9 @@
       <b-list-group-item :title="row.item.title" class="flex-column align-items-start" disabled
                          style="background:#f4f6f8">
         <div class="d-flex w-100 justify-content-between">
-          <h5 style="color:darkblue"><strong>{{row.item.title}} <small>{{row.item.tag}}消息</small></strong></h5>
+          <h5 style="color:darkblue"><strong>{{row.item.title}}
+            <small>{{row.item.tag}}消息</small>
+          </strong></h5>
         </div>
         <hr/>
         <div class="mr-1">
@@ -127,11 +129,11 @@
       }
     },
     methods: {
-      showDeleteMessage (id){
+      showDeleteMessage(id) {
         this.deleteId = id;
         this.showDeleteModal = true;
       },
-      deleteMessage(){
+      deleteMessage() {
         axios.delete('/message/' + this.deleteId).then((response) => {
           if (response.data.code === 2001) {
             this.msg = response.data.msg;
@@ -146,11 +148,11 @@
           }
         })
       },
-      markAsRead(){
+      markAsRead() {
         this.info.unread--;
-        if(this.row.item.labels == '重要')
+        if (this.row.item.labels == '重要')
           this.info.important--;
-        if(this.row.item.labels == '紧急')
+        if (this.row.item.labels == '紧急')
           this.info.urgent--;
 
         this.row.item.status = 'read';
@@ -162,11 +164,11 @@
           }
         })
       },
-      markAsUnread(){
+      markAsUnread() {
         this.info.unread++;
-        if(this.row.item.labels == '重要')
+        if (this.row.item.labels == '重要')
           this.info.important++;
-        if(this.row.item.labels == '紧急')
+        if (this.row.item.labels == '紧急')
           this.info.urgent++;
 
         this.row.item.status = 'unread';
@@ -178,7 +180,7 @@
           }
         })
       },
-      moveToInbox(){
+      moveToInbox() {
         this.row.item.status = 'read';
         axios.put('/message/' + this.row.item.id, this.row.item).then((response) => {
           this.$router.go(0)
@@ -189,7 +191,7 @@
           }
         })
       },
-      moveToTrash(){
+      moveToTrash() {
         this.row.item.status = 'trashed';
         axios.put('/message/' + this.row.item.id, this.row.item).then((response) => {
           this.$router.go(0)

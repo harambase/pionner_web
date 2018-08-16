@@ -1,5 +1,5 @@
 ﻿<template>
-<div>
+  <div>
     <b-card
       header-tag="header"
       footer-tag="footer">
@@ -194,7 +194,7 @@
         <h4>{{msg}}</h4>
       </div>
     </b-modal>
-</div>
+  </div>
 </template>
 
 <script>
@@ -242,7 +242,7 @@
           this.init();
       }
     },
-    mounted(){
+    mounted() {
       if (isNotEmpty(this.id))
         this.init();
     },
