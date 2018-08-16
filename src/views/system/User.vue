@@ -6,10 +6,6 @@
         footer-tag="footer">
         <div slot="header">
           <i className="fa fa-align-justify"></i><strong>系统用户列表</strong>
-          <b-button class="btn btn-success"
-                    @click="createUser">
-            <i class="fa fa-plus-square"></i> 新增用户
-          </b-button>
         </div>
         <b-container fluid>
 
@@ -18,7 +14,7 @@
             <b-col md="1" class="my-1">
               <legend class="col-form-legend">每页显示：</legend>
             </b-col>
-            <b-col md="3" class="my-1">
+            <b-col md="1" class="my-1">
               <b-form-group>
                 <b-form-select :options="pageOptions" v-model="perPage"/>
               </b-form-group>
@@ -26,9 +22,28 @@
             <b-col md="1" class="my-1">
               <legend class="col-form-legend">用户类型：</legend>
             </b-col>
-            <b-col md="3" class="my-1">
+            <b-col md="1" class="my-1">
               <b-form-group>
                 <b-form-select :options="typeOptions" v-model="type"/>
+              </b-form-group>
+            </b-col>
+            <b-col md="1" class="my-1">
+              <legend class="col-form-legend">用户权限：</legend>
+            </b-col>
+            <b-col md="1" class="my-1">
+              <b-form-group>
+                <b-form-select
+                  :options="[{text: '管理员', value:'1'},{text: '系统', value:'4'},{text: '教务', value:'2'},{text: '导师', value:'7'},{text: '学生', value:'5'},{text: '教师', value:'6'},{text: '后勤', value:'3'},{text: '全部', value:'0'}]"
+                  v-model="role"/>
+              </b-form-group>
+            </b-col>
+            <b-col md="1" class="my-1">
+              <legend class="col-form-legend">账户启停：</legend>
+            </b-col>
+            <b-col md="1" class="my-1">
+              <b-form-group>
+                <b-form-select :options="[{text: '启用', value:'1'},{text: '停用', value:'0'},{text: '全部', value:''}]"
+                               v-model="viewStatus"/>
               </b-form-group>
             </b-col>
             <b-col md="4" class="my-1">
@@ -203,7 +218,7 @@
         </b-container>
       </b-card>
     </b-row>
-
+    {{type}}
     <b-modal v-model="showDeleteModal"
              size="sm"
              header-bg-variant='danger'
@@ -263,15 +278,22 @@
         perPage: 10,
         totalRows: 0,
         pageOptions: [5, 10, 15],
-        typeOptions: ['劳动合同', '入学协议', '志愿者服务协议'],
+        typeOptions: [
+          {text: '教师', value: 'f'},
+          {text: '学生', value: 's'},
+          {text: '系统管理', value: 'a'},
+          {text: '全部', value: ''}
+        ],
         type: '',
         sortBy: 'user_id',
         sortDesc: false,
         filter: null,
         items: items,
         status: '',
+        viewStatus: '',
         basePath: basePath,
-        deleteUserId: ''
+        deleteUserId: '',
+        role: '0'
       }
     },
     computed: {
@@ -286,6 +308,12 @@
     },
     watch: {
       type: function () {
+        this.initTable();
+      },
+      viewStatus: function () {
+        this.initTable();
+      },
+      role: function () {
         this.initTable();
       }
     },
@@ -309,9 +337,6 @@
       showDeleteTempUser(userId) {
         this.showDeleteModal = true
         this.deleteUserId = userId
-      },
-      createUser() {
-        this.$router.push({path: '/system/user/detail?mode=create&userId='})
       },
       deleteUser() {
         axios.delete('/user/' + this.deleteUserId).then((response) => {
@@ -362,7 +387,9 @@
       },
       userTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
-        let url = '/user?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol='
+        let url = '/user?' +
+          'type=' + this.type + '&status=' + this.viewStatus + '&role=' + this.role +
+          '&start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol='
         switch (ctx.sortBy) {
           case 'userId':
             url += 'user_id'
