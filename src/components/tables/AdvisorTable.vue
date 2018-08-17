@@ -192,7 +192,7 @@
           case 'name':
             url += 'last_name'
             break
-          case 'numOfStudent':
+          case 'numStudent':
             url += 'num_Student'
             break
           case 'updateTime':

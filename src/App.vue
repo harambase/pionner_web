@@ -30,12 +30,12 @@
   export default {
     name: 'app',
     computed: {
-      isInvalid () {
+      isInvalid() {
         return (!this.$route.matched || this.$route.matched.length === 0)
       }
     },
     methods: {
-      backToDashBoard () {
+      backToDashBoard() {
         this.$router.push({path: '/dashboard'})
       }
     }
@@ -44,10 +44,18 @@
 
 <style>
   /* Import Font Awesome Icons Set */
-  $fa-font-path:'~font-awesome/fonts/'  ;
+  $
+  fa-font-path:
+
+  '~font-awesome/fonts/'
+  ;
   @import '~font-awesome/css/font-awesome.min.css';
   /* Import Simple Line Icons Set */
-  $simple-line-font-path:'~simple-line-icons/fonts/';
+  $
+  simple-line-font-path:
+
+  '~simple-line-icons/fonts/'
+  ;
   @import '~simple-line-icons/css/simple-line-icons.css';
   /* Import Bootstrap Vue Styles */
   @import '~bootstrap-vue/dist/bootstrap-vue.css';

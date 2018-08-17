@@ -46,7 +46,7 @@
                             class="fa fa-arrow-up" title="上移"></i>
                           </b-btn>
                           <b-btn class="btn btn-success" size="sm" style="width:50px;" @click="moveDown(index)"
-                                 v-if="index!=2 && advisorList.length > 1"><i
+                                 v-if="index != (advisorList.length-1)"><i
                             class="fa fa-arrow-down" title="下移"></i>
                           </b-btn>
                         </b-col>
@@ -274,7 +274,6 @@
         }
       },
       submit() {
-
         axios.post('/request/advise/' + this.pinObject.studentId, this.advisorList).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '提交成功！'

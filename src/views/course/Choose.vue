@@ -384,7 +384,7 @@
         })
       },
       initStudentInfo() {
-        axios.get('/student/' + this.pinObject.studentId + '/available/credit?info=' + this.pinObject.info).then((response) => {
+        axios.get('/student/' + this.pinObject.ownerId + '/available/credit?info=' + this.pinObject.info).then((response) => {
           if (response.data.code === 2001) {
             this.tol_credits = response.data.data.tol_credits
             this.use_credits = response.data.data.use_credits

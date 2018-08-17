@@ -7,7 +7,7 @@ import router from './router'
 import VeeValidate from 'vee-validate'
 import vSelect from 'vue-select'
 import axios from 'axios'
-import { Loading } from 'element-ui';
+import {Loading} from 'element-ui';
 
 Vue.use(BootstrapVue);
 Vue.use(ElementUI);
@@ -23,7 +23,7 @@ axios.defaults.baseURL = basePath;
 axios.interceptors.request.use(
   config => {
     // 判断是否存在token，如果存在的话，则每个http header都加上token
-    loading = Loading.service({ fullscreen: true });
+    loading = Loading.service({fullscreen: true});
     if (token !== null && token !== undefined) {
       config.headers.Authorization = 'Bearer ' + token
     }

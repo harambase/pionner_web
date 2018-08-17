@@ -103,6 +103,17 @@
         </b-row>
       </div>
     </b-row>
+    <b-modal v-model="showModal"
+             size="sm"
+             :header-bg-variant="headerBgVariant"
+             ok-only
+             ok-title="关闭"
+             centered
+             title="消息">
+      <div class="d-block text-center">
+        <h4>{{msg}}</h4>
+      </div>
+    </b-modal>
 
     <b-modal title="识别码验证" header-bg-variant="info"
              centered hide-footer
@@ -238,8 +249,15 @@
           axios.get('/pin/' + this.pin).then((response) => {
             if (response.data.code === 2001) {
               this.pinObject = response.data.data
-              this.pinValidate = true
               this.showValidate = false
+
+              if (this.pinObject.role === 2) {
+                this.pinValidate = true
+              } else {
+                this.msg = '识别码验证失败！  '
+                this.headerBgVariant = 'danger'
+                this.showModal = true
+              }
             }
             else {
               this.msg = '识别码验证失败！  '

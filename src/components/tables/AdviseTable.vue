@@ -252,6 +252,7 @@
       adviseTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/advise?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
+
         if (this.isNotEmpty(this.info))
           url += '&info=' + this.info.value
         if (this.isNotEmpty(this.student))
