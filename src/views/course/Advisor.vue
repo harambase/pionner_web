@@ -246,7 +246,7 @@
         })
       },
       init() {
-        axios.get('/request/advise/' + this.pinObject.studentId).then((response) => {
+        axios.get('/request/advise/' + this.pinObject.ownerId).then((response) => {
           let facultyIds = response.data.data.facultyIds.split('/')
           for (let i = 0; i < facultyIds.length; i++) {
             if (this.isNotEmpty(facultyIds[i]))
@@ -274,7 +274,7 @@
         }
       },
       submit() {
-        axios.post('/request/advise/' + this.pinObject.studentId, this.advisorList).then((response) => {
+        axios.post('/request/advise/' + this.pinObject.ownerId, this.advisorList).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '提交成功！'
             this.headerBgVariant = 'success'

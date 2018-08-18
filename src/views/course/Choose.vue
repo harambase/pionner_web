@@ -461,10 +461,10 @@
           this.crnList = []
           this.initStudentInfo()
           if (this.failList.length === 0) {
-            this.msg = '全部注册成功!'
+            this.msg = '全部注册成功！'
             this.headerBgVariant = 'success'
           } else {
-            this.msg = '有课程失败！'
+            this.msg = '课程注册失败！'
             this.headerBgVariant = 'danger'
           }
           this.showModal = true
