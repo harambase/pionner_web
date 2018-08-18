@@ -92,7 +92,7 @@
                    style="width: 70%"
                    class="img-avatar">
               <img v-else
-                   src="/static/img/logo.png"
+                   src="/static/eas/img/logo.png"
                    style="width: 70%"
                    class="img-avatar">
             </b-col>

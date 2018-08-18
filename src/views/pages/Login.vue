@@ -66,7 +66,7 @@
 <style>
   .app.flex-row.align-items-center {
     animation-duration: 2s;
-    background-image: url("/static/img/background.jpg");
+    background-image: url("../../../static/img/background.jpg");
     background-size: cover;
   }
 </style>

@@ -79,7 +79,7 @@
                  style="width: 30px;height: 30px"
                  class="img-avatar">
             <img v-else
-                 src="/static/img/logo.png"
+                 src="/static/eas/img/logo.png"
                  style="width: 40px;height: 40px"
                  class="img-avatar">
           </b-col>
