@@ -139,11 +139,9 @@
 <script>
   import axios from 'axios'
   import md5 from 'js-md5'
-  import DatePicker from 'vue2-datepicker'
 
   export default {
     name: 'Register',
-    components: {DatePicker},
     data() {
       return {
         regUser: {

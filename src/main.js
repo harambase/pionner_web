@@ -83,9 +83,6 @@ VeeValidate.Validator.extend('verify_credit', {
   }
 });
 
-
-VeeValidate.Validator.e
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
