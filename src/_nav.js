@@ -167,14 +167,6 @@ export default {
           },
         },
         {
-          name: '辅导关系申请管理',
-          url: '/teach/advise/request',
-          icon: 'fa fa-group',
-          meta: {
-            role: ['2']
-          },
-        },
-        {
           name: '导师管理',
           url: '/teach/advise/advisor',
           icon: 'fa fa-group',

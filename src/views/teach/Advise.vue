@@ -70,7 +70,37 @@
         </b-container>
       </el-tab-pane>
       <el-tab-pane label="辅导申请管理" name="third">
-
+        <b-row>
+          <b-col md="12">
+            <b-card
+              header-tag="header"
+              footer-tag="footer">
+              <div slot="header">
+                <i className="fa fa-align-justify"></i><strong>临时辅导关系列表</strong>
+              </div>
+              <CRequestAdvisorTable mode="manage"/>
+            </b-card>
+          </b-col>
+          <b-col cols="12">
+            <b-card
+              header-tag="header"
+              footer-tag="footer">
+              <div slot="header">
+                <i className="fa fa-align-justify"></i><strong>下载临时辅导关系列表</strong>
+              </div>
+              <b-container fluid>
+                <b-row>
+                  <b-col md="6" class="my-1">
+                    <b-input-group-button>
+                      <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="downloadRequestAdvise">下载
+                      </b-button>
+                    </b-input-group-button>
+                  </b-col>
+                </b-row>
+              </b-container>
+            </b-card>
+          </b-col>
+        </b-row>
       </el-tab-pane>
     </el-tabs>
     <b-modal v-model="showModal"
@@ -94,10 +124,11 @@
   import CInfoSelect from '../../components/selects/InfoSelect'
   import CStudentSelectMultiple from "../../components/selects/StudentSelectMultiple";
   import CAdvisorSelect from "../../components/selects/AdvisorSelect";
+  import CRequestAdvisorTable from '../../components/tables/RequestAdvisorTable';
 
   export default {
     name: 'Advise',
-    components: {CAdvisorSelect, CStudentSelectMultiple, CInfoSelect, CAdviseTable},
+    components: {CAdvisorSelect, CStudentSelectMultiple, CInfoSelect, CAdviseTable, CRequestAdvisorTable},
     data() {
       return {
         info: '',
@@ -150,6 +181,9 @@
       },
       downloadAdvise() {
         window.open(basePath + '/advise/download/' + this.info.value + '?token=' + window.localStorage.getItem('access_token'))
+      },
+      downloadRequestAdvise() {
+        window.open(basePath + '/request/advise/download?token=' + window.localStorage.getItem('access_token'))
       },
       isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null

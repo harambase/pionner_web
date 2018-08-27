@@ -1,51 +1,50 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import decode from 'jwt-decode'
 
 // Containers
-import Full from '@/containers/Full'
+const Full = () => import('@/containers/Full');
 
 // Views
-import Dashboard from '@/views/Dashboard'
-import Message from '@/views/Message'
-import Profile from '@/views/Profile'
+const Dashboard = () => import('@/views/Dashboard');
+const Message = () => import('@/views/Message');
+const Profile = () => import('@/views/Profile');
 
-import ViewCourse from '@/views/course/Course'
-import Choose from '@/views/course/Choose'
-import Grade from '@/views/course/Grade'
-import Transcript from '@/views/course/Transcript'
-import Advisor_Choose from '@/views/course/Advisor'
+const ViewCourse = () => import('@/views/course/Course');
+const Choose = () => import('@/views/course/Choose');
+const Grade = () => import('@/views/course/Grade');
+const Transcript = () => import('@/views/course/Transcript');
+const Advisor_Choose = () => import('@/views/course/Advisor');
 
-import TempCourse from '@/views/teach/TempCourse'
-import Course from '@/views/teach/Course'
-import Credit from '@/views/teach/Credit'
-import Pin from '@/views/teach/Pin'
-import TranscriptManage from '@/views/teach/TranscriptManage'
-import Advise from '@/views/teach/Advise'
-import Advisor from '@/views/teach/Advisor'
-import RequestAdvise from '@/views/teach/RequestAdvise'
+const TempCourse = () => import('@/views/teach/TempCourse');
+const Course = () => import('@/views/teach/Course');
+const Credit = () => import('@/views/teach/Credit');
+const Pin = () => import('@/views/teach/Pin');
+const TranscriptManage = () => import('@/views/teach/TranscriptManage');
+const Advise = () => import('@/views/teach/Advise');
+const Advisor = () => import('@/views/teach/Advisor');
 
-import Role from '@/views/system/Role'
-import Monitor from '@/views/system/Monitor'
-import User from '@/views/system/User'
-import UserForm from '@/views/system/UserForm'
-import Reg from '@/views/system/Reg'
+const Role = () => import('@/views/system/Role');
+const Monitor = () => import('@/views/system/Monitor');
+const User = () => import('@/views/system/User');
+const UserForm = () => import('@/views/system/UserForm');
+const Reg = () => import('@/views/system/Reg');
 
-import AdviseView from '@/views/advise/AdviseView'
-
-import Contract from '@/views/logistic/Contract'
+const AdviseView = () => import('@/views/advise/AdviseView');
+const Contract = () => import('@/views/logistic/Contract');
 
 // Views - Pages
-import Page404 from '@/views/pages/Page404'
-import Page403 from '@/views/pages/Page403'
-import Page500 from '@/views/pages/Page500'
-import Login from '@/views/pages/Login'
-import Register from '@/views/pages/Register'
-import ResetPassword from '@/views/pages/ResetPassword'
+const  Page404       = () => import('@/views/pages/Page404');
+const  Page403       = () => import('@/views/pages/Page403');
+const  Page500       = () => import('@/views/pages/Page500');
+const  Login         = () => import('@/views/pages/Login');
+const  Register      = () => import('@/views/pages/Register');
+const  ResetPassword = () => import('@/views/pages/ResetPassword');
 
-Vue.use(Router)
+Vue.use(Router);
 
-const router = new Router({
-  mode: 'hash', // Demo is living in GitHub.io, so required!
+export default new Router({
+  mode: 'hash', // https://router.vuejs.org/api/#mode
   linkActiveClass: 'open active',
   scrollBehavior: () => ({y: 0}),
   routes: [
@@ -271,16 +270,7 @@ const router = new Router({
                     requireAuth: true,
                     role: ['2']
                   },
-                },
-                {
-                  path: 'request',
-                  name: '辅导关系申请管理',
-                  component: RequestAdvise,
-                  meta: {
-                    requireAuth: true,
-                    role: ['2']
-                  },
-                },
+                }
               ]
             },
           ]
@@ -433,8 +423,7 @@ const router = new Router({
       ]
     }
   ]
-})
-import decode from 'jwt-decode'
+});
 
 router.beforeEach((to, from, next) => {
   // 这里的meta就是我们刚刚在路由里面配置的meta
@@ -465,5 +454,3 @@ router.beforeEach((to, from, next) => {
     next()
   }
 });
-
-export default router
