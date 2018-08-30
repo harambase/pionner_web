@@ -65,25 +65,88 @@
         </b-row>
       </template>
       <template slot="actions" slot-scope="row">
-        <div v-if="mode !== 'choose'">
-          <b-button size="sm" class="btn btn-danger" @click.stop="showDeleteOne(row.item)">
-            删除该申请
-          </b-button>
-          <b-button size="sm" class="btn btn-primary" @click.stop="row.toggleDetails">
-            查看申请细节
-          </b-button>
-        </div>
-        <div v-else>
-          <b-button size="sm" class="btn btn-danger" @click.stop="choose(row.item)">
-            选择该导师
-          </b-button>
-        </div>
+        <b-button size="sm" class="btn btn-danger" @click.stop="showDeleteOne(row.item)">
+          删除该申请
+        </b-button>
+        <b-button size="sm" class="btn btn-primary" @click.stop="row.toggleDetails">
+          查看申请细节
+        </b-button>
       </template>
       <template slot="row-details" slot-scope="row">
         <b-card>
           <b-list-group>
-            <b-list-group-item class="flex-column align-items-start">
-              <CAdviseTable ref="CAdviseTable" showAdvisor="0" :fromAdvisor="row.item"/>
+            <b-list-group-item title="选择导师" class="flex-column align-items-start"
+                               :disabled="row.item.status !== '0'">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">学生 <strong>{{row.item.lastName}}, {{row.item.firstName}}</strong> 的导师申请</h5>
+                <small class="text-muted">学生ID：{{row.item.status}}</small>
+              </div>
+              <hr/>
+              <b-row>
+                <b-col md="9" class="my-1">
+                  <div class="mr-1">
+                    <dl class="row">
+                      <dt class="col-sm-1">QQ:</dt>
+                      <dd class="col-sm-2">{{row.item.qq}}</dd>
+
+                      <dt class="col-sm-1">电话:</dt>
+                      <dd class="col-sm-2">{{row.item.tel}}</dd>
+
+                      <dt class="col-sm-1">微信:</dt>
+                      <dd class="col-sm-2">{{row.item.weChat}}</dd>
+                    </dl>
+                    <dl class="row">
+                      <dt class="col-sm-1">性别:</dt>
+                      <dd class="col-sm-2">{{row.item.gender}}</dd>
+
+                      <dt class="col-sm-1">宿舍:</dt>
+                      <dd class="col-sm-2">{{row.item.dorm}}</dd>
+                    </dl>
+                    <dl class="row">
+                      <dt class="col-sm-1">邮箱:</dt>
+                      <dd class="col-sm-3">{{row.item.email}}</dd>
+
+                      <dt class="col-sm-1">住址:</dt>
+                      <dd class="col-sm-3">{{row.item.address}}</dd>
+                    </dl>
+                    <dl class="row">
+                      <dt class="col-sm-2">基本信息表:</dt>
+                      <dd class="col-sm-5"
+                          v-if="isNotEmpty(row.item.userInfo)">
+                        <a href="#" @click="documentDownload(row.item.userId)">{{JSON.parse(row.item.userInfo).name}}</a>
+                      </dd>
+                    </dl>
+                    <dl class="row">
+                      <dt class="col-sm-1">备注:</dt>
+                      <dd class="col-sm-5">{{row.item.comment}}</dd>
+                    </dl>
+                    <hr/>
+                    <dl class="row">
+                      <dt class="col-sm-1">操作:</dt>
+                      <dd class="col-sm-5">
+                        <b-button size="sm" variant="danger"
+                                  @click.stop="showDeleteTempUser(row.item.userId)">
+                          删除该用户
+                        </b-button>
+
+                        <b-button size="sm" variant="primary" @click="userDetail(row.item.userId)">
+                          修改该用户
+                        </b-button>
+                      </dd>
+                    </dl>
+                  </div>
+                </b-col>
+                <b-col md="3" class="my-1">
+                  <img v-if="isNotEmpty(row.item.profile)"
+                       :src="basePath + '/static' + JSON.parse(row.item.profile).path"
+                       style="width: 70%"
+                       class="img-avatar">
+                  <img v-else
+                       src="/static/img/logo.png"
+                       style="width: 70%"
+                       class="img-avatar">
+                </b-col>
+              </b-row>
             </b-list-group-item>
           </b-list-group>
         </b-card>
