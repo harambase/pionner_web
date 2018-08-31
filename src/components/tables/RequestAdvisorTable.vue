@@ -50,8 +50,59 @@
       <template slot="studentId" slot-scope="row">
         <b-row>
           <b-col md="3">
-            <img v-if="isNotEmpty(row.item.profile)"
-                 :src="basePath + '/static' + JSON.parse(row.item.profile).path"
+            <img v-if="isNotEmpty(row.item.stuprofile)"
+                 :src="basePath + '/static' + JSON.parse(row.item.stuprofile).path"
+                 style="width: 45px;height: 45px"
+                 class="img-avatar">
+            <img v-else
+                 :src="basePath + '/static/img/logo.png'"
+                 style="width: 45px;height: 45px"
+                 class="img-avatar">
+          </b-col>
+          <b-col md="9">
+            {{row.value}}
+          </b-col>
+        </b-row>
+      </template>
+      <template slot="fname" slot-scope="row">
+        <b-row>
+          <b-col md="3">
+            <img v-if="isNotEmpty(row.item.fprofile)"
+                 :src="basePath + '/static' + JSON.parse(row.item.fprofile).path"
+                 style="width: 45px;height: 45px"
+                 class="img-avatar">
+            <img v-else
+                 :src="basePath + '/static/img/logo.png'"
+                 style="width: 45px;height: 45px"
+                 class="img-avatar">
+          </b-col>
+          <b-col md="9">
+            {{row.value}}
+          </b-col>
+        </b-row>
+      </template>
+      <template slot="sname" slot-scope="row">
+        <b-row>
+          <b-col md="3">
+            <img v-if="isNotEmpty(row.item.sprofile)"
+                 :src="basePath + '/static' + JSON.parse(row.item.sprofile).path"
+                 style="width: 45px;height: 45px"
+                 class="img-avatar">
+            <img v-else
+                 :src="basePath + '/static/img/logo.png'"
+                 style="width: 45px;height: 45px"
+                 class="img-avatar">
+          </b-col>
+          <b-col md="9">
+            {{row.value}}
+          </b-col>
+        </b-row>
+      </template>
+      <template slot="tname" slot-scope="row">
+        <b-row>
+          <b-col md="3">
+            <img v-if="isNotEmpty(row.item.tprofile)"
+                 :src="basePath + '/static' + JSON.parse(row.item.tprofile).path"
                  style="width: 45px;height: 45px"
                  class="img-avatar">
             <img v-else
@@ -78,61 +129,52 @@
             <b-list-group-item title="选择导师" class="flex-column align-items-start"
                                :disabled="row.item.status !== '0'">
               <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">学生 <strong>{{row.item.lastName}}, {{row.item.firstName}}</strong> 的导师申请</h5>
-                <small class="text-muted">学生ID：{{row.item.status}}</small>
+                <h5 class="mb-1">学生 <strong>{{row.item.stuname}}</strong> 的导师选择</h5>
+                <small class="text-muted">学生ID：{{row.item.studentId}}</small>
               </div>
               <hr/>
               <b-row>
                 <b-col md="9" class="my-1">
                   <div class="mr-1">
                     <dl class="row">
-                      <dt class="col-sm-1">QQ:</dt>
-                      <dd class="col-sm-2">{{row.item.qq}}</dd>
+                      <dt class="col-sm-2">第一选择 First Choice:</dt>
+                      <dd class="col-sm-2">{{row.item.fname}}</dd>
 
-                      <dt class="col-sm-1">电话:</dt>
-                      <dd class="col-sm-2">{{row.item.tel}}</dd>
-
-                      <dt class="col-sm-1">微信:</dt>
-                      <dd class="col-sm-2">{{row.item.weChat}}</dd>
+                      <dt class="col-sm-1">操作</dt>
+                      <dd class="col-sm-2">
+                        <b-button size="sm" variant="danger"
+                                  @click.stop="choose(row.item.fname)">
+                          选择该导师
+                        </b-button>
+                      </dd>
                     </dl>
                     <dl class="row">
-                      <dt class="col-sm-1">性别:</dt>
-                      <dd class="col-sm-2">{{row.item.gender}}</dd>
+                      <dt class="col-sm-2">第二选择 First Choice:</dt>
+                      <dd class="col-sm-2">{{row.item.sname}}</dd>
 
-                      <dt class="col-sm-1">宿舍:</dt>
-                      <dd class="col-sm-2">{{row.item.dorm}}</dd>
+                      <dt class="col-sm-1">操作</dt>
+                      <dd class="col-sm-2">
+                        <b-button size="sm" variant="danger"
+                                  @click.stop="choose(row.item.sname)">
+                          选择该导师
+                        </b-button>
+                      </dd>
                     </dl>
                     <dl class="row">
-                      <dt class="col-sm-1">邮箱:</dt>
-                      <dd class="col-sm-3">{{row.item.email}}</dd>
+                      <dt class="col-sm-2">第三选择 First Choice:</dt>
+                      <dd class="col-sm-2">{{row.item.tname}}</dd>
 
-                      <dt class="col-sm-1">住址:</dt>
-                      <dd class="col-sm-3">{{row.item.address}}</dd>
-                    </dl>
-                    <dl class="row">
-                      <dt class="col-sm-2">基本信息表:</dt>
-                      <dd class="col-sm-5"
-                          v-if="isNotEmpty(row.item.userInfo)">
-                        <a href="#" @click="documentDownload(row.item.userId)">{{JSON.parse(row.item.userInfo).name}}</a>
+                      <dt class="col-sm-1">操作</dt>
+                      <dd class="col-sm-2">
+                        <b-button size="sm" variant="danger"
+                                  @click.stop="choose(row.item.tname)">
+                          选择该导师
+                        </b-button>
                       </dd>
                     </dl>
                     <dl class="row">
                       <dt class="col-sm-1">备注:</dt>
                       <dd class="col-sm-5">{{row.item.comment}}</dd>
-                    </dl>
-                    <hr/>
-                    <dl class="row">
-                      <dt class="col-sm-1">操作:</dt>
-                      <dd class="col-sm-5">
-                        <b-button size="sm" variant="danger"
-                                  @click.stop="showDeleteTempUser(row.item.userId)">
-                          删除该用户
-                        </b-button>
-
-                        <b-button size="sm" variant="primary" @click="userDetail(row.item.userId)">
-                          修改该用户
-                        </b-button>
-                      </dd>
                     </dl>
                   </div>
                 </b-col>
@@ -151,7 +193,6 @@
           </b-list-group>
         </b-card>
       </template>
-
     </b-table>
     <b-row>
       <b-col md="6" class="my-1">
@@ -198,7 +239,9 @@
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
     {key: 'studentId', label: '学生ID', sortable: true},
-    {key: 'facultyIds', label: '导师IDs', sortable: true},
+    {key: 'fname', label: '第一选择', sortable: true},
+    {key: 'sname', label: '第二选择', sortable: true},
+    {key: 'tname', label: '第三选择', sortable: true},
     {key: 'actions', label: '操作'}
   ]
 
@@ -250,7 +293,7 @@
           case 'studentId':
             url += 'student_id'
             break
-          case 'facultyIds':
+          case 'facultyIdss':
             url += 'faculty_ids'
             break
           default:

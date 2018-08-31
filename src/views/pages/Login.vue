@@ -17,7 +17,7 @@
                     <div class='input-group-prepend'><span class='input-group-text'><i class='icon-user'></i></span>
                     </div>
                     <input type='text' class='form-control' placeholder='用户ID' v-model='user.username'
-                           v-validate="'required|numeric|min:10|max:10'" name="username"
+                           v-validate="'required|numeric|min:6|max:12'" name="username"
                            :class="{'form-control': true, 'is-invalid': errors.has('username')}">
                     <div v-show="errors.has('username')" class="invalid-tooltip">{{ errors.first('username') }}</div>
                   </b-input-group>

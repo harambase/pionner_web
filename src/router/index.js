@@ -34,16 +34,16 @@ const AdviseView = () => import('@/views/advise/AdviseView');
 const Contract = () => import('@/views/logistic/Contract');
 
 // Views - Pages
-const  Page404       = () => import('@/views/pages/Page404');
-const  Page403       = () => import('@/views/pages/Page403');
-const  Page500       = () => import('@/views/pages/Page500');
-const  Login         = () => import('@/views/pages/Login');
-const  Register      = () => import('@/views/pages/Register');
-const  ResetPassword = () => import('@/views/pages/ResetPassword');
+const Page404 = () => import('@/views/pages/Page404');
+const Page403 = () => import('@/views/pages/Page403');
+const Page500 = () => import('@/views/pages/Page500');
+const Login = () => import('@/views/pages/Login');
+const Register = () => import('@/views/pages/Register');
+const ResetPassword = () => import('@/views/pages/ResetPassword');
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'hash', // https://router.vuejs.org/api/#mode
   linkActiveClass: 'open active',
   scrollBehavior: () => ({y: 0}),
@@ -454,3 +454,5 @@ router.beforeEach((to, from, next) => {
     next()
   }
 });
+
+export default router;
