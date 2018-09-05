@@ -386,9 +386,9 @@
       initStudentInfo() {
         axios.get('/student/' + this.pinObject.ownerId + '/available/credit?info=' + this.pinObject.info).then((response) => {
           if (response.data.code === 2001) {
-            this.tol_credits = response.data.data.tol_credits
-            this.use_credits = response.data.data.use_credits
-            this.ava_credits = response.data.data.ava_credits
+            this.tol_credits = response.data.data.tol_credits;
+            this.use_credits = response.data.data.use_credits;
+            this.ava_credits = response.data.data.ava_credits;
             this.initTable()
             this.initWorkSheet()
           } else {
