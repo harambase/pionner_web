@@ -179,8 +179,8 @@
                   </div>
                 </b-col>
                 <b-col md="3" class="my-1">
-                  <img v-if="isNotEmpty(row.item.profile)"
-                       :src="basePath + '/static' + JSON.parse(row.item.profile).path"
+                  <img v-if="isNotEmpty(row.item.stuprofile)"
+                       :src="basePath + '/static' + JSON.parse(row.item.stuprofile).path"
                        style="width: 70%"
                        class="img-avatar">
                   <img v-else

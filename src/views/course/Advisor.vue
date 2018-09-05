@@ -63,6 +63,16 @@
               </b-list-group>
               <hr/>
               <b-row>
+                <b-col md="4">
+                  <label class="col-sm-12 control-label">特殊需求:</label>
+                </b-col>
+                <b-col md="8">
+                     <textarea style="resize: none;" class="form-control" rows="3"
+                               v-model="tempAdvise.comment"></textarea>
+                </b-col>
+              </b-row>
+              <hr/>
+              <b-row>
                 <b-col cols="6" md="6">
                   <b-button style="width:150px;" class="btn btn-success" @click="showSubmit">
                     提交
@@ -178,6 +188,12 @@
         headerBgVariant: '',
         faculty: '',
         advisorList: [],
+        tempAdvise:{
+          comment: '',
+          firstId: '',
+          secondId: '',
+          thirdId: ''
+        },
         basePath: basePath
       }
     },
@@ -247,22 +263,33 @@
       },
       init() {
         axios.get('/request/advise/' + this.pinObject.ownerId).then((response) => {
-          let facultyIds = response.data.data.facultyIds.split('/')
-          for (let i = 0; i < facultyIds.length; i++) {
-            if (this.isNotEmpty(facultyIds[i]))
-              axios.get('/advise/advisor/' + facultyIds[i]).then((result) => {
-                this.advisorList.push(result.data.data)
-              })
+          this.tempAdvise = response.data.data;
+
+          if(isNotEmpty(this.tempAdvise.firstId)) {
+            axios.get('/advise/advisor/' + this.tempAdvise.firstId).then((result) => {
+              this.advisorList.push(result.data.data)
+            })
           }
-        })
-        this.pinValidate = true
+          if(this.tempAdvise.secondId !== '9201701000') {
+            axios.get('/advise/advisor/' + this.tempAdvise.secondId).then((result) => {
+              this.advisorList.push(result.data.data)
+            })
+          }
+          if(this.tempAdvise.thirdId !== '9201701000') {
+            axios.get('/advise/advisor/' + this.tempAdvise.thirdId).then((result) => {
+              this.advisorList.push(result.data.data)
+            })
+          }
+        });
+        this.pinValidate = true;
         this.showValidate = false
       },
       isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
       reset() {
-        this.advisorList = []
+        this.advisorList = [];
+        this.tempAdvise.comment = '';
       },
       showSubmit() {
         if (this.advisorList.length > 0)
@@ -274,7 +301,20 @@
         }
       },
       submit() {
-        axios.post('/request/advise/' + this.pinObject.ownerId, this.advisorList).then((response) => {
+        if(isNotEmpty(this.advisorList[0])) {
+          this.tempAdvise.firstId = this.advisorList[0].userId;
+        }
+        if(isNotEmpty(this.advisorList[1])) {
+          this.tempAdvise.secondId = this.advisorList[1].userId;
+        }else{
+          this.tempAdvise.secondId = '9201701000'
+        }
+        if(isNotEmpty(this.advisorList[2])) {
+          this.tempAdvise.thirdId = this.advisorList[2].userId;
+        }else{
+          this.tempAdvise.secondId = '9201701000'
+        }
+        axios.post('/request/advise/' + this.pinObject.ownerId, this.tempAdvise).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '提交成功！'
             this.headerBgVariant = 'success'
