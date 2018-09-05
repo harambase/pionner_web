@@ -247,19 +247,10 @@
           if (!result)
             return
           axios.get('/pin/' + this.pin).then((response) => {
-            if (response.data.code === 2001) {
+            if (response.data.code === 2001 && response.data.data.role == 2) {
               this.pinObject = response.data.data
               this.showValidate = false
-
-              if (this.pinObject.role === 2) {
-                this.pinValidate = true
-              } else {
-                this.msg = '识别码验证失败！  '
-                this.headerBgVariant = 'danger'
-                this.showModal = true
-              }
-            }
-            else {
+            } else {
               this.msg = '识别码验证失败！  '
               this.headerBgVariant = 'danger'
               this.showModal = true

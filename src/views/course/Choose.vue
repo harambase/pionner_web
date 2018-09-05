@@ -369,7 +369,7 @@
           if (!result)
             return
           axios.get('/pin/' + this.pin).then((response) => {
-            if (response.data.code === 2001) {
+            if (response.data.code === 2001 && response.data.data.role == 1) {
               this.pinObject = response.data.data
               this.initStudentInfo()
               this.pinValidate = true
