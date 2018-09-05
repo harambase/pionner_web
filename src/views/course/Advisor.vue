@@ -312,7 +312,7 @@
         if(isNotEmpty(this.advisorList[2])) {
           this.tempAdvise.thirdId = this.advisorList[2].userId;
         }else{
-          this.tempAdvise.secondId = '9201701000'
+          this.tempAdvise.thirdId = '9201701000'
         }
         axios.post('/request/advise/' + this.pinObject.ownerId, this.tempAdvise).then((response) => {
           if (response.data.code === 2001) {

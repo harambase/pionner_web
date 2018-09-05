@@ -2,72 +2,77 @@
   <div class="animated fadeIn">
     <el-tabs type="border-card" v-model="activeName">
       <el-tab-pane label="辅导关系列表" name="first">
-        <b-container fluid>
+        <b-card header-tag="header"
+                footer-tag="footer">
+          <div slot="header">
+            <i className="fa fa-align-justify"></i><strong>辅导关系列表</strong>
+          </div>
           <b-row>
-            <b-card>
-              <b-row>
-                <b-col md="1" class="mr-1">
-                  <legend class="col-form-legend">辅导关系表格：</legend>
-                </b-col>
-                <b-col md="3" class="mr-1">
-                  <CInfoSelect v-on:pass="passInfo"/>
-                </b-col>
-                <b-col md="6" class="mr-1">
-                  <b-input-group-button>
-                    <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="downloadAdvise"
-                              :disabled="!isNotEmpty(info)">下载
-                    </b-button>
-                  </b-input-group-button>
-                </b-col>
-              </b-row>
-              <b-row>
-                <CAdviseTable showAdvisor="1"/>
-              </b-row>
-            </b-card>
+            <CAdviseTable showAdvisor="1"/>
           </b-row>
-        </b-container>
+        </b-card>
+        <b-card header-tag="header"
+                footer-tag="footer">
+          <div slot="header">
+            <i className="fa fa-align-justify"></i><strong>辅导关系表格下载</strong>
+          </div>
+          <b-row>
+            <b-col md="2" class="mr-1">
+              <legend class="col-form-legend">选择下载的学期：</legend>
+            </b-col>
+            <b-col md="3" class="mr-1">
+              <CInfoSelect v-on:pass="passInfo"/>
+            </b-col>
+            <b-col md="6" class="mr-1">
+              <b-input-group-button>
+                <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="downloadAdvise"
+                          :disabled="!isNotEmpty(info)">下载
+                </b-button>
+              </b-input-group-button>
+            </b-col>
+          </b-row>
+        </b-card>
       </el-tab-pane>
       <el-tab-pane label="新增辅导关系" name="second">
-        <b-container fluid>
-          <b-card
-            header-tag="header"
-            footer-tag="footer" style="height:350px;">
-            <div slot="header">
-              <i className="fa fa-align-justify"></i><strong>新增辅导关系</strong>
-            </div>
-            <b-row>
-              <b-col md="1">
-                <label class="col-sm-12 control-label">*添加学期:</label>
-              </b-col>
-              <b-col md="3">
-                <CInfoSelect v-on:pass="passCreateInfo"/>
-              </b-col>
-            </b-row>
-            <b-row v-if="isNotEmpty(createInfo)" class="mt-1">
-              <b-col md="1">
-                <label class="col-sm-12 control-label">*选择导师:</label>
-              </b-col>
-              <b-col md="3">
-                <CAdvisorSelect v-on:pass="passAdvisor"/>
-              </b-col>
-              <b-col md="1">
-                <label class="col-sm-12 control-label">*选择学生:</label>
-              </b-col>
-              <b-col md="3">
-                <CStudentSelectMultiple v-on:pass="passStudent"/>
-              </b-col>
-              <b-col md="4" class="my-1">
-                <b-input-group-button>
-                  <b-button class="btn btn-success" style="width: 150px;" @click="createAdvise">新增
-                  </b-button>
-                </b-input-group-button>
-              </b-col>
-            </b-row>
-            <div slot="footer">
-              <i className="fa fa-align-justify"></i><strong>注意：学生可以多选</strong>
-            </div>
-          </b-card>
-        </b-container>
+        <b-card
+          header-tag="header"
+          footer-tag="footer" style="height:350px;">
+          <div slot="header">
+            <i className="fa fa-align-justify"></i><strong>新增辅导关系</strong>
+          </div>
+          <b-row>
+            <b-col md="1">
+              <label class="col-sm-12 control-label">*添加学期:</label>
+            </b-col>
+            <b-col md="3">
+              <CInfoSelect v-on:pass="passCreateInfo"/>
+            </b-col>
+          </b-row>
+          <b-row v-if="isNotEmpty(createInfo)" class="mt-1">
+            <b-col md="1">
+              <label class="col-sm-12 control-label">*选择导师:</label>
+            </b-col>
+            <b-col md="3">
+              <CAdvisorSelect v-on:pass="passAdvisor"/>
+            </b-col>
+            <b-col md="1">
+              <label class="col-sm-12 control-label">*选择学生:</label>
+            </b-col>
+            <b-col md="3">
+              <CStudentSelectMultiple v-on:pass="passStudent"/>
+            </b-col>
+            <b-col md="4" class="my-1">
+              <b-input-group-button>
+                <b-button class="btn btn-success" style="width: 150px;" @click="createAdvise">新增
+                </b-button>
+              </b-input-group-button>
+            </b-col>
+          </b-row>
+          <div slot="footer">
+            <i className="fa fa-align-justify"></i><strong>注意：学生可以多选</strong>
+          </div>
+        </b-card>
+
       </el-tab-pane>
       <el-tab-pane label="辅导申请管理" name="third">
         <b-row>
@@ -76,7 +81,7 @@
               header-tag="header"
               footer-tag="footer">
               <div slot="header">
-                <i className="fa fa-align-justify"></i><strong>临时辅导关系列表</strong>
+                <i className="fa fa-align-justify"></i><strong>辅导关系申请列表</strong>
               </div>
               <CRequestAdvisorTable mode="manage"/>
             </b-card>
@@ -86,7 +91,7 @@
               header-tag="header"
               footer-tag="footer">
               <div slot="header">
-                <i className="fa fa-align-justify"></i><strong>下载临时辅导关系列表</strong>
+                <i className="fa fa-align-justify"></i><strong>辅导关系申请列表下载</strong>
               </div>
               <b-container fluid>
                 <b-row>
