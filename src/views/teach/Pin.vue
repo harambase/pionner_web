@@ -45,14 +45,14 @@
             </b-col>
             <b-col md="3">
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="batch" name="mode" v-validate="'required'" class="custom-control-input"
-                       value="1" v-model="mode">
-                <label class="custom-control-label" for="batch">单类型</label>
-              </div>
-              <div class="custom-control custom-radio custom-control-inline">
                 <input type="radio" id="single" name="mode" v-validate="'required'" class="custom-control-input"
                        value="2" v-model="mode">
                 <label class="custom-control-label" for="single">单人</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="batch" name="mode" v-validate="'required'" class="custom-control-input"
+                       value="1" v-model="mode">
+                <label class="custom-control-label" for="batch">单类型</label>
               </div>
               <div v-show="errors.has('mode')" class="invalid-tooltip">{{ errors.first('info') }}</div>
             </b-col>
@@ -69,6 +69,12 @@
                 <label class="custom-control-label" for="course">选课</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="advisor" value="3"
+                       :class="{'custom-control-input': true, 'is-invalid': errors.has('role')}"
+                       name="level" v-model="role" v-validate="'required'">
+                <label class="custom-control-label" for="advisor">选导师</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
                 <input type="radio" id="transcript" value="2"
                        :class="{'custom-control-input': true, 'is-invalid': errors.has('role')}"
                        name="level" v-model="role" v-validate="'required'">
@@ -83,7 +89,7 @@
             </b-col>
             <b-col md="3">
               <CFacultySelect v-if="role == 2" v-on:pass="passUser"/>
-              <CStudentSelect v-if="role == 1" v-on:pass="passUser"/>
+              <CStudentSelect v-if="role == 1 || role == 3" v-on:pass="passUser"/>
             </b-col>
           </b-row>
           <b-row class="mt-2">
@@ -131,7 +137,7 @@
             </b-col>
           </b-row>
           <div slot="footer">
-            注意：该处填写规则为注册年份-学期号。学期号规则为：春季是01，秋季是02，其他为03。
+            注意：如果生成失败，可以尝试清空后再生成。
           </div>
         </b-card>
       </el-tab-pane>
@@ -178,6 +184,12 @@
                        class="custom-control-input"
                        value="1" v-model="sendRole">
                 <label class="custom-control-label" for="choose">选课</label>
+              </div>
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input id="advisor2" type="checkbox" name="role2"
+                       class="custom-control-input"
+                       value="3" v-model="sendRole">
+                <label class="custom-control-label" for="advisor2">选导师</label>
               </div>
               <div class="custom-control custom-checkbox custom-control-inline">
                 <input id="grade" type="checkbox" name="role2"
