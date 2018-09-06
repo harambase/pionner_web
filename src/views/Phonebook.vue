@@ -22,12 +22,12 @@
             <b-col md="1" class="my-1">
               <legend class="col-form-legend">用户类型：</legend>
             </b-col>
-            <b-col md="1" class="my-1">
+            <b-col md="2" class="my-1">
               <b-form-group>
                 <b-form-select :options="typeOptions" v-model="type"/>
               </b-form-group>
             </b-col>
-            <b-col md="4" class="my-1">
+            <b-col md="3" class="my-1">
               <b-form-group>
                 <b-input-group>
                   <b-input-group-button>

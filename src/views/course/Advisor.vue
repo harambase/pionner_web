@@ -250,12 +250,12 @@
             return
           axios.get('/pin/' + this.pin).then((response) => {
             if (response.data.code === 2001 && response.data.data.role == 3) {
-              this.pinObject = response.data.data
+              this.pinObject = response.data.data;
               this.init()
             }
             else {
-              this.msg = '识别码验证失败！  '
-              this.headerBgVariant = 'danger'
+              this.msg = '识别码验证失败！';
+              this.headerBgVariant = 'danger';
               this.showModal = true
             }
           })
@@ -263,22 +263,24 @@
       },
       init() {
         axios.get('/request/advise/' + this.pinObject.ownerId).then((response) => {
-          this.tempAdvise = response.data.data;
 
-          if(isNotEmpty(this.tempAdvise.firstId)) {
-            axios.get('/advise/advisor/' + this.tempAdvise.firstId).then((result) => {
-              this.advisorList.push(result.data.data)
-            })
-          }
-          if(this.tempAdvise.secondId !== '9201701000') {
-            axios.get('/advise/advisor/' + this.tempAdvise.secondId).then((result) => {
-              this.advisorList.push(result.data.data)
-            })
-          }
-          if(this.tempAdvise.thirdId !== '9201701000') {
-            axios.get('/advise/advisor/' + this.tempAdvise.thirdId).then((result) => {
-              this.advisorList.push(result.data.data)
-            })
+          if(isNotEmpty(response.data.data)) {
+            this.tempAdvise = response.data.data;
+            if (isNotEmpty(this.tempAdvise.firstId)) {
+              axios.get('/advise/advisor/' + this.tempAdvise.firstId).then((result) => {
+                this.advisorList.push(result.data.data)
+              })
+            }
+            if (this.tempAdvise.secondId !== '9201701000') {
+              axios.get('/advise/advisor/' + this.tempAdvise.secondId).then((result) => {
+                this.advisorList.push(result.data.data)
+              })
+            }
+            if (this.tempAdvise.thirdId !== '9201701000') {
+              axios.get('/advise/advisor/' + this.tempAdvise.thirdId).then((result) => {
+                this.advisorList.push(result.data.data)
+              })
+            }
           }
         });
         this.pinValidate = true;

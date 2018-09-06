@@ -51,7 +51,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/dashboard',
+      redirect: '/login',
       name: 'EAS',
       component: Full,
       meta: {

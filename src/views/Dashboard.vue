@@ -4,73 +4,37 @@
       <b-col sm="6" lg="3">
         <b-card no-body class="bg-primary">
           <b-card-body class="pb-0">
-            <b-dropdown class="float-right" variant="transparent p-0" right>
-              <template slot="button-content">
-                <i class="icon-settings"></i>
-              </template>
-              <b-dropdown-item>Action</b-dropdown-item>
-              <b-dropdown-item>Another action</b-dropdown-item>
-              <b-dropdown-item>Something else here...</b-dropdown-item>
-              <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-            </b-dropdown>
-            <h4 class="mb-0">9.823</h4>
-            <p>Members online</p>
+            <h4 class="mb-0">{{numOfCourse}}</h4>
+            <p>进行中的课程<br>Number of your on-going courses.</p>
           </b-card-body>
-          <card-line1-chart-example chartId="card-chart-01" class="chart-wrapper px-3" style="height:70px;" :height="70"/>
+
         </b-card>
       </b-col>
       <b-col sm="6" lg="3">
         <b-card no-body class="bg-info">
           <b-card-body class="pb-0">
-            <b-dropdown class="float-right" variant="transparent p-0" right no-caret>
-              <template slot="button-content">
-                <i class="icon-location-pin"></i>
-              </template>
-              <b-dropdown-item>Action</b-dropdown-item>
-              <b-dropdown-item>Another action</b-dropdown-item>
-              <b-dropdown-item>Something else here...</b-dropdown-item>
-              <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-            </b-dropdown>
-            <h4 class="mb-0">9.823</h4>
-            <p>Members online</p>
+            <h4 class="mb-0">{{numOfTeach}}</h4>
+            <p>所教授的课程<br>Number of your teaching courses.</p>
           </b-card-body>
-          <card-line2-chart-example chartId="card-chart-02" class="chart-wrapper px-3" style="height:70px;" :height="70"/>
+
         </b-card>
       </b-col>
       <b-col sm="6" lg="3">
         <b-card no-body class="bg-warning">
           <b-card-body class="pb-0">
-            <b-dropdown class="float-right" variant="transparent p-0" right>
-              <template slot="button-content">
-                <i class="icon-settings"></i>
-              </template>
-              <b-dropdown-item>Action</b-dropdown-item>
-              <b-dropdown-item>Another action</b-dropdown-item>
-              <b-dropdown-item>Something else here...</b-dropdown-item>
-              <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-            </b-dropdown>
-            <h4 class="mb-0">9.823</h4>
-            <p>Members online</p>
+            <h4 class="mb-0">{{numOfAdvisor}}</h4>
+            <p>导师数量<br>Number of Advisors</p>
           </b-card-body>
-          <card-line3-chart-example chartId="card-chart-03" class="chart-wrapper" style="height:70px;" height="70"/>
+
         </b-card>
       </b-col>
       <b-col sm="6" lg="3">
         <b-card no-body class="bg-danger">
           <b-card-body class="pb-0">
-            <b-dropdown class="float-right" variant="transparent p-0" right>
-              <template slot="button-content">
-                <i class="icon-settings"></i>
-              </template>
-              <b-dropdown-item>Action</b-dropdown-item>
-              <b-dropdown-item>Another action</b-dropdown-item>
-              <b-dropdown-item>Something else here...</b-dropdown-item>
-              <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-            </b-dropdown>
-            <h4 class="mb-0">9.823</h4>
-            <p>Members online</p>
+            <h4 class="mb-0">{{numOfStudent}}</h4>
+            <p>学生数量<br>Number of Students</p>
           </b-card-body>
-          <card-bar-chart-example chartId="card-chart-04" class="chart-wrapper px-3" style="height:70px;" height="70"/>
+
         </b-card>
       </b-col>
     </b-row>
@@ -185,6 +149,10 @@
         courseList: [],
         teachList: [],
         rolList: [],
+        numOfCourse: 0,
+        numOfTeach: 0,
+        numOfAdvisor: 0,
+        numOfStudent: 0,
       }
     },
     mounted: function () {
@@ -193,16 +161,25 @@
 
       this.initTeachList();
       this.initCourseList();
+      this.count();
     },
     methods: {
       initTeachList: function () {
         axios.get('/course?mode=faculty&status=0').then((response) => {
           this.teachList = response.data.data
+          this.numOfTeach = this.teachList.length;
         })
       },
       initCourseList: function () {
         axios.get('/student/course?status=0').then((response) => {
           this.courseList = response.data.data
+          this.numOfCourse = this.courseList.length;
+        })
+      },
+      count(){
+        axios.get('/system/info').then((response) => {
+          this.numOfAdvisor = response.data.data.advisor;
+          this.numOfStudent = response.data.data.student;
         })
       }
     }

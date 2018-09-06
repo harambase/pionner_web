@@ -68,7 +68,8 @@
 
       <template slot="role" slot-scope="row">
         <p class="text-muted" v-if="row.item.role == 2">教务</p>
-        <p class="text-muted" v-else>选课</p>
+        <p class="text-muted" v-if="row.item.role == 3">选导师</p>
+        <p class="text-muted" v-if="row.item.role == 1">选课</p>
       </template>
 
       <template slot="oname" slot-scope="row">
