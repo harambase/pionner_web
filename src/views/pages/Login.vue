@@ -111,7 +111,7 @@
                       <div v-show="errors.has('tel')" class="invalid-tooltip">{{ errors.first('tel') }}</div>
                     </b-input-group>
 
-                    <b-button variant="success" block @click="changePassword">完善个人信息
+                    <b-button variant="success" block @click="changePassword">提交 SUBMIT
                     </b-button>
                   </div>
                 </b-card-body>
@@ -195,6 +195,10 @@
                 axios.get('/system/user/verify/' + userId + '?token=' + this.tempToken).then(response => {
                   this.user = response.data.data;
                   this.user.password = '';
+                  this.user.qq = '';
+                  this.user.tel = '';
+                  this.user.birthday = '';
+                  this.user.email = '';
                 })
               }
               else {
@@ -209,21 +213,25 @@
         })
       },
       changePassword() {
-        this.user.password = md5(this.user.password);
-        axios.put('/system/user/reset/password/' + this.user.userId, this.user).then((response) => {
-          if (response.data.code === 2001) {
-            this.msg = '密码修改成功!'
-            this.headerBgVariant = 'success'
-            this.showModal = true
-            window.localStorage.setItem('access_token', this.tempToken);
-            token = this.tempToken;
-            this.$router.push({path: '/dashboard'})
-          } else {
-            this.msg = '密码修改失败!'
-            this.headerBgVariant = 'danger'
-            this.showModal = true
-            this.$router.push({path: '/login'})
-          }
+        this.$validator.validateAll().then((result) => {
+          if (!result)
+            return;
+          this.user.password = md5(this.user.password);
+          axios.put('/system/user/reset/password/' + this.user.userId, this.user).then((response) => {
+            if (response.data.code === 2001) {
+              this.msg = '密码修改成功!'
+              this.headerBgVariant = 'success'
+              this.showModal = true
+              window.localStorage.setItem('access_token', this.tempToken);
+              token = this.tempToken;
+              this.$router.push({path: '/dashboard'})
+            } else {
+              this.msg = '密码修改失败!'
+              this.headerBgVariant = 'danger'
+              this.showModal = true
+              this.$router.push({path: '/login'})
+            }
+          });
         });
       },
       goToReg() {
