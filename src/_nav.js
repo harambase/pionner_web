@@ -13,9 +13,17 @@ export default {
       }
     },
     {
-      name: '系统消息',
+      name: '消息中心',
       url: '/message',
       icon: 'icon-envelope',
+      meta: {
+        role: ['0']
+      }
+    },
+    {
+      name: '通讯录',
+      url: '/phonebook',
+      icon: 'fa fa-address-book-o',
       meta: {
         role: ['0']
       }

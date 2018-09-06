@@ -218,7 +218,7 @@
         </b-container>
       </b-card>
     </b-row>
-    {{type}}
+
     <b-modal v-model="showDeleteModal"
              size="sm"
              header-bg-variant='danger'

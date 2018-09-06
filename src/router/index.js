@@ -9,6 +9,7 @@ const Full = () => import('@/containers/Full');
 const Dashboard = () => import('@/views/Dashboard');
 const Message = () => import('@/views/Message');
 const Profile = () => import('@/views/Profile');
+const Phonebook = () => import('@/views/Phonebook');
 
 const ViewCourse = () => import('@/views/course/Course');
 const Choose = () => import('@/views/course/Choose');
@@ -50,8 +51,8 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/login',
-      name: '教务系统',
+      redirect: '/dashboard',
+      name: 'EAS',
       component: Full,
       meta: {
         requiresAuth: true,
@@ -69,8 +70,17 @@ const router = new Router({
         },
         {
           path: 'message',
-          name: '系统消息',
+          name: '消息中心',
           component: Message,
+          meta: {
+            requireAuth: true,
+            role: ['0']
+          },
+        },
+        {
+          path: 'phonebook',
+          name: '通讯录',
+          component: Phonebook,
           meta: {
             requireAuth: true,
             role: ['0']
