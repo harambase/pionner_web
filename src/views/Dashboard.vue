@@ -14,7 +14,7 @@
         <b-card no-body class="bg-info">
           <b-card-body class="pb-0">
             <h4 class="mb-0">{{numOfTeach}}</h4>
-            <p>你 所教授的课程<br>Number of your teaching courses.</p>
+            <p>你所教授的课程<br>Number of your teaching courses.</p>
           </b-card-body>
 
         </b-card>
@@ -49,10 +49,10 @@
               <img :src="basePath + '/static/img/先锋2018年秋季试听课表.jpg'" width="100%"/>
             </b-col>
             <b-col md="2">
-              <!--<b-row>-->
-                <!--<b-button>下载课程表</b-button>-->
+              <b-row>
+                <b-button variant="success" @click="downloadSchedule()">下载课程表 Download Schedule</b-button>
                 <!--<b-button>上传课程表</b-button>-->
-              <!--</b-row>-->
+              </b-row>
             </b-col>
           </b-row>
         </b-card>
@@ -147,7 +147,87 @@
           </div>
         </b-card>
       </el-tab-pane>
-
+      <el-tab-pane label="你的导师信息" name="forth" v-if="rolList.indexOf('5') !== -1">
+        <b-card header-tag="header"
+                footer-tag="footer">
+          <div slot="header">
+            <i className="fa fa-align-justify"></i><strong>导师信息</strong>
+          </div>
+          <b-row v-if="isNotEmpty(advisor)">
+            <b-col md="9">
+              <b-row>
+                <b-col md="3" class="my-1">
+                  <label class="col-sm-12 control-label">姓名:</label>
+                </b-col>
+                <b-col md="3" class="my-1">
+                  {{advisor.lastName}},{{advisor.firstName}}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col md="3" class="my-1">
+                  <label class="col-sm-12 control-label">生日:</label>
+                </b-col>
+                <b-col md="3" class="my-1">
+                  {{advisor.birthday.substr(0,10)}}
+                </b-col>
+                <b-col md="3" class="my-1">
+                  <label class="col-sm-12 control-label">邮箱:</label>
+                </b-col>
+                <b-col md="3" class="my-1">
+                  {{advisor.email}}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col md="3" class="my-1">
+                  <label class="col-sm-12 control-label">电话号:</label>
+                </b-col>
+                <b-col md="3" class="my-1">
+                  {{advisor.tel}}
+                </b-col>
+                <b-col md="3" class="my-1">
+                  <label class="col-sm-12 control-label">宿舍号:</label>
+                </b-col>
+                <b-col md="3" class="my-1">
+                  {{advisor.dorm}}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col md="3" class="my-1">
+                  <label class="col-sm-12 control-label">QQ号:</label>
+                </b-col>
+                <b-col md="3" class="my-1">
+                  {{advisor.qq}}
+                </b-col>
+                <b-col md="3" class="my-1">
+                  <label class="col-sm-12 control-label">微信号:</label>
+                </b-col>
+                <b-col md="3" class="my-1">
+                  {{advisor.weChat}}
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col md="3" class="my-1">
+                  <label class="col-sm-12 control-label">性别:</label>
+                </b-col>
+                <b-col md="3" class="my-1">
+                  {{advisor.gender}}
+                </b-col>
+              </b-row>
+            </b-col>
+            <b-col md="3">
+              <img v-if="isNotEmpty(advisor.profile)"
+                   :src="basePath + '/static' + JSON.parse(advisor.profile).path"
+                   style="width: 200px; height: 200px" class="profile">
+              <img v-else
+                   :src="basePath + '/static/img/logo.png'"
+                   style="width: 200px; height: 200px" class="profile">
+            </b-col>
+          </b-row>
+          <b-row v-else>
+            <p><strong>暂无导师信息。</strong></p>
+          </b-row>
+        </b-card>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -168,18 +248,34 @@
         numOfAdvisor: 0,
         numOfStudent: 0,
         basePath: basePath,
-        activeName:'first'
+        activeName: 'first',
+        advisor: '',
       }
     },
     mounted: function () {
       const token = decode(window.localStorage.getItem('access_token'));
       this.rolList = token.rol;
 
+      if (this.rolList.indexOf('5') !== -1) {
+        axios.get('/advise/advisor/student/' + token.sub).then(response => {
+          if (isNotEmpty(response.data.data)) {
+            let userId = response.data.data.facultyId;
+            axios.get('/user/' + userId).then(response => {
+              this.advisor = response.data.data;
+            })
+          }
+        })
+      }
+
       this.initTeachList();
       this.initCourseList();
       this.count();
+
     },
     methods: {
+      downloadSchedule() {
+        window.open(basePath + '/static/img/%E5%85%88%E9%94%8B2018%E5%B9%B4%E7%A7%8B%E5%AD%A3%E8%AF%95%E5%90%AC%E8%AF%BE%E8%A1%A8.jpg')
+      },
       initTeachList: function () {
         axios.get('/course?mode=faculty&status=0').then((response) => {
           this.teachList = response.data.data
@@ -197,6 +293,9 @@
           this.numOfAdvisor = response.data.data.advisor;
           this.numOfStudent = response.data.data.student;
         })
+      },
+      isNotEmpty(value) {
+        return value !== '' && value !== undefined && value !== null
       }
     }
   }
