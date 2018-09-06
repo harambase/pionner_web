@@ -12,7 +12,7 @@
                        style="width: 40px;height: 40px"
                        class="img-avatar">
                   <img v-else
-                       src="/static/img/logo.png"
+                       :src="basePath + '/static/img/logo.png'"
                        style="width: 40px;height: 40px"
                        class="img-avatar">
                   <b-badge v-if="item.labels==='重要'" variant="danger" class="avatar-status"></b-badge>

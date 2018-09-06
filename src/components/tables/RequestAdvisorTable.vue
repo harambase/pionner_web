@@ -223,7 +223,7 @@
                            style="width: 70%"
                            class="img-avatar">
                       <img v-else
-                           src="/static/img/logo.png"
+                           :src="basePath + '/static/img/logo.png'"
                            style="width: 70%"
                            class="img-avatar">
                     </b-col>

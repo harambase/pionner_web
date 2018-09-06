@@ -39,7 +39,7 @@
                      :src="basePath + '/static' + JSON.parse(row.item.pic).path"
                      class="img-avatar">
                 <img v-else
-                     src="/static/img/logo.png"
+                     :src="basePath + '/static/img/logo.png'"
                      class="img-avatar">
               </b-row>
               <b-row>

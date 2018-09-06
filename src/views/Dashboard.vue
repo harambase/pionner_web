@@ -14,7 +14,7 @@
         <b-card no-body class="bg-info">
           <b-card-body class="pb-0">
             <h4 class="mb-0">{{numOfTeach}}</h4>
-            <p>你所教授的课程<br>Number of your teaching courses.</p>
+            <p>你 所教授的课程<br>Number of your teaching courses.</p>
           </b-card-body>
 
         </b-card>
@@ -48,7 +48,12 @@
             <b-col md="8">
               <img :src="basePath + '/static/img/先锋2018年秋季试听课表.jpg'" width="100%"/>
             </b-col>
-            <b-col md="2"></b-col>
+            <b-col md="2">
+              <!--<b-row>-->
+                <!--<b-button>下载课程表</b-button>-->
+                <!--<b-button>上传课程表</b-button>-->
+              <!--</b-row>-->
+            </b-col>
           </b-row>
         </b-card>
       </el-tab-pane>
