@@ -5,7 +5,7 @@
         <b-card no-body class="bg-primary">
           <b-card-body class="pb-0">
             <h4 class="mb-0">{{numOfCourse}}</h4>
-            <p>进行中的课程<br>Number of your on-going courses.</p>
+            <p>你正在进行中的课程<br>Number of your on-going courses.</p>
           </b-card-body>
 
         </b-card>
@@ -14,7 +14,7 @@
         <b-card no-body class="bg-info">
           <b-card-body class="pb-0">
             <h4 class="mb-0">{{numOfTeach}}</h4>
-            <p>所教授的课程<br>Number of your teaching courses.</p>
+            <p>你所教授的课程<br>Number of your teaching courses.</p>
           </b-card-body>
 
         </b-card>
@@ -38,14 +38,24 @@
         </b-card>
       </b-col>
     </b-row>
-    <b-row>
-      <b-col cols="12">
+    <el-tabs type="border-card" v-model="activeName">
+      <el-tab-pane label="课程表" name="first">
         <b-card
           header-tag="header"
           footer-tag="footer">
-          <div slot="header">
-            <strong>我的课程</strong>
-          </div>
+          <b-row>
+            <b-col md="2"></b-col>
+            <b-col md="8">
+              <img :src="basePath + '/static/img/先锋2018年秋季试听课表.jpg'" width="100%"/>
+            </b-col>
+            <b-col md="2"></b-col>
+          </b-row>
+        </b-card>
+      </el-tab-pane>
+      <el-tab-pane label="我的课程" name="second">
+        <b-card
+          header-tag="header"
+          footer-tag="footer">
           <div class="firstStep clearfix" v-for="course in courseList">
             <div class="lessons-item js-lessons-item g-clearfix">
               <a :href="'/course/detail?pageMode=student&crn=' + course.crn">
@@ -82,14 +92,12 @@
             </div>
           </div>
         </b-card>
-      </b-col>
-      <b-col cols="12" v-if="(rolList.indexOf('1') || rolList.indexOf('6')) !== -1">
+
+      </el-tab-pane>
+      <el-tab-pane label="我教的课" name="third" v-if="(rolList.indexOf('1') || rolList.indexOf('6')) !== -1">
         <b-card
           header-tag="header"
           footer-tag="footer">
-          <div slot="header">
-            <i className="fa fa-align-justify"></i><strong>我教的课程</strong>
-          </div>
           <div class="firstStep clearfix" v-for="course in teachList">
             <div class="lessons-item js-lessons-item g-clearfix">
               <a :href="'/course/detail?pageMode=faculty&crn=' + course.crn">
@@ -133,8 +141,9 @@
             </div>
           </div>
         </b-card>
-      </b-col>
-    </b-row>
+      </el-tab-pane>
+
+    </el-tabs>
   </div>
 </template>
 
@@ -153,6 +162,8 @@
         numOfTeach: 0,
         numOfAdvisor: 0,
         numOfStudent: 0,
+        basePath: basePath,
+        activeName:'first'
       }
     },
     mounted: function () {
@@ -176,7 +187,7 @@
           this.numOfCourse = this.courseList.length;
         })
       },
-      count(){
+      count() {
         axios.get('/system/info').then((response) => {
           this.numOfAdvisor = response.data.data.advisor;
           this.numOfStudent = response.data.data.student;
