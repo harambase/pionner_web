@@ -44,7 +44,7 @@
                     </b-row>
                   </div>
                   <div v-if="reset">
-                    <h2>请重置密码 | Reset Password</h2>
+                    <h2>请修改个人信息|Profile</h2>
                     <p>Educational Administration System (EAS)</p>
                     <b-input-group class="mb-4">
                       <div class="input-group-prepend">
@@ -68,8 +68,50 @@
                       <div v-show="notSame" class="invalid-tooltip">两次密码不一致</div>
                       <div v-show="errors.has('newPwd')" class="invalid-tooltip">{{ errors.first('newPwd') }}</div>
                     </b-input-group>
-                    <b-button :disabled="errors.has('newPwd') || errors.has('password')" variant="success" block
-                              @click="changePassword">修改密码
+
+                    <b-input-group class="mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon-calendar"></i></span>
+                      </div>
+                      <el-date-picker style="width:80%"
+                                      v-model="user.birthday"
+                                      type="date"
+                                      class="form-control"
+                                      size="mini"
+                                      prefix-icon="none"
+                                      format="yyyy-MM-dd"
+                                      placeholder="选择生日">
+                      </el-date-picker>
+                    </b-input-group>
+                    <b-input-group class="mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">@</span>
+                      </div>
+                      <input type="email" class="form-control" placeholder="Email" name="email" v-validate="'email'"
+                             v-model="user.email">
+                      <div v-show="errors.has('email')" class="invalid-tooltip">{{ errors.first('email') }}</div>
+                    </b-input-group>
+                    <b-input-group class="mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-qq"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="*QQ" name="qq"
+                             v-validate="{ required: true, numeric: true, min:5, max:11 }"
+                             :class="{'form-control': true, 'is-invalid': errors.has('qq')}"
+                             v-model="user.qq" required>
+                      <div v-show="errors.has('qq')" class="invalid-tooltip">{{ errors.first('qq') }}</div>
+                    </b-input-group>
+                    <b-input-group class="mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon icon-phone"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="*电话号码" v-model="user.tel"
+                             v-validate="'required|numeric|min:8|max:13'" name="tel"
+                             :class="{'form-control': true, 'is-invalid': errors.has('tel')}" required>
+                      <div v-show="errors.has('tel')" class="invalid-tooltip">{{ errors.first('tel') }}</div>
+                    </b-input-group>
+
+                    <b-button variant="success" block @click="changePassword">完善个人信息
                     </b-button>
                   </div>
                 </b-card-body>
@@ -147,9 +189,13 @@
           axios.post('/system/login', this.user).then((response) => {
             if (response.data.code === 2001) {
               if (this.user.password === md5('Pioneer123456')) {
-                this.user.password = '';
-                this.reset = true;
                 this.tempToken = response.data.data.access_token;
+                this.reset = true;
+                let userId = decode(this.tempToken).sub;
+                axios.get('/system/user/verify/' + userId + '?token=' + this.tempToken).then(response => {
+                  this.user = response.data.data;
+                  this.user.password = '';
+                })
               }
               else {
                 window.localStorage.setItem('access_token', response.data.data.access_token);
@@ -163,26 +209,22 @@
         })
       },
       changePassword() {
-        let userId = decode(this.tempToken).sub;
-        axios.get('/system/user/verify/' + userId + '?token=' + this.tempToken).then(response => {
-          this.user = response.data.data;
-          this.user.password = md5(this.newPwd);
-          axios.put('/system/user/reset/password/' + userId, this.user).then((response) => {
-            if (response.data.code === 2001) {
-              this.msg = '密码修改成功!'
-              this.headerBgVariant = 'success'
-              this.showModal = true
-              window.localStorage.setItem('access_token', this.tempToken);
-              token = this.tempToken;
-              this.$router.push({path: '/dashboard'})
-            } else {
-              this.msg = '密码修改失败!'
-              this.headerBgVariant = 'danger'
-              this.showModal = true
-              this.$router.push({path: '/login'})
-            }
-          });
-        })
+        this.user.password = md5(this.user.password);
+        axios.put('/system/user/reset/password/' + this.user.userId, this.user).then((response) => {
+          if (response.data.code === 2001) {
+            this.msg = '密码修改成功!'
+            this.headerBgVariant = 'success'
+            this.showModal = true
+            window.localStorage.setItem('access_token', this.tempToken);
+            token = this.tempToken;
+            this.$router.push({path: '/dashboard'})
+          } else {
+            this.msg = '密码修改失败!'
+            this.headerBgVariant = 'danger'
+            this.showModal = true
+            this.$router.push({path: '/login'})
+          }
+        });
       },
       goToReg() {
         this.$router.push({path: '/register'})
