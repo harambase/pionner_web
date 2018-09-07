@@ -1,7 +1,12 @@
 <template>
   <b-form-group>
-    <v-select v-model="pin" :filterable="false"
-              :options="pinOptions" @search="pinList"></v-select>
+    <b-input-group>
+      <b-input-group-button>
+        <b-button disabled>识别码</b-button>
+      </b-input-group-button>
+      <v-select v-model="pin" :filterable="false"
+                :options="pinOptions" @search="pinList"></v-select>
+    </b-input-group>
   </b-form-group>
 </template>
 

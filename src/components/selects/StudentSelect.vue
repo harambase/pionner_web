@@ -1,11 +1,9 @@
 <template>
-  <b-row>
-    <b-col md="2">
-      <div class="input-group-prepend">
-        <span class="input-group-text" style="margin-left: -3px"><i class="fa fa-user"></i> 学生:</span>
-      </div>
-    </b-col>
-    <b-col md="10">
+  <b-form-group>
+    <b-input-group>
+      <b-input-group-button>
+        <b-button disabled>学生</b-button>
+      </b-input-group-button>
       <v-select v-model="student" :filterable="false" :options="studentOptions"
                 @search="studentList" :placeholder="'输入搜索'">
         <template slot="option" slot-scope="option">
@@ -13,8 +11,8 @@
           {{ option.label }}
         </template>
       </v-select>
-    </b-col>
-  </b-row>
+    </b-input-group>
+  </b-form-group>
 </template>
 
 <script>

@@ -1,16 +1,14 @@
 <template>
-  <b-row>
-    <b-col md="2">
-      <div class="input-group-prepend">
-        <span class="input-group-text" style="margin-left: -3px"><i class="icon-info"></i> 学期:</span>
-      </div>
-    </b-col>
-    <b-col md="10">
+  <b-form-group>
+    <b-input-group>
+      <b-input-group-button>
+        <b-button disabled>学期</b-button>
+      </b-input-group-button>
       <v-select v-model="info" :filterable="false"
                 :placeholder="'输入搜索'"
                 :options="infoOptions" @search="infoList"></v-select>
-    </b-col>
-  </b-row>
+    </b-input-group>
+  </b-form-group>
 </template>
 
 <script>

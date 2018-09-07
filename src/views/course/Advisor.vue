@@ -111,7 +111,7 @@
       <b-input-group class="mb-6">
         <div class="input-group-prepend">
           <span class="input-group-text">
-            <a href="#" v-b-tooltip title="填写6位数字识别码，识别码请在导师处获取。">*请输入6位识别码:</a>
+            <a href="#" v-b-tooltip title="填写6位数字识别码，识别码请在教务老师获取。">*请输入6位识别码:</a>
           </span>
         </div>
         <input class="form-control" name="pin" v-model="pin"

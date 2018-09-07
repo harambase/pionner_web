@@ -1,15 +1,13 @@
 <template>
-  <b-row>
-    <b-col md="2">
-      <div class="input-group-prepend">
-        <span class="input-group-text" style="margin-left: -3px"><i class="fa fa-book"></i> 课程:</span>
-      </div>
-    </b-col>
-    <b-col md="10">
+  <b-form-group>
+    <b-input-group>
+      <b-input-group-button>
+        <b-button disabled>课程</b-button>
+      </b-input-group-button>
       <v-select v-model="course" :filterable="false" :options="courseOptions" :placeholder="'输入搜索'"
                 @search="courseList"></v-select>
-    </b-col>
-  </b-row>
+    </b-input-group>
+  </b-form-group>
 </template>
 
 <script>
