@@ -7,7 +7,6 @@
             <h4 class="mb-0">{{numOfCourse}}</h4>
             <p>你正在进行中的课程<br>Number of your on-going courses.</p>
           </b-card-body>
-
         </b-card>
       </b-col>
       <b-col sm="6" lg="3">

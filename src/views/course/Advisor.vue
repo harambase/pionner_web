@@ -12,88 +12,91 @@
         </b-card>
       </b-col>
       <div v-show="pinValidate">
+        <!--759028-->
         <b-row>
-          <b-col cols="3">
+          <b-col md="4">
             <b-card>
               <div slot="header">
                 <i className="fa fa-align-justify"></i><strong>导师选择工作区</strong>
                 <small>最多选择三位导师</small>
               </div>
-              <h4>你的导师选择：</h4>
-              <b-list-group>
-                <b-list-group-item href="#" style="cursor: default" class="flex-column align-items-start"
-                                   v-for="(item,index) in advisorList" :key="item.userId">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">第 {{index + 1}} 选择 {{item.name}}</h5>
-                    <small class="text-muted">导师ID：{{item.userId}}</small>
-                  </div>
-                  <b-row>
-                    <b-col md="3">
-                      <img v-if="isNotEmpty(item.profile)"
-                           :src="basePath + '/pioneer' + JSON.parse(item.profile).path"
-                           style="width: 45px;height: 45px"
-                           class="img-avatar">
-                      <img v-else
-                           :src="basePath + '/pioneer/image/profile/logo.png'"
-                           style="width: 45px;height: 45px"
-                           class="img-avatar">
-                    </b-col>
-                    <b-col md="9">
-                      <b-row>
-                        <b-col>
-                          <b-btn class="btn btn-success" size="sm" style="width:50px;" @click="moveUp(index)"
-                                 v-if="index!=0"><i
-                            class="fa fa-arrow-up" title="上移"></i>
-                          </b-btn>
-                          <b-btn class="btn btn-success" size="sm" style="width:50px;" @click="moveDown(index)"
-                                 v-if="index != (advisorList.length-1)"><i
-                            class="fa fa-arrow-down" title="下移"></i>
-                          </b-btn>
-                        </b-col>
-                        <b-col>
-                          <b-btn class="btn btn-danger" size="sm" style="width:50px;" @click="remove(index)"><i
-                            class="fa fa-close" title="下移"></i>
-                          </b-btn>
-                        </b-col>
-                      </b-row>
-                    </b-col>
-                  </b-row>
+              <b-card-body class="pb-0">
+                <h4>你的导师选择：</h4>
+                <b-list-group>
+                  <b-list-group-item href="#" style="cursor: default" class="flex-column align-items-start"
+                                     v-for="(item,index) in advisorList" :key="item.userId">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">第 {{index + 1}} 选择 {{item.name}}</h5>
+                      <small class="text-muted">导师ID：{{item.userId}}</small>
+                    </div>
+                    <b-row>
+                      <b-col md="3">
+                        <img v-if="isNotEmpty(item.profile)"
+                             :src="basePath + '/static' + JSON.parse(item.profile).path"
+                             style="width: 45px;height: 45px"
+                             class="img-avatar">
+                        <img v-else
+                             :src="basePath + '/static/img/logo.png'"
+                             style="width: 45px;height: 45px"
+                             class="img-avatar">
+                      </b-col>
+                      <b-col md="9">
+                        <b-row>
+                          <b-col>
+                            <b-btn class="btn btn-success" size="sm" style="width:50px;" @click="moveUp(index)"
+                                   v-if="index!=0"><i
+                              class="fa fa-arrow-up" title="上移"></i>
+                            </b-btn>
+                            <b-btn class="btn btn-success" size="sm" style="width:50px;" @click="moveDown(index)"
+                                   v-if="index != (advisorList.length-1)"><i
+                              class="fa fa-arrow-down" title="下移"></i>
+                            </b-btn>
+                          </b-col>
+                          <b-col>
+                            <b-btn class="btn btn-danger" size="sm" style="width:50px;" @click="remove(index)"><i
+                              class="fa fa-close" title="下移"></i>
+                            </b-btn>
+                          </b-col>
+                        </b-row>
+                      </b-col>
+                    </b-row>
 
-                </b-list-group-item>
-              </b-list-group>
-              <hr/>
-              <b-row>
-                <b-col md="4">
-                  <label class="col-sm-12 control-label">特殊需求:</label>
-                </b-col>
-                <b-col md="8">
+                  </b-list-group-item>
+                </b-list-group>
+                <hr/>
+                <b-row>
+                  <b-col md="4">
+                    <label class="col-sm-12 control-label">特殊需求:</label>
+                  </b-col>
+                  <b-col md="8">
                      <textarea style="resize: none;" class="form-control" rows="3"
                                v-model="tempAdvise.comment"></textarea>
-                </b-col>
-              </b-row>
-              <hr/>
-              <b-row>
-                <b-col cols="6" md="6">
-                  <b-button style="width:150px;" class="btn btn-success" @click="showSubmit">
-                    提交
-                  </b-button>
-                </b-col>
-                <b-col cols="6" md="6">
-                  <b-button style="width:150px;" class="btn btn-danger"
-                            id="reset" @click="reset">
-                    重置当前
-                  </b-button>
-                </b-col>
-              </b-row>
+                  </b-col>
+                </b-row>
+                <hr/>
+                <b-row>
+                  <b-col sm="6">
+                    <b-button block class="btn btn-success" @click="showSubmit">
+                      提交
+                    </b-button>
+                  </b-col>
+                  <b-col  sm="6">
+                    <b-button block class="btn btn-danger" id="reset" @click="reset">
+                      重置
+                    </b-button>
+                  </b-col>
+                </b-row>
+              </b-card-body>
             </b-card>
-
           </b-col>
-          <b-col cols="9">
+          <b-col md="8">
             <b-card>
               <div slot="header">
                 <i className="fa fa-align-justify"></i><strong>导师列表</strong>
               </div>
-              <CAdvisorTable mode="choose" v-on:pass="passFaculty"/>
+              <b-card-body>
+                <CAdvisorTable mode="choose" v-on:pass="passFaculty"/>
+              </b-card-body>
             </b-card>
           </b-col>
         </b-row>
@@ -139,11 +142,11 @@
             <b-row>
               <b-col md="3">
                 <img v-if="isNotEmpty(item.profile)"
-                     :src="basePath + '/pioneer' + JSON.parse(item.profile).path"
+                     :src="basePath + '/static' + JSON.parse(item.profile).path"
                      style="width: 45px;height: 45px"
                      class="img-avatar">
                 <img v-else
-                     :src="basePath + '/pioneer/image/profile/logo.png'"
+                     :src="basePath + '/static/img/logo.png'"
                      style="width: 45px;height: 45px"
                      class="img-avatar">
               </b-col>
@@ -189,7 +192,7 @@
         headerBgVariant: '',
         faculty: '',
         advisorList: [],
-        tempAdvise:{
+        tempAdvise: {
           comment: '',
           firstId: '',
           secondId: '',
@@ -253,7 +256,7 @@
       validate() {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return
+            return;
           axios.get('/pin/' + this.pin).then((response) => {
             if (response.data.code === 2001 && response.data.data.role == 3) {
               this.pinObject = response.data.data;
@@ -270,7 +273,7 @@
       init() {
         axios.get('/request/advise/' + this.pinObject.ownerId).then((response) => {
 
-          if(isNotEmpty(response.data.data)) {
+          if (isNotEmpty(response.data.data)) {
             this.tempAdvise = response.data.data;
             if (isNotEmpty(this.tempAdvise.firstId)) {
               axios.get('/advise/advisor/' + this.tempAdvise.firstId).then((result) => {
@@ -309,19 +312,20 @@
         }
       },
       submit() {
-        if(isNotEmpty(this.advisorList[0])) {
+        if (isNotEmpty(this.advisorList[0])) {
           this.tempAdvise.firstId = this.advisorList[0].userId;
         }
-        if(isNotEmpty(this.advisorList[1])) {
+        if (isNotEmpty(this.advisorList[1])) {
           this.tempAdvise.secondId = this.advisorList[1].userId;
-        }else{
+        } else {
           this.tempAdvise.secondId = '9201701000'
         }
-        if(isNotEmpty(this.advisorList[2])) {
+        if (isNotEmpty(this.advisorList[2])) {
           this.tempAdvise.thirdId = this.advisorList[2].userId;
-        }else{
+        } else {
           this.tempAdvise.thirdId = '9201701000'
         }
+        this.tempAdvise.info = this.pinObject.info;
         axios.post('/request/advise/' + this.pinObject.ownerId, this.tempAdvise).then((response) => {
           if (response.data.code === 2001) {
             this.msg = '提交成功！'
@@ -336,7 +340,5 @@
         })
       }
     }
-
   }
-
 </script>

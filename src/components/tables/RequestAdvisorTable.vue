@@ -76,7 +76,7 @@
           <template slot="index" slot-scope="row">
             {{(currentPage-1) * perPage + 1 + row.index}}
           </template>
-          <template slot="stuname" slot-scope="row">
+          <template slot="stuName" slot-scope="row">
             <b-row>
               <b-col md="3">
                 <img v-if="isNotEmpty(row.item.stuprofile)"
@@ -252,7 +252,7 @@
                  centered
                  title="不可逆操作警告！">
           <div class="d-block text-center">
-            <h3>确认取消{{advisor.name}}的导师资格？</h3>
+            <h3>删除{{delAdvisor.stuName}}申请？</h3>
           </div>
         </b-modal>
 
@@ -283,7 +283,7 @@
   const items = []
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
-    {key: 'stuname', label: '学生名', sortable: true},
+    {key: 'stuName', label: '学生名', sortable: true},
     {key: 'fname', label: '第一选择', sortable: true},
     {key: 'sname', label: '第二选择', sortable: true},
     {key: 'tname', label: '第三选择', sortable: true},
@@ -388,6 +388,24 @@
       tempAdviseTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/request/advise?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol='
+
+        switch (ctx.sortBy) {
+          case 'stuName':
+            url += 'stu_name';
+            break;
+          case 'fname':
+            url += 'f_name';
+            break;
+          case 'sname':
+            url += 's_name';
+            break;
+          case 'oname':
+            url += 'o_name';
+            break;
+          default:
+            url += ctx.sortBy;
+            break
+        }
         if (this.isNotEmpty(this.student))
           url += '&studentId=' + this.student.value;
         if (this.isNotEmpty(this.advisor))
@@ -396,7 +414,6 @@
           url += '&info=' + this.info.value;
         if (this.isNotEmpty(this.status))
           url += '&viewStatus=' + this.status
-
         if (this.isNotEmpty(ctx.filter))
           url += '&search=' + ctx.filter
         if (ctx.sortDesc)
@@ -418,15 +435,15 @@
         return value !== '' && value !== undefined && value !== null
       },
       showDeleteOne(delAdvisor) {
-        this.delAdvisor = advisor
+        this.delAdvisor = delAdvisor;
         this.showDeleteModal = true
       },
       deleteOne() {
-        axios.delete('/advise/advisor/' + this.delAdvisor.userId).then((response) => {
+        axios.delete('/request/advise/' + this.delAdvisor.id).then((response) => {
           if (response.data.code === 2001) {
-            this.msg = '删除成功！'
-            this.showModal = true
-            this.headerBgVariant = 'success'
+            this.msg = '删除成功！';
+            this.showModal = true;
+            this.headerBgVariant = 'success';
             this.initTable()
           }
           else {
