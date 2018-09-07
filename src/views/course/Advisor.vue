@@ -158,6 +158,7 @@
              :header-bg-variant="headerBgVariant"
              ok-only
              ok-title="关闭"
+             @ok="goTo"
              centered
              title="消息">
       <div class="d-block text-center">
@@ -228,6 +229,11 @@
       }
     },
     methods: {
+      goTo() {
+        if (isNotEmpty(this.goToUrl)) {
+          this.$router.push({path: this.goToUrl})
+        }
+      },
       moveUp(index) {
         let temp = this.advisorList[index - 1]
         Vue.set(this.advisorList, index - 1, this.advisorList[index])
@@ -321,6 +327,7 @@
             this.msg = '提交成功！'
             this.headerBgVariant = 'success'
             this.showModal = true
+            this.goToUrl = '/dashboard'
           } else {
             this.msg = '提交失败！'
             this.headerBgVariant = 'danger'
