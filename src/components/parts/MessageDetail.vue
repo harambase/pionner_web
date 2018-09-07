@@ -116,7 +116,7 @@
   import axios from 'axios'
 
   export default {
-    name: 'c-transcriptEdit',
+    name: 'c-messageDetail',
     props: ['row', 'info'],
     data() {
       return {
@@ -127,6 +127,22 @@
         basePath: basePath,
         deleteId: '',
       }
+    },
+    mounted(){
+      this.info.unread--;
+      if (this.row.item.labels == '重要')
+        this.info.important--;
+      if (this.row.item.labels == '紧急')
+        this.info.urgent--;
+
+      this.row.item.status = 'read';
+      axios.put('/message/' + this.row.item.id, this.row.item).then((response) => {
+        if (response.data.code !== 2001) {
+          this.msg = response.data.msg;
+          this.showModal = true;
+          this.headerBgVariant = 'danger';
+        }
+      })
     },
     methods: {
       showDeleteMessage(id) {

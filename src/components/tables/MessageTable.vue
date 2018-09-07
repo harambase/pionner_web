@@ -175,7 +175,7 @@
         this.initTable();
       },
       id: function (val) {
-        this.initTable()
+        this.initTable();
       }
     },
     computed: {

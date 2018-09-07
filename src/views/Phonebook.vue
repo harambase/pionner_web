@@ -93,30 +93,6 @@
         </b-container>
       </b-card>
     </b-row>
-
-    <b-modal v-model="showDeleteModal"
-             size="sm"
-             header-bg-variant='danger'
-             @ok="deleteUser"
-             centered
-             title="不可逆操作警告！">
-      <div class="d-block text-center">
-        <h3>确认删除该用户？</h3>
-      </div>
-    </b-modal>
-
-    <b-modal v-model="showModal"
-             size="sm"
-             :header-bg-variant="headerBgVariant"
-             ok-only
-             ok-title="关闭"
-             @ok="initTable"
-             centered
-             title="消息">
-      <div class="d-block text-center">
-        <h4>{{msg}}</h4>
-      </div>
-    </b-modal>
   </div>
 </template>
 
@@ -137,13 +113,6 @@
     name: 'User',
     data() {
       return {
-        profilePath: '',
-        pageMode: this.$route.fullPath.split('&')[0].split('=')[1],
-        goTo: '',
-        msg: '',
-        showModal: false,
-        showDeleteModal: false,
-        headerBgVariant: '',
         field: field,
         currentPage: 1,
         perPage: 10,
@@ -160,7 +129,6 @@
         sortDesc: false,
         filter: null,
         items: items,
-        status: '',
         basePath: basePath,
       }
     },
