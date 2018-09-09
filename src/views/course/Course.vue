@@ -13,10 +13,10 @@
           <b-col md="1" class="my-1">
             <legend class="col-form-legend">检索条件：</legend>
           </b-col>
-          <b-col md="3" class="my-1">
+          <b-col md="4" class="my-1">
             <InfoSelect v-on:pass="passInfo"/>
           </b-col>
-          <b-col md="3" class="my-1">
+          <b-col md="4" class="my-1">
             <FacultySelect v-on:pass="passFaculty"/>
           </b-col>
           <b-col md="3" class="my-1">
@@ -27,12 +27,12 @@
           <b-col md="1" class="my-1">
             <legend class="col-form-legend">每页显示：</legend>
           </b-col>
-          <b-col md="3" class="my-1">
+          <b-col md="1" class="my-1">
             <b-form-group>
               <b-form-select :options="pageOptions" v-model="perPage"/>
             </b-form-group>
           </b-col>
-          <b-col md="4" class="my-1"></b-col>
+          <b-col md="6" class="my-1"></b-col>
           <b-col md="4" class="my-1">
             <b-form-group>
               <b-input-group>
@@ -84,7 +84,7 @@
                      style="width: 30px;height: 30px"
                      class="img-avatar">
                 <img v-else
-                     src="/static/img/logo.png"
+                     :src="basePath + '/static/img/logo.png'"
                      style="width: 40px;height: 40px"
                      class="img-avatar">
               </b-col>
