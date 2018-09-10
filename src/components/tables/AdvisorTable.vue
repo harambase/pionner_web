@@ -241,41 +241,6 @@
             this.headerBgVariant = 'danger'
           }
         })
-      },
-      resendPin(advisor) {
-        this.advisor = advisor
-        console.log(advisor)
-        this.showSendModal = true
-      },
-      resendOne() {
-        axios.post('/advisor/send', this.advisor).then((response) => {
-          if (response.data.code === 2001) {
-            this.msg = '发送成功！'
-            this.showModal = true
-            this.headerBgVariant = 'success'
-          } else {
-            this.msg = response.data.msg
-            this.showModal = true
-            this.headerBgVariant = 'danger'
-          }
-        })
-      },
-      updateOne(advisor) {
-        this.$validator.validateAll().then((result) => {
-          if (!result)
-            return
-          axios.put('/advisor/' + advisor.advisor, advisor).then((response) => {
-            if (response.data.code === 2001) {
-              this.msg = '修改成功！'
-              this.showModal = true
-              this.headerBgVariant = 'success'
-            } else {
-              this.msg = response.data.msg
-              this.showModal = true
-              this.headerBgVariant = 'danger'
-            }
-          })
-        })
       }
     }
   }

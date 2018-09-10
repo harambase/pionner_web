@@ -225,6 +225,17 @@
           this.headerBgVariant = 'danger'
           return
         }
+        let speed = 5;
+        let timer = setInterval(function () {
+          this.scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+          if (this.scrollTop > 0) {
+            this.scrollTop = (this.scrollTop - speed > 0) ? (this.scrollTop - speed) : 0;
+            speed += 20;
+            window.scrollTo(0, this.scrollTop);
+          } else {
+            clearInterval(timer);
+          }
+        })
         this.advisorList.push(val)
       },
       advisorList: function () {

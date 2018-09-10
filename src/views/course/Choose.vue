@@ -437,6 +437,17 @@
         })
         this.use_credits += parseInt(credits)
         this.ava_credits = this.tol_credits - this.use_credits
+        let speed = 10;
+        let timer = setInterval(function () {
+          this.scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+          if (this.scrollTop > 0) {
+            this.scrollTop = (this.scrollTop - speed > 0) ? (this.scrollTop - speed) : 0;
+            speed += 20;
+            window.scrollTo(0, this.scrollTop);
+          } else {
+            clearInterval(timer);
+          }
+        })
       },
       removeFromWorkSheet(index) {
         const credits = this.crnList[index].credits
