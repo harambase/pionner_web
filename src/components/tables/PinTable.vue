@@ -5,10 +5,10 @@
       <b-col md="1" class="my-1">
         <legend class="col-form-legend">检索条件：</legend>
       </b-col>
-      <b-col md="3" class="my-1">
+      <b-col md="4" class="my-1">
         <CInfoSelect v-on:pass="passInfo"/>
       </b-col>
-      <b-col md="3" class="my-1">
+      <b-col md="5" class="my-1">
         <CUserSelect v-on:pass="passUser"/>
       </b-col>
       <b-col md="3" class="my-1">
@@ -24,7 +24,16 @@
           <b-form-select :options="pageOptions" v-model="perPage"/>
         </b-form-group>
       </b-col>
-      <b-col md="4" class="my-1"></b-col>
+      <b-col md="1" class="my-1">
+        <legend class="col-form-legend">类型：</legend>
+      </b-col>
+      <b-col md="3" class="my-1">
+        <b-form-group>
+          <b-form-select
+            :options="[{text: '选课', value:'1'},{text: '成绩录入', value:'2'},{text: '选导师', value:'3'},{text: '全部', value:''}]"
+            v-model="type"/>
+        </b-form-group>
+      </b-col>
       <b-col md="4" class="my-1">
         <b-form-group>
           <b-input-group>
@@ -219,7 +228,7 @@
           识别码：{{pin.pin}} <br>
           类型：{{pin.role === 1? '选课': '成绩录入'}} <br>
           有效期：从{{pin.startTime}} 至 {{pin.endTime}}<br>
-          所有人：{{pin.owner}}</p>
+          所有人：{{pin.oname}}</p>
         <h4>确认后请按发送键。</h4>
       </div>
     </b-modal>
@@ -265,6 +274,7 @@
         headerBgVariant: '',
         basePath: basePath,
         user: '',
+        type: '',
       }
     },
     watch: {
@@ -272,6 +282,9 @@
         this.initTable()
       },
       user: function () {
+        this.initTable()
+      },
+      type: function(){
         this.initTable()
       }
     },
@@ -302,6 +315,8 @@
           url += '&info=' + this.info.value
         if (this.isNotEmpty(this.user))
           url += '&ownerId=' + this.user.value
+        if (this.isNotEmpty(this.type))
+          url += '&type=' + this.type
         if (this.isNotEmpty(ctx.filter))
           url += '&search=' + ctx.filter
         if (ctx.sortDesc)
@@ -344,7 +359,6 @@
       },
       resendPin(pin) {
         this.pin = pin
-        console.log(pin)
         this.showSendModal = true
       },
       resendOne() {

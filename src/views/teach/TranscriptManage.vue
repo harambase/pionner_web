@@ -136,11 +136,11 @@
               <b-col md="4" class="my-1">
                 <StudentSelect v-on:pass="passReportStudent"/>
               </b-col>
-              <b-col md="3" class="my-1">
-                <!--<b-input-group-button>-->
-                <!--<b-button class="mb-4 btn btn-success" style="width: 150px;" @click="downloadReport">下载</b-button>-->
-                <!--</b-input-group-button>-->
-                即将开放！
+              <b-col md="3" class="my-1" v-if="isNotEmpty(reportStudent)">
+                <b-input-group-button>
+                  <b-button class="mb-4 btn btn-success" style="width: 150px;" @click="downloadReport">下载</b-button>
+                </b-input-group-button>
+                <!--即将开放！-->
               </b-col>
             </b-row>
             <b-row>
