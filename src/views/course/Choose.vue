@@ -247,7 +247,8 @@
       <div class="d-block text-center">
         <h3>{{msg}}</h3>
         <b-list-group>
-          <b-list-group-item href="#" style="cursor: default" class="flex-column align-items-start"
+          <b-list-group-item v-if="isNotEmpty(failList)" style="cursor: default"
+                             class="flex-column align-items-start"
                              v-for="(item, index) in failList" :key="item.crn">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">课程注册失败详情</h5>
@@ -469,14 +470,14 @@
           return
         }
         axios.post('/course/choose', this.crnList).then((response) => {
-          this.failList = response.data.data.failList
+          this.failList = response.data.data.failList;
           this.crnList = []
           this.initStudentInfo()
           if (this.failList.length === 0) {
             this.msg = '全部注册成功！'
             this.headerBgVariant = 'success'
           } else {
-            this.msg = '课程注册失败！'
+            this.msg = '以下课程注册失败！'
             this.headerBgVariant = 'danger'
           }
           this.showModal = true

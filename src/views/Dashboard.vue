@@ -62,9 +62,14 @@
           footer-tag="footer">
           <div class="firstStep clearfix" v-for="course in courseList">
             <div class="lessons-item js-lessons-item g-clearfix">
-              <a :href="'/course/detail?pageMode=student&crn=' + course.crn">
+              <a>
                 <div class="lessons-pic">
-                  <img width="200" height="200" src="/static/eas/img/logo.png">
+                  <img v-if="isNotEmpty(course.profile)"
+                       :src="basePath + '/static' + JSON.parse(course.profile).path"
+                       style="width: 200px; height: 200px" class="profile">
+                  <img v-else
+                       :src="basePath + '/static/img/logo.png'"
+                       style="width: 200px; height: 200px" class="profile">
                 </div>
                 <div class="lessons-info">
                   <h3 class="info-tile">{{course.name}}
@@ -72,15 +77,16 @@
 
                   <div class="lessons-live">
                     <span class="space">课程周期: {{course.date}}</span>
-                    <span class="">课程时间：{{course.time}} {{course.day}}</span>
+                    <span class="space">课程时间：{{course.time}}</span>
+                    <span class="space">每周：{{course.day}}</span>
                   </div>
-                  <div class="lessons-complete">
+                  <div class="lessons-live">
                     <span>教师：<span class="js-lesson-record">{{course.faculty}}</span></span>
                   </div>
                 </div>
                 <div class="lessons-operate">
                   <div class="status being">进行中</div>
-                  <div class="enter-class">进入课程</div>
+                  <!--<div class="enter-class">进入课程</div>-->
                 </div>
               </a>
             </div>
@@ -104,7 +110,7 @@
           footer-tag="footer">
           <div class="firstStep clearfix" v-for="course in teachList">
             <div class="lessons-item js-lessons-item g-clearfix">
-              <a :href="'/course/detail?pageMode=faculty&crn=' + course.crn">
+              <a>
                 <div class="lessons-pic">
                   <img width="200" height="200" src="/static/eas/img/logo.png">
                 </div>
@@ -115,7 +121,7 @@
                   <div class="lessons-live">
                     <span class="space">课程周期: {{course.date}}</span>
                     <span class="space">课程时间：{{course.time}}</span>
-                    <span class="">课程星期：{{course.day}}</span>
+                    <span class="space">每周：{{course.day}}</span>
                   </div>
                   <div class="lessons-complete">
                     <span class="space">学生人数：
