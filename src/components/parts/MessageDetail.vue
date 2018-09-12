@@ -30,7 +30,9 @@
               </dl>
               <dl class="row">
                 <dt class="col-sm-4">正文:</dt>
-                <dd class="col-sm-8" style="color:orangered"><strong>{{row.item.body}}</strong></dd>
+                <dd class="col-sm-8" style="color:orangered">
+                  <p v-html="row.item.body"></p>
+                </dd>
               </dl>
             </b-col>
             <b-col md="4">

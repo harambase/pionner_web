@@ -171,6 +171,9 @@
           case 'fourth':
             this.box = 'trash';
             break;
+          case 'fifth':
+            this.box = 'sent';
+            break;
         }
         this.initTable();
       },

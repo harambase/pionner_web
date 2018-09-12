@@ -490,7 +490,7 @@
           facultyId: '',
           courseJson: '',
         },
-        courseTime: [new Date(2016, 9, 10, 9, 0), new Date(2016, 9, 10, 11, 0)],
+        courseTime: [],
         courseDate: [],
         courseDay: [],
         showDocument: false,
@@ -665,8 +665,14 @@
 
         this.course.startDate = date2Str(this.courseDate[0], "yyyy-MM-dd");
         this.course.endDate = date2Str(this.courseDate[1], "yyyy-MM-dd");
-        this.course.startTime = date2Str(this.courseTime[0], "hh:mm:ss");
-        this.course.endTime = date2Str(this.courseTime[1], "hh:mm:ss");
+
+        if(isNotEmpty(this.courseTime)) {
+          this.course.startTime = date2Str(this.courseTime[0], "hh:mm:ss");
+          this.course.endTime = date2Str(this.courseTime[1], "hh:mm:ss");
+        }else{
+          this.course.startTime = '';
+          this.course.endTime = '';
+        }
 
         this.course.facultyId = this.faculty.value;
 
@@ -769,7 +775,8 @@
             if (response.data.code === 2001) {
               this.msg = '更新成功！';
               this.showModal = true;
-              this.headerBgVariant = 'success'
+              this.headerBgVariant = 'success';
+              this.goToUrl = '/teach/curriculum?mode=manage'
             }
             else {
               this.msg = response.data.msg;

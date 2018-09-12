@@ -14,6 +14,11 @@
           <b-badge v-if="info.important>0" variant="primary" pill>{{info.important}}</b-badge>
         </span>
       </el-tab-pane>
+      <el-tab-pane name="fifth">
+        <span slot="label">
+          <i class="el-icon-message"></i> 发件箱
+        </span>
+      </el-tab-pane>
       <el-tab-pane name="third">
         <span slot="label">
           <i class="el-icon-info"></i> 紧急信息
