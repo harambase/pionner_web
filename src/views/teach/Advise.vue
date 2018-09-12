@@ -36,37 +36,39 @@
       <el-tab-pane label="新增辅导关系" name="second">
         <b-card
           header-tag="header"
-          footer-tag="footer" style="height:350px;">
+          footer-tag="footer" style="height:700px;">
           <div slot="header">
             <i className="fa fa-align-justify"></i><strong>新增辅导关系</strong>
           </div>
-          <b-row>
-            <b-col md="1">
-              <label class="col-sm-12 control-label">*添加学期:</label>
-            </b-col>
-            <b-col md="3">
-              <CInfoSelect v-on:pass="passCreateInfo"/>
+          <b-row class="mt-1">
+            <b-col sm="4" lg="4">
+              <b-card no-body class="">
+                <b-card-body class="pb-0">
+                  <CInfoSelect v-on:pass="passCreateInfo"/>
+                </b-card-body>
+              </b-card>
             </b-col>
           </b-row>
-          <b-row v-if="isNotEmpty(createInfo)" class="mt-1">
-            <b-col md="1">
-              <label class="col-sm-12 control-label">*选择导师:</label>
+          <b-row class="mt-1" v-if="isNotEmpty(createInfo)">
+            <b-col sm="4" lg="4">
+              <b-card no-body class="">
+                <b-card-body class="pb-0">
+                  <CAdvisorSelect v-on:pass="passAdvisor"/>
+                  <CStudentSelectMultiple v-on:pass="passStudent"/>
+                </b-card-body>
+              </b-card>
             </b-col>
-            <b-col md="3">
-              <CAdvisorSelect v-on:pass="passAdvisor"/>
+            <b-col sm="4" lg="4">
+              <b-card no-body class="">
+                <b-card-body class="pb-0">
+                  <b-input-group-button class="mb-1">
+                    <b-button variant="success" block @click="createAdvise">新增
+                    </b-button>
+                  </b-input-group-button>
+                </b-card-body>
+              </b-card>
             </b-col>
-            <b-col md="1">
-              <label class="col-sm-12 control-label">*选择学生:</label>
-            </b-col>
-            <b-col md="3">
-              <CStudentSelectMultiple v-on:pass="passStudent"/>
-            </b-col>
-            <b-col md="4" class="my-1">
-              <b-input-group-button>
-                <b-button class="btn btn-success" style="width: 150px;" @click="createAdvise">新增
-                </b-button>
-              </b-input-group-button>
-            </b-col>
+
           </b-row>
           <div slot="footer">
             <i className="fa fa-align-justify"></i><strong>注意：学生可以多选</strong>
