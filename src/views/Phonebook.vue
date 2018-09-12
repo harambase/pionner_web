@@ -60,23 +60,18 @@
                    :sort-desc.sync="sortDesc"
                    :isBusy="false"
                    @filtered="onFiltered"
+                   :small="true"
           >
             <template slot="index" slot-scope="row">
-              <b-row>
-                <b-col md="9" class="mt-1" style="font-size: 11px;">
-                  {{(currentPage-1) * perPage + 1 + row.index}}
-                </b-col>
-                <b-col md="3">
-                  <img v-if="isNotEmpty(row.item.profile)"
-                       :src="basePath + '/static' + JSON.parse(row.item.profile).path"
-                       style="width: 30px;height: 30px"
-                       class="img-avatar">
-                  <img v-else
-                       :src="basePath + '/static/img/logo.png'"
-                       style="width: 40px;height: 40px"
-                       class="img-avatar">
-                </b-col>
-              </b-row>
+              {{(currentPage-1) * perPage + 1 + row.index}}
+              <img v-if="isNotEmpty(row.item.profile)"
+                   :src="basePath + '/static' + JSON.parse(row.item.profile).path"
+                   style="width: 30px;height: 30px"
+                   class="img-avatar">
+              <img v-else
+                   :src="basePath + '/static/img/logo.png'"
+                   style="width: 30px;height: 30px"
+                   class="img-avatar">
             </template>
           </b-table>
           <b-row>
@@ -115,9 +110,9 @@
       return {
         field: field,
         currentPage: 1,
-        perPage: 10,
+        perPage: 20,
         totalRows: 0,
-        pageOptions: [5, 10, 15],
+        pageOptions: [5, 10, 20, 50],
         typeOptions: [
           {text: '教师', value: 'f'},
           {text: '学生', value: 's'},

@@ -46,7 +46,7 @@
                       课程CRN:{{item.crn}} <br>
                       课程学分：{{item.credits}}
                     </p>
-                    <button class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>
+                    <button :disabled="item.name.indexOf('导师课') !== -1" class="btn btn-danger" style="width:150px;" @click="removeFromWorkSheet(index)">删除</button>
                   </b-list-group-item>
                 </b-list-group>
                 <hr/>
@@ -114,6 +114,7 @@
                            :isBusy="false"
                            @filtered="onFiltered"
                            :fixed="true"
+                           :small="true"
                   >
                     <template slot="status" slot-scope="row">
                       <p v-if="row.value === 1" style="color:blue;">未开始</p>
@@ -121,7 +122,7 @@
                       <p v-if="row.value === -1" style="color:red;">已结课</p>
                     </template>
                     <template slot="dt" slot-scope="row">
-                      {{row.item.date}}, {{row.item.day}}
+                      {{row.item.date}} <br> <strong>每周：{{row.item.day}}</strong>
                     </template>
                     <template slot="operations" slot-scope="row">
                       <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
@@ -305,7 +306,6 @@
         isBusy: false,
         showModal: false,
         headerBgVariant: '',
-        faculty: '',
         basePath: basePath
       }
     },
@@ -318,11 +318,6 @@
             return {text: f.label, value: f.key}
           })
       },
-    },
-    watch: {
-      faculty() {
-        this.initTable()
-      }
     },
     mounted() {
       if (this.pinObject === null || this.pinObject === '') {
@@ -398,10 +393,17 @@
         })
       },
       initWorkSheet() {
-        axios.get('/transcript/list?start=0&length=100&studentId=' + this.pinObject.studentId + '&info=' + this.pinObject.info).then((response) => {
+        axios.get('/transcript/list?start=0&length=100&studentId=' + this.pinObject.ownerId + '&info=' + this.pinObject.info).then((response) => {
           for (let i = 0; i < response.data.data.length; i++) {
-            let transcript = response.data.data[i]
-            this.addToWorkSheet(transcript.crn, transcript.credits, transcript.cname, transcript.fname)
+            let transcript = response.data.data[i];
+            this.counter++;
+            this.crnList.push({
+              crn: transcript.crn,
+              credits: transcript.credits,
+              name: transcript.cname,
+              faculty: transcript.fname
+            })
+
           }
         })
       },
