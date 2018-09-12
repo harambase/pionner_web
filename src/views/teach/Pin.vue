@@ -87,7 +87,7 @@
             <b-col md="2">
               <label class="col-sm-12 control-label">*识别码的所有人:</label>
             </b-col>
-            <b-col md="3">
+            <b-col md="5">
               <CFacultySelect v-if="role == 2" v-on:pass="passUser"/>
               <CStudentSelect v-if="role == 1 || role == 3" v-on:pass="passUser"/>
             </b-col>
@@ -120,7 +120,7 @@
           </b-row>
           <b-row class="mt-2">
             <b-col md="2">
-              <label class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
+              <label class="col-sm-12 control-label">*请确认上述信息:</label>
             </b-col>
             <b-col md="3">
               <div class="custom-control custom-radio custom-control-inline">
