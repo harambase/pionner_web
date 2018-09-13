@@ -112,7 +112,6 @@ legend {
 
 .lessons-item {
   border: 1px solid #ededef;
-  margin-bottom: 20px;
   border-radius: 3px;
   cursor: pointer
 }
@@ -138,8 +137,8 @@ legend {
 
 .lessons-item .lessons-pic {
   float: left;
-  width: 240px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   overflow: hidden
 }
 
@@ -149,7 +148,7 @@ legend {
 
 .lessons-item .lessons-info {
   float: left;
-  min-height: 200px;
+  min-height: 150px;
   padding-left: 20px
 }
 
