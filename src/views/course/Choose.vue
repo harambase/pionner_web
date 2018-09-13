@@ -102,6 +102,7 @@
 
                   <!-- Main table element -->
                   <b-table show-empty
+                           stacked="sm"
                            ref="courseTable"
                            :hover=true
                            :items="courseTable"

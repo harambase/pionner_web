@@ -64,7 +64,7 @@
                            style="width: 150px; height: 150px" class="profile">
                       <img v-else
                            :src="basePath + '/static/img/logo.png'"
-                           style="width: 200px; height: 200px" class="profile">
+                           style="width: 150px; height: 150px" class="profile">
                     </div>
                     <div class="lessons-info">
                       <h3 class="info-tile">{{course.name}}
@@ -89,7 +89,7 @@
               <div class="firstStep clearfix" v-if="courseList.length === 0">
                 <div class="lessons-item g-clearfix" style="cursor: default">
                   <div class="lessons-pic">
-                    <img width="200" height="200" src="/static/eas/img/logo.png">
+                    <img width="150" height="150" :src="basePath + '/static/eas/img/logo.png'">
                   </div>
                   <div class="lessons-info">
                     <h3 class="info-tile">无进行中的课程。</h3>
@@ -107,7 +107,12 @@
                 <div class="lessons-item  g-clearfix">
                   <a>
                     <div class="lessons-pic">
-                      <img width="200" height="200" src="/static/eas/img/logo.png">
+                      <img v-if="isNotEmpty(course.profile)"
+                           :src="basePath + '/static' + JSON.parse(course.profile).path"
+                           style="width: 150px; height: 150px" class="profile">
+                      <img v-else
+                           :src="basePath + '/static/img/logo.png'"
+                           style="width: 150px; height: 150px" class="profile">
                     </div>
                     <div class="lessons-info">
                       <h3 class="info-tile">{{course.name}}
@@ -138,7 +143,7 @@
               <div class="firstStep clearfix" v-if="teachList.length === 0">
                 <div class="lessons-item  g-clearfix" style="cursor: default">
                   <div class="lessons-pic">
-                    <img width="200" height="200" src="/static/eas/img/logo.png">
+                    <img width="150" height="150" :src="basePath + '/static/eas/img/logo.png'">
                   </div>
                   <div class="lessons-info">
                     <h3 class="info-tile">无教授的课程。</h3>
@@ -217,10 +222,10 @@
                 <b-col md="3">
                   <img v-if="isNotEmpty(advisor.profile)"
                        :src="basePath + '/static' + JSON.parse(advisor.profile).path"
-                       style="width: 200px; height: 200px" class="profile">
+                       style="width: 150px; height: 150px" class="profile">
                   <img v-else
                        :src="basePath + '/static/img/logo.png'"
-                       style="width: 200px; height: 200px" class="profile">
+                       style="width: 150px; height: 150px" class="profile">
                 </b-col>
               </b-row>
               <b-row v-else>

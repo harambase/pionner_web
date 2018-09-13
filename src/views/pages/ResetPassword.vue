@@ -22,10 +22,15 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="icon-calendar"></i></span>
                   </div>
-                  <input id="birthday" type="text" name="birthday" class="form-control" placeholder="*生日(YYYY-MM-DD)"
-                         v-validate="'required|date_format:YYYY-MM-DD'"
-                         :class="{'form-control': true, 'is-invalid': errors.has('birthday')}"
-                         v-model="regUser.birthday">
+                  <el-date-picker style="width:80%"
+                                  v-model="regUser.birthday"
+                                  type="date"
+                                  class="form-control"
+                                  size="mini"
+                                  prefix-icon="none"
+                                  format="yyyy-MM-dd"
+                                  placeholder="选择生日">
+                  </el-date-picker>
                   <div v-show="errors.has('birthday')" class="invalid-tooltip">{{ errors.first('birthday') }}</div>
                 </b-input-group>
 
