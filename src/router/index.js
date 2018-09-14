@@ -32,7 +32,9 @@ const UserForm = () => import('@/views/system/UserForm');
 const Reg = () => import('@/views/system/Reg');
 
 const AdviseView = () => import('@/views/advise/AdviseView');
+
 const Contract = () => import('@/views/logistic/Contract');
+const UserInfo = () => import('@/views/logistic/UserInfo');
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404');
@@ -324,6 +326,15 @@ const router = new Router({
               path: 'contract',
               name: '合同管理',
               component: Contract,
+              meta: {
+                requireAuth: true,
+                role: ['3']
+              },
+            },
+            {
+              path: 'info',
+              name: '合同管理',
+              component: UserInfo,
               meta: {
                 requireAuth: true,
                 role: ['3']

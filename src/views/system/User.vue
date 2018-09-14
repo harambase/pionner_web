@@ -66,7 +66,7 @@
           </b-row>
           <!-- Main table element -->
           <b-table show-empty
-                   stacked="md"
+                   stacked="sm"
                    ref="userTable"
                    :striped=true
                    :fixed=true

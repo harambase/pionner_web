@@ -47,16 +47,44 @@
       <template slot="index" slot-scope="row">
         {{(currentPage-1) * perPage + 1 + row.index}}
       </template>
+      <template slot="studentId" slot-scope="row">
+        <b-row>
+          <b-col md="3">
+            <img v-if="isNotEmpty(row.item.profile)"
+                 :src="basePath + '/static' + JSON.parse(row.item.profile).path"
+                 style="width: 30px;height: 30px"
+                 class="img-avatar">
+            <img v-else
+                 :src="basePath + '/static/img/logo.png'"
+                 style="width: 40px;height: 40px"
+                 class="img-avatar">
+          </b-col>
+          <b-col md="9" class="mt-1" style="font-size: 11px;">
+            {{row.value}}
+          </b-col>
+        </b-row>
+      </template>
 
       <template slot="actions" slot-scope="row">
-
-        <b-button v-if="mode==='credit'" size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
-          修改学分上限
-        </b-button>
-        <b-button v-if="mode==='student'" size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
-          添加该学生
-        </b-button>
-
+        <b-nav pills>
+          <b-nav-item-dropdown text="操作">
+            <b-dropdown-item v-if="mode==='credit'" @click.stop="row.toggleDetails">
+              <i style="color: red;"
+                 class="fa fa-pen" title="修改学分上限">
+              </i>修改学分上限
+            </b-dropdown-item>
+            <b-dropdown-item  v-if="mode==='student'" @click.stop="row.toggleDetails">
+              <i style="color: red;"
+                 class="fa fa-envelope" title="添加该学生">
+              </i>添加该学生
+            </b-dropdown-item>
+            <b-dropdown-item @click.stop="row.toggleDetails">
+              <i style="color: red;"
+                 class="fa fa-pencil" title="修改学生信息">
+              </i>修改学生信息
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-nav>
       </template>
       <template slot="row-details" slot-scope="row">
         <b-card v-if="mode==='credit'">
@@ -162,6 +190,30 @@
             </b-list-group-item>
           </b-list-group>
         </b-card>
+        <b-card v-if="mode==='info'">
+          <b-list-group>
+            <b-list-group-item title="修改学生信息" class="flex-column align-items-start" disabled>
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">学生 <strong>{{row.item.sname}}</strong> 的基本信息
+                <small class="text-muted">学生ID：{{row.item.studentId}}</small></h5>
+              </div>
+              <hr/>
+              <div class="mr-1">
+                <hr/>
+                <dl class="row">
+                  <dt class="col-sm-1">操作:</dt>
+                  <dd class="col-sm-5">
+                    <b-button size="sm"
+                              class="btn btn-danger"
+                              @click.stop="updateTrailPeriod(row.item.studentId)">
+                      修改试读时间
+                    </b-button>
+                  </dd>
+                </dl>
+              </div>
+            </b-list-group-item>
+          </b-list-group>
+        </b-card>
       </template>
     </b-table>
 
@@ -196,7 +248,7 @@
 <script>
   import axios from 'axios'
 
-  const items = []
+  const items = [];
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
     {key: 'studentId', label: '学生ID'},
@@ -206,7 +258,19 @@
     {key: 'progress', label: '进行中学分'},
     {key: 'incomplete', label: '未完成学分'},
     {key: 'actions', label: '操作'}
-  ]
+  ];
+
+  const field_info = [
+    {key: 'index', label: '序号', class: 'text-center'},
+    {key: 'studentId', label: '学生ID'},
+    {key: 'sname', label: '姓名'},
+    {key: 'trailPeriod', label: '试读时间'},
+    {key: 'tel', label: '电话'},
+    {key: 'qq', label: 'QQ'},
+    {key: 'gender', label: '性别'},
+    {key: 'dorm', label: '宿舍'},
+    {key: 'actions', label: '操作'}
+  ];
 
   export default {
     name: 'c-addStudentTable',
@@ -217,11 +281,11 @@
         showModal: false,
         headerBgVariant: '',
         sname: '',
-        field: field,
+        field: this.mode == 'info' ? field_info : field,
         currentPage: 1,
         perPage: 10,
         totalRows: 0,
-        pageOptions: [5, 10, 15],
+        pageOptions: [10,20,30],
         sortBy: 'student_id',
         sortDesc: false,
         filter: null,
@@ -232,6 +296,7 @@
           capacity: false,
           override: false,
         },
+        basePath: basePath
       }
     },
     computed: {
@@ -248,6 +313,9 @@
       handleOk(evt) {
         evt.preventDefault();
         this.$router.go(0)
+      },
+      updateTrailPeriod(){
+
       },
       onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering

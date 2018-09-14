@@ -205,6 +205,14 @@ export default {
       },
     },
     {
+      name: '用户信息管理',
+      url: '/logistic/info',
+      icon: 'icon-people',
+      meta: {
+        role: ['3']
+      },
+    },
+    {
       title: true,
       name: '系统管理',
       class: '',
