@@ -7,8 +7,10 @@
         <div slot="header">
           <i className="fa fa-align-justify"></i><strong>系统用户列表</strong>
         </div>
-        <b-container fluid>
-
+        <b-card-body>
+          <b-row>
+            <b-button @click="downloadUserList">下载用户表</b-button>
+          </b-row>
           <!-- User Interface controls -->
           <b-row>
             <b-col md="1" class="my-1">
@@ -62,7 +64,6 @@
               </b-form-group>
             </b-col>
           </b-row>
-
           <!-- Main table element -->
           <b-table show-empty
                    stacked="md"
@@ -215,7 +216,7 @@
                 totalRows ? ((currentPage-1) * perPage + perPage) : totalRows }} 条 ，总共 {{totalRows}} 条数据 </p>
             </b-col>
           </b-row>
-        </b-container>
+        </b-card-body>
       </b-card>
     </b-row>
 
@@ -428,6 +429,9 @@
       isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
+      downloadUserList(){
+        window.open(basePath + '/user/list/?type=s&token=' + window.localStorage.getItem('access_token'))
+      }
     }
   }
 </script>
