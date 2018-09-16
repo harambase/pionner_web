@@ -111,6 +111,7 @@
         <h3>{{msg}}</h3>
       </div>
     </b-modal>
+
   </b-card>
 </template>
 
@@ -125,7 +126,7 @@
         msg: '',
         showModal: false,
         headerBgVariant: '',
-        basePath: basePath
+        basePath: basePath,
       }
     },
     methods: {

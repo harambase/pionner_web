@@ -24,6 +24,7 @@ const Pin = () => import('@/views/teach/Pin');
 const TranscriptManage = () => import('@/views/teach/TranscriptManage');
 const Advise = () => import('@/views/teach/Advise');
 const Advisor = () => import('@/views/teach/Advisor');
+const QuickChoose = () => import('@/views/teach/QuickChoose');
 
 const Role = () => import('@/views/system/Role');
 const Monitor = () => import('@/views/system/Monitor');
@@ -256,6 +257,15 @@ const router = new Router({
               },
             },
             {
+              path: 'choose',
+              name: '教务快速选课',
+              component: QuickChoose,
+              meta: {
+                requireAuth: true,
+                role: ['2']
+              },
+            },
+            {
               path: 'advise',
               redirect: '/teach/advise/manage',
               name: '辅导关系',
@@ -333,7 +343,7 @@ const router = new Router({
             },
             {
               path: 'info',
-              name: '合同管理',
+              name: '用户信息管理',
               component: UserInfo,
               meta: {
                 requireAuth: true,

@@ -151,6 +151,14 @@ export default {
       },
     },
     {
+      name: '教务快速选课',
+      url: '/teach/choose',
+      icon: 'icon-people',
+      meta: {
+        role: ['2']
+      },
+    },
+    {
       name: '识别码管理',
       url: '/teach/pin',
       icon: 'fa fa-wrench',

@@ -81,9 +81,20 @@
                 <p v-if="row.value === '-1'" style="color:red;">挂科</p>
               </template>
               <template slot="actions" slot-scope="row">
-                <b-button size="sm" class="btn btn-danger" @click.stop="row.toggleDetails">
-                  修改成绩
-                </b-button>
+                <b-nav pills>
+                  <b-nav-item-dropdown text="操作">
+                    <b-dropdown-item @click.stop="showDeleteTranscript(row.item)">
+                      <i style="color: red;"
+                         class="fa fa-trash" title="删除成绩">
+                      </i>删除成绩
+                    </b-dropdown-item>
+                    <b-dropdown-item @click.stop="row.toggleDetails">
+                      <i style="color: red;"
+                         class="fa fa-pencil" title="修改成绩">
+                      </i>修改成绩
+                    </b-dropdown-item>
+                  </b-nav-item-dropdown>
+                </b-nav>
               </template>
 
               <template slot="studentId" slot-scope="row">
@@ -167,9 +178,25 @@
         </b-card>
       </b-col>
     </b-row>
-    <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
+    <b-modal v-model="showDeleteModal"
+             size="sm"
+             header-bg-variant='danger'
+             @ok="deleteTranscript"
+             centered
+             title="不可逆操作警告！">
       <div class="d-block text-center">
-        <h3>{{msg}}</h3>
+        <h3>确认删除该成绩单？</h3>
+      </div>
+    </b-modal>
+    <b-modal v-model="showModal"
+             size="sm"
+             :header-bg-variant="headerBgVariant"
+             ok-only
+             ok-title="关闭"
+             centered
+             title="消息">
+      <div class="d-block text-center">
+        <h4>{{msg}}</h4>
       </div>
     </b-modal>
   </div>
@@ -210,12 +237,13 @@
         sortDesc: false,
         filter: null,
         items: items,
-        deleteId: '',
+        deleteRow: '',
         info: '',
         student: '',
         course: '',
         reportStudent: '',
         reportInfo: '',
+        showDeleteModal: false,
         basePath: basePath
       }
     },
@@ -241,6 +269,25 @@
       }
     },
     methods: {
+      showDeleteTranscript(row) {
+        this.deleteRow = row;
+        this.showDeleteModal = true
+      },
+      deleteTranscript() {
+        axios.delete('/course/' + this.deleteRow.crn + '/student/' + this.deleteRow.studentId).then((response) => {
+          if (response.data.code === 2001) {
+            this.msg = '删除成功!';
+            this.showModal = true;
+            this.headerBgVariant = 'success';
+            this.initTable()
+          }
+          else {
+            this.msg = response.data.msg;
+            this.showModal = true;
+            this.headerBgVariant = 'danger'
+          }
+        })
+      },
       passInfo(val) {
         this.info = val
       },
