@@ -57,7 +57,7 @@
             </b-row>
             <!-- Main table element -->
             <b-table show-empty
-                     stacked="md"
+                     stacked="sm"
                      ref="transcriptTable"
                      :striped=true
                      :fixed=true
@@ -70,6 +70,7 @@
                      :sort-by.sync="sortBy"
                      :sort-desc.sync="sortDesc"
                      :isBusy="false"
+                     small="true
                      @filtered="onFiltered"
             >
               <template slot="index" slot-scope="row">

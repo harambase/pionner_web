@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <!-- User Interface controls -->
-    <b-row>
+    <b-row v-if="mode!='teach'">
       <b-col md="1" class="my-1">
         <legend class="col-form-legend">每页显示：</legend>
       </b-col>
@@ -42,6 +42,7 @@
              :sort-by.sync="sortBy"
              :sort-desc.sync="sortDesc"
              :isBusy="false"
+             :small="true"
              @filtered="onFiltered"
     >
       <template slot="index" slot-scope="row">
@@ -63,6 +64,9 @@
         </b-button>
         <b-button v-if="mode=='faculty'" size="sm" class="btn btn-danger" @click.stop="row.toggleDetails">
           学生学分和成绩查看
+        </b-button>
+        <b-button v-if="mode=='teach'" size="sm" class="btn btn-danger" @click.stop="row.toggleDetails">
+          发送信息
         </b-button>
       </template>
 

@@ -29,7 +29,8 @@
     </b-row>
     <!-- Main table element -->
     <b-table show-empty
-             stacked="md"
+             stacked="sm"
+             :small="true"
              ref="addStudentTable"
              :striped=true
              :fixed=true
@@ -64,6 +65,19 @@
           </b-col>
         </b-row>
       </template>
+      <template slot="trialPeriod" slot-scope="row">
+        <el-date-picker
+          v-model="row.item.trialPeriod"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          class="form-control"
+          size="mini"
+          style="height: 34px; width: 100%; padding: 5px 12px;"
+        >
+        </el-date-picker>
+      </template>
 
       <template slot="actions" slot-scope="row">
         <b-nav pills>
@@ -73,7 +87,7 @@
                  class="fa fa-pen" title="修改学分上限">
               </i>修改学分上限
             </b-dropdown-item>
-            <b-dropdown-item  v-if="mode==='student'" @click.stop="row.toggleDetails">
+            <b-dropdown-item v-if="mode==='student'" @click.stop="row.toggleDetails">
               <i style="color: red;"
                  class="fa fa-envelope" title="添加该学生">
               </i>添加该学生
@@ -195,21 +209,71 @@
             <b-list-group-item title="修改学生信息" class="flex-column align-items-start" disabled>
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">学生 <strong>{{row.item.sname}}</strong> 的基本信息
-                <small class="text-muted">学生ID：{{row.item.studentId}}</small></h5>d
+                  <small class="text-muted">学生ID：{{row.item.studentId}}</small>
+                </h5>
               </div>
               <hr/>
               <div class="mr-1">
-                <hr/>
-                <dl class="row">
-                  <dt class="col-sm-1">操作:</dt>
-                  <dd class="col-sm-5">
-                    <b-button size="sm"
-                              class="btn btn-danger"
-                              @click.stop="updateTrailPeriod(row.item.studentId)">
-                      修改试读时间
-                    </b-button>
-                  </dd>
-                </dl>
+                <b-row>
+                  <b-col md="9" class="my-1">
+                    <div class="mr-1">
+                      <dl class="row">
+                        <dt class="col-sm-1">QQ:</dt>
+                        <dd class="col-sm-2">{{row.item.qq}}</dd>
+
+                        <dt class="col-sm-1">电话:</dt>
+                        <dd class="col-sm-2">{{row.item.tel}}</dd>
+
+                        <dt class="col-sm-1">微信:</dt>
+                        <dd class="col-sm-2">{{row.item.weChat}}</dd>
+                      </dl>
+                      <dl class="row">
+                        <dt class="col-sm-1">性别:</dt>
+                        <dd class="col-sm-2">{{row.item.gender}}</dd>
+
+                        <dt class="col-sm-1">宿舍:</dt>
+                        <dd class="col-sm-2">{{row.item.dorm}}</dd>
+                      </dl>
+                      <hr/>
+                      {{row.item}}
+                      <dl class="row">
+                        <dt class="col-sm-1">试读时间:</dt>
+                        <dd class="col-sm-2">
+                          <el-date-picker
+                            v-model="row.item.trialPeriod"
+                            type="daterange"
+                            range-separator="-"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            class="form-control"
+                            size="mini"
+                          >
+                          </el-date-picker>
+                        </dd>
+                      </dl>
+                      <dl class="row">
+                        <dt class="col-sm-1">操作:</dt>
+                        <dd class="col-sm-5">
+                          <b-button size="sm"
+                                    class="btn btn-danger"
+                                    @click.stop="updateTrailPeriod(row.item.studentId, row.item.trialPeriod)">
+                            修改试读时间
+                          </b-button>
+                        </dd>
+                      </dl>
+                    </div>
+                  </b-col>
+                  <b-col md="3" class="my-1">
+                    <img v-if="isNotEmpty(row.item.profile)"
+                         :src="basePath + '/static' + JSON.parse(row.item.profile).path"
+                         style="width: 70%"
+                         class="img-avatar">
+                    <img v-else
+                         :src="basePath + '/static/img/logo.png'"
+                         style="width: 70%"
+                         class="img-avatar">
+                  </b-col>
+                </b-row>
               </div>
             </b-list-group-item>
           </b-list-group>
@@ -219,8 +283,7 @@
 
     <b-row>
       <b-col md="6" class="my-1">
-        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"
-                      class="my-0"/>
+        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0"/>
       </b-col>
       <b-col md="6" class="my-1">
         <p class="text-muted" style="text-align: right"> 显示 {{(currentPage-1) * perPage + 1}} 至 {{((currentPage-1) *
@@ -264,7 +327,7 @@
     {key: 'index', label: '序号', class: 'text-center'},
     {key: 'studentId', label: '学生ID'},
     {key: 'sname', label: '姓名'},
-    {key: 'trailPeriod', label: '试读时间'},
+    {key: 'trialPeriod', label: '试读时间'},
     {key: 'tel', label: '电话'},
     {key: 'qq', label: 'QQ'},
     {key: 'gender', label: '性别'},
@@ -283,9 +346,9 @@
         sname: '',
         field: this.mode == 'info' ? field_info : field,
         currentPage: 1,
-        perPage: 10,
+        perPage: 15,
         totalRows: 0,
-        pageOptions: [10,20,30],
+        pageOptions: [15, 25, 35],
         sortBy: 'student_id',
         sortDesc: false,
         filter: null,
@@ -310,12 +373,31 @@
       }
     },
     methods: {
+      displayDate(period) {
+        if (isNotEmpty(period)) {
+          period = period.split(',');
+          return date2Str(period[0], "yyyy-MM-dd") + '至' + date2Str(period[1], "yyyy-MM-dd")
+        }
+        else return ''
+      },
       handleOk(evt) {
         evt.preventDefault();
         this.$router.go(0)
       },
-      updateTrailPeriod(){
-
+      updateTrailPeriod(studentId, trialPeriod) {
+        axios.post('/student/' + studentId + '/trial', trialPeriod).then((response) => {
+          if (response.data.code === 2001) {
+            this.msg = response.data.msg;
+            this.showModal = true;
+            this.headerBgVariant = 'success';
+            this.initTable();
+          }
+          else {
+            this.msg = response.data.msg;
+            this.showModal = true;
+            this.headerBgVariant = 'danger'
+          }
+        })
       },
       onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering

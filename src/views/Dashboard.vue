@@ -51,7 +51,7 @@
       </b-col>
       <b-col lg="7">
         <el-tabs type="border-card" v-model="activeName">
-          <el-tab-pane label="我的课程" name="second">
+          <el-tab-pane label="我的课程" name="second" v-if="(rolList.indexOf('5')) !== -1">
             <b-card
               header-tag="header"
               footer-tag="footer">
@@ -97,15 +97,14 @@
                 </div>
               </div>
             </b-card>
-
           </el-tab-pane>
-          <el-tab-pane label="我教的课" name="third" v-if="(rolList.indexOf('1') || rolList.indexOf('6')) !== -1">
+          <el-tab-pane label="我教的课" name="third" v-if="(rolList.indexOf('1') !==-1 || rolList.indexOf('6')) !== -1">
             <b-card
               header-tag="header"
               footer-tag="footer">
               <div class="firstStep clearfix" v-for="course in teachList">
-                <div class="lessons-item  g-clearfix">
-                  <a>
+                <div class="lessons-item g-clearfix">
+                  <a @click="showStudent = !showStudent">
                     <div class="lessons-pic">
                       <img v-if="isNotEmpty(course.profile)"
                            :src="basePath + '/static' + JSON.parse(course.profile).path"
@@ -135,10 +134,16 @@
                     <div class="lessons-operate">
                       <div class="status being" v-if="course.status === 0">进行中</div>
                       <div class="status before" v-if="course.status === 1">未开始</div>
-                      <div class="enter-class">进入课程</div>
+                      <div class="enter-class">
+                        {{ showStudent ? '隐藏' : '查看'}}学生</div>
                     </div>
                   </a>
+                  <template>
+                    <CStudentInCourseTable v-if="showStudent" v-bind:crn="course.crn" :mode="'teach'" class="mt-3"/>
+                  </template>
+
                 </div>
+
               </div>
               <div class="firstStep clearfix" v-if="teachList.length === 0">
                 <div class="lessons-item  g-clearfix" style="cursor: default">
@@ -243,9 +248,11 @@
 <script>
   import axios from 'axios'
   import decode from 'jwt-decode'
+  import CStudentInCourseTable from "../components/tables/StudentInCourseTable";
 
   export default {
     name: 'dashboard',
+    components: {CStudentInCourseTable},
     data() {
       return {
         courseList: [],
@@ -258,6 +265,7 @@
         basePath: basePath,
         activeName: 'second',
         advisor: '',
+        showStudent: false,
       }
     },
     mounted: function () {
@@ -274,11 +282,15 @@
           }
         })
       }
+      if(this.rolList.indexOf('1') !==-1 || this.rolList.indexOf('6') !== -1){
+        this.initTeachList();
+        this.activeName = 'third'
+      }
+      if(this.rolList.indexOf('5') !==-1){
+        this.initCourseList();
+      }
 
-      this.initTeachList();
-      this.initCourseList();
       this.count();
-
     },
     methods: {
       downloadSchedule() {
