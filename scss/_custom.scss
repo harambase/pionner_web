@@ -222,7 +222,7 @@ legend {
   height: 24px;
   line-height: 24px;
   color: #4c91ff;
-  font-size: 24px
+  font-size: 20px;
 }
 
 .lessons-item .lessons-operate .withdraw {
@@ -237,6 +237,9 @@ legend {
   .lessons-item .lessons-pic {
     display: none
   }
+  .lessons-item .lessons-live {
+    min-width: 170px;
+  }
 }
 
 @media (max-width: 991.99px) {
@@ -245,7 +248,7 @@ legend {
   }
 }
 
-.el-input--mini .el-input__inner{
+.el-input--mini .el-input__inner {
   height: 18px;
   flex: 1;
   border-radius: 0;
@@ -265,6 +268,6 @@ legend {
   opacity: 1;
 }
 
-.el-input--mini.el-date-editor.el-input{
-  width:100%;
+.el-input--mini.el-date-editor.el-input {
+  width: 100%;
 }

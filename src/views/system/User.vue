@@ -93,7 +93,7 @@
                        class="img-avatar">
                   <img v-else
                        :src="basePath + '/static/img/logo.png'"
-                       style="width: 40px;height: 40px"
+                       style="width: 30px;height: 30px"
                        class="img-avatar">
                 </b-col>
                 <b-col md="9" class="mt-1" style="font-size: 11px;">

@@ -53,7 +53,23 @@
         <p v-if="row.value === '0'" style="color:blue;">进行中</p>
         <p v-if="row.value === '-1'" style="color:red;">挂科</p>
       </template>
-
+      <template slot="sname" slot-scope="row">
+        <b-row>
+          <b-col md="3">
+            <img v-if="isNotEmpty(row.item.sprofile)"
+                 :src="basePath + '/static' + JSON.parse(row.item.sprofile).path"
+                 style="width: 30px;height: 30px"
+                 class="img-avatar">
+            <img v-else
+                 :src="basePath + '/static/img/logo.png'"
+                 style="width: 30px;height: 30px"
+                 class="img-avatar">
+          </b-col>
+          <b-col md="9" class="mt-1" style="font-size: 11px;">
+            {{row.value}}
+          </b-col>
+        </b-row>
+      </template>
       <template slot="actions" slot-scope="row">
         <b-button v-if="mode=='student'" size="sm" class="btn btn-danger"
                   @click.stop="showDeleteStudent(row.item.studentId, row.item.crn)">
@@ -65,15 +81,13 @@
         <b-button v-if="mode=='faculty'" size="sm" class="btn btn-danger" @click.stop="row.toggleDetails">
           学生学分和成绩查看
         </b-button>
-        <b-button v-if="mode=='teach'" size="sm" class="btn btn-danger" @click.stop="row.toggleDetails">
+        <b-button v-if="mode=='teach' || mode=='viewStudent'" size="sm" class="btn btn-success">
           发送信息
         </b-button>
       </template>
-
       <template slot="row-details" slot-scope="row">
         <CTranscriptEdit :row="row" :mode="mode"/>
       </template>
-
     </b-table>
     <b-row>
       <b-col md="6" class="my-1">
@@ -130,6 +144,12 @@
     {key: 'credit', label: '获得学分', sortable: true},
     {key: 'actions', label: '操作'}
   ];
+  const field_student = [
+    {key: 'index', label: '序号', class: 'text-center'},
+    {key: 'cname', label: '课程名'},
+    {key: 'sname', label: '学生名', sortable: true},
+    {key: 'actions', label: '操作'}
+  ];
 
   export default {
     name: 'c-studentInCourseTable',
@@ -141,7 +161,7 @@
         showModal: false,
         headerBgVariant: '',
         sname: '',
-        field: field,
+        field: this.mode == 'viewStudent' ? field_student : field,
         currentPage: 1,
         perPage: 10,
         totalRows: 0,
@@ -152,7 +172,8 @@
         items: items,
         showDeleteModal: false,
         deleteStudentId: "",
-        deleteCRN: ''
+        deleteCRN: '',
+        basePath: basePath
       }
     },
     computed: {

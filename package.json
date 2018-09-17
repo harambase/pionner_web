@@ -97,6 +97,7 @@
     "vue-template-compiler": "2.5.13",
     "vue2-datepicker": "1.9.7",
     "webpack": "3.10.0",
+    "crypto-js": "3.1.9-1",
     "webpack-bundle-analyzer": "2.9.2",
     "webpack-dev-middleware": "2.0.4",
     "webpack-hot-middleware": "2.21.0",

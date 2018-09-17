@@ -45,7 +45,8 @@
             <small>Schedule</small>
           </div>
           <b-card-body>
-            <img :src="basePath + '/static/img/先锋2018年秋季试听课表.jpg'" @click="downloadSchedule()" style="width: 100%; cursor: pointer"/>
+            <img :src="basePath + '/static/img/先锋2018正式课程安排.jpg'" @click="downloadSchedule()"
+                 style="width: 100%; cursor: pointer"/>
           </b-card-body>
         </b-card>
       </b-col>
@@ -55,106 +56,127 @@
             <b-card
               header-tag="header"
               footer-tag="footer">
-              <div class="firstStep clearfix" v-for="course in courseList">
-                <div class="lessons-item g-clearfix">
-                  <a>
-                    <div class="lessons-pic">
-                      <img v-if="isNotEmpty(course.profile)"
-                           :src="basePath + '/static' + JSON.parse(course.profile).path"
-                           style="width: 150px; height: 150px" class="profile">
-                      <img v-else
-                           :src="basePath + '/static/img/logo.png'"
-                           style="width: 150px; height: 150px" class="profile">
-                    </div>
-                    <div class="lessons-info">
-                      <h3 class="info-tile">{{course.name}}
-                        ({{course.level}}/{{course.section}})</h3>
+              <b-table show-empty
+                       :fixed=true
+                       :hover=true
+                       :items="courseList"
+                       :fields="[{key: 'crn', label: '我的课程列表'}]"
+                       :current-page=1
+                       :per-page=20
+                       sort-by.sync="crn"
+                       :isBusy="false"
+              >
+                <template slot="crn" slot-scope="row">
+                  <div class="firstStep clearfix" @click.stop="row.toggleDetails">
+                    <div class="lessons-item g-clearfix">
+                      <a>
+                        <div class="lessons-pic">
+                          <img v-if="isNotEmpty(row.item.profile)"
+                               :src="basePath + '/static' + JSON.parse(row.item.profile).path"
+                               style="width: 150px; height: 150px" class="profile">
+                          <img v-else
+                               :src="basePath + '/static/img/logo.png'"
+                               style="width: 150px; height: 150px" class="profile">
+                        </div>
+                        <div class="lessons-info">
+                          <h3 class="info-tile">{{row.item.name}}
+                            ({{row.item.level}}/{{row.item.section}})
+                          </h3>
 
-                      <div class="lessons-live">
-                        <span class="space">课程周期: {{course.date}}</span>
-                        <span class="space">课程时间：{{course.time}}</span>
-                        <span class="space">每周：{{course.day}}</span>
-                      </div>
-                      <div class="lessons-live">
-                        <span>教师：<span class="js-lesson-record">{{course.faculty}}</span></span>
-                      </div>
+                          <div class="lessons-live">
+                            <span class="space">课程周期: {{row.item.date}}</span>
+                            <span class="space">课程时间：{{row.item.time}}</span>
+                            <span class="space">每周：{{row.item.day}}</span>
+                          </div>
+                          <div class="lessons-live">
+                            <span>教师：<span class="js-lesson-record">{{row.item.faculty}}</span></span>
+                          </div>
+                        </div>
+                        <div class="lessons-operate">
+                          <div class="status being" v-if="row.item.status === 0">进行中</div>
+                          <div class="status before" v-if="row.item.status === 1">未开始</div>
+                          <div class="enter-class">
+                            {{ row.detailsShowing ? '隐藏' : '查看'}}同学
+                          </div>
+                        </div>
+                      </a>
                     </div>
-                    <div class="lessons-operate">
-                      <div class="status being">进行中</div>
-                      <!--<div class="enter-class">进入课程</div>-->
-                    </div>
-                  </a>
-                </div>
-              </div>
-              <div class="firstStep clearfix" v-if="courseList.length === 0">
-                <div class="lessons-item g-clearfix" style="cursor: default">
-                  <div class="lessons-pic">
-                    <img width="150" height="150" :src="basePath + '/static/eas/img/logo.png'">
                   </div>
-                  <div class="lessons-info">
-                    <h3 class="info-tile">无进行中的课程。</h3>
-                  </div>
-                </div>
-              </div>
+                </template>
+                <template slot="row-details" slot-scope="row">
+                  <CStudentInCourseTable v-bind:crn="row.item.crn" :mode="'viewStudent'" class="mt-3"/>
+                </template>
+              </b-table>
+              <b-row>
+                <b-col md="12" class="my-1">
+                  <p class="text-muted" style="text-align: right"> 总共 {{courseList.length}} 条数据 </p>
+                </b-col>
+              </b-row>
+
             </b-card>
           </el-tab-pane>
-          <el-tab-pane label="我教的课" name="third" v-if="(rolList.indexOf('1') !==-1 || rolList.indexOf('6')) !== -1">
+          <el-tab-pane label="我教的课程列表" name="third" v-if="(rolList.indexOf('1') !==-1 || rolList.indexOf('6')) !== -1">
             <b-card
               header-tag="header"
               footer-tag="footer">
-              <div class="firstStep clearfix" v-for="course in teachList">
-                <div class="lessons-item g-clearfix">
-                  <a @click="showStudent = !showStudent">
-                    <div class="lessons-pic">
-                      <img v-if="isNotEmpty(course.profile)"
-                           :src="basePath + '/static' + JSON.parse(course.profile).path"
-                           style="width: 150px; height: 150px" class="profile">
-                      <img v-else
-                           :src="basePath + '/static/img/logo.png'"
-                           style="width: 150px; height: 150px" class="profile">
+              <b-table show-empty
+                       :fixed=true
+                       :hover=true
+                       :items="teachList"
+                       :fields="[{key: 'crn', label: '我教的课程列表'}]"
+                       :current-page=1
+                       :per-page=20
+                       sort-by.sync="crn"
+                       :isBusy="false"
+              >
+                <template slot="crn" slot-scope="row">
+                  <div class="firstStep clearfix" @click.stop="row.toggleDetails">
+                    <div class="lessons-item g-clearfix">
+                      <a>
+                        <div class="lessons-pic">
+                          <img v-if="isNotEmpty(row.item.profile)"
+                               :src="basePath + '/static' + JSON.parse(row.item.profile).path"
+                               style="width: 150px; height: 150px" class="profile">
+                          <img v-else
+                               :src="basePath + '/static/img/logo.png'"
+                               style="width: 150px; height: 150px" class="profile">
+                        </div>
+                        <div class="lessons-info">
+                          <h3 class="info-tile">{{row.item.name}}
+                            <small>({{row.item.level}}/{{row.item.section}})</small>
+                          </h3>
+                          <div class="lessons-live">
+                            <span class="space">课程周期: {{row.item.date}}</span>
+                            <span class="space">课程时间：{{row.item.time}}</span>
+                            <span class="space">每周：{{row.item.day}}</span>
+                          </div>
+                        <div class="lessons-complete">
+                            <span class="space">学生人数： {{row.item.capacity - row.item.remain}}
+                            </span>
+                            <span class="space">剩余：{{row.item.remain}}</span>
+                            <span>教室：{{row.item.classroom}}</span>
+                          </div>
+                        </div>
+                        <div class="lessons-operate">
+                          <div class="status being" v-if="row.item.status === 0">进行中</div>
+                          <div class="status before" v-if="row.item.status === 1">未开始</div>
+                          <div class="enter-class">
+                            {{ row.detailsShowing ? '隐藏' : '查看'}}学生
+                          </div>
+                        </div>
+                      </a>
                     </div>
-                    <div class="lessons-info">
-                      <h3 class="info-tile">{{course.name}}
-                        ({{course.level}}/{{course.section}})</h3>
-
-                      <div class="lessons-live">
-                        <span class="space">课程周期: {{course.date}}</span>
-                        <span class="space">课程时间：{{course.time}}</span>
-                        <span class="space">每周：{{course.day}}</span>
-                      </div>
-                      <div class="lessons-complete">
-                    <span class="space">学生人数：
-                      <span
-                        class="js-lesson-complete">{{course.capacity - course.remain}}</span>
-                    </span>
-                        <span class="space">剩余：<span class="js-lesson-rate">{{course.remain}}</span></span>
-                        <span>教室：<span class="js-lesson-record">{{course.classroom}}</span></span>
-                      </div>
-                    </div>
-                    <div class="lessons-operate">
-                      <div class="status being" v-if="course.status === 0">进行中</div>
-                      <div class="status before" v-if="course.status === 1">未开始</div>
-                      <div class="enter-class">
-                        {{ showStudent ? '隐藏' : '查看'}}学生</div>
-                    </div>
-                  </a>
-                  <template>
-                    <CStudentInCourseTable v-if="showStudent" v-bind:crn="course.crn" :mode="'teach'" class="mt-3"/>
-                  </template>
-
-                </div>
-
-              </div>
-              <div class="firstStep clearfix" v-if="teachList.length === 0">
-                <div class="lessons-item  g-clearfix" style="cursor: default">
-                  <div class="lessons-pic">
-                    <img width="150" height="150" :src="basePath + '/static/eas/img/logo.png'">
                   </div>
-                  <div class="lessons-info">
-                    <h3 class="info-tile">无教授的课程。</h3>
-                  </div>
-                </div>
-              </div>
+                </template>
+                <template slot="row-details" slot-scope="row">
+                  <CStudentInCourseTable v-bind:crn="row.item.crn" :mode="'teach'" class="mt-3"/>
+                </template>
+              </b-table>
+              <b-row>
+                <b-col md="12" class="my-1">
+                  <p class="text-muted" style="text-align: right"> 总共 {{teachList.length}} 条数据 </p>
+                </b-col>
+              </b-row>
             </b-card>
           </el-tab-pane>
           <el-tab-pane label="你的导师信息" name="forth" v-if="rolList.indexOf('5') !== -1">
@@ -282,11 +304,11 @@
           }
         })
       }
-      if(this.rolList.indexOf('1') !==-1 || this.rolList.indexOf('6') !== -1){
+      if (this.rolList.indexOf('1') !== -1 || this.rolList.indexOf('6') !== -1) {
         this.initTeachList();
         this.activeName = 'third'
       }
-      if(this.rolList.indexOf('5') !==-1){
+      if (this.rolList.indexOf('5') !== -1) {
         this.initCourseList();
       }
 
@@ -294,7 +316,7 @@
     },
     methods: {
       downloadSchedule() {
-        window.open(basePath + '/static/img/%E5%85%88%E9%94%8B2018%E5%B9%B4%E7%A7%8B%E5%AD%A3%E8%AF%95%E5%90%AC%E8%AF%BE%E8%A1%A8.jpg')
+        window.open(basePath + '/static/img/先锋2018正式课程安排.jpg')
       },
       initTeachList: function () {
         axios.get('/course?mode=faculty&status=0').then((response) => {
