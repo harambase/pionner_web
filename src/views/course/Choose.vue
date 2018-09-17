@@ -475,7 +475,7 @@
           this.headerBgVariant = 'danger'
           return
         }
-        axios.post('/course/choose', this.crnList).then((response) => {
+        axios.post('/course/choose?info=' + this.pinObject.info, this.crnList).then((response) => {
           this.failList = response.data.data.failList;
           this.crnList = []
           this.initStudentInfo()

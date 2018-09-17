@@ -66,17 +66,7 @@
         </b-row>
       </template>
       <template slot="trialPeriod" slot-scope="row">
-        <el-date-picker
-          v-model="row.item.trialPeriod"
-          type="daterange"
-          range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          class="form-control"
-          size="mini"
-          style="height: 34px; width: 100%; padding: 5px 12px;"
-        >
-        </el-date-picker>
+        <p>{{displayDate(row.item.trialPeriod)}}</p>
       </template>
 
       <template slot="actions" slot-scope="row">
@@ -234,13 +224,28 @@
                         <dt class="col-sm-1">宿舍:</dt>
                         <dd class="col-sm-2">{{row.item.dorm}}</dd>
                       </dl>
+                      <p>暂不支持修改以上信息</p>
                       <hr/>
-                      {{row.item}}
                       <dl class="row">
                         <dt class="col-sm-1">试读时间:</dt>
                         <dd class="col-sm-2">
+                          {{displayDate(row.item.trialPeriod)}}
+                        </dd>
+                      </dl>
+                      <dl class="row" v-if="!showChangeTime">
+                        <dt class="col-sm-1">操作:</dt>
+                        <dd class="col-sm-5">
+                          <b-button size="sm"
+                                    class="btn btn-danger"
+                                    @click.stop="showChangeTime = true">
+                            修改试读时间
+                          </b-button>
+                        </dd>
+                      </dl>
+                      <dl class="row" v-if="showChangeTime">
+                        <dt class="col-sm-3">
                           <el-date-picker
-                            v-model="row.item.trialPeriod"
+                            v-model="trialPeriod"
                             type="daterange"
                             range-separator="-"
                             start-placeholder="开始日期"
@@ -249,18 +254,16 @@
                             size="mini"
                           >
                           </el-date-picker>
-                        </dd>
-                      </dl>
-                      <dl class="row">
-                        <dt class="col-sm-1">操作:</dt>
+                        </dt>
                         <dd class="col-sm-5">
                           <b-button size="sm"
                                     class="btn btn-danger"
-                                    @click.stop="updateTrailPeriod(row.item.studentId, row.item.trialPeriod)">
+                                    @click.stop="updateTrailPeriod(row.item.studentId, trialPeriod)">
                             修改试读时间
                           </b-button>
                         </dd>
                       </dl>
+
                     </div>
                   </b-col>
                   <b-col md="3" class="my-1">
@@ -359,7 +362,9 @@
           capacity: false,
           override: false,
         },
-        basePath: basePath
+        basePath: basePath,
+        showChangeTime: false,
+        trialPeriod: []
       }
     },
     computed: {
@@ -375,8 +380,9 @@
     methods: {
       displayDate(period) {
         if (isNotEmpty(period)) {
-          period = period.split(',');
-          return date2Str(period[0], "yyyy-MM-dd") + '至' + date2Str(period[1], "yyyy-MM-dd")
+          period = JSON.parse(period);
+          console.log(period[0]);
+          return date2Str(new Date(period[0]), "yyyy-MM-dd") + '至' + date2Str(new Date(period[1]), "yyyy-MM-dd")
         }
         else return ''
       },
@@ -391,6 +397,7 @@
             this.showModal = true;
             this.headerBgVariant = 'success';
             this.initTable();
+            this.showChangeTime = false;
           }
           else {
             this.msg = response.data.msg;

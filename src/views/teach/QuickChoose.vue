@@ -457,13 +457,7 @@
         this.initStudentInfo()
       },
       turnIn() {
-        if (this.crnList.length === 0) {
-          this.msg = '没有选择任何课程!'
-          this.showModal = true
-          this.headerBgVariant = 'danger'
-          return
-        }
-        axios.post('/course/choose?studentId=' + this.student.value, this.crnList).then((response) => {
+        axios.post('/course/choose?studentId=' + this.student.value + '&info=' + this.info.value, this.crnList).then((response) => {
           this.failList = response.data.data.failList;
           this.crnList = []
           this.initStudentInfo()
