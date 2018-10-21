@@ -176,8 +176,18 @@
         msg: '',
         headerBgVariant: '',
         notSame: true,
-        newPwd: ''
+        newPwd: '',
+        passToken: this.$route.fullPath.split('&')[0].split('=')[1],
       }
+    },
+    mounted() {
+      console.log(this.passToken);
+      if (isNotEmpty(this.passToken)){
+        window.localStorage.setItem('access_token', this.passToken);
+        token = this.passToken;
+        this.$router.push({path: '/dashboard'})
+      }
+
     },
     methods: {
       doLogin() {
