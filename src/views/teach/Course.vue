@@ -490,7 +490,7 @@
           facultyId: '',
           courseJson: '',
         },
-        courseTime: [],
+        courseTime: '',
         courseDate: [],
         courseDay: [],
         showDocument: false,
@@ -663,12 +663,16 @@
         this.course.precrn = precrn;
         this.course.info = this.info.year + "-" + this.info.semester;
 
-        this.course.startDate = date2Str(this.courseDate[0], "yyyy-MM-dd");
-        this.course.endDate = date2Str(this.courseDate[1], "yyyy-MM-dd");
+        let startDate = this.courseDate[0];
+        let endDate = this.courseDate[1];
+        this.course.startDate = startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate();
+        this.course.endDate = startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate();
 
+        let startTime = this.courseTime[0];
+        let endTime = this.courseTime[1];
         if(isNotEmpty(this.courseTime)) {
-          this.course.startTime = date2Str(this.courseTime[0], "hh:mm:ss");
-          this.course.endTime = date2Str(this.courseTime[1], "hh:mm:ss");
+          this.course.startTime = startTime.getHours() + ':' + startTime.getMinutes() + ':' + startTime.getSeconds();
+          this.course.endTime = endTime.getHours() + ':' + endTime.getMinutes() + ':' + endTime.getSeconds();
         }else{
           this.course.startTime = '';
           this.course.endTime = '';
