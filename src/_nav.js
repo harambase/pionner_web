@@ -213,6 +213,14 @@ export default {
       },
     },
     {
+      name: '评价管理',
+      url: '/logistic/feedback',
+      icon: 'icon-pencil',
+      meta: {
+        role: ['3']
+      },
+    },
+    {
       name: '用户信息管理',
       url: '/logistic/info',
       icon: 'icon-people',

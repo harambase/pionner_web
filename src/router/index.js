@@ -35,6 +35,7 @@ const Reg = () => import('@/views/system/Reg');
 const AdviseView = () => import('@/views/advise/AdviseView');
 
 const Contract = () => import('@/views/logistic/Contract');
+const Feedback = () => import('@/views/logistic/Feedback');
 const UserInfo = () => import('@/views/logistic/UserInfo');
 
 // Views - Pages
@@ -55,7 +56,7 @@ const router = new Router({
     {
       path: '/',
       redirect: '/login',
-      name: 'EAS',
+      name: 'PCP',
       component: Full,
       meta: {
         requiresAuth: true,
@@ -336,6 +337,15 @@ const router = new Router({
               path: 'contract',
               name: '合同管理',
               component: Contract,
+              meta: {
+                requireAuth: true,
+                role: ['3']
+              },
+            },
+            {
+              path: 'feedback',
+              name: '评价管理',
+              component: Feedback,
               meta: {
                 requireAuth: true,
                 role: ['3']
