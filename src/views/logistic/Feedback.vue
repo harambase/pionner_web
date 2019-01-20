@@ -77,30 +77,6 @@
               <template slot="index" slot-scope="row">
                 {{(currentPage-1) * perPage + 1 + row.index}}
               </template>
-              <template slot="status" slot-scope="row">
-                <p v-if="row.value === 1" style="color:blue;">未开始</p>
-                <p v-if="row.value === 0" style="color:green;">进行中</p>
-                <p v-if="row.value === -1" style="color:red;">已结课</p>
-              </template>
-
-              <template slot="faculty" slot-scope="row">
-                <b-row>
-                  <b-col md="3">
-                    <img v-if="isNotEmpty(row.item.profile)"
-                         :src="basePath + '/static' + JSON.parse(row.item.profile).path"
-                         style="width: 30px;height: 30px"
-                         class="img-avatar">
-                    <img v-else
-                         :src="basePath + '/static/img/logo.png'"
-                         style="width: 40px;height: 40px"
-                         class="img-avatar">
-                  </b-col>
-                  <b-col md="9" class="mt-1" style="font-size: 11px;">
-                    {{row.value}}
-                  </b-col>
-                </b-row>
-              </template>
-
 
               <template slot="actions" slot-scope="row">
                 <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
@@ -111,63 +87,29 @@
               <template slot="row-details" slot-scope="row">
                 <b-card>
                   <b-list-group>
-                    <b-list-group-item title="查看评价" class="flex-column align-items-start"
-                                       :disabled="row.item.status !== '0'">
+                    <b-list-group-item title="评价" class="flex-column align-items-start" disabled>
                       <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">评价 <strong>{{row.item.name}}</strong> 的信息</h5>
-                        <small class="text-muted">授课老师ID：{{row.item.facultyId}}</small>
+                        <h5 class="mb-1">{{row.item.info}}年度被评人 <strong>{{row.item.fname}}</strong></h5>
+                        <small class="text-muted">用户ID：{{row.item.facultyId}}</small>
                       </div>
                       <hr/>
                       <div class="mr-1">
                         <b-row>
                           <b-col md="9">
                             <dl class="row">
-                              <dt class="col-sm-1">评价CRN:</dt>
-                              <dd class="col-sm-1">{{row.item.crn}}</dd>
+                              <dt class="col-sm-1">自评:</dt>
+                              <dd class="col-sm-3">{{row.item.selfComment}}</dd>
 
-                              <dt class="col-sm-1">评价学期:</dt>
-                              <dd class="col-sm-1">{{row.item.info}}</dd>
+                              <dt class="col-sm-1">星级评价:</dt>
+                              <dd class="col-sm-3">{{row.item.rate}}</dd>
 
-                              <dt class="col-sm-1">评价学分:</dt>
-                              <dd class="col-sm-1">{{row.item.credits}}</dd>
-
-                              <dt class="col-sm-1">评价等级:</dt>
-                              <dd class="col-sm-1">{{row.item.level}}</dd>
-
-                              <dt class="col-sm-1">授课类型:</dt>
-                              <dd class="col-sm-1">{{row.item.section}}</dd>
-
-                            </dl>
-                            <dl class="row">
-
-                              <dt class="col-sm-1">上课时间:</dt>
-                              <dd class="col-sm-3">{{row.item.startTime}} to {{row.item.endTime}}， 每周 {{row.item.day}}
-                              </dd>
-
-                              <dt class="col-sm-1">上课周期:</dt>
-                              <dd class="col-sm-3">{{row.item.startDate}} to {{row.item.endDate}}</dd>
-
-                              <dt class="col-sm-1">预选评价:</dt>
-                              <dd class="col-sm-3">{{row.item.precrn}}</dd>
-
-                            </dl>
-                            <dl class="row">
-                              <dt class="col-sm-2">评价大纲下载:</dt>
-                              <dd class="col-sm-5"
-                                  v-if="isNotEmpty(row.item.courseInfo)">
-                                <a href="#" @click="download(row.item.crn)">{{JSON.parse(row.item.courseInfo).name}}</a>
-                              </dd>
-                            </dl>
-                            <dl class="row">
-                              <dt class="col-sm-1">备注:</dt>
-                              <dd class="col-sm-5"><p style="color:red">{{row.item.comment}}</p></dd>
                             </dl>
                             <dl class="row" v-if="pageMode === 'manage'">
                               <dt class="col-sm-1">操作:</dt>
                               <dd class="col-sm-5">
                                 <b-button size="sm"
                                           class="btn btn-danger"
-                                          @click.stop="showDeleteFeedback(row.item.crn)">
+                                          @click.stop="showDeleteFeedback(row.item.id)">
                                   删除该评价
                                 </b-button>
                               </dd>
@@ -175,7 +117,7 @@
                           </b-col>
                           <b-col md="3">
                             <dl class="row">
-                              <dt class="col-sm-4">授课老师：</dt>
+                              <dt class="col-sm-4">被评人照片：</dt>
                               <dd class="col-sm-8">
                                 <img v-if="isNotEmpty(row.item.profile)"
                                      :src="basePath + '/static' + JSON.parse(row.item.profile).path"
