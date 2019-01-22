@@ -15,6 +15,7 @@ const ViewCourse = () => import('@/views/course/Course');
 const Choose = () => import('@/views/course/Choose');
 const Grade = () => import('@/views/course/Grade');
 const Transcript = () => import('@/views/course/Transcript');
+const Feedback_Fill = () => import('@/views/course/Feedback');
 const Advisor_Choose = () => import('@/views/course/Advisor');
 
 const TempCourse = () => import('@/views/teach/TempCourse');
@@ -159,6 +160,15 @@ const router = new Router({
               meta: {
                 requireAuth: true,
                 role: ['5']
+              },
+            },
+            {
+              path: 'feedback',
+              name: '评价填写',
+              component: Feedback_Fill,
+              meta: {
+                requireAuth: true,
+                role: ['6']
               },
             },
             {

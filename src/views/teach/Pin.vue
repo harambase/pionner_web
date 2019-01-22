@@ -202,6 +202,12 @@
                        value="2" v-model="sendRole">
                 <label class="custom-control-label" for="grade">成绩录入</label>
               </div>
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input id="comment" type="checkbox" name="role2"
+                       class="custom-control-input"
+                       value="4" v-model="sendRole">
+                <label class="custom-control-label" for="grade">评价</label>
+              </div>
             </b-col>
             <b-col md="2">
               <b-button variant="success" style="width:150px;" @click="sendPin">发送
@@ -330,20 +336,20 @@
                 + '&endTime=' + this.endTime
                 + '&role=' + this.role
                 + '&info=' + info
-                + '&remark=' + this.remark
+                + '&remark=' + this.remark;
               axios.post(url).then((response) => {
                 if (response.data.code === 2001) {
-                  this.msg = response.data.msg
-                  this.showModal = true
+                  this.msg = response.data.msg;
+                  this.showModal = true;
                   this.headerBgVariant = 'success'
                 }
                 else {
-                  this.msg = response.data.msg
-                  this.showModal = true
+                  this.msg = response.data.msg;
+                  this.showModal = true;
                   this.headerBgVariant = 'danger'
                 }
-              })
-              break
+              });
+              break;
             case '2':
               url += '/' + this.user.value
                 + '?startTime=' + this.startTime

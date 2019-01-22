@@ -99,11 +99,18 @@
                             <dl class="row">
                               <dt class="col-sm-1">自评:</dt>
                               <dd class="col-sm-3">{{row.item.selfComment}}</dd>
-
-                              <dt class="col-sm-1">星级评价:</dt>
-                              <dd class="col-sm-3">{{row.item.rate}}</dd>
-
                             </dl>
+
+                            <dl class="row">
+                              <div v-for="item in row.item.rate">
+                                <dt class="col-sm-1">星级评价:</dt>
+                                <dd class="col-sm-1">{{item.rate.star}}</dd>
+
+                                <dt class="col-sm-1">他评:</dt>
+                                <dd class="col-sm-3">{{item.rate.description}}</dd>
+                              </div>
+                            </dl>
+
                             <dl class="row" v-if="pageMode === 'manage'">
                               <dt class="col-sm-1">操作:</dt>
                               <dd class="col-sm-5">

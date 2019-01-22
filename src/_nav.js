@@ -74,6 +74,7 @@ export default {
         },
       ]
     },
+
     {
       name: '成绩单查看',
       url: '/course/transcript',
@@ -104,6 +105,14 @@ export default {
       icon: 'fa fa-line-chart',
       meta: {
         role: ['6']
+      },
+    },
+    {
+      name: '评价填写',
+      url: '/course/feedback',
+      icon: 'icon-pencil',
+      meta: {
+        role: ['5']
       },
     },
     {
