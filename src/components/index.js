@@ -20,6 +20,7 @@ import MessageTable from './tables/MessageTable.vue'
 import ContractTable from './tables/ContractTable.vue'
 import MessageDetail from './parts/MessageDetail.vue'
 import ContractForm from './parts/ContractForm.vue'
+import Rate from './parts/Rate.vue'
 
 export {
   Aside,
@@ -32,6 +33,7 @@ export {
   FacultySelect,
   CourseSelect,
   AddStudentTable,
+  Rate,
   StudentInCourseTable,
   UserSelect,
   TranscriptEdit,

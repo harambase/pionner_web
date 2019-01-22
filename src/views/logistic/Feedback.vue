@@ -78,6 +78,9 @@
                 {{(currentPage-1) * perPage + 1 + row.index}}
               </template>
 
+              <template slot="rate" slot-scope="row">
+                <CRate :rate="JSON.parse(row.value)"/>
+              </template>
               <template slot="actions" slot-scope="row">
                 <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
                   {{ row.detailsShowing ? '隐藏' : '展示' }}详情
@@ -102,13 +105,7 @@
                             </dl>
 
                             <dl class="row">
-                              <div v-for="item in row.item.rate">
-                                <dt class="col-sm-1">星级评价:</dt>
-                                <dd class="col-sm-1">{{item.rate.star}}</dd>
 
-                                <dt class="col-sm-1">他评:</dt>
-                                <dd class="col-sm-3">{{item.rate.description}}</dd>
-                              </div>
                             </dl>
 
                             <dl class="row" v-if="pageMode === 'manage'">
@@ -282,6 +279,7 @@
   import axios from 'axios'
   import {InfoSelect, FacultySelect} from '../../components/'
   import CFacultySelect from "../../components/selects/FacultySelect";
+  import CRate from "../../components/parts/Rate";
 
   const items = []
   const field = [
@@ -295,7 +293,7 @@
 
   export default {
     name: 'ViewFeedback',
-    components: {InfoSelect, FacultySelect, CFacultySelect},
+    components: {CRate, InfoSelect, FacultySelect, CFacultySelect},
     data() {
       return {
         feedback: {

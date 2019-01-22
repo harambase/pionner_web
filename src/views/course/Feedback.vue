@@ -159,9 +159,8 @@
                               <dl class="row">
                                 <dt class="col-sm-1">操作:</dt>
                                 <dd class="col-sm-5">
-                                  <b-button size="sm"
-                                            class="btn btn-danger"
-                                            @click.stop="turnInComment(row.item)">
+                                  <b-button size="md" class="btn btn-danger"
+                                            @click.stop="turnInComment(row.item, row.index)">
                                     提交
                                   </b-button>
                                 </dd>
@@ -247,7 +246,7 @@
   ];
 
   export default {
-    name: 'Choose',
+    name: 'Feedback_Fill',
     components: {FacultySelect},
     data() {
       return {
@@ -380,7 +379,7 @@
       isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
-      turnInComment(item) {
+      turnInComment(item, index) {
         let rateArray = [];
         if (this.isNotEmpty(item.rate)) {
           rateArray = JSON.parse(item.rate);
@@ -395,7 +394,9 @@
             this.rate = {
               star: '',
               comment: ''
-            }
+            };
+            this.items.splice(index, index + 1);
+            console.log(index);
           } else {
             this.headerBgVariant = 'danger';
           }
