@@ -27,7 +27,8 @@
       for (let i = 0; i < this.rate.length; i++) {
         this.avg += parseFloat(this.rate[i].star);
       }
-      this.avg = this.avg/this.rate.length
+      this.avg = this.avg/this.rate.length;
+      this.avg = this.avg.toFixed(2);
     },
     methods: {
       isNotEmpty(value) {
