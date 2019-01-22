@@ -19,7 +19,7 @@
                 <b-form-select id="year" style="width: 50%; float:left;" v-validate="'required'" name="info"
                                :class="{'form-control': true, 'is-invalid': errors.has('info')}"
                                :plain="true"
-                               :options="[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]"
+                               :options="[2019,2020,2021,2022,2023,2024,2025,2026,2027]"
                                v-model="info">
                 </b-form-select>
               </b-col>
@@ -90,7 +90,7 @@
               <template slot="row-details" slot-scope="row">
                 <b-card>
                   <b-list-group>
-                    <b-list-group-item title="评价" class="flex-column align-items-start" disabled>
+                    <b-list-group-item title="评价" class="flex-column align-items-start">
                       <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">{{row.item.info}}年度被评人 <strong>{{row.item.fname}}</strong></h5>
                         <small class="text-muted">用户ID：{{row.item.facultyId}}</small>
@@ -103,33 +103,23 @@
                               <dt class="col-sm-1">自评:</dt>
                               <dd class="col-sm-3">{{row.item.selfComment}}</dd>
                             </dl>
-
+                            <hr/>
                             <dl class="row">
-
+                              <dt class="col-sm-4">他人的评价:</dt>
                             </dl>
-
-                            <dl class="row" v-if="pageMode === 'manage'">
-                              <dt class="col-sm-1">操作:</dt>
-                              <dd class="col-sm-5">
-                                <b-button size="sm"
-                                          class="btn btn-danger"
-                                          @click.stop="showDeleteFeedback(row.item.id)">
-                                  删除该评价
-                                </b-button>
-                              </dd>
-                            </dl>
+                            <c-others-feedback :rate="JSON.parse(row.item.rate)" :feedback="row.item"/>
                           </b-col>
                           <b-col md="3">
                             <dl class="row">
-                              <dt class="col-sm-4">被评人照片：</dt>
+                              <dt class="col-sm-4">被评人：</dt>
                               <dd class="col-sm-8">
                                 <img v-if="isNotEmpty(row.item.profile)"
                                      :src="basePath + '/static' + JSON.parse(row.item.profile).path"
-                                     style="width: 70%"
+                                     style="width: 90%"
                                      class="img-avatar">
                                 <img v-else
                                      src="/static/img/logo.png"
-                                     style="width: 70%"
+                                     style="width: 90%"
                                      class="img-avatar">
                               </dd>
                             </dl>
@@ -280,6 +270,7 @@
   import {InfoSelect, FacultySelect} from '../../components/'
   import CFacultySelect from "../../components/selects/FacultySelect";
   import CRate from "../../components/parts/Rate";
+  import COthersFeedback from "../../components/parts/OthersFeedback";
 
   const items = []
   const field = [
@@ -293,7 +284,7 @@
 
   export default {
     name: 'ViewFeedback',
-    components: {CRate, InfoSelect, FacultySelect, CFacultySelect},
+    components: {COthersFeedback, CRate, InfoSelect, FacultySelect, CFacultySelect},
     data() {
       return {
         feedback: {
