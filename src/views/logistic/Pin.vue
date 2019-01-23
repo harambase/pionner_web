@@ -24,7 +24,7 @@
           <b-card-body>
             <b-row>
               <b-col md="2">
-                <label class="col-sm-12 control-label">*年份-学期(YYYY-XX):</label>
+                <label class="col-sm-12 control-label">*评价年份:</label>
               </b-col>
               <b-col md="3">
                 <b-form-select id="year" style="width: 50%; float:left;" v-validate="'required'" name="info"
@@ -32,12 +32,6 @@
                                :plain="true"
                                :options="[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]"
                                v-model="pinInfo.year">
-                </b-form-select>
-                <b-form-select id="info" style="width: 50%" v-validate="'required'" name="info"
-                               :class="{'form-control': true, 'is-invalid': errors.has('info')}"
-                               :plain="true"
-                               :options="[{ text: '春季学期', value: '01' },{ text: '秋季学期', value: '02' }, { text: '夏季学期', value: '03' }]"
-                               v-model="pinInfo.semester">
                 </b-form-select>
                 <div v-show="errors.has('info')" class="invalid-tooltip">{{ errors.first('info') }}</div>
               </b-col>
@@ -66,22 +60,16 @@
               </b-col>
               <b-col md="5">
                 <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="course" value="1"
+                  <input type="radio" id="course" value="4"
                          :class="{'custom-control-input': true, 'is-invalid': errors.has('role')}"
                          name="level" v-model="role" v-validate="'required'">
-                  <label class="custom-control-label" for="course">选课</label>
+                  <label class="custom-control-label" for="course">自评</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="advisor" value="3"
+                  <input type="radio" id="advisor" value="5"
                          :class="{'custom-control-input': true, 'is-invalid': errors.has('role')}"
                          name="level" v-model="role" v-validate="'required'">
-                  <label class="custom-control-label" for="advisor">选导师</label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="transcript" value="2"
-                         :class="{'custom-control-input': true, 'is-invalid': errors.has('role')}"
-                         name="level" v-model="role" v-validate="'required'">
-                  <label class="custom-control-label" for="transcript">成绩录入</label>
+                  <label class="custom-control-label" for="advisor">他评</label>
                 </div>
                 <div v-show="errors.has('role')" class="invalid-tooltip">{{ errors.first('role') }}</div>
               </b-col>
@@ -91,8 +79,7 @@
                 <label class="col-sm-12 control-label">*识别码的所有人:</label>
               </b-col>
               <b-col md="3">
-                <CFacultySelect v-if="role == 2" v-on:pass="passUser"/>
-                <CStudentSelect v-if="role == 1 || role == 3" v-on:pass="passUser"/>
+                <CFacultySelect v-on:pass="passUser"/>
               </b-col>
             </b-row>
             <b-row class="mt-2">
@@ -153,10 +140,15 @@
           </div>
           <b-row>
             <b-col md="2" class="mt-1">
-              <label class="col-sm-12 control-label">*选择清除的学期:</label>
+              <label class="col-sm-12 control-label">*选择清除的年份:</label>
             </b-col>
             <b-col md="5">
-              <CInfoSelect v-on:pass="passInfo"/>
+              <b-form-select id="year" style="width: 50%; float:left;" v-validate="'required'" name="info"
+                             :class="{'form-control': true, 'is-invalid': errors.has('info')}"
+                             :plain="true"
+                             :options="[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]"
+                             v-model="deleteInfo.value">
+              </b-form-select>
             </b-col>
             <b-col md="2" class="my-1">
               <b-button style="width:150px;" variant="danger" @click="showDeleteAll">清除
@@ -174,10 +166,15 @@
 
           <b-row>
             <b-col md="2">
-              <label class="col-sm-12 control-label">*选择发送学期:</label>
+              <label class="col-sm-12 control-label">*选择发送年份:</label>
             </b-col>
             <b-col md="4">
-              <CInfoSelect v-on:pass="passSendInfo"/>
+              <b-form-select id="year" style="width: 50%; float:left;" v-validate="'required'" name="info"
+                             :class="{'form-control': true, 'is-invalid': errors.has('info')}"
+                             :plain="true"
+                             :options="[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]"
+                             v-model="sendInfo.value">
+              </b-form-select>
             </b-col>
             <b-col md="2">
               <label class="col-sm-12 control-label">*选择发送种类（可复选）:</label>
@@ -186,20 +183,14 @@
               <div class="custom-control custom-checkbox custom-control-inline">
                 <input id="choose" type="checkbox" name="role2"
                        class="custom-control-input"
-                       value="1" v-model="sendRole">
-                <label class="custom-control-label" for="choose">选课</label>
+                       value="4" v-model="sendRole">
+                <label class="custom-control-label" for="choose">自评</label>
               </div>
               <div class="custom-control custom-checkbox custom-control-inline">
                 <input id="advisor2" type="checkbox" name="role2"
                        class="custom-control-input"
-                       value="3" v-model="sendRole">
-                <label class="custom-control-label" for="advisor2">选导师</label>
-              </div>
-              <div class="custom-control custom-checkbox custom-control-inline">
-                <input id="grade" type="checkbox" name="role2"
-                       class="custom-control-input"
-                       value="2" v-model="sendRole">
-                <label class="custom-control-label" for="grade">成绩录入</label>
+                       value="5" v-model="sendRole">
+                <label class="custom-control-label" for="advisor2">他评</label>
               </div>
             </b-col>
             <b-col md="2">
@@ -221,7 +212,7 @@
              ok-vairant="danger"
              title="不可逆操作警告！">
       <div class="d-block text-center">
-        <h3>确认清除{{this.deleteInfo}}该学期的识别码？</h3>
+        <h3>确认清除{{this.deleteInfo}}该年的识别码？</h3>
       </div>
     </b-modal>
 
@@ -240,16 +231,14 @@
 
 <script>
   import axios from 'axios'
-  import CInfoSelect from '../../components/selects/InfoSelect'
   import CPinTable from '../../components/tables/PinTable'
   import CUserSelect from '../../components/selects/UserSelect'
   import CPinSelect from '../../components/selects/PinSelect'
   import CFacultySelect from "../../components/selects/FacultySelect";
-  import CStudentSelect from "../../components/selects/StudentSelect";
 
   export default {
     name: 'Pin',
-    components: {CStudentSelect, CFacultySelect, CPinSelect, CUserSelect, CPinTable, CInfoSelect},
+    components: {CFacultySelect, CPinSelect, CUserSelect, CPinTable},
     data() {
       return {
         startTime: '',
@@ -272,8 +261,7 @@
         sendInfo: '',
         activeName: 'second',
         pinInfo: {
-          year: '2018',
-          semester: '01'
+          year: '2018'
         },
       }
     },
@@ -281,47 +269,38 @@
       passUser(val) {
         this.user = val
       },
-      passInfo(val) {
-        this.deleteInfo = val
-      },
       passPin(val) {
         this.pin = val
-      },
-      passSendInfo(val) {
-        this.sendInfo = val
       },
       isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
       sendPin() {
         for (let i = 0; i < this.sendRole.length; i++) {
-          switch (this.sendRole[i]) {
-            case '1':
-              axios.get('/pin/send/advisor/' + this.sendInfo.value).then((response) => {
-                this.msg = response.data.msg
-                this.showModal = true
-                this.headerBgVariant = 'success'
-              })
-              break
-            case '2':
-              axios.get('/pin/send/faculty/' + this.sendInfo.value).then((response) => {
-                this.msg = response.data.msg
-                this.showModal = true
-                this.headerBgVariant = 'success'
-              })
-              break
+          if(this.sendRole[i] == 4) {
+            axios.get('/pin/send/feedback/self/' + this.sendInfo.value).then((response) => {
+              this.msg = response.data.msg;
+              this.showModal = true;
+              this.headerBgVariant = 'success'
+            });
+          }else{
+            axios.get('/pin/send/feedback/other/' + this.sendInfo.value).then((response) => {
+              this.msg = response.data.msg;
+              this.showModal = true;
+              this.headerBgVariant = 'success'
+            });
           }
         }
       },
       generate() {
         this.$validator.validateAll().then((result) => {
           if (!result)
-            return
-          let url = '/pin'
+            return;
+          let url = '/pin';
 
           this.startTime = date2Str(this.range[0], "yyyy-MM-dd hh:mm:ss");
           this.endTime = date2Str(this.range[1], "yyyy-MM-dd hh:mm:ss");
-          let info = this.pinInfo.year + '-' + this.pinInfo.semester;
+          let info = this.pinInfo.year;
 
           switch (this.mode) {
             case '1':

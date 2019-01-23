@@ -38,6 +38,7 @@ const AdviseView = () => import('@/views/advise/AdviseView');
 const Contract = () => import('@/views/logistic/Contract');
 const Feedback = () => import('@/views/logistic/Feedback');
 const UserInfo = () => import('@/views/logistic/UserInfo');
+const FeedbackPin = () => import('@/views/logistic/Pin');
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404');
@@ -356,6 +357,15 @@ const router = new Router({
               path: 'feedback',
               name: '评价管理',
               component: Feedback,
+              meta: {
+                requireAuth: true,
+                role: ['3']
+              },
+            },
+            {
+              path: 'pin',
+              name: '评价识别码管理',
+              component: FeedbackPin,
               meta: {
                 requireAuth: true,
                 role: ['3']

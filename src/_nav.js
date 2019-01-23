@@ -230,6 +230,14 @@ export default {
       },
     },
     {
+      name: '评价识别码管理',
+      url: '/logistic/feedback/pin',
+      icon: 'icon-pencil',
+      meta: {
+        role: ['3']
+      },
+    },
+    {
       name: '用户信息管理',
       url: '/logistic/info',
       icon: 'icon-people',
