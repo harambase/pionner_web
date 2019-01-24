@@ -276,6 +276,7 @@
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
     {key: 'fname', label: '授课老师', sortable: true},
+    {key: 'facultyId', label: '授课老师', sortable: true},
     {key: 'info', label: '年份', sortable: true},
     {key: 'selfComment', label: '自评', sortable: false},
     {key: 'rate', label: '星级互评', sortable: true},

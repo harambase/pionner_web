@@ -24,9 +24,6 @@
               <small>详情</small>
             </div>
             <b-card-body>
-              <h4>操作流程：</h4>
-              请先填写自我评价，提交返回成功后，再在<p style="color:red"> 右边(如果是手机，请往下拉！）</p>对其他老师进行评价！可以重复提交！记住你的识别码只可以使用1次！
-              <hr/>
               <h4>你的年度自我评价：</h4>
               <b-form-textarea id="textarea1"
                                v-model="feedback.selfComment"
@@ -225,7 +222,7 @@
       <b-btn class="mt-3" variant="outline-success" block @click="validate">验证识别码</b-btn>
     </b-modal>
 
-    <b-modal v-model="showModal" size="sm" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
+    <b-modal v-model="showModal" size="sm" @ok = "$router.push({path: '/dashboard'})" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
       <div class="d-block text-center">
         <h3>{{msg}}</h3>
       </div>
@@ -370,7 +367,8 @@
             this.headerBgVariant = 'danger';
           }
           this.msg = response.data.msg;
-          this.showModal = true
+          this.showModal = true;
+
         })
       },
       reset() {

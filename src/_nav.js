@@ -112,7 +112,7 @@ export default {
       url: '/course/feedback',
       icon: 'icon-pencil',
       meta: {
-        role: ['5']
+        role: ['6']
       },
     },
     {
