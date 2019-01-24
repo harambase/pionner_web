@@ -17,7 +17,7 @@
 
     <div v-show="pinValidate">
       <b-row>
-        <b-col md="3">
+        <b-col v-if="pinObject.role == 4" md="12">
           <b-card>
             <div slot="header">
               <i className="fa fa-align-justify"></i><strong>评价工作区</strong>
@@ -49,7 +49,7 @@
             </b-card-body>
           </b-card>
         </b-col>
-        <b-col md="9">
+        <b-col v-if="pinObject.role == 5" md="12">
           <b-card
             header-tag="header"
             footer-tag="footer">

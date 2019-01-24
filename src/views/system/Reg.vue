@@ -79,7 +79,7 @@
                 <b-list-group>
                   <b-list-group-item href="#" title="编辑用户"
                                      class="flex-column align-items-start"
-                                     :disabled="row.item.status === '0'">
+                                     :disabled="row.item.status != 0">
                     <div class="d-flex w-100 justify-content-between">
                       <h5 class="mb-1">
                         用户 <strong>{{JSON.parse(row.item.userJson).lastName}},
@@ -142,7 +142,7 @@
 
                               <b-button size="sm"
                                         class="btn btn-info"
-                                        @click="tempUserDetail(row.item.id)">
+                                        @click.stop="tempUserDetail(row.item.id)">
                                 审核该申请
                               </b-button>
                             </dd>

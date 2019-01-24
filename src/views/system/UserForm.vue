@@ -219,9 +219,14 @@
                       <label class="custom-control-label" for="student">学生</label>
                     </div>
                     <div class="custom-control custom-checkbox custom-control-inline">
-                      <input type="checkbox" value="f" class="custom-control-input" id="teacher"
+                      <input type="checkbox" value="ff" class="custom-control-input" id="full_time"
                              name="type" v-model="userType">
-                      <label class="custom-control-label" for="teacher">教师</label>
+                      <label class="custom-control-label" for="full_time">全职教师、全职员工</label>
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" value="pf" class="custom-control-input" id="part_time"
+                             name="type" v-model="userType">
+                      <label class="custom-control-label" for="part_time">兼职教职、兼职员工、志愿者</label>
                     </div>
                     <div class="custom-control custom-checkbox custom-control-inline">
                       <input type="checkbox" value="a" class="custom-control-input" id="admin"
@@ -251,13 +256,13 @@
                 </b-row>
                 <b-row>
                   <b-col md="2" class="my-1">
-                    <label class="col-sm-12 control-label">*高级权限:</label>
+                    <label class="col-sm-12 control-label">*系统访问权限:</label>
                   </b-col>
                   <b-col md="5" class="my-1">
                     <div class="custom-control custom-checkbox custom-control-inline">
                       <input type="checkbox" value="1" class="custom-control-input"
                              name="role" v-model="userRole" id="systemAdmin">
-                      <label class="custom-control-label" for="systemAdmin">超级管理员</label>
+                      <label class="custom-control-label" for="systemAdmin">管理员</label>
                     </div>
                     <div class="custom-control custom-checkbox custom-control-inline">
                       <input type="checkbox" value="2" class="custom-control-input"
@@ -502,6 +507,7 @@
           this.showDocument = true
         }
       },
+
       documentUpload() {
         let formData = new FormData();
         formData.append('file', document.getElementById('document').files[0]);
@@ -600,14 +606,17 @@
 
         for (let i = 0; i < this.userType.length; i++) {
           if (this.userType[i] !== '') {
-            type += this.userType[i] + '/';
+            let type = this.userType[i];
+            if (type === 's' || type === 'ff' || type === 'pf' || type === 'a') {
+              type += this.userType[i] + '/';
+            }
           }
         }
 
         if (type.indexOf('s') !== -1)
           roleId += '5/';
 
-        if (type.indexOf('f') !== -1)
+        if (type.indexOf('ff') !== -1 || type.indexOf('pf') !== -1 )
           roleId += '6/';
 
         if (type.indexOf('a') !== -1)

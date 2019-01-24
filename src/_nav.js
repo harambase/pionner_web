@@ -231,7 +231,7 @@ export default {
     },
     {
       name: '评价识别码管理',
-      url: '/logistic/feedback/pin',
+      url: '/logistic/pin',
       icon: 'icon-pencil',
       meta: {
         role: ['3']

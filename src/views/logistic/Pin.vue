@@ -27,13 +27,12 @@
                 <label class="col-sm-12 control-label">*评价年份:</label>
               </b-col>
               <b-col md="3">
-                <b-form-select id="year" style="width: 50%; float:left;" v-validate="'required'" name="info"
-                               :class="{'form-control': true, 'is-invalid': errors.has('info')}"
+                <b-form-select id="year" style="width: 100%; float:left;" name="info"
+                               class="form-control"
                                :plain="true"
-                               :options="[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]"
+                               :options="[2019,2020,2021,2022,2023,2024,2025]"
                                v-model="pinInfo.year">
                 </b-form-select>
-                <div v-show="errors.has('info')" class="invalid-tooltip">{{ errors.first('info') }}</div>
               </b-col>
             </b-row>
             <b-row class="mt-2">
@@ -79,7 +78,7 @@
                 <label class="col-sm-12 control-label">*识别码的所有人:</label>
               </b-col>
               <b-col md="3">
-                <CFacultySelect v-on:pass="passUser"/>
+                <CFacultyMultipleSelect v-on:pass="passUser"/>
               </b-col>
             </b-row>
             <b-row class="mt-2">
@@ -146,7 +145,7 @@
               <b-form-select id="year" style="width: 50%; float:left;" v-validate="'required'" name="info"
                              :class="{'form-control': true, 'is-invalid': errors.has('info')}"
                              :plain="true"
-                             :options="[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]"
+                             :options="[2019,2020,2021,2022,2023,2024,2025]"
                              v-model="deleteInfo.value">
               </b-form-select>
             </b-col>
@@ -172,7 +171,7 @@
               <b-form-select id="year" style="width: 50%; float:left;" v-validate="'required'" name="info"
                              :class="{'form-control': true, 'is-invalid': errors.has('info')}"
                              :plain="true"
-                             :options="[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]"
+                             :options="[2019,2020,2021,2022,2023,2024,2025]"
                              v-model="sendInfo.value">
               </b-form-select>
             </b-col>
@@ -234,11 +233,11 @@
   import CPinTable from '../../components/tables/PinTable'
   import CUserSelect from '../../components/selects/UserSelect'
   import CPinSelect from '../../components/selects/PinSelect'
-  import CFacultySelect from "../../components/selects/FacultySelect";
+  import CFacultyMultipleSelect from "../../components/selects/FacultySelectMultiple";
 
   export default {
-    name: 'Pin',
-    components: {CFacultySelect, CPinSelect, CUserSelect, CPinTable},
+    name: 'FeedbackPin',
+    components: {CFacultyMultipleSelect, CPinSelect, CUserSelect, CPinTable},
     data() {
       return {
         startTime: '',
@@ -277,13 +276,13 @@
       },
       sendPin() {
         for (let i = 0; i < this.sendRole.length; i++) {
-          if(this.sendRole[i] == 4) {
+          if (this.sendRole[i] == 4) {
             axios.get('/pin/send/feedback/self/' + this.sendInfo.value).then((response) => {
               this.msg = response.data.msg;
               this.showModal = true;
               this.headerBgVariant = 'success'
             });
-          }else{
+          } else {
             axios.get('/pin/send/feedback/other/' + this.sendInfo.value).then((response) => {
               this.msg = response.data.msg;
               this.showModal = true;
@@ -294,8 +293,8 @@
       },
       generate() {
         this.$validator.validateAll().then((result) => {
-          if (!result)
-            return;
+          // if (!result)
+          //   return;
           let url = '/pin';
 
           this.startTime = date2Str(this.range[0], "yyyy-MM-dd hh:mm:ss");
@@ -323,24 +322,26 @@
               });
               break;
             case '2':
-              url += '/' + this.user.value
-                + '?startTime=' + this.startTime
-                + '&endTime=' + this.endTime
-                + '&role=' + this.role
-                + '&info=' + info
-                + '&remark=' + this.remark
-              axios.post(url).then((response) => {
-                if (response.data.code === 2001) {
-                  this.msg = '创建并发送成功！'
-                  this.showModal = true
-                  this.headerBgVariant = 'success'
-                }
-                else {
-                  this.msg = response.data.msg
-                  this.showModal = true
-                  this.headerBgVariant = 'danger'
-                }
-              })
+              for (let i = 0; i < this.user.length; i++) {
+                url = '/pin/' + this.user[i].value
+                  + '?startTime=' + this.startTime
+                  + '&endTime=' + this.endTime
+                  + '&role=' + this.role
+                  + '&info=' + info
+                  + '&remark=' + this.remark
+                axios.post(url).then((response) => {
+                  if (response.data.code === 2001) {
+                    this.msg = '创建并发送成功！';
+                    this.showModal = true
+                    this.headerBgVariant = 'success'
+                  }
+                  else {
+                    this.msg = response.data.msg
+                    this.showModal = true
+                    this.headerBgVariant = 'danger'
+                  }
+                })
+              }
           }
         })
       },

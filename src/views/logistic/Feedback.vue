@@ -16,7 +16,7 @@
                 <legend class="col-form-legend">检索条件：</legend>
               </b-col>
               <b-col md="4" class="my-1">
-                <b-form-select id="year" style="width: 50%; float:left;" v-validate="'required'" name="info"
+                <b-form-select id="year" style="width: 50%; float:left;" name="info"
                                :class="{'form-control': true, 'is-invalid': errors.has('info')}"
                                :plain="true"
                                :options="[2019,2020,2021,2022,2023,2024,2025,2026,2027]"
@@ -162,7 +162,7 @@
                 <b-form-select id="year" style="width: 50%; float:left;" v-validate="'required'" name="info"
                                :class="{'form-control': true, 'is-invalid': errors.has('info')}"
                                :plain="true"
-                               :options="[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025]"
+                               :options="[2019,2020,2021,2022,2023,2024,2025]"
                                v-model="feedback.info">
                 </b-form-select>
                 <div v-show="errors.has('info')" class="invalid-tooltip">{{ errors.first('info') }}</div>
@@ -176,12 +176,12 @@
                 <div class="custom-control custom-radio custom-control-inline">
                   <input type="radio" id="single" name="mode" v-validate="'required'" class="custom-control-input"
                          value="2" v-model="mode">
-                  <label class="custom-control-label" for="single">单人</label>
+                  <label class="custom-control-label" for="single">按用户</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                   <input type="radio" id="batch" name="mode" v-validate="'required'" class="custom-control-input"
                          value="1" v-model="mode">
-                  <label class="custom-control-label" for="batch">单类型</label>
+                  <label class="custom-control-label" for="batch">按类型</label>
                 </div>
                 <div v-show="errors.has('mode')" class="invalid-tooltip">{{ errors.first('info') }}</div>
               </b-col>
@@ -191,7 +191,7 @@
                 <label class="col-sm-12 control-label">*评价的所有人:</label>
               </b-col>
               <b-col md="3">
-                <CFacultySelect v-if="role == 2" v-on:pass="passUser"/>
+                <CFacultyMultipleSelect v-if="mode == 2" v-on:pass="passUser"/>
               </b-col>
             </b-row>
             <b-row class="mt-2">
@@ -268,9 +268,9 @@
 <script>
   import axios from 'axios'
   import {InfoSelect, FacultySelect} from '../../components/'
-  import CFacultySelect from "../../components/selects/FacultySelect";
   import CRate from "../../components/parts/Rate";
   import COthersFeedback from "../../components/parts/OthersFeedback";
+  import CFacultyMultipleSelect from "../../components/selects/FacultySelectMultiple";
 
   const items = []
   const field = [
@@ -284,7 +284,7 @@
 
   export default {
     name: 'ViewFeedback',
-    components: {COthersFeedback, CRate, InfoSelect, FacultySelect, CFacultySelect},
+    components: {CFacultyMultipleSelect, COthersFeedback, CRate, InfoSelect, FacultySelect},
     data() {
       return {
         feedback: {
@@ -312,7 +312,7 @@
         info: '',
         faculty: '',
         basePath: basePath,
-        newFeedFac: ''
+        newFeedFac: []
       }
     },
     computed: {
@@ -360,20 +360,23 @@
               })
               break
             case '2':
-              url += '/' + this.newFeedFac.value
-                + '?info=' + info;
-              axios.post(url).then((response) => {
-                if (response.data.code === 2001) {
-                  this.msg = '新空评价创建成功！'
-                  this.showModal = true
-                  this.headerBgVariant = 'success'
-                }
-                else {
-                  this.msg = response.data.msg
-                  this.showModal = true
-                  this.headerBgVariant = 'danger'
-                }
-              })
+              for (let i = 0; i < this.newFeedFac.length; i++) {
+                url = '/feedback';
+                url += '/' + this.newFeedFac[i].value
+                  + '?info=' + info;
+                axios.post(url).then((response) => {
+                  if (response.data.code === 2001) {
+                    this.msg = '新空评价创建成功！';
+                    this.showModal = true;
+                    this.headerBgVariant = 'success'
+                  }
+                  else {
+                    this.msg = response.data.msg;
+                    this.showModal = true;
+                    this.headerBgVariant = 'danger'
+                  }
+                })
+              }
           }
         })
       },

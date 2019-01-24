@@ -6,6 +6,7 @@ import Sidebar from './Sidebar.vue'
 import InfoSelect from './selects/InfoSelect.vue'
 import StudentSelect from './selects/StudentSelect.vue'
 import StudentSelectMultiple from './selects/StudentSelectMultiple'
+import FacultySelectMultiple from './selects/FacultySelectMultiple'
 import CourseSelect from './selects/CourseSelect.vue'
 import FacultySelect from './selects/FacultySelect.vue'
 import UserSelect from './selects/UserSelect.vue'
@@ -47,5 +48,6 @@ export {
   MessageDetail,
   ContractTable,
   ContractForm,
-  StudentSelectMultiple
+  StudentSelectMultiple,
+  FacultySelectMultiple
 }
