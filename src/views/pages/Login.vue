@@ -31,16 +31,17 @@
                       <div v-show="errors.has('password')" class="invalid-tooltip">{{ errors.first('password') }}</div>
                     </b-input-group>
                     <b-row>
-                      <b-col cols='4'>
-                        <b-button variant='primary' class='px-12' @click="doLogin">登录 LOG IN</b-button>
+                      <b-col cols='5'>
+                        <b-button variant='primary' class='px-12' @click="doLogin">登录 LOGIN</b-button>
                       </b-col>
                       <b-col cols='5' class='text-right'>
-                        <b-button variant='success' class='px-6 d-md-down' style="display: none;" @click="goToReg">注册
+                        <b-button variant='link' class='px-12' @click="resetPassword">忘记密码?</b-button>
+                      </b-col>
+                      <b-col cols='5' class='text-right'>
+                        <b-button variant='success' class='px-6 d-md-down' style="display: none;" @click="goToReg">注册 REG
                         </b-button>
                       </b-col>
-                      <b-col cols='3' class='text-right'>
-                        <b-button variant='link' class='px-4' @click="resetPassword">忘记密码?</b-button>
-                      </b-col>
+
                     </b-row>
                   </div>
                   <div v-if="reset">

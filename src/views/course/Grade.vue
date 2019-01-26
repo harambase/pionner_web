@@ -206,7 +206,7 @@
       if (this.pinObject === null || this.pinObject === '') {
         return
       }
-      this.showValidate = false
+      this.showValidate = false;
       this.pinValidate = true
     },
     methods: {
@@ -217,24 +217,24 @@
         this.course = val
       },
       onFiltered(filteredItems) {
-        this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
+        this.totalRows = filteredItems.length; // Trigger pagination to update the number of buttons/pages due to filtering
         this.currentPage = 1
       },
       courseTable(ctx) {
-        this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
-        let url = '/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy + '&mode=faculty'
+        this.isBusy = true;
+        let url = '/course?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy + '&mode=faculty';
         if (this.isNotEmpty(this.pinObject))
-          url += '&info=' + this.pinObject.info
+          url += '&info=' + this.pinObject.info;
         if (this.isNotEmpty(ctx.filter))
-          url += '&search=' + ctx.filter
+          url += '&search=' + ctx.filter;
         if (ctx.sortDesc)
-          url += '&order=desc'
+          url += '&order=desc';
         else
-          url += '&order=asc'
+          url += '&order=asc';
 
         return axios.get(url).then((response) => {
-          let items = response.data.data
-          this.totalRows = response.data.recordsTotal
+          let items = response.data.data;
+          this.totalRows = response.data.recordsTotal;
           return (items || [])
         })
 
@@ -247,12 +247,14 @@
           if (!result)
             return
           axios.get('/pin/' + this.pin).then((response) => {
-            if (response.data.code === 2001 && response.data.data.role == 2) {
-              this.pinObject = response.data.data
-              this.showValidate = false
+            if (response.data.code === 2001 && response.data.data.role === 2) {
+              this.pinObject = response.data.data;
+              this.showValidate = false;
+              this.pinValidate = true;
+              this.initTable();
             } else {
-              this.msg = '识别码验证失败！  '
-              this.headerBgVariant = 'danger'
+              this.msg = '识别码验证失败！  ';
+              this.headerBgVariant = 'danger';
               this.showModal = true
             }
           })
