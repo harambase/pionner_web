@@ -101,7 +101,7 @@
                           <b-col md="9">
                             <dl class="row">
                               <dt class="col-sm-1">自评:</dt>
-                              <dd class="col-sm-3">{{row.item.selfComment}}</dd>
+                              <dd class="col-sm-10">{{row.item.selfComment}}</dd>
                             </dl>
                             <hr/>
                             <dl class="row">
@@ -275,10 +275,9 @@
   const items = []
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
-    {key: 'fname', label: '授课老师', sortable: true},
-    {key: 'facultyId', label: '授课老师', sortable: true},
+    {key: 'fname', label: '被评人', sortable: true},
+    {key: 'facultyId', label: '被评人ID', sortable: true},
     {key: 'info', label: '年份', sortable: true},
-    {key: 'selfComment', label: '自评', sortable: false},
     {key: 'rate', label: '星级互评', sortable: true},
     {key: 'actions', label: '查看详情'}
   ]

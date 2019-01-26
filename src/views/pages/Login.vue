@@ -32,14 +32,14 @@
                     </b-input-group>
                     <b-row>
                       <b-col cols='4'>
-                        <b-button variant='primary' class='px-4' @click="doLogin">登录 LOG IN</b-button>
+                        <b-button variant='primary' class='px-12' @click="doLogin">登录 LOG IN</b-button>
                       </b-col>
-                      <b-col cols='4' class='text-right'>
-                        <b-button variant='success' class='px-4 d-md-down' style="display: none;" @click="goToReg">注册
+                      <b-col cols='5' class='text-right'>
+                        <b-button variant='success' class='px-6 d-md-down' style="display: none;" @click="goToReg">注册
                         </b-button>
                       </b-col>
-                      <b-col cols='4' class='text-right'>
-                        <b-button variant='link' class='px-0' @click="resetPassword">忘记密码?</b-button>
+                      <b-col cols='3' class='text-right'>
+                        <b-button variant='link' class='px-4' @click="resetPassword">忘记密码?</b-button>
                       </b-col>
                     </b-row>
                   </div>

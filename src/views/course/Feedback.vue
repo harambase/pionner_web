@@ -54,15 +54,13 @@
               <i className="fa fa-align-justify"></i><strong>评价列表</strong>
             </div>
             <b-container fluid>
-              <!-- User Interface controls -->
               <b-row>
-                <b-col md="1" class="my-1">
-                  <legend class="col-form-legend">检索条件：</legend>
-                </b-col>
-                <b-col md="4" class="my-1">
-                  <FacultySelect v-on:pass="passFaculty"/>
-                </b-col>
+                <h4>年度他评：</h4>
+                <p>在列表中评价他人，并进行星级评定</p>
+                <hr/>
               </b-row>
+
+              <!-- User Interface controls -->
               <b-row>
                 <b-col md="1" class="my-1">
                   <legend class="col-form-legend">每页显示：</legend>
@@ -112,9 +110,9 @@
                 </template>
 
                 <template slot="actions" slot-scope="row">
-                  <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
-                    {{ row.detailsShowing ? '隐藏' : '展示' }}详情
-                  </b-button>
+                  <i style="cursor: pointer; margin-top:5px; color: green;" class="fa fa-pencil" title="填写评价"
+                     @click.stop="row.toggleDetails"> 填写评价
+                  </i>
                 </template>
 
                 <template slot="row-details" slot-scope="row">
@@ -122,7 +120,7 @@
                     <b-list-group>
                       <b-list-group-item title="评价" class="flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
-                          <h5 class="mb-1">{{row.item.info}}年度被评人 <strong>{{row.item.fname}}</strong></h5>
+                          <h5 class="mb-1">被评人 <strong>{{row.item.fname}}</strong></h5>
                         </div>
                         <hr/>
                         <div class="mr-1">
@@ -130,7 +128,7 @@
                             <b-col md="9">
                               <dl class="row">
                                 <dt class="col-sm-2">被评人的自评:</dt>
-                                <dd class="col-sm-3">{{row.item.selfComment}}</dd>
+                                <dd class="col-sm-9">{{row.item.selfComment}}</dd>
                               </dl>
 
                               <dl class="row">
@@ -139,13 +137,14 @@
                                   <el-rate
                                     v-model="rate.star"
                                     show-score
+                                    :allow-half=true
                                     :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
                                   </el-rate>
                                 </dd>
                               </dl>
                               <dl class="row">
                                 <dt class="col-sm-2">你的评价:</dt>
-                                <dd class="col-sm-5">
+                                <dd class="col-sm-9">
                                   <b-form-textarea id="textarea1"
                                                    v-model="rate.comment"
                                                    placeholder="你的评价"
@@ -156,9 +155,17 @@
                               <dl class="row">
                                 <dt class="col-sm-1">操作:</dt>
                                 <dd class="col-sm-5">
-                                  <b-button size="md" class="btn btn-danger"
+                                  <b-button size="md" class="btn btn-success"
                                             @click.stop="turnInComment(row.item, row.index)">
                                     提交
+                                  </b-button>
+                                  <b-button size="md" class="btn btn-danger"
+                                            @click.stop="row.toggleDetails">
+                                    取消
+                                  </b-button>
+                                  <b-button size="md" class="btn btn-info"
+                                            @click.stop="rate.comment = rate.star= ''">
+                                    重置
                                   </b-button>
                                 </dd>
                               </dl>
@@ -222,7 +229,15 @@
       <b-btn class="mt-3" variant="outline-success" block @click="validate">验证识别码</b-btn>
     </b-modal>
 
-    <b-modal v-model="showModal" size="sm" @ok = "$router.push({path: '/dashboard'})" :header-bg-variant="headerBgVariant" ok-only centered title="消息">
+    <b-modal v-model="showModal" size="sm" @ok="$router.push({path: '/dashboard'})" :header-bg-variant="headerBgVariant"
+             ok-only centered title="消息">
+      <div class="d-block text-center">
+        <h3>{{msg}}</h3>
+      </div>
+    </b-modal>
+
+    <b-modal v-model="showModal2" size="sm" :header-bg-variant="headerBgVariant"
+             ok-only centered title="消息">
       <div class="d-block text-center">
         <h3>{{msg}}</h3>
       </div>
@@ -237,8 +252,7 @@
   const items = []
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
-    {key: 'fname', label: '授课老师', sortable: true},
-    {key: 'info', label: '年份', sortable: true},
+    {key: 'fname', label: '被评人', sortable: true},
     {key: 'actions', label: '操作'}
   ];
 
@@ -251,7 +265,9 @@
         pin: '',
         pinValidate: false,
         showValidate: true,
-        feedback: '',
+        feedback: {
+          comment: ''
+        },
         counter: 0,
         msg: '',
         field: field,
@@ -265,6 +281,7 @@
         items: items,
         isBusy: false,
         showModal: false,
+        showModal2: false,
         headerBgVariant: '',
         basePath: basePath,
         faculty: '',
@@ -320,8 +337,21 @@
           url += '&order=asc'
 
         return axios.get(url).then((response) => {
-          let items = response.data.data
-          this.totalRows = response.data.recordsTotal
+          let items = response.data.data;
+          for (let i = 0; i < items.length; i++) {
+            if (items[i].facultyId === this.pinObject.ownerId) {
+              this.$delete(items, i);
+              this.totalRows = response.data.recordsTotal - 1;
+            }
+            if (this.isNotEmpty(this.feedback.comment)) {
+              let complete = this.feedback.comment.split("/");
+              for (let j = 0; j < complete.length; j++)
+                if (items[i].facultyId === complete[j]) {
+                  this.$delete(items, i);
+                  this.totalRows = response.data.recordsTotal - 1;
+                }
+            }
+          }
           return (items || [])
         })
       },
@@ -333,7 +363,8 @@
           if (!result)
             return;
           axios.get('/pin/' + this.pin).then((response) => {
-            if (response.data.code === 2001 && response.data.data.role == 4) {
+            if (response.data.code === 2001 &&
+              (response.data.data.role == 4 || response.data.data.role == 5)) {
               this.pinObject = response.data.data;
               this.initFacultyInfo();
               this.pinValidate = true;
@@ -377,7 +408,7 @@
       isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
-      turnInComment(item, index) {
+      turnInComment(item) {
         let rateArray = [];
         if (this.isNotEmpty(item.rate)) {
           rateArray = JSON.parse(item.rate);
@@ -393,13 +424,14 @@
               star: '',
               comment: ''
             };
-            this.items.splice(index, index + 1);
-            console.log(index);
+            this.feedback.comment += '/' + item.facultyId;
+            axios.put('/feedback/' + this.feedback.id, this.feedback);
+            this.initTable();
           } else {
             this.headerBgVariant = 'danger';
           }
           this.msg = response.data.msg;
-          this.showModal = true
+          this.showModal2 = true
         })
       }
     }
