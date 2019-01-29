@@ -323,6 +323,7 @@
         this.currentPage = 1
       },
       feedbackTable(ctx) {
+        this.items = [];
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
         let url = '/feedback?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
         if (this.isNotEmpty(this.faculty))
@@ -337,21 +338,28 @@
           url += '&order=asc'
 
         return axios.get(url).then((response) => {
+
           let items = response.data.data;
+
           for (let i = 0; i < items.length; i++) {
             if (items[i].facultyId === this.pinObject.ownerId) {
               this.$delete(items, i);
               this.totalRows = response.data.recordsTotal - 1;
+              break;
             }
-            if (this.isNotEmpty(this.feedback.comment)) {
+          }
+
+          if (this.isNotEmpty(this.feedback.comment)) {
+            for (let i = 0; i < items.length; i++) {
               let complete = this.feedback.comment.split("/");
               for (let j = 0; j < complete.length; j++)
-                if (items[i].facultyId === complete[j]) {
+                if (this.isNotEmpty(items[i]) && items[i].facultyId === complete[j]) {
                   this.$delete(items, i);
                   this.totalRows = response.data.recordsTotal - 1;
                 }
             }
           }
+
           return (items || [])
         })
       },
@@ -417,7 +425,11 @@
               star: '',
               comment: ''
             };
-            this.feedback.comment += '/' + item.facultyId;
+            if (this.isNotEmpty(this.feedback.comment))
+              this.feedback.comment += '/' + item.facultyId;
+            else
+              this.feedback.comment = item.facultyId + '/';
+
             axios.put('/feedback/' + this.feedback.id, this.feedback);
             this.initTable();
           } else {
@@ -428,7 +440,5 @@
         })
       }
     }
-
   }
-
 </script>
