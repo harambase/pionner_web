@@ -14,25 +14,31 @@
 <script>
   export default {
     name: 'c-rate',
-    props: ['rate'],
+    props: ['passRate'],
     data() {
       return {
         basePath: basePath,
+        rate: '',
         avg: 0.0
       }
     },
     mounted() {
-      if(!this.isNotEmpty(this.rate))
+      console.log(this.passRate);
+      if (!this.isNotEmptyArray(this.passRate))
         return;
+      this.rate = JSON.parse(this.passRate);
       for (let i = 0; i < this.rate.length; i++) {
         this.avg += parseFloat(this.rate[i].star);
       }
-      this.avg = this.avg/this.rate.length;
+      this.avg = this.avg / this.rate.length;
       this.avg = this.avg.toFixed(2);
     },
     methods: {
       isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
+      },
+      isNotEmptyArray(value) {
+        return value !== '' && value !== undefined && value !== null && value !== '\"[]\"'
       }
     }
   }

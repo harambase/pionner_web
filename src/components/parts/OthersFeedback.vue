@@ -36,16 +36,6 @@
           <h3>确认删除该条他评？</h3>
         </div>
       </b-modal>
-      <b-modal v-model="showModal" size="sm"
-               :header-bg-variant="headerBgVariant"
-               ok-only
-               ok-title="关闭"
-               centered
-               title="消息">
-        <div class="d-block text-center">
-          <h3>{{msg}}</h3>
-        </div>
-      </b-modal>
     </div>
 
   </div>
@@ -57,22 +47,28 @@
 
   export default {
     name: 'c-others-feedback',
-    props: ['rate', 'feedback'],
+    props: ['passRate', 'feedback'],
     data() {
       return {
         basePath: basePath,
         showDeleteModal: false,
         index: '',
         msg: '',
+        rate: '',
         headerBgVariant: ''
       }
     },
     mounted() {
-
+      if (this.isNotEmptyArray(this.passRate)) {
+        this.rate = JSON.parse(this.passRate)
+      }
     },
     methods: {
       isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
+      },
+      isNotEmptyArray(value) {
+        return value !== '' && value !== undefined && value !== null && value !== '\"[]\"'
       },
       showDeleteFeedback(index) {
         this.showDeleteModal = true;

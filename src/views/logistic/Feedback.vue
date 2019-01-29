@@ -112,7 +112,7 @@
               </template>
 
               <template slot="rate" slot-scope="row">
-                <CRate :rate="JSON.parse(row.value)"/>
+                <CRate :passRate="row.value"/>
               </template>
               <template slot="actions" slot-scope="row">
                 <b-button size="sm" class="btn btn-success" @click.stop="row.toggleDetails">
@@ -140,7 +140,7 @@
                             <dl class="row">
                               <dt class="col-sm-4">他人的评价:</dt>
                             </dl>
-                            <c-others-feedback :rate="JSON.parse(row.item.rate)" :feedback="row.item"/>
+                            <c-others-feedback :passRate="row.item.rate" :feedback="row.item"/>
                           </b-col>
                           <b-col md="3">
                             <dl class="row">
