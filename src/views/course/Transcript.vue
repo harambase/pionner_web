@@ -215,6 +215,9 @@
       isNotEmpty(value) {
         return value !== '' && value !== undefined && value !== null
       },
+      initTable() {
+        this.$refs.transTable.refresh()
+      },
       download() {
         window.open(basePath + '/transcript/report?token=' + window.localStorage.getItem('access_token'))
       }

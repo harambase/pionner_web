@@ -70,7 +70,7 @@
                      :sort-by.sync="sortBy"
                      :sort-desc.sync="sortDesc"
                      :isBusy="false"
-                     small="true
+                     :small=true
                      @filtered="onFiltered"
             >
               <template slot="index" slot-scope="row">

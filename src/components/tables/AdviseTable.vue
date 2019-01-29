@@ -171,7 +171,7 @@
   const field = [
     {key: 'index', label: '序号', class: 'text-center'},
     {key: 'sname', label: '学生姓名'},
-    {key: 'fname', label: '教师姓名'},
+    {key: 'fname', label: '导师姓名'},
     {key: 'status', label: '状态'},
     {key: 'updateTime', label: '更新时间'},
     {key: 'oname', label: '操作人'},

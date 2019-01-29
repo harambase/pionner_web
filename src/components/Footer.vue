@@ -1,6 +1,6 @@
 <template>
   <footer class="app-footer">
-    <span>Harambase Copyright &copy; 2019 - Version V1.1.20190127 All Rights Reserved.</span>
+    <span>Harambase Copyright &copy; 2019 - Version V1.1.20190129 All Rights Reserved.</span>
     <span class="ml-auto">Powered by <a href="https://harambase.github.io/">Harambase Development Team</a></span>
   </footer>
 </template>

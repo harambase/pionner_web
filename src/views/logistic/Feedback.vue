@@ -7,6 +7,47 @@
           header-tag="header"
           footer-tag="footer">
           <div slot="header">
+            <i className="fa fa-align-justify"></i><strong>输入密码获取列表</strong>
+          </div>
+          <b-row>
+            <b-col md="2" class="mt-1">
+              <label class="col-sm-12 control-label">*选择解密的年份:</label>
+            </b-col>
+            <b-col md="2">
+              <b-form-select id="year" style="float:left;" v-validate="'required'" name="info"
+                             :class="{'form-control': true, 'is-invalid': errors.has('info')}"
+                             :plain="true"
+                             :options="[2019,2020,2021,2022,2023,2024,2025]"
+                             v-model="deInfo">
+              </b-form-select>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col md="2" class="mt-1">
+              <label class="col-sm-12 control-label">*请输入密码并解密:</label>
+            </b-col>
+            <b-col md="2">
+              <b-input-group class="mt-1" style="float:left;">
+                <input type="password" class="form-control" placeholder="*密码" name="password"
+                       v-validate="'required|min:6|verify_password'"
+                       :class="{'form-control': true, 'is-invalid': errors.has('password')}"
+                       v-model="password">
+                <div v-show="errors.has('password')" class="invalid-tooltip">{{ errors.first('password') }}</div>
+              </b-input-group>
+            </b-col>
+            <b-col md="4" class="mt-1">
+              <b-button style="width:120px;float:left;" variant="success" @click="decrypt">解密
+              </b-button>
+              <b-button style="width:150px; color: white" class="ml-1" variant="info" @click="download"
+                        :disabled="!passwordValidate">{{!passwordValidate ? "解密下载" : "下载完整"}}评价列表
+              </b-button>
+            </b-col>
+          </b-row>
+        </b-card>
+        <b-card v-if="passwordValidate"
+                header-tag="header"
+                footer-tag="footer">
+          <div slot="header">
             <i className="fa fa-align-justify"></i><strong>评价列表</strong>
           </div>
           <b-container fluid>
@@ -14,14 +55,6 @@
             <b-row>
               <b-col md="1" class="my-1">
                 <legend class="col-form-legend">检索条件：</legend>
-              </b-col>
-              <b-col md="4" class="my-1">
-                <b-form-select id="year" style="width: 50%; float:left;" name="info"
-                               :class="{'form-control': true, 'is-invalid': errors.has('info')}"
-                               :plain="true"
-                               :options="[2019,2020,2021,2022,2023,2024,2025,2026,2027]"
-                               v-model="info">
-                </b-form-select>
               </b-col>
               <b-col md="4" class="my-1">
                 <FacultySelect v-on:pass="passFaculty"/>
@@ -150,7 +183,7 @@
         <b-card header-tag="header"
                 footer-tag="footer">
           <div slot="header">
-            <i className="fa fa-align-justify"></i><strong>空评价生成</strong>
+            <i className="fa fa-align-justify"></i><strong>空评价生成与查看密码设置</strong>
             <small>生成规则信息</small>
           </div>
           <b-card-body>
@@ -159,7 +192,7 @@
                 <label class="col-sm-12 control-label">*年份:</label>
               </b-col>
               <b-col md="3">
-                <b-form-select id="year" style="width: 50%; float:left;" v-validate="'required'" name="info"
+                <b-form-select id="year" v-validate="'required'" name="info"
                                :class="{'form-control': true, 'is-invalid': errors.has('info')}"
                                :plain="true"
                                :options="[2019,2020,2021,2022,2023,2024,2025]"
@@ -188,7 +221,7 @@
             </b-row>
             <b-row class="mt-2" v-if="mode == 2">
               <b-col md="2">
-                <label class="col-sm-12 control-label">*评价的所有人:</label>
+                <label class="col-sm-12 control-label">*被评人:</label>
               </b-col>
               <b-col md="3">
                 <CFacultyMultipleSelect v-if="mode == 2" v-on:pass="passUser"/>
@@ -196,9 +229,38 @@
             </b-row>
             <b-row class="mt-2">
               <b-col md="2">
-                <label class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
+                <label class="col-sm-12 control-label">*设置评价密码（注意：需要旧密码才可以重置！）:</label>
               </b-col>
               <b-col md="3">
+                <b-input-group class="mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" placeholder="*密码" name="password"
+                         v-validate="'required|min:6|verify_password'"
+                         :class="{'form-control': true, 'is-invalid': errors.has('password')}"
+                         v-model="feedback.password">
+                  <div v-show="errors.has('password')" class="invalid-tooltip">{{ errors.first('password') }}</div>
+                </b-input-group>
+
+                <b-input-group class="mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-lock"></i></span>
+                  </div>
+                  <input type="password" name="newPwd" class="form-control" placeholder="*请再次输入密码"
+                         v-validate="'required|min:6'" v-model="newPwd"
+                         v-on:change="notSame = newPwd !== feedback.password"
+                         :class="{'form-control': true, 'is-invalid': errors.has('password') || notSame}">
+                  <div v-show="notSame" class="invalid-tooltip">两次密码不一致</div>
+                  <div v-show="errors.has('newPwd')" class="invalid-tooltip">{{ errors.first('newPwd') }}</div>
+                </b-input-group>
+              </b-col>
+            </b-row>
+            <b-row class="mt-2">
+              <b-col md="2">
+                <label class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
+              </b-col>
+              <b-col md="1">
                 <div class="custom-control custom-radio custom-control-inline">
                   <input type="radio" id="yes"
                          :class="{'custom-control-input': true, 'is-invalid': errors.has('confirm')}"
@@ -207,7 +269,7 @@
                   <div v-show="errors.has('confirm')" class="invalid-tooltip">{{ errors.first('confirm') }}</div>
                 </div>
               </b-col>
-              <b-col md="4">
+              <b-col md="2">
                 <b-button variant="success" @click="generate">创建空评价
                 </b-button>
               </b-col>
@@ -218,26 +280,76 @@
           </div>
         </b-card>
       </el-tab-pane>
-      <!--<el-tab-pane label="年度空评价批量清空" name="third">-->
-      <!--<b-card header-tag="header"-->
-      <!--footer-tag="footer">-->
-      <!--<div slot="header">-->
-      <!--<i className="fa fa-align-justify"></i><strong>识别码(PIN)批量清空</strong>-->
-      <!--</div>-->
-      <!--<b-row>-->
-      <!--<b-col md="2" class="mt-1">-->
-      <!--<label class="col-sm-12 control-label">*选择清除的学期:</label>-->
-      <!--</b-col>-->
-      <!--<b-col md="5">-->
-      <!--<CInfoSelect v-on:pass="passInfo"/>-->
-      <!--</b-col>-->
-      <!--<b-col md="2" class="my-1">-->
-      <!--<b-button style="width:150px;" variant="danger" @click="showDeleteAll">清除-->
-      <!--</b-button>-->
-      <!--</b-col>-->
-      <!--</b-row>-->
-      <!--</b-card>-->
-      <!--</el-tab-pane>-->
+      <el-tab-pane label="年度空评价重新加密" name="third">
+        <b-card header-tag="header"
+                footer-tag="footer">
+          <div slot="header">
+            <i className="fa fa-align-justify"></i><strong>重新加密</strong>
+          </div>
+          <b-row>
+            <b-col md="2" class="mt-1">
+              <label class="col-sm-12 control-label">*选择加密的年份:</label>
+            </b-col>
+            <b-col md="3">
+              <b-form-select id="year" v-validate="'required'" name="info"
+                             :class="{'form-control': true, 'is-invalid': errors.has('info')}"
+                             :plain="true"
+                             :options="[2019,2020,2021,2022,2023,2024,2025]"
+                             v-model="enInfo">
+              </b-form-select>
+            </b-col>
+          </b-row>
+          <b-row class="mt-2">
+            <b-col md="2">
+              <label class="col-sm-12 control-label">*设置评价密码（注意：需要旧密码才可以重置！）:</label>
+            </b-col>
+            <b-col md="3">
+              <b-input-group class="mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="icon-lock"></i></span>
+                </div>
+                <input type="password" class="form-control" placeholder="*旧密码" name="oldPassword"
+                       v-validate="'required|min:6|verify_password'"
+                       :class="{'form-control': true, 'is-invalid': errors.has('oldPassword')}"
+                       v-model="oldPassword">
+                <div v-show="errors.has('oldPassword')" class="invalid-tooltip">{{ errors.first('oldPassword') }}</div>
+              </b-input-group>
+
+              <b-input-group class="mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="icon-lock"></i></span>
+                </div>
+                <input type="password" class="form-control" placeholder="*新密码" name="enPassword"
+                       v-validate="'required|min:6|verify_password'"
+                       :class="{'form-control': true, 'is-invalid': errors.has('enPassword')}"
+                       v-model="enPassword">
+                <div v-show="errors.has('enPassword')" class="invalid-tooltip">{{ errors.first('enPassword') }}</div>
+              </b-input-group>
+
+              <b-input-group class="mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="icon-lock"></i></span>
+                </div>
+                <input type="password" name="newPwd2" class="form-control" placeholder="*请再次输入新密码"
+                       v-validate="'required|min:6'" v-model="newPwd2"
+                       v-on:change="notSame = newPwd2 !== enPassword"
+                       :class="{'form-control': true, 'is-invalid': errors.has('password') || notSame}">
+                <div v-show="notSame" class="invalid-tooltip">两次密码不一致</div>
+                <div v-show="errors.has('newPwd2')" class="invalid-tooltip">{{ errors.first('newPwd2') }}</div>
+              </b-input-group>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col md="2">
+              <label class="col-sm-12 control-label">操作:</label>
+            </b-col>
+            <b-col md="2">
+              <b-button style="width:150px;" variant="danger" @click="encrypt">加密
+              </b-button>
+            </b-col>
+          </b-row>
+        </b-card>
+      </el-tab-pane>
     </el-tabs>
 
     <b-modal v-model="showDeleteModal"
@@ -271,6 +383,7 @@
   import CRate from "../../components/parts/Rate";
   import COthersFeedback from "../../components/parts/OthersFeedback";
   import CFacultyMultipleSelect from "../../components/selects/FacultySelectMultiple";
+  import md5 from 'js-md5'
 
   const items = []
   const field = [
@@ -289,8 +402,9 @@
       return {
         feedback: {
           info: ' ',
+          password: ''
         },
-        activeName: 'second',
+        activeName: 'first',
         mode: '',
         confirm: '',
         field: field,
@@ -310,9 +424,18 @@
         msg: '',
         headerBgVariant: '',
         info: '',
+        enInfo: '',
         faculty: '',
         basePath: basePath,
-        newFeedFac: []
+        newFeedFac: [],
+        enPassword: '',
+        newPwd: '',
+        newPwd2: '',
+        oldPassword: '',
+        notSame: false,
+        password: '',
+        passwordValidate: false,
+        deInfo: '',
       }
     },
     computed: {
@@ -330,11 +453,39 @@
       info: function () {
         this.initTable()
       },
+      deInfo: function () {
+        this.password = '';
+        this.passwordValidate = false;
+      },
       faculty: function () {
         this.initTable()
       }
     },
     methods: {
+      encrypt() {
+        axios.put('/feedback/encrypt/' + this.enInfo + '?password=' + md5(this.enPassword) + '&old=' + md5(this.oldPassword)).then((response) => {
+          if (response.data.code === 2001) {
+            this.headerBgVariant = 'success'
+          }
+          else {
+            this.headerBgVariant = 'danger'
+          }
+          this.msg = response.data.msg;
+          this.showModal = true;
+        })
+      },
+      decrypt() {
+        axios.get('/feedback/validate/' + this.deInfo + '?password=' + md5(this.password)).then((response) => {
+          if (response.data.code === 2001) {
+            this.passwordValidate = true;
+          }
+          else {
+            this.msg = response.data.msg;
+            this.showModal = true;
+            this.headerBgVariant = 'danger'
+          }
+        })
+      },
       generate() {
         this.$validator.validateAll().then((result) => {
           if (!result)
@@ -342,6 +493,7 @@
           let url = '/feedback'
 
           let info = this.feedback.info;
+          this.feedback.password = md5(this.feedback.password);
 
           switch (this.mode) {
             case '1':
@@ -405,8 +557,8 @@
         this.id = id;
         this.showDeleteModal = true
       },
-      download(id) {
-        window.open(basePath + '/feedback/info/' + id + '?token=' + window.localStorage.getItem('access_token'))
+      download() {
+        window.open(basePath + '/feedback/info/' + this.deInfo + '?token=' + window.localStorage.getItem('access_token') + "&password=" + md5(this.password))
       },
       onFiltered(filteredItems) {
         this.totalRows = filteredItems.length // Trigger pagination to update the number of buttons/pages due to filtering
@@ -417,9 +569,9 @@
       },
       feedbackTable(ctx) {
         this.isBusy = true // Here we don't set isBusy prop, so busy state will be handled by table itself
-        let url = '/feedback?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy
-        if (this.isNotEmpty(this.info))
-          url += '&info=' + this.info
+        let url = '/feedback/decrypt?start=' + ctx.currentPage + '&length=' + ctx.perPage + '&orderCol=' + ctx.sortBy + '&password=' + md5(this.password);
+        if (this.isNotEmpty(this.deInfo))
+          url += '&info=' + this.deInfo
         if (this.isNotEmpty(this.faculty))
           url += '&facultyId=' + this.faculty.value
         if (this.isNotEmpty(ctx.filter))

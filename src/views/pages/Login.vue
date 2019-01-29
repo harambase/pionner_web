@@ -10,7 +10,7 @@
                 <b-card-body>
                   <div v-if="!reset">
                     <h1>登录 | LOG IN</h1>
-                    <p>Educational Administration System (EAS)</p>
+                    <p>先锋中央门户网站 Pioneer Central Portal</p>
                     <div v-if="loginError">
                       <p class='text-danger'>用户名或者密码不正确!</p>
                     </div>
@@ -46,7 +46,7 @@
                   </div>
                   <div v-if="reset">
                     <h2>请修改个人信息|Profile</h2>
-                    <p>Educational Administration System (EAS)</p>
+                    <p> Pioneer Central Portal (PCP)</p>
                     <b-input-group class="mb-4">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="icon-lock"></i></span>
@@ -123,7 +123,7 @@
                 <b-card-body class='text-center'>
                   <div>
                     <h1>注册 | SIGN UP</h1>
-                    <p>没有EAS账号？ Need an EAS Account? </p>
+                    <p>没有PCP账号？ Need a PCP Account? </p>
                     <b-button variant='success' class='px-4 mt-2' @click="goToReg">点击注册 SIGN UP</b-button>
                   </div>
                 </b-card-body>

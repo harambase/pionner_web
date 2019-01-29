@@ -391,7 +391,7 @@
         })
       },
       turnIn() {
-        axios.put('/feedback/' + this.feedback.id, this.feedback).then((response) => {
+        axios.put('/feedback/other/' + this.feedback.id, this.feedback).then((response) => {
           if (response.data.code === 2001) {
             this.headerBgVariant = 'success';
           } else {
@@ -409,15 +409,8 @@
         return value !== '' && value !== undefined && value !== null
       },
       turnInComment(item) {
-        let rateArray = [];
-        if (this.isNotEmpty(item.rate)) {
-          rateArray = JSON.parse(item.rate);
-        }
-        rateArray.push(this.rate);
-
-        item.rate = JSON.stringify(rateArray);
-
-        axios.put('/feedback/' + item.id, item).then((response) => {
+        item.rate = JSON.stringify(this.rate);
+        axios.put('/feedback/other/' + item.id, item).then((response) => {
           if (response.data.code === 2001) {
             this.headerBgVariant = 'success';
             this.rate = {

@@ -14,7 +14,7 @@
           </b-card-body>
         </b-card>
       </el-tab-pane>
-      <el-tab-pane label="识别码(PIN)生成" name="second">
+      <el-tab-pane label="评价识别码(PIN)生成" name="second">
         <b-card header-tag="header"
                 footer-tag="footer">
           <div slot="header">

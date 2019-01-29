@@ -1,7 +1,7 @@
 <template>
   <b-card>
     <b-list-group>
-      <b-list-group-item title="修改成绩" class="flex-column align-items-start" disabled>
+      <b-list-group-item title="修改成绩" class="flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">学生 <strong>{{row.item.sname}}</strong> 在 <strong>{{row.item.cname}}</strong>
             课程的成绩信息</h5>
