@@ -38,7 +38,8 @@
                         <b-button variant='link' class='px-12' @click="resetPassword">忘记密码?</b-button>
                       </b-col>
                       <b-col cols='5' class='text-right'>
-                        <b-button variant='success' class='px-6 d-md-down' style="display: none;" @click="goToReg">注册 REG
+                        <b-button variant='success' class='px-6 d-md-down' style="display: none;" @click="goToReg">注册
+                          REG
                         </b-button>
                       </b-col>
 
@@ -182,13 +183,11 @@
       }
     },
     mounted() {
-      console.log(this.passToken);
       if (isNotEmpty(this.passToken)){
         window.localStorage.setItem('access_token', this.passToken);
         token = this.passToken;
         this.$router.push({path: '/dashboard'})
       }
-
     },
     methods: {
       doLogin() {
@@ -249,7 +248,12 @@
         this.$router.push({path: '/register'})
       },
       resetPassword() {
-        this.$router.push({path: '/resetPassword'})
+        this.$router.push({path: '/reset'})
+      },
+      useQQ() {
+        axios.get('/system/login/qq').then((response) => {
+          window.open(response.data.data);
+        })
       }
     }
   })

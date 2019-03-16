@@ -154,12 +154,12 @@
                 <div v-show="errors.has('section')" class="invalid-tooltip">{{ errors.first('section') }}</div>
               </b-col>
               <b-col md="2" class="my-1">
-                <label class="col-sm-12 control-label">*学分:</label>
+                <label class="col-sm-12 control-label">*学时:</label>
               </b-col>
               <b-col md="3" class="my-1">
-                <input placeholder="请输入0到4之间的整数数字"
+                <input placeholder="请输入整数数字"
                        :class="{'form-control': true, 'is-invalid': errors.has('credits')}" name="credits"
-                       v-validate="'required|numeric|min:1|max:1'"
+                       v-validate="'required|numeric|min:1|max:3'"
                        v-model="course.credits"
                        :disabled="tempCourse.status!=='0'"/>
                 <div v-show="errors.has('credits')" class="invalid-tooltip">{{ errors.first('credits') }}</div>
@@ -228,11 +228,6 @@
                   }"
                 >
                 </el-time-picker>
-                <!--<input id="starttime" :class="{'form-control': true, 'is-invalid': errors.has('startTime')}"-->
-                <!--name="startTime"-->
-                <!--v-model="course.startTime" v-validate="'required'"-->
-                <!--:disabled="tempCourse.status!=='0'"/>-->
-                <!--<div v-show="errors.has('startTime')" class="invalid-tooltip">{{ errors.first('startTime') }}</div>-->
               </b-col>
             </b-row>
             <b-row>
@@ -666,16 +661,16 @@
         let startDate = this.courseDate[0];
         let endDate = this.courseDate[1];
         this.course.startDate = startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate();
-        this.course.endDate = startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate();
+        this.course.endDate = endDate.getFullYear() + '-' + (endDate.getMonth() + 1) + '-' + endDate.getDate();
 
-        let startTime = this.courseTime[0];
-        let endTime = this.courseTime[1];
         if(isNotEmpty(this.courseTime)) {
+          let startTime = this.courseTime[0];
+          let endTime = this.courseTime[1];
           this.course.startTime = startTime.getHours() + ':' + startTime.getMinutes() + ':' + startTime.getSeconds();
           this.course.endTime = endTime.getHours() + ':' + endTime.getMinutes() + ':' + endTime.getSeconds();
         }else{
-          this.course.startTime = '';
-          this.course.endTime = '';
+          this.course.startTime = '00:00:00';
+          this.course.endTime = '00:00:00';
         }
 
         this.course.facultyId = this.faculty.value;
@@ -694,6 +689,7 @@
             return;
 
           this.prepare();
+
 
           axios.post('/request/course/register', this.course).then((response) => {
             if (response.data.code === 2001) {

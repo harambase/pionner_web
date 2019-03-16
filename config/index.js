@@ -4,9 +4,9 @@ var path = require('path')
 module.exports = {
   build: {
     env: require('./prod.env'),
-    index: path.resolve(__dirname, '../../pioneer/src/main/resources/templates/eas.html'),
+    index: path.resolve(__dirname, '../../pioneer/src/main/resources/templates/pcp.html'),
     assetsRoot: path.resolve(__dirname, '../../pioneer/src/main/resources'),
-    assetsSubDirectory: 'static/eas/',
+    assetsSubDirectory: 'static/pcp/',
     assetsPublicPath: './',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
@@ -25,7 +25,7 @@ module.exports = {
     env: require('./dev.env'),
     port: 30001,
     autoOpenBrowser: true,
-    assetsSubDirectory: 'static/eas',
+    assetsSubDirectory: 'static/pcp',
     assetsPublicPath: '',
     proxyTable: {},
     // CSS Sourcemaps off by default because relative paths are "buggy"

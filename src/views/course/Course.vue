@@ -105,7 +105,7 @@
             <b-card>
               <b-list-group>
                 <b-list-group-item title="查看课程" class="flex-column align-items-start"
-                                   :disabled="row.item.status !== '0'">
+                                   :disabled="row.item.status !== '0' && pageMode !== 'manage'">
                   <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">课程 <strong>{{row.item.name}}</strong> 的信息</h5>
                     <small class="text-muted">授课老师ID：{{row.item.facultyId}}</small>

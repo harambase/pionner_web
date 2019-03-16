@@ -606,9 +606,9 @@
 
         for (let i = 0; i < this.userType.length; i++) {
           if (this.userType[i] !== '') {
-            let type = this.userType[i];
-            if (type === 's' || type === 'ff' || type === 'pf' || type === 'a') {
-              type += this.userType[i] + '/';
+            let cur_type = this.userType[i];
+            if (cur_type === 's' || cur_type === 'ff' || cur_type === 'pf' || cur_type === 'a') {
+              type += cur_type + '/';
             }
           }
         }
@@ -661,7 +661,7 @@
           if (!result)
             return;
           this.postPrepare();
-          this.user.password = md5('pioneer123456@');
+          this.user.password = md5('pioneer123456');
 
           axios.post('/user', this.user).then((response) => {
             if (response.data.code === 2001) {

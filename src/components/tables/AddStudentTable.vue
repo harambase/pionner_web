@@ -196,7 +196,7 @@
         </b-card>
         <b-card v-if="mode==='info'">
           <b-list-group>
-            <b-list-group-item title="修改学生信息" class="flex-column align-items-start" disabled>
+            <b-list-group-item title="学生表" class="flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">学生 <strong>{{row.item.sname}}</strong> 的基本信息
                   <small class="text-muted">学生ID：{{row.item.studentId}}</small>
