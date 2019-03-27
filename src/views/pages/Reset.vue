@@ -85,6 +85,27 @@
                     <h5>请修改个人信息|Profile</h5>
                     <b-input-group class="mb-3">
                       <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon-lock"></i></span>
+                      </div>
+                      <input type="password" class="form-control" placeholder="*新密码" name="password"
+                             v-validate="'required|min:6|verify_password'"
+                             :class="{'form-control': true, 'is-invalid': errors.has('password')}"
+                             v-model="user.password">
+                      <div v-show="errors.has('password')" class="invalid-tooltip">{{ errors.first('password') }}</div>
+                    </b-input-group>
+                    <b-input-group class="mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon-lock"></i></span>
+                      </div>
+                      <input type="password" name="newPwd" class="form-control" placeholder="*请再次输入密码"
+                             v-validate="'required|min:6'" v-model="newPwd"
+                             v-on:change="notSame = newPwd !== user.password"
+                             :class="{'form-control': true, 'is-invalid': errors.has('password') || notSame}">
+                      <div v-show="notSame" class="invalid-tooltip">两次密码不一致</div>
+                      <div v-show="errors.has('newPwd')" class="invalid-tooltip">{{ errors.first('newPwd') }}</div>
+                    </b-input-group>
+                    <b-input-group class="mb-3">
+                      <div class="input-group-prepend">
                         <span class="input-group-text"><i class="icon-calendar"></i></span>
                       </div>
                       <el-date-picker style="width:80%"
@@ -203,6 +224,9 @@
             this.msg = '修改成功!'
             this.headerBgVariant = 'success'
             this.showModal = true
+            window.localStorage.setItem('access_token', response.data.data.access_token);
+            token = response.data.data.access_token;
+            this.$router.push({path: '/dashboard'})
           } else {
             this.msg = '修改失败!'
             this.headerBgVariant = 'danger'

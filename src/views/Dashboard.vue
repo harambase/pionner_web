@@ -45,7 +45,7 @@
             <small>Schedule</small>
           </div>
           <b-card-body>
-            <img :src="basePath + '/static/img/先锋2018正式课程安排.jpg'" @click="downloadSchedule()"
+            <img :src="basePath + '/static/img/先锋2019春季正式课表0323.jpg'" @click="downloadSchedule()"
                  style="width: 100%; cursor: pointer"/>
           </b-card-body>
         </b-card>
@@ -316,7 +316,7 @@
     },
     methods: {
       downloadSchedule() {
-        window.open(basePath + '/static/img/先锋2018正式课程安排.jpg')
+        window.open(basePath + '/static/img/先锋2019春季正式课表0323.jpg')
       },
       initTeachList: function () {
         axios.get('/course?mode=faculty&status=0').then((response) => {

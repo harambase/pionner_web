@@ -90,7 +90,7 @@
         <div v-else>
           <b-card>
             <b-list-group>
-              <b-list-group-item title="编辑用户" class="flex-column align-items-start" disabled>
+              <b-list-group-item title="编辑用户" class="flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">修改当前辅导关系</h5>
                   <small class="text-danger">注意：只可以修改导师！</small>

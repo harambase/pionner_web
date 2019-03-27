@@ -229,14 +229,14 @@
           this.user.password = md5(this.user.password);
           axios.put('/system/user/reset/password/' + this.user.userId, this.user).then((response) => {
             if (response.data.code === 2001) {
-              this.msg = '密码修改成功!'
+              this.msg = '修改成功!'
               this.headerBgVariant = 'success'
               this.showModal = true
               window.localStorage.setItem('access_token', this.tempToken);
               token = this.tempToken;
               this.$router.push({path: '/dashboard'})
             } else {
-              this.msg = '密码修改失败!'
+              this.msg = '修改失败!'
               this.headerBgVariant = 'danger'
               this.showModal = true
               this.$router.push({path: '/login'})
@@ -249,11 +249,6 @@
       },
       resetPassword() {
         this.$router.push({path: '/reset'})
-      },
-      useQQ() {
-        axios.get('/system/login/qq').then((response) => {
-          window.open(response.data.data);
-        })
       }
     }
   })

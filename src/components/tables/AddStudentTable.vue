@@ -93,7 +93,7 @@
       <template slot="row-details" slot-scope="row">
         <b-card v-if="mode==='credit'">
           <b-list-group>
-            <b-list-group-item title="编辑学分" class="flex-column align-items-start" disabled>
+            <b-list-group-item title="编辑学分" class="flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">学生 <strong>{{row.item.sname}}</strong> 的学分完成情况</h5>
                 <small class="text-muted">学生ID：{{row.item.studentId}}</small>
@@ -137,7 +137,7 @@
         </b-card>
         <b-card v-if="mode==='student'">
           <b-list-group>
-            <b-list-group-item title="添加该学生" class="flex-column align-items-start" disabled>
+            <b-list-group-item title="添加该学生" class="flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">添加学生 <strong>{{row.item.sname}}</strong> 进入 <strong>{{cname}}</strong> 课程</h5>
                 <small class="text-muted">学生ID：{{row.item.studentId}}</small>
